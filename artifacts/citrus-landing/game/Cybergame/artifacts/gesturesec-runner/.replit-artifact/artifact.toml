@@ -19,7 +19,7 @@ run = "pnpm --filter @workspace/gesturesec-runner run dev"
 
 [services.production]
 build = [ "pnpm", "--filter", "@workspace/gesturesec-runner", "run", "build" ]
-publicDir = "artifacts/gesturesec-runner/dist/public"
+publicDir = "artifacts/citrus-landing/game/Cybergame/artifacts/gesturesec-runner/dist/public"
 serve = "static"
 
 [[services.production.rewrites]]

@@ -1,0 +1,1 @@
+- [Recursive artifact discovery](recursive-artifact-discovery.md) — publishing discovers nested manifests; imported copies need unique ports and workspace-relative output paths.

@@ -1,13 +1,13 @@
 kind = "api"
-previewPath = "/api" # TODO - should be excluded from preview in the first place
+previewPath = "/internal-imported-api/"
 title = "API Server"
 version = "1.0.0"
 id = "3B4_FFSkEVBkAeYMFRJ2e"
 
 [[services]]
-localPort = 8080
+localPort = 38080
 name = "API Server"
-paths = ["/api"]
+paths = ["/internal-imported-api/"]
 
 [services.development]
 run = "pnpm --filter @workspace/api-server run dev"
@@ -25,7 +25,7 @@ NODE_ENV = "production"
 args = ["node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs"]
 
 [services.production.run.env]
-PORT = "8080"
+PORT = "38080"
 NODE_ENV = "production"
 
 [services.production.health.startup]
