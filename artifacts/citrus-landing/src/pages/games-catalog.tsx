@@ -22,6 +22,10 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
     src: "/logo/golf.mp4",
     poster: "/logo/golf-poster.jpg",
   },
+  jeopardy: {
+    type: "image",
+    src: "/logo/jeopardy.png",
+  },
 };
 
 export default function GamesCatalog() {

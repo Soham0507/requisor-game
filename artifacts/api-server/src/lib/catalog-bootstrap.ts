@@ -97,6 +97,22 @@ const DEFAULT_GAMES: InsertGame[] = [
     defaultHeading: "Golf Challenge",
     priceCents: 0,
   },
+  {
+    slug: "jeopardy",
+    name: "Jeopardy",
+    tagline:
+      "A branded trivia board experience with themed categories, escalating challenges, and live leaderboard play.",
+    thumbnailUrl: "/logo/jeopardy.png",
+    folderPath: "coming-soon/jeopardy",
+    previewBasePath: null,
+    brandSupport: "chrome_only",
+    defaultPrimaryColor: "#00384f",
+    defaultSecondaryColor: "#f0cf3a",
+    defaultAccentColor: "#4aa7bd",
+    defaultLogoUrl: null,
+    defaultHeading: "Jeopardy",
+    priceCents: 0,
+  },
 ];
 
 export async function ensureDefaultGames() {
