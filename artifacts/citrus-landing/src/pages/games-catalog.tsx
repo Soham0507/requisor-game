@@ -17,7 +17,6 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string }> = 
   "cyber-adventure": { type: "video", src: "/logo/cyber.mp4" },
   "basketball-shootout": { type: "video", src: "/logo/app1.mp4" },
   "gesture-space-war": { type: "video", src: "/logo/90.mp4" },
-  "golf-challenge": { type: "video", src: "/logo/golf.mp4" },
 };
 
 export default function GamesCatalog() {

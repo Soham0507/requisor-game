@@ -243,7 +243,7 @@ export default function Home() {
       <nav>
         <div className="nav-in">
           <a className="mark" href="#top">
-            Immerse <i></i> <small>by RequisorAI — games &amp; live experiences</small>
+            Activate <i></i> <small>by RequisorAI — games &amp; live experiences</small>
           </a>
           <div className="nav-r">
             <button
@@ -286,7 +286,7 @@ export default function Home() {
             <div className="kicker rise d1">
               <i></i>Web games · AI experiences · Live events
             </div>
-            <h1 className="rise d2">
+            {/* <h1 className="rise d2">
               Nobody remembers a booth.
               <br />
               Everyone remembers <span className="lit">the game they won.</span>
@@ -295,7 +295,11 @@ export default function Home() {
               Immerse designs and builds interactive web games and AI-powered brand experiences for show floors,
               tours, and activations —{" "}
               <b>spectacle people step into, games they compete in, and moments they take home.</b>
-            </p>
+            </p> */}
+
+            <h1 className = "rise d2">"Activate memorable <span className="lit">experiences instantly."</span> </h1>
+            <p className="rise 3d">"Turnkey, branded interactive experiences deployed in real time built to boost engagement and capture leads." </p>
+
             <div className="row rise d4">
               <Link className="btn" href="/games">View our games</Link>
               <a className="btn line" href="#demos">Touch one right now</a>
@@ -672,7 +676,7 @@ export default function Home() {
 
       <footer>
         <div className="wrap">
-          <span>Immerse is a RequisorAI product · Milwaukee, WI</span>
+          <span>Activate is a RequisorAI product · Milwaukee, WI</span>
           <a href="https://requisor.io" target="_blank" rel="noopener">requisor.io</a>
         </div>
       </footer>
