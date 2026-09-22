@@ -36,23 +36,12 @@ minimumReleaseAgeExclude:
 
 packages:
   - artifacts/*
-  - artifacts/games/*
   - lib/*
   - lib/integrations/*
   - scripts
-  # The brandable games. These were originally standalone repos, each with its
-  # own workspace + lockfile, which meant a fresh clone could not build them —
-  # the deploy pipeline had nothing to install. They are listed individually
-  # rather than by a `game/**` glob on purpose: several of the nested repos
-  # still carry their own `artifacts/api-server` and `lib/*` packages whose
-  # names would collide with the ones at this repo's root.
-  - artifacts/citrus-landing/game/AI-versionBB2-5/AI-versionBB2-5
-  - artifacts/citrus-landing/game/Cybergame/artifacts/gesturesec-runner
-  - artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game
-  - artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth
 
 catalog:
-  '@replit/vite-plugin-cartographer': ^0.5.1
+  '@replit/vite-plugin-cartographer': ^0.5.21
   '@replit/vite-plugin-dev-banner': ^0.1.1
   '@replit/vite-plugin-runtime-error-modal': ^0.0.6
   '@tailwindcss/vite': ^4.1.14
@@ -63,7 +52,7 @@ catalog:
   '@vitejs/plugin-react': ^5.0.4
   class-variance-authority: ^0.7.1
   clsx: ^2.1.1
-  drizzle-orm: ^0.45.1
+  drizzle-orm: ^0.45.2
   framer-motion: ^12.23.24
   lucide-react: ^0.545.0
   # Must be this exact version because expo requires it
@@ -73,7 +62,8 @@ catalog:
   tailwind-merge: ^3.3.1
   tailwindcss: ^4.1.14
   tsx: ^4.21.0
-  vite: ^7.3.0
+  vite: ^7.3.2
+  wouter: ^3.3.5
   zod: ^3.25.76
 
 autoInstallPeers: false
@@ -167,10 +157,6 @@ overrides:
   "@expo/ngrok-bin>@expo/ngrok-bin-win32-x64": "-"
   # drizzle-kit uses esbuild internally on an older version that's vulnerable, this overrides it
   "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
-  esbuild: "0.27.3"
-
-allowBuilds:
-  # Optional native speedup for `ws`; it falls back to a pure-JS implementation
-  # when absent. Kept off so deploy builds never need a native toolchain.
-  bufferutil: false
-  esbuild: true
+  esbuild: "0.28.2"
+  # orval pins js-yaml to an exact version older than the CVE fix (>=4.3.2)
+  js-yaml: '4.3.2'

@@ -100,11 +100,6 @@ async function buildAll() {
       "puppeteer",
       "puppeteer-core",
       "electron",
-      // Loads WASM/data assets relative to its own package location at
-      // runtime; only used as a local dev fallback when DATABASE_URL is
-      // unset (see lib/db/src/index.ts), but must stay unbundled so that
-      // asset resolution keeps working if that code path ever executes.
-      "@electric-sql/pglite",
     ],
     sourcemap: "linked",
     plugins: [

@@ -1,0 +1,25 @@
+{
+  "name": "workspace",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "preinstall": "node preinstall.mjs",
+    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "typecheck:libs": "tsc --build",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "build:games": "node scripts/build-games.mjs",
+    "build:web": "node scripts/build-site.mjs",
+    "build:api": "pnpm --filter @workspace/api-server run build",
+    "start:api": "node --enable-source-maps artifacts/api-server/dist/index.mjs",
+    "db:push": "pnpm --filter @workspace/db run push",
+    "db:seed": "pnpm --filter @workspace/scripts exec tsx src/seed-games.ts"
+  },
+  "private": true,
+  "devDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.62.2",
+    "@tailwindcss/oxide-win32-x64-msvc": "^4.3.3",
+    "lightningcss-win32-x64-msvc": "^1.33.0",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.2"
+  }
+}

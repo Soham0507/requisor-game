@@ -47,7 +47,3 @@ Thumbs.db
 # Replit
 .cache/
 .local/
-
-# Local dev-only embedded Postgres (pglite) used when DATABASE_URL isn't set
-.pglite-data/
-**/.pglite-data/
