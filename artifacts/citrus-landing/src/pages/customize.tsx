@@ -270,7 +270,6 @@ export default function Customize() {
         <div className="mt-10">
           <OrderSummaryPanel
             gameName={game.name}
-            priceCents={game.priceCents}
             order={order}
             isFinalizing={isFinalizing}
             onFinalize={handleFinalize}

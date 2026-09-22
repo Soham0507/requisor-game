@@ -8,10 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MOBILE_UNSUPPORTED, MOBILE_UNSUPPORTED_MESSAGE } from "@/lib/mobile-support";
 
-function formatPrice(cents: number): string {
-  return `$${(cents / 100).toFixed(0)}`;
-}
-
 // Reuses the same demo footage already shown per-project in the "Our Work"
 // section on the home page (see Cyber.tsx's `projects` list), so visitors
 // recognize the game before they click Customize. A game with no entry here
@@ -72,8 +68,7 @@ export default function GamesCatalog() {
                       {MOBILE_UNSUPPORTED_MESSAGE}
                     </p>
                   )}
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-semibold text-foreground">{formatPrice(game.priceCents)}</span>
+                  <div className="flex justify-end">
                     {game.brandSupport === "full" ? (
                       <Link href={`/customize/${game.slug}`}>
                         <Button data-testid={`button-customize-${game.slug}`}>Customize</Button>

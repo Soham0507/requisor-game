@@ -5,20 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-function formatPrice(cents: number): string {
-  return `$${(cents / 100).toFixed(0)}`;
-}
-
 interface OrderSummaryPanelProps {
   gameName: string;
-  priceCents: number;
   order: Order | null;
   isFinalizing: boolean;
   onFinalize: () => void;
   liveLink: string | null;
 }
 
-export function OrderSummaryPanel({ gameName, priceCents, order, isFinalizing, onFinalize, liveLink }: OrderSummaryPanelProps) {
+export function OrderSummaryPanel({ gameName, order, isFinalizing, onFinalize, liveLink }: OrderSummaryPanelProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -34,10 +29,7 @@ export function OrderSummaryPanel({ gameName, priceCents, order, isFinalizing, o
         <CardTitle>Order summary</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-muted-foreground">{gameName} — custom branding</span>
-          <span className="font-semibold text-foreground">{formatPrice(priceCents)}</span>
-        </div>
+        <p className="text-sm text-muted-foreground">{gameName} — custom branding</p>
 
         {order ? (
           <div className="space-y-3">
