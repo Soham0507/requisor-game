@@ -31,7 +31,7 @@ export function Navbar() {
             </svg>
           </button>
             <a className="btn" href="/#start">
-              Start a project
+              Activate Now
             </a>
           </div>
         </div>
