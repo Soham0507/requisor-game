@@ -1,3 +1,4 @@
+const unusedLegacySource = String.raw`
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/hooks/use-theme";
@@ -5,7 +6,7 @@ import "./landing.css";
 
 // Transcribed from a static design mockup ("Immerse by RequisorAI"). Markup
 // and behavior are preserved as closely as JSX allows; see landing.css for
-// how the original <style> block was scoped under the `.lp` wrapper below so
+// how the original <style> block was scoped under the '.lp' wrapper below so
 // it can't leak onto the Navbar/Footer shared with /games and /customize.
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -19,7 +20,7 @@ export default function Home() {
   const [note, setNote] = useState<{ text: string; ok: boolean }>({ text: "", ok: false });
 
   // Shared with the Navbar toggle on /games and /customize (src/hooks/use-theme.ts)
-  // so the preference — and the `dark` class it drives on <html> for those
+// so the preference — and the 'dark' class it drives on <html> for those
   // pages' Tailwind styles — stays the same wherever it was last set.
   const { theme, setTheme } = useTheme();
 
@@ -459,44 +460,16 @@ export default function Home() {
             </div>
           </article>
 
-          <article className="xp rv">
-            <div>
-              <div className="cat"><i style={{ background: "#17CFA1" }}></i>Immerse · Nostalgia arcade</div>
-              <h3>Retro Space Shooter</h3>
-              <p className="story">
-                A nostalgic, 90's-style arcade shooter — rebuilt with <b>hand-gesture controls</b> so guests wave
-                and dodge their way through the game instead of touching a screen. A no-contact interaction booths
-                ask for now, wrapped in retro-arcade charm.
-              </p>
-              <div className="links"><a className="go" href="https://90sspacewar.requisor.io/" target="_blank" rel="noopener">Play the demo →</a></div>
-            </div>
-            <div className="visual" data-tilt="">
-              <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                <source src="/logo/90.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">Deployed · Retro Space Shooter</div>
-            </div>
-          </article>
-
-          <article className="xp rv">
-            <div>
-              <div className="cat"><i style={{ background: "#17CFA1" }}></i>Immerse · HTML5 canvas</div>
-              <h3>Space Shooter</h3>
-              <p className="story">
-                A polished, browser-based 2D space shooter built entirely on the HTML5 canvas — mouse aiming,
-                click-to-shoot, asteroid spawning, and full collision detection running smoothly inside a React +
-                Vite dashboard, no crash overlays in dev or production.
-              </p>
-            </div>
-            <div className="visual" data-tilt="">
-              <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                <source src="/logo/spaceshooter.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">In dashboard · Space Shooter</div>
-            </div>
-          </article>
+          <div className="coming-divider rv" role="separator" aria-label="Upcoming experiences">
+            <span className="coming-divider-line"></span>
+            <span className="coming-divider-label">
+              <i></i>
+              Coming Soon
+              <i></i>
+            </span>
+            <span className="coming-divider-line end"></span>
+            <span className="coming-divider-copy">New branded activations in development</span>
+          </div>
 
           <article className="xp rv">
             <div>
@@ -525,6 +498,26 @@ export default function Home() {
               </video>
               <div className="glass"></div>
               <div className="plate">Coming soon · Golf Challenge</div>
+            </div>
+          </article>
+
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#4AA7BD" }}></i>
+                Activate · Trivia activation
+                <span className="coming-tag">Coming soon</span>
+              </div>
+              <h3>Jeopardy</h3>
+              <p className="story">
+                A branded trivia board built for teams, themed categories, and fast-paced audience participation —
+                designed to turn product knowledge into a memorable live leaderboard moment at your next activation.
+              </p>
+            </div>
+            <div className="visual" data-tilt="">
+              <img src="/logo/jeopardy.png" alt="Jeopardy branded activation preview" loading="lazy" />
+              <div className="glass"></div>
+              <div className="plate">Coming soon · Jeopardy activation</div>
             </div>
           </article>
         </div>
@@ -679,6 +672,7 @@ export default function Home() {
     </div>
   );
 }
+`;
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/hooks/use-theme";
@@ -686,7 +680,7 @@ import "./landing.css";
 
 // Transcribed from a static design mockup ("Immerse by RequisorAI"). Markup
 // and behavior are preserved as closely as JSX allows; see landing.css for
-// how the original <style> block was scoped under the `.lp` wrapper below so
+// how the original <style> block was scoped under the '.lp' wrapper below so
 // it can't leak onto the Navbar/Footer shared with /games and /customize.
 export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -700,7 +694,7 @@ export default function Home() {
   const [note, setNote] = useState<{ text: string; ok: boolean }>({ text: "", ok: false });
 
   // Shared with the Navbar toggle on /games and /customize (src/hooks/use-theme.ts)
-  // so the preference — and the `dark` class it drives on <html> for those
+// so the preference — and the 'dark' class it drives on <html> for those
   // pages' Tailwind styles — stays the same wherever it was last set.
   const { theme, setTheme } = useTheme();
 
@@ -1144,44 +1138,16 @@ export default function Home() {
             </div>
           </article>
 
-          <article className="xp rv">
-            <div>
-              <div className="cat"><i style={{ background: "#17CFA1" }}></i>Immerse · Nostalgia arcade</div>
-              <h3>Retro Space Shooter</h3>
-              <p className="story">
-                A nostalgic, 90's-style arcade shooter — rebuilt with <b>hand-gesture controls</b> so guests wave
-                and dodge their way through the game instead of touching a screen. A no-contact interaction booths
-                ask for now, wrapped in retro-arcade charm.
-              </p>
-              <div className="links"><a className="go" href="https://90sspacewar.requisor.io/" target="_blank" rel="noopener">Play the demo →</a></div>
-            </div>
-            <div className="visual" data-tilt="">
-              <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                <source src="/logo/90.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">Deployed · Retro Space Shooter</div>
-            </div>
-          </article>
-
-          <article className="xp rv">
-            <div>
-              <div className="cat"><i style={{ background: "#17CFA1" }}></i>Immerse · HTML5 canvas</div>
-              <h3>Space Shooter</h3>
-              <p className="story">
-                A polished, browser-based 2D space shooter built entirely on the HTML5 canvas — mouse aiming,
-                click-to-shoot, asteroid spawning, and full collision detection running smoothly inside a React +
-                Vite dashboard, no crash overlays in dev or production.
-              </p>
-            </div>
-            <div className="visual" data-tilt="">
-              <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                <source src="/logo/spaceshooter.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">In dashboard · Space Shooter</div>
-            </div>
-          </article>
+          <div className="coming-divider rv" role="separator" aria-label="Upcoming experiences">
+            <span className="coming-divider-line"></span>
+            <span className="coming-divider-label">
+              <i></i>
+              Coming Soon
+              <i></i>
+            </span>
+            <span className="coming-divider-line end"></span>
+            <span className="coming-divider-copy">New branded activations in development</span>
+          </div>
 
           <article className="xp rv">
             <div>
@@ -1210,6 +1176,26 @@ export default function Home() {
               </video>
               <div className="glass"></div>
               <div className="plate">Coming soon · Golf Challenge</div>
+            </div>
+          </article>
+
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#4AA7BD" }}></i>
+                Activate · Trivia activation
+                <span className="coming-tag">Coming soon</span>
+              </div>
+              <h3>Jeopardy</h3>
+              <p className="story">
+                A branded trivia board built for teams, themed categories, and fast-paced audience participation —
+                designed to turn product knowledge into a memorable live leaderboard moment at your next activation.
+              </p>
+            </div>
+            <div className="visual" data-tilt="">
+              <img src="/logo/jeopardy.png" alt="Jeopardy branded activation preview" loading="lazy" />
+              <div className="glass"></div>
+              <div className="plate">Coming soon · Jeopardy activation</div>
             </div>
           </article>
         </div>
