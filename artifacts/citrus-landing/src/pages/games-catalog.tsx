@@ -12,11 +12,16 @@ import { MOBILE_UNSUPPORTED, MOBILE_UNSUPPORTED_MESSAGE } from "@/lib/mobile-sup
 // section on the home page (see Cyber.tsx's `projects` list), so visitors
 // recognize the game before they click Customize. A game with no entry here
 // just skips the preview clip on its card.
-const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string }> = {
+const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; poster?: string }> = {
   "space-shooter-1": { type: "video", src: "/logo/spaceshooter.mp4" },
   "cyber-adventure": { type: "video", src: "/logo/cyber.mp4" },
   "basketball-shootout": { type: "video", src: "/logo/app1.mp4" },
   "gesture-space-war": { type: "video", src: "/logo/90.mp4" },
+  "golf-challenge": {
+    type: "video",
+    src: "/logo/golf.mp4",
+    poster: "/logo/golf-poster.jpg",
+  },
 };
 
 export default function GamesCatalog() {
@@ -48,7 +53,17 @@ export default function GamesCatalog() {
                     {preview.type === "image" ? (
                       <img src={preview.src} className="w-full h-full object-cover" alt={`${game.name} preview`} />
                     ) : (
-                      <video src={preview.src} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+                      <video
+                        src={preview.src}
+                        poster={preview.poster}
+                        preload="metadata"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        aria-label={`${game.name} gameplay preview`}
+                        className="w-full h-full object-cover"
+                      />
                     )}
                   </div>
                 )}
