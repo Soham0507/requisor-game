@@ -22,21 +22,10 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
     src: "/logo/golf.mp4",
     poster: "/logo/golf-poster.jpg",
   },
-  jeopardy: {
-    type: "image",
-    src: "/logo/jeopardy.png",
-  },
 };
 
 export default function GamesCatalog() {
   const { data: games, isLoading, isError } = useListGames();
-  const sortedGames = games
-    ? [...games].sort(
-        (first, second) =>
-          Number(first.brandSupport !== "full") -
-          Number(second.brandSupport !== "full"),
-      )
-    : undefined;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -55,7 +44,7 @@ export default function GamesCatalog() {
         {isError && <p className="text-center text-destructive">Couldn't load the game catalog. Please try again.</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {sortedGames?.map((game) => {
+          {games?.map((game) => {
             const preview = GAME_PREVIEWS[game.slug];
             return (
               <Card key={game.id} className="flex flex-col bg-card border-border overflow-hidden">
