@@ -497,6 +497,36 @@ export default function Home() {
               <div className="plate">In dashboard · Space Shooter</div>
             </div>
           </article>
+
+          <article className="xp rv">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#D6B15A" }}></i>
+                Immerse · Golf challenge
+                <span className="coming-tag">Coming soon</span>
+              </div>
+              <h3>Golf Challenge</h3>
+              <p className="story">
+                A premium timed putting challenge designed for branded activations — quick to understand, competitive
+                from the first shot, and built around a live score race that keeps spectators watching.
+              </p>
+            </div>
+            <div className="visual" data-tilt="">
+              <video
+                className="gvid"
+                preload="metadata"
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-label="Golf Challenge gameplay preview"
+              >
+                <source src="/logo/golf.mp4#t=0.1" type="video/mp4" />
+              </video>
+              <div className="glass"></div>
+              <div className="plate">Coming soon · Golf Challenge</div>
+            </div>
+          </article>
         </div>
       </section>
 

@@ -81,6 +81,22 @@ const DEFAULT_GAMES: InsertGame[] = [
     defaultHeading: "Boat Booth",
     priceCents: 5900,
   },
+  {
+    slug: "golf-challenge",
+    name: "Golf Challenge",
+    tagline:
+      "Premium timed putting challenge with a live scoreboard, power control, and branded course visuals.",
+    thumbnailUrl: null,
+    folderPath: "coming-soon/golf-challenge",
+    previewBasePath: null,
+    brandSupport: "chrome_only",
+    defaultPrimaryColor: "#d6b15a",
+    defaultSecondaryColor: "#16251a",
+    defaultAccentColor: "#f3e3a2",
+    defaultLogoUrl: null,
+    defaultHeading: "Golf Challenge",
+    priceCents: 0,
+  },
 ];
 
 export async function ensureDefaultGames() {

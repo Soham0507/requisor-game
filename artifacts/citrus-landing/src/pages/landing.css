@@ -248,6 +248,11 @@ html{scroll-behavior:smooth}
 .lp .xp:last-of-type {border-bottom:1px solid var(--line)}
 .lp .xp .cat {font-family:var(--font-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fog);margin-bottom:14px;display:flex;align-items:center;gap:10px}
 .lp .xp .cat i {font-style:normal;width:7px;height:7px;border-radius:50%;display:inline-block}
+.lp .xp .coming-tag {
+  display:inline-flex;align-items:center;padding:4px 9px;border-radius:999px;
+  border:1px solid rgba(214,177,90,.45);background:rgba(214,177,90,.12);
+  color:#E7C979;font-size:9.5px;letter-spacing:.1em;font-weight:700;
+}
 .lp .xp h3 {font-family:var(--font-head);font-size:clamp(20px,2.4vw,30px);letter-spacing:-.02em;font-weight:700;margin-bottom:14px}
 .lp .xp .story {color:var(--fog);font-weight:400;font-size:16px;max-width:52ch}
 .lp .xp .story b {color:var(--white);font-weight:700}
@@ -271,6 +276,7 @@ html{scroll-behavior:smooth}
 .lp .xp {grid-template-columns:1fr}
 .lp .xp:nth-child(even) .visual {order:0}
 .lp .xp .visual {aspect-ratio:16/9}
+.lp .xp .cat {flex-wrap:wrap}
 }
 
 /* scroll reveal */
