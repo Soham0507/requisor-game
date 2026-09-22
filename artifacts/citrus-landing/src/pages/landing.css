@@ -119,6 +119,11 @@ html{scroll-behavior:smooth}
 }
 .lp .mark small {font-family:var(--font-mono);font-weight:400;font-size:11px;color:var(--fog);letter-spacing:.04em}
 .lp nav .btn {padding:10px 20px;font-size:12px}
+@media(max-width:640px){
+  .lp .nav-in {padding:14px 18px}
+  .lp .mark small {display:none}
+  .lp nav .btn {padding:10px 14px}
+}
 
 /* ---------- hero ---------- */
 .lp .hero {position:relative;min-height:100svh;display:flex;align-items:center;padding:120px 0 80px}

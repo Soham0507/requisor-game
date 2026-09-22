@@ -1,63 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "wouter";
-import { Home, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
+import "@/pages/landing.css";
 
-// Shared header for /games and /customize/:slug. It used to carry a
-// Home/Games/Team/Contact menu (plus a mobile hamburger dropdown for it),
-// but those links pointed at #team/#contact anchors that only ever existed
-// on the old landing page — the current one (src/pages/home.tsx) has no
-// such sections, so they silently went nowhere. Replaced with a single Home
-// button back to "/"; the games catalog itself is one click from there
-// ("View our games"), and the customize page already has its own
-// "Back to catalog" link.
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/90 backdrop-blur-md border-b border-border py-4"
-          : "bg-transparent py-6"
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
-          <img src="/logo/dino.png" alt="Citrus Innovations logo" className="w-10 h-10 rounded-md" />
-          <span className="text-xl md:text-2xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
-            RequisorAI
-          </span>
-        </Link>
-
-        <div className="flex items-center gap-3">
+    <div className="lp" data-theme={theme === "light" ? "light" : undefined}>
+      <nav aria-label="Main navigation">
+        <div className="nav-in">
+          <Link className="mark" href="/">
+            Activate <i aria-hidden="true"></i>{" "}
+            <small>by RequisorAI — games &amp; live experiences</small>
+          </Link>
+          <div className="nav-r">
           <button
+            className="theme-toggle"
             type="button"
             onClick={toggleTheme}
             aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
             title="Toggle light/dark mode"
-            className="w-10 h-10 rounded-full grid place-items-center bg-muted border border-border text-foreground hover:bg-secondary transition-colors"
           >
-            {theme === "light" ? <Sun size={18} /> : <Moon size={18} />}
+            <svg className="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+            <svg className="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
           </button>
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground border border-primary-border px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            <Home size={16} />
-            Home
-          </Link>
+            <a className="btn" href="/#start">
+              Start a project
+            </a>
+          </div>
         </div>
-      </div>
-    </header>
+      </nav>
+    </div>
   );
 }
