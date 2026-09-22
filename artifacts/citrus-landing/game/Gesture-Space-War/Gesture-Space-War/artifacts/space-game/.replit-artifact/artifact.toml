@@ -18,7 +18,7 @@ localPort = 19725
 run = "pnpm --filter @workspace/space-game run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/space-game", "run", "build" ]
+build = [ "env", "BASE_PATH=/game-previews/gesture-space-war/", "pnpm", "--filter", "@workspace/space-game", "run", "build" ]
 publicDir = "artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game/dist/public"
 serve = "static"
 

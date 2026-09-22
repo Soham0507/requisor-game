@@ -18,7 +18,7 @@ localPort = 22882
 run = "pnpm --filter @workspace/gesturesec-runner run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/gesturesec-runner", "run", "build" ]
+build = [ "env", "BASE_PATH=/game-previews/cyber-adventure/", "pnpm", "--filter", "@workspace/gesturesec-runner", "run", "build" ]
 publicDir = "artifacts/citrus-landing/game/Cybergame/artifacts/gesturesec-runner/dist/public"
 serve = "static"
 
