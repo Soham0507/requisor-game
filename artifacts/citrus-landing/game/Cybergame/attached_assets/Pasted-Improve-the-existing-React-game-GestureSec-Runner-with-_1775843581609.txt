@@ -1,0 +1,75 @@
+Improve the existing React game "GestureSec Runner" with the following enhancements:
+
+1. Add More Cyber Attacks:
+Expand the attack pool with these additional attacks:
+
+- MITM Attack
+  Indicator: Certificate mismatch detected
+  Correct Defense: Validate Certificate
+
+- Zero-Day Exploit
+  Indicator: Unknown vulnerability behavior detected
+  Correct Defense: Apply Patch
+
+- DNS Spoofing
+  Indicator: Redirect to fake domain despite correct URL
+  Correct Defense: Use Secure DNS
+
+- Reverse Shell
+  Indicator: Unexpected outbound connection to external server
+  Correct Defense: Kill Process
+
+- Privilege Escalation
+  Indicator: User gaining admin access unexpectedly
+  Correct Defense: Revoke Access
+
+Ensure each attack has 4 options (1 correct, 3 wrong).
+
+--------------------------------------------------
+
+2. Fix Answer Randomization (IMPORTANT):
+Currently, the correct answer is always at position 3.
+
+Fix this by:
+- Randomly shuffling the 4 options every time an attack appears
+- Ensure the correct answer appears in a random position (1, 2, 3, or 4)
+- Update gesture mapping accordingly
+
+Example:
+const shuffledOptions = shuffleArray(options);
+
+--------------------------------------------------
+
+3. Add 7-Second Timer Per Question:
+- Each attack should have a countdown timer of 7 seconds
+- Display timer on screen (e.g., "Time Left: 7s")
+- If user does not answer within 7 seconds → Game Over
+- Timer resets for every new attack
+
+--------------------------------------------------
+
+4. Improve Game Flow:
+- When attack appears → slow down runner
+- Show options + timer
+- Detect gesture input (1–4 fingers)
+- Add 1-second confirmation before locking answer
+- If correct → continue + increase score
+- If wrong OR time runs out → Game Over
+
+--------------------------------------------------
+
+5. UI Improvements:
+- Highlight selected option when gesture detected
+- Show detected gesture number on screen (e.g., "Detected: 2")
+- Add visual warning when time < 3 seconds (red glow or shake)
+
+--------------------------------------------------
+
+6. Code Requirements:
+- Use clean modular functions
+- Add utility function for shuffling:
+  function shuffleArray(arr) { ... }
+
+- Use React hooks for timer (useEffect + setInterval)
+- Keep attack data in structured JSON format
+

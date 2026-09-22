@@ -1,0 +1,26 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "qMfH9vLWhjc9iJ933vi6V"
+uri = "file://production_scores.csv"
+type = "table"
+title = "Production Scores Data (March 24, 2026)"
+
+[[outputs]]
+id = "CwLsS46Py-fFonX0ZUR7_"
+uri = "file://production_scores_all.csv"
+type = "table"
+title = "All Production Scores - 30 Entries (March 23-25, 2026)"
+
+[[outputs]]
+id = "rDKsJ_JbOeYHMB8YDhzoJ"
+uri = "file://production_scores_new.csv"
+type = "table"
+title = "New Entries Only - 24 Players (March 25, 2026)"
+
+[[outputs]]
+id = "6XZa47caQNqAWgelYwXvC"
+uri = "file://production_scores_complete.csv"
+type = "table"
+title = "Complete Production Data - 63 Players (March 23-26, 2026)"

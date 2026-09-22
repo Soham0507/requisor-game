@@ -1,0 +1,2 @@
+- [xAI Grok Imagine API](xai-grok-imagine.md) — exact request/response formats for image edit + image-to-video, and the image-gen 500 outage gotcha.
+- [Video media endpoint needs HTTP Range support](media-range-requests.md) — serving video bytes with plain 200 breaks `<video>`; must return 206 on Range.

@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Boat Booth"
+version = "1.0.0"
+id = "artifacts/boat-booth"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21255
+
+[services.development]
+run = "pnpm --filter @workspace/boat-booth run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/boat-booth", "run", "build" ]
+publicDir = "artifacts/boat-booth/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21255"
+BASE_PATH = "/"

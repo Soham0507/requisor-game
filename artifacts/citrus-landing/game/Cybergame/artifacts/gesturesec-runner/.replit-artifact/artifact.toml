@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "GestureSec Runner"
+version = "1.0.0"
+id = "artifacts/gesturesec-runner"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22882
+
+[services.development]
+run = "pnpm --filter @workspace/gesturesec-runner run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/gesturesec-runner", "run", "build" ]
+publicDir = "artifacts/gesturesec-runner/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22882"
+BASE_PATH = "/"
