@@ -1,5 +1,5 @@
 import React from "react";
-import { SiX, SiGithub, SiDribbble, SiInstagram, SiGmail  } from "react-icons/si";
+import { SiX, SiInstagram, SiGmail } from "react-icons/si";
 import { FaLinkedinIn } from "react-icons/fa6";
 
 export function Footer() {
@@ -12,34 +12,35 @@ export function Footer() {
         {/* Logo / Brand */}
         <div
           className="font-bold text-xl tracking-tight
-          bg-gradient-to-r from-[#0d9488] via-[#14b8a6] to-[#5eead4]
+          bg-gradient-to-r from-[#f97316] via-[#ec4899] to-[#a855f7]
           text-transparent bg-clip-text"
         >
-          Requisor.AI
+          Activate
         </div>
 
         {/* Copyright */}
         <div className="text-muted-foreground text-sm font-mono tracking-wide">
-          © 2026 Requisor.AI · All rights reserved.
+          Activate is a RequisorAI product · Milwaukee, WI
         </div>
 
         {/* Social Icons */}
         <div className="flex items-center gap-4">
           {[
-            { icon: <SiX size={18} />, link: "https://x.com/Requisor_AI" },
-           
-            { icon: <SiInstagram size={18} />, link: "#" },
-            { icon: <SiGmail size={18} />, link: "mailto:naveen@requisor.io" },
-            
+            { icon: <SiX size={18} />, link: "https://x.com/Requisor_AI", label: "RequisorAI on X" },
+            { icon: <SiInstagram size={18} />, link: "#", label: "RequisorAI on Instagram" },
+            { icon: <SiGmail size={18} />, link: "mailto:naveen@requisor.io", label: "Email RequisorAI" },
             {
               icon: <FaLinkedinIn size={18} />,
               link: "https://www.linkedin.com/company/requisor/",
+              label: "RequisorAI on LinkedIn",
             },
           ].map((item, i) => (
             <a
               key={i}
               href={item.link}
               target="_blank"
+              rel="noopener noreferrer"
+              aria-label={item.label}
               className="group relative w-11 h-11 rounded-xl bg-card border border-border
               flex items-center justify-center text-muted-foreground
               hover:text-primary transition-all duration-300 overflow-hidden"
