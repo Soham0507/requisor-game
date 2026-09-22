@@ -1,0 +1,62 @@
+.glitch-strong {
+  position: relative;
+  font-size: 100px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+  display: inline-block;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+} 
+
+
+/* MAIN TEXT */
+.glitch-strong span {
+  position: relative;
+  z-index: 2;
+}
+
+/* RED CHANNEL */
+.glitch-strong::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ff003c;
+  z-index: 1;
+  mix-blend-mode: screen;
+
+  animation: glitch-red-strong 0.4s infinite steps(2, end);
+}
+
+/* BLUE CHANNEL */
+.glitch-strong::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #00eaff;
+  z-index: 1;
+  mix-blend-mode: screen;
+
+  animation: glitch-blue-strong 0.4s infinite steps(2, end);
+}
+
+/* RED GLITCH (HARD JUMPS) */
+@keyframes glitch-red-strong {
+  0%   { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  20%  { transform: translate(-6px, 2px); clip-path: inset(20% 0 50% 0); }
+  40%  { transform: translate(-10px, -2px); clip-path: inset(60% 0 10% 0); }
+  60%  { transform: translate(6px, 1px); clip-path: inset(10% 0 70% 0); }
+  80%  { transform: translate(-8px, 0); clip-path: inset(40% 0 30% 0); }
+  100% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+}
+
+/* BLUE GLITCH */
+@keyframes glitch-blue-strong {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(6px, -2px); }
+  40%  { transform: translate(10px, 2px); }
+  60%  { transform: translate(-6px, -1px); }
+  80%  { transform: translate(8px, 0); }
+  100% { transform: translate(0, 0); }
+}

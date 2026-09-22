@@ -1,0 +1,80 @@
+Build a web-based game using React called "GestureSec Runner".
+
+Game Concept:
+A character runs forward continuously in a single lane (like Temple Run). Cyber attacks appear from the front. The game pauses briefly and the player must choose the correct defense using hand gestures (1–4 fingers).
+
+Core Features:
+- Auto-running character animation
+- Random cyber attacks appear one at a time
+- Show 4 defense options for each attack
+- Player selects answer using hand gesture (1, 2, 3, or 4 fingers via webcam)
+- If correct → continue game and increase score
+- If wrong → game over screen
+
+Use these cyber attacks:
+
+1. Phishing
+Indicator: Suspicious login domain detected
+Options:
+1. Ignore
+2. Block Domain (correct)
+3. Allow Access
+4. Download File
+
+2. Malware
+Indicator: Unknown executable triggered
+Options:
+1. Run File
+2. Ignore
+3. Quarantine File (correct)
+4. Share File
+
+3. SQL Injection
+Indicator: Input detected: ' OR 1=1 --
+Options:
+1. Execute Query
+2. Log Only
+3. Sanitize Input (correct)
+4. Ignore
+
+4. Brute Force Attack
+Indicator: Multiple failed login attempts
+Options:
+1. Ignore
+2. Reset Server
+3. Enable MFA / Lock Account (correct)
+4. Allow Access
+
+5. Data Exfiltration
+Indicator: Large outbound traffic detected
+Options:
+1. Allow Transfer
+2. Monitor Only
+3. Block Transfer (correct)
+4. Restart System
+
+Tech Requirements:
+- Use React (functional components + hooks)
+- Use TailwindCSS for styling
+- Use MediaPipe Hands OR TensorFlow.js for hand gesture detection
+- Detect number of fingers shown via webcam (1–4)
+- Show detected gesture on screen (e.g., "Detected: 2")
+- Add 1-second confirmation before locking answer
+
+UI Requirements:
+- Game screen with running character (center)
+- Attack card popup with indicator text
+- 4 option buttons (numbered 1–4)
+- Score display at top
+- Game Over screen with restart button
+
+Extra Features:
+- Smooth animations (Framer Motion optional)
+- Sound effects for correct/wrong answers
+- Highlight selected option before submission
+- Difficulty increases over time (faster attacks)
+
+Structure:
+- Components: App, GameScreen, AttackCard, OptionsPanel, CameraFeed, GameOver
+- Keep code modular and clean
+- Add comments explaining gesture detection logic

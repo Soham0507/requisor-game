@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Requisor.AI"
+description = "An interactive gaming showcase and customization platform for exploring branded games, previewing experiences, and configuring game visuals."
+version = "1.0.0"
+id = "artifacts/citrus-landing"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23597
+
+[services.development]
+run = "pnpm --filter @workspace/citrus-landing run dev"
+
+[services.production]
+build = [ "pnpm", "run", "build:web" ]
+serve = "static"
+publicDir = "artifacts/citrus-landing/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23597"
+BASE_PATH = "/"

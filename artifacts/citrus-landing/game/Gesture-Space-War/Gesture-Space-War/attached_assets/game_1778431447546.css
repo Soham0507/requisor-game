@@ -1,0 +1,241 @@
+body {
+  color: #000;
+  background: #fff;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  * {
+    &,
+    &::before,
+    &::after {
+      box-sizing: border-box;
+    }
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  // game status
+  &[data-status*="over"] {
+  }
+}
+
+// common
+#main,
+#content {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+// game view
+canvas#main {
+  pointer-events: none;
+  z-index: 0;
+  // game status
+  [data-status*="pause"] &,
+  [data-status*="over"] & {
+    opacity: 0.6;
+    filter: blur(2px);
+  }
+}
+
+// content
+#content {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 2;
+
+  #instructionsWrapper {
+    flex: 1 0 100%;
+    box-sizing: border-box;
+    width: 100%;
+
+    #instructions {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 16px;
+
+      &::before,
+      &::after {
+        display: block;
+        margin-top: 16px;
+        font-weight: 900;
+        line-height: 1;
+      }
+      &::before {
+        content: attr(data-title);
+        font-size: 64px;
+        text-shadow: 0 0 32px #fff;
+      }
+      &::after {
+        content: attr(data-text);
+        font-size: 32px;
+        text-shadow: 0 0 16px #fff;
+      }
+      &[data-title=""]::before,
+      &[data-text=""]::after {
+        display: none;
+      }
+    }
+  }
+
+  &::before {
+    flex: 1 0 100%;
+    display: block;
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+    text-transform: uppercase;
+    padding: 0 16px;
+  }
+
+  &::after {
+    flex: 1 0 100%;
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 600px;
+    margin: 16px auto 0 auto;
+    padding: 0 16px;
+  }
+
+  // game status
+  [data-status*="pause"] & {
+    &::before {
+      content: "PAUSE";
+    }
+    &::after {
+      content: "";
+    }
+  }
+  [data-status*="over"] & {
+    &::before {
+      content: "GAME OVER";
+    }
+    &::after {
+      content: "Double click or hit 'Enter' key to try again.";
+    }
+  }
+}
+
+// UI
+#uiTop {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: auto;
+  padding: 16px;
+  z-index: 1;
+  text-shadow: 0 0 12px #fff;
+}
+#score,
+#highScore {
+  width: 100%;
+  height: auto;
+  white-space: nowrap;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+}
+#highScore {
+  font-size: 14px;
+  font-weight: 700;
+  &::before {
+    content: "hi-score: ";
+  }
+}
+#score {
+  font-size: 24px;
+  font-weight: 900;
+  &::before {
+    content: "score: ";
+  }
+}
+
+// title
+#title {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  max-width: 100vw;
+  max-height: 100vh;
+  text-align: center;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  // 3d
+  perspective: 640px;
+  perspective-origin: center top;
+
+  > h1 {
+    display: inline-block;
+    font-size: clamp(40px, 12vw, 120px);
+    font-weight: 900;
+    line-height: 0.83;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px #fff;
+    margin: 0 auto;
+    padding: clamp(40px, 25vh, 200px) 0 0 0;
+    transition: all 0.4s ease-in;
+    // 3d
+    transform: rotate3d(1, 0, 0, 50deg);
+
+    @media (orientation: portrait) {
+      font-size: clamp(40px, 12vw, 80px);
+      padding-top: clamp(40px, 30vh, 200px);
+    }
+
+    > span {
+      display: block;
+      font-size: 0.2em;
+      line-height: 1;
+      padding-bottom: 0.5em;
+    }
+  }
+
+  // state: dismiss
+  &[data-shown="false"] {
+    > h1 {
+      transform: scale(0.1) rotate3d(1, 0, 0, 10deg) translate(0, -2000px);
+      opacity: 0;
+
+      > span {
+        display: none;
+      }
+    }
+  }
+
+  // state: intermission
+  [data-status*="pause"] &,
+  [data-status*="over"] & {
+    > h1 {
+      scale: 0.43;
+      padding-top: 40px;
+      font-size: clamp(80px, 6vw, 100px);
+
+      @media (orientation: portrait) {
+        scale: 0.83;
+        font-size: clamp(35px, 6vw, 40px);
+        padding-top: 80px;
+      }
+
+      > span {
+        display: none;
+      }
+    }
+  }
+}

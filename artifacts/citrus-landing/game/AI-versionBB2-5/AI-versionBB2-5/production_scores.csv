@@ -1,0 +1,12 @@
+id,player_name,player_title,player_company,score,shots_taken,shots_made,outages_prevented,created_at,player_email
+58,David Lee,Pro,SSNC,30,10,10,10,2026-03-24 18:54:19.427674,david.lee@ssnc.co.kr
+53,Daniel Naxon,Eng,Above,30,10,10,10,2026-03-24 17:39:48.398627,daniel@abovesec.com
+52,Teddy,AE,AVX,27,11,9,9,2026-03-24 16:42:16.114401,edward.mcnulty@appviewx.com
+57,Mario azzolini,ciso,Hospital Mae Dr deus,21,9,7,7,2026-03-24 18:41:03.470545,mario.azzolini@aesc.org.br
+51,evelyn,booth,Lead detectors,18,9,6,6,2026-03-24 00:11:26.843718,evelyngasca120510@gmail.com
+50,Tracey,Marketing,AppViewX,15,8,5,5,2026-03-23 23:10:45.436382,traceyoshea@appviewx.com
+54,Greg McCord,Founder and CISO,McCord Keystone Advisory,15,9,5,5,2026-03-24 18:26:37.820193,gmccord@mccordkeystoneadvisory.com
+55,Leon Greenberg,infosec admin,arylessence,15,9,5,5,2026-03-24 18:29:40.745058,leongreenberg@arylessence.com
+60,nic,analyst,Bhhc,12,7,4,4,2026-03-24 18:59:59.757719,naffinito@bhhc.com
+56,Kjersti Johnson,SVP,We Communications,9,9,3,3,2026-03-24 18:32:08.727964,kjeratijwecommunicAtions.com
+59,Alejandro,it managee,techint,6,8,2,2,2026-03-24 18:57:54.31213,afrontera@techin.com

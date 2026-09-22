@@ -36,9 +36,14 @@ minimumReleaseAgeExclude:
 
 packages:
   - artifacts/*
+  - artifacts/games/*
   - lib/*
   - lib/integrations/*
   - scripts
+  - artifacts/citrus-landing/game/AI-versionBB2-5/AI-versionBB2-5
+  - artifacts/citrus-landing/game/Cybergame/artifacts/gesturesec-runner
+  - artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game
+  - artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth
 
 catalog:
   '@replit/vite-plugin-cartographer': ^0.5.21

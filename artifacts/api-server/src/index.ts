@@ -1,5 +1,7 @@
 import app from "./app";
+import { ensureDefaultGames } from "./lib/catalog-bootstrap";
 import { logger } from "./lib/logger";
+import { resumePendingVideoJobs } from "./lib/generations";
 
 const rawPort = process.env["PORT"];
 
@@ -15,6 +17,8 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
+await ensureDefaultGames();
+
 app.listen(port, (err) => {
   if (err) {
     logger.error({ err }, "Error listening on port");
@@ -22,4 +26,5 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
+  void resumePendingVideoJobs();
 });
