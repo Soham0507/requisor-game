@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 670" role="img" aria-labelledby="title desc">
+  <title id="title">Activate analytics dashboard illustration</title>
+  <desc id="desc">Sample charts for participation over an event day, peak play times, and activity across three event days. This is illustrative data.</desc>
+  <defs>
+    <linearGradient id="panel" x2="1" y2="1">
+      <stop stop-color="#1e2337"/>
+      <stop offset="1" stop-color="#111625"/>
+    </linearGradient>
+    <linearGradient id="line" x2="1" y2="0">
+      <stop stop-color="#22d3ee"/>
+      <stop offset=".52" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="area" x2="0" y2="1">
+      <stop stop-color="#a855f7" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#a855f7" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bar" x2="0" y2="1">
+      <stop stop-color="#f97316"/>
+      <stop offset="1" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="670" rx="24" fill="#0c101d"/>
+  <rect x="1" y="1" width="898" height="668" rx="23" fill="none" stroke="#40465e"/>
+  <circle cx="39" cy="36" r="5" fill="#f97316"/>
+  <circle cx="58" cy="36" r="5" fill="#ec4899"/>
+  <circle cx="77" cy="36" r="5" fill="#a855f7"/>
+  <text x="34" y="89" fill="#fff" font-size="25" font-family="Arial,sans-serif" font-weight="700">Activation overview</text>
+  <text x="34" y="114" fill="#aab1c5" font-size="14" font-family="Arial,sans-serif">Illustrative view · sample event data</text>
+  <rect x="686" y="71" width="177" height="34" rx="17" fill="#1d2f34" stroke="#297369"/>
+  <circle cx="703" cy="88" r="5" fill="#61e2bd"/>
+  <text x="718" y="93" fill="#c1f8e6" font-size="12" font-family="Arial,sans-serif">Example dashboard</text>
+
+  <rect x="34" y="143" width="258" height="110" rx="16" fill="url(#panel)" stroke="#353b55"/>
+  <text x="55" y="173" fill="#adb5ca" font-size="14" font-family="Arial,sans-serif">TOTAL PLAYERS</text>
+  <text x="55" y="218" fill="#fff" font-size="37" font-family="Arial,sans-serif" font-weight="700">248</text>
+  <text x="211" y="217" fill="#72e5c2" font-size="13" font-family="Arial,sans-serif">sample</text>
+  <rect x="321" y="143" width="258" height="110" rx="16" fill="url(#panel)" stroke="#353b55"/>
+  <text x="342" y="173" fill="#adb5ca" font-size="14" font-family="Arial,sans-serif">GAMES PLAYED</text>
+  <text x="342" y="218" fill="#fff" font-size="37" font-family="Arial,sans-serif" font-weight="700">391</text>
+  <text x="498" y="217" fill="#72e5c2" font-size="13" font-family="Arial,sans-serif">sample</text>
+  <rect x="608" y="143" width="255" height="110" rx="16" fill="url(#panel)" stroke="#353b55"/>
+  <text x="629" y="173" fill="#adb5ca" font-size="14" font-family="Arial,sans-serif">TOP SCORE</text>
+  <text x="629" y="218" fill="#fff" font-size="37" font-family="Arial,sans-serif" font-weight="700">1,820</text>
+  <text x="795" y="217" fill="#72e5c2" font-size="13" font-family="Arial,sans-serif">sample</text>
+
+  <rect x="34" y="275" width="529" height="286" rx="16" fill="url(#panel)" stroke="#353b55"/>
+  <text x="56" y="310" fill="#fff" font-size="18" font-family="Arial,sans-serif" font-weight="700">Participation through the day</text>
+  <text x="56" y="332" fill="#adb5ca" font-size="12" font-family="Arial,sans-serif">Know when your audience shows up</text>
+  <g stroke="#343a50" stroke-width="1">
+    <path d="M62 372H536M62 419H536M62 466H536M62 513H536"/>
+  </g>
+  <path d="M66 488 C103 484 122 476 160 459 S222 429 257 436 S326 386 363 400 S414 350 449 368 S499 344 533 355 L533 513 L66 513 Z" fill="url(#area)"/>
+  <path d="M66 488 C103 484 122 476 160 459 S222 429 257 436 S326 386 363 400 S414 350 449 368 S499 344 533 355" fill="none" stroke="url(#line)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="449" cy="368" r="7" fill="#ec4899" stroke="#fff" stroke-width="2"/>
+  <g fill="#aab1c5" font-size="11" font-family="Arial,sans-serif">
+    <text x="62" y="540">9 AM</text><text x="201" y="540">11 AM</text><text x="344" y="540">1 PM</text><text x="483" y="540">3 PM</text>
+  </g>
+
+  <rect x="585" y="275" width="278" height="286" rx="16" fill="url(#panel)" stroke="#353b55"/>
+  <text x="607" y="310" fill="#fff" font-size="18" font-family="Arial,sans-serif" font-weight="700">Daily activity</text>
+  <text x="607" y="332" fill="#adb5ca" font-size="12" font-family="Arial,sans-serif">Compare event days</text>
+  <path d="M612 513H837" stroke="#454b60"/>
+  <rect x="639" y="412" width="40" height="101" rx="6" fill="url(#bar)" opacity=".65"/>
+  <rect x="707" y="372" width="40" height="141" rx="6" fill="url(#bar)" opacity=".82"/>
+  <rect x="775" y="351" width="40" height="162" rx="6" fill="url(#bar)"/>
+  <g fill="#aab1c5" font-size="12" font-family="Arial,sans-serif">
+    <text x="638" y="538">Day 1</text><text x="706" y="538">Day 2</text><text x="774" y="538">Day 3</text>
+  </g>
+  <path d="M34 593H863" stroke="#31394e"/>
+  <text x="35" y="621" fill="#8f9cb5" font-size="13" font-family="Arial,sans-serif">Audience roles  ·  Companies  ·  Gameplay performance</text>
+  <text x="35" y="644" fill="#70dce8" font-size="12" font-family="Arial,sans-serif">SAMPLE DATA — NOT LIVE CUSTOMER RESULTS</text>
+</svg>

@@ -524,7 +524,7 @@ export default function Home() {
       <section className="suggest" id="suggest">
         <div className="wrap">
           <div className="suggest-box rv">
-            <h2>Tell us what games and interactives you’d like us to build next.</h2>
+            <h2>Tell us what games and interactives you’d like us to build or modify for you.</h2>
             <p>
               Share the game or interactive experience you want to bring to an event, booth, or campaign. We’ll
               follow up by email to explore the idea with you.
@@ -685,31 +685,89 @@ export default function Home() {
       <section className="pricing" id="pricing">
         <div className="wrap">
           <div className="sec-head rv">
-            <h2>Suggested pricing.</h2>
-            <p>Flexible options for a single activation or an ongoing library of branded experiences.</p>
+            <h2>Simple pricing. Bigger savings the more you activate.</h2>
+            <p>Buy games one at a time, or subscribe and pay less for every game you deploy.</p>
           </div>
-          <div className="pricing-table-wrap rv">
-            <table className="pricing-table">
-              <thead>
-                <tr>
-                  <th>Standard Game Options</th>
-                  <th>Suggested Retail <small>Published price</small></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr><td>Game/Activation</td><td><strong>$13,000</strong></td></tr>
-                <tr><td>Annual Subscription</td><td><strong>$7,500</strong><small>One seat</small></td></tr>
-                <tr><td>Game/Activation w/Subscription</td><td><strong>$10,000</strong></td></tr>
-                <tr className="pricing-example"><td colSpan={2}>Example: total spend on 5 games</td></tr>
-                <tr><td>w/o Subscription</td><td><strong>$65,000</strong></td></tr>
-                <tr className="pricing-savings"><td>w/Subscription</td><td><strong>$57,500</strong><small>13% Savings</small></td></tr>
-              </tbody>
-            </table>
+          <div className="pricing-options rv">
+            <article className="pricing-option">
+              <span className="pricing-eyebrow">01 / Flexible</span>
+              <h3>Pay per game</h3>
+              <p className="pricing-amount">$13,000 <span>per game / activation</span></p>
+              <p>Branded, deployed, with lead capture and interaction metrics included.</p>
+              <Link className="btn" href="/games">Activate now</Link>
+            </article>
+            <article className="pricing-option pricing-option-featured">
+              <span className="pricing-eyebrow">02 / More ways to save</span>
+              <h3>Annual Subscription</h3>
+              <p className="pricing-amount">$7,500 <span>per year, per seat</span></p>
+              <p>Every game drops to $10,000, saving $3,000 per game, plus:</p>
+              <ul>
+                <li>Branded gameplay videos for pitches and proposals</li>
+                <li>Real-time dashboards for every deployed game</li>
+                <li>UX optimization driven by usage data across the whole platform</li>
+                <li>Extended game deployments</li>
+                <li>Multi-deployment discounts</li>
+                <li>Multi-seat discounts</li>
+                <li>Credit for past purchases: $500 per game bought before subscribing, applied across your next two game purchases</li>
+              </ul>
+              <a className="btn" href="mailto:support@requisor.io?subject=Activate%20subscription%20inquiry">Subscribe now</a>
+            </article>
           </div>
-          <p className="pricing-note rv">
-            $500 credit per game is retroactively applied to games purchased prior to the subscription; credit is
-            applied across the next two games purchased.
-          </p>
+          <div className="pricing-math rv">
+            <div>
+              <span className="pricing-eyebrow">The math</span>
+              <h3>The subscription pays for itself by your third game.</h3>
+              <p>Five games with a subscription saves $7,500, before multi-deployment discounts and past-purchase credits.</p>
+            </div>
+            <div className="pricing-table-wrap">
+              <table className="pricing-table">
+                <thead>
+                  <tr><th scope="col">Games</th><th scope="col">Without subscription</th><th scope="col">With subscription</th></tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">1 game</th><td>$13,000</td><td>$17,500</td></tr>
+                  <tr><th scope="row">3 games</th><td>$39,000</td><td>$37,500</td></tr>
+                  <tr><th scope="row">5 games</th><td>$65,000</td><td className="pricing-best">$57,500</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p className="pricing-note rv">The $7,500 subscription cost is included in the “with subscription” totals. A $500 credit is applied for each game purchased before subscribing, across your next two game purchases.</p>
+        </div>
+      </section>
+
+      <section className="analytics" id="analytics">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>See exactly who played, when, and how.</h2>
+            <p>Every game you deploy comes with a live dashboard. Watch engagement build in real time and leave the event with data, not guesses.</p>
+          </div>
+          <div className="analytics-feature rv">
+            <figure className="analytics-visual">
+              <img
+                src="/images/analytics-preview.svg"
+                alt="Illustrative dashboard image with sample participation trend, peak times, and activity by event day; not live customer data"
+                loading="lazy"
+              />
+              <figcaption>Illustrative dashboard preview · Sample data, not live customer results</figcaption>
+            </figure>
+            <div className="analytics-copy">
+              <span className="pricing-eyebrow">What you see</span>
+              <ul>
+                <li><strong>Total users and top scores.</strong> Know how many people played and who's winning, at a glance.</li>
+                <li><strong>Peak times.</strong> See when traffic spikes so you can staff the booth when it matters.</li>
+                <li><strong>Attendee roles.</strong> Find out whether you're reaching VPs, technologists, or students.</li>
+                <li><strong>Companies.</strong> See which organizations stopped by, so your team knows who to follow up with first.</li>
+                <li><strong>Daily activity.</strong> Compare engagement across event days.</li>
+                <li><strong>Gameplay performance.</strong> Track shots made, shots taken, and scores by player to see how the game is being played.</li>
+              </ul>
+            </div>
+          </div>
+          <div className="analytics-outcome rv">
+            <h3>Built for the people who need to prove it worked.</h3>
+            <p>Walk out of the show with a qualified lead list and the numbers to justify the spend. Show real engagement data, not just photos of a busy booth. Data also drives game optimization for future deployments.</p>
+            <p>Included with every subscription. Real-time dashboards cover all your deployed games in one place.</p>
+          </div>
         </div>
       </section>
 

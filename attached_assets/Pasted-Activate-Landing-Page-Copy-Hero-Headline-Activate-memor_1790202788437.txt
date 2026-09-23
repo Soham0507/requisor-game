@@ -1,0 +1,134 @@
+Activate Landing Page Copy:
+Hero
+Headline: Activate memorable experiences instantly.
+Tagline: Turnkey, branded interactive experiences deployed in real time, built to boost engagement and capture leads.
+CTA: Activate Now
+
+Intro / value statement
+Custom interactive experiences used to mean long timelines and bloated budgets. Activate skips both. Pick a game, brand it, and go live. Attendees get something worth stopping for, and you get the lead data and engagement metrics to prove it worked, at a fraction of the cost of a custom build.
+
+Four-point benefit strip
+Live fast. Games are already built. Branding and deployment happen in real time, not over a production schedule.
+Spend less. A custom-feeling experience without the custom-build price tag.
+Prove it. Every play captures lead data and interaction metrics, so you walk out of the show with results, not just foot traffic.
+Customize it. Build upon this platform. Incorporate more branded elements directly into the game play, reskin the entire UI or even modify the interactive experience.
+
+Who it's for
+Exhibit & Experiential Agencies
+Give your clients an interactive centerpiece without adding a dev project to your build schedule. Activate drops into your booth designs, deploys on your timeline, and makes you look like the team that thought of everything. Add interactivity to any proposal without adding risk or overhead.
+
+Marketing Agencies
+Stop telling clients an interactive activation is out of budget. Activate lets you pitch, brand, and launch engaging experiences quickly, with lead capture and reporting built in, so you can show clients real numbers after the event.
+
+Brands
+Your booth competes with hundreds of others. Activate gives attendees a reason to walk up, experience your brand in an interactive way, and share their details willingly. Your team gets qualified leads and clear engagement data without waiting on long development cycles.
+
+How it works
+Choose your game. Browse the library and pick the experience that fits your event and audience.
+Brand it. Your logos, colors, and messaging go in, so it feels built for you.
+Pitch it. Record the live game play with branding applied and close more business.
+Activate. Go live in real time and start engaging attendees immediately.
+Capture and measure. Collect lead data and track interaction metrics as people play.
+
+Why Activate
+Turnkey. No custom development, no long lead times, no surprises.
+Branded. Every experience carries your identity, not ours.
+Lead-focused. Player registration and data capture are part of the game flow, not an afterthought.
+Measurable. Interaction metrics show what worked so you can justify the spend and improve the next event.
+Affordable. Custom-feeling results at a fraction of custom-build pricing.
+
+Game Descriptions
+Basketball Game
+Fast, gesture-controlled hoops that attendees keep coming back to beat their score. A floor-visible leaderboard drives repeat plays, every player registers so you capture the lead, and play metrics show your results.
+
+Cyber Runner
+ A cyber-themed endless runner: dodge phishing attacks, block malware, stay ahead of the breach. It turns your product story into gameplay, captures a lead on every run, and gives you engagement data on how visitors play.
+
+Soccer Game
+ The same proven engine as our basketball game, reskinned as a fast-paced soccer match. Get a second format for a broader audience, with the same lead capture and metrics, delivered quickly.
+
+Lazer Shooter
+ An instant-engagement arcade shooter that pulls a crowd from across the hall. Short rounds keep the line moving, so more visitors play, more leads get captured, and score data shows the traffic it drove to your booth.
+
+Coming Soon.
+Golf Challenge
+ Integrate your brand into the game itself. A premium timed putting challenge that's quick to learn and competitive from the first shot. A live score race keeps spectators watching, which gives your team more time to talk, while registration captures leads and score data tracks participation.
+
+Jeopardy
+ A branded trivia board for teams, with themed categories and fast audience participation. It turns product knowledge into a live leaderboard moment, captures team leads up front, and shows you which topics resonate.
+
+Add pricing after games
+Suggested Pricing
+
+
+Remove from current site
+A brand message can be seen. A participatory moment gets remembered, replayed, and shared.
+We help agency teams turn a brief into an experience people understand in seconds and want to try again. The brand is built into the play, the participation creates a natural reason to share, and the format can extend across event screens, personal devices, and campaign touchpoints.
+
+Don't take our word for it.
+
+For experiential & advertising agencies
+For brands & production partners
+
+Bring us the brief. 
+Move What should your audience get to do? to right after the games. And retitle it. Tell us what games and interactives you’d like us to build or modify for you?
+
+On this page https://activate.requisor.io/games remove boat booth game customization unless you can get it working.
+
+In the upper right of the site the start a project link should go to  https://activate.requisor.io/games 
+
+Pricing
+Headline: Simple pricing. Bigger savings the more you activate.
+Subhead: Buy games one at a time, or subscribe and pay less for every game you deploy.
+Pay per game
+$13,000 per game/activation
+ Branded, deployed, with lead capture and interaction metrics included.
+ Activate Now
+Annual Subscription
+$7,500 per year, per seat
+ Every game drops to $10,000, saving $3,000 per game, plus:
+Subscription Benefits:
+Branded gameplay videos for pitches and proposals
+Real-time dashboards for every deployed game
+UX optimization driven by usage data across the whole platform
+Extended game deployments
+Multi-deployment discounts
+Multi-seat discounts
+Credit for past purchases: $500 per game you bought before subscribing, applied across your next two game purchases
+Subscribe Now
+The math
+The subscription pays for itself by your third game.
+
+
+Without subscription
+With subscription
+1 game
+$13,000
+$17,500
+3 games
+$39,000
+$37,500
+5 games
+$65,000
+$57,500
+
+Five games with a subscription saves $7,500, before multi-deployment discounts and past-purchase credits.
+The subscription cost of $7,500 is included in the "with subscription" totals.
+
+Footnote: A $500 credit is applied for each game purchased before subscribing, across your next two game purchases.
+
+Interactive Analytics
+Headline: See exactly who played, when, and how.
+Subhead: Every game you deploy comes with a live dashboard. Watch engagement build in real time and leave the event with data, not guesses.
+What you see
+Total users and top scores. Know how many people played and who's winning, at a glance.
+Peak times. See when traffic spikes so you can staff the booth when it matters.
+Attendee roles. Find out whether you're reaching VPs, technologists, or students.
+Companies. See which organizations stopped by, so your team knows who to follow up with first.
+Daily activity. Compare engagement across event days.
+Gameplay performance. Track shots made, shots taken, and scores by player to see how the game is being played.
+Built for the people who need to prove it worked
+Walk out of the show with a qualified lead list and the numbers to justify the spend.
+Show real engagement data, not just photos of a busy booth.
+Data also drives game optimization for future deployments.
+Included with every subscription. Real-time dashboards cover all your deployed games in one place.
