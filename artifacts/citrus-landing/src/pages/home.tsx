@@ -694,16 +694,15 @@ export default function Home() {
                 <tr>
                   <th>Standard Game Options</th>
                   <th>Suggested Retail <small>Published price</small></th>
-                  <th>Channel Partners <small>Discounted price</small></th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>Game/Activation</td><td><strong>$13,000</strong></td><td><strong>$7,500</strong></td></tr>
-                <tr><td>Annual Subscription</td><td><strong>$7,500</strong><small>One seat</small></td><td><strong>$5,000</strong><small>One seat</small></td></tr>
-                <tr><td>Game/Activation w/Subscription</td><td><strong>$10,000</strong></td><td><strong>$5,500</strong></td></tr>
-                <tr className="pricing-example"><td colSpan={3}>Example: total spend on 5 games</td></tr>
-                <tr><td>w/o Subscription</td><td><strong>$65,000</strong></td><td><strong>$37,500</strong></td></tr>
-                <tr className="pricing-savings"><td>w/Subscription</td><td><strong>$57,500</strong><small>13% Savings</small></td><td><strong>$32,500</strong><small>15% Savings</small></td></tr>
+                <tr><td>Game/Activation</td><td><strong>$13,000</strong></td></tr>
+                <tr><td>Annual Subscription</td><td><strong>$7,500</strong><small>One seat</small></td></tr>
+                <tr><td>Game/Activation w/Subscription</td><td><strong>$10,000</strong></td></tr>
+                <tr className="pricing-example"><td colSpan={2}>Example: total spend on 5 games</td></tr>
+                <tr><td>w/o Subscription</td><td><strong>$65,000</strong></td></tr>
+                <tr className="pricing-savings"><td>w/Subscription</td><td><strong>$57,500</strong><small>13% Savings</small></td></tr>
               </tbody>
             </table>
           </div>
