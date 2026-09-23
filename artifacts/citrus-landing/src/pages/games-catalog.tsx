@@ -45,7 +45,11 @@ export default function GamesCatalog() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {games?.map((game) => {
-            const preview = GAME_PREVIEWS[game.slug];
+            const preview =
+              GAME_PREVIEWS[game.slug] ??
+              (game.thumbnailUrl
+                ? { type: "image" as const, src: game.thumbnailUrl }
+                : undefined);
             return (
               <Card key={game.id} className="flex flex-col bg-card border-border overflow-hidden">
                 {preview && (
