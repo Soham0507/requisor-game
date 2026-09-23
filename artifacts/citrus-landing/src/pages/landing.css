@@ -372,9 +372,54 @@ html{scroll-behavior:smooth}
 /* ---------- partners ---------- */
 .lp .partners {padding:0 0 130px}
 .lp .split {display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.lp .audience-grid {grid-template-columns:repeat(3,minmax(0,1fr))}
 .lp .side {border:1px solid var(--line);border-radius:18px;padding:38px 34px;background:linear-gradient(180deg,rgba(var(--fg-rgb),.03),transparent)}
 .lp .side h3 {font-family:var(--font-head);font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:12px}
 .lp .side p {color:var(--fog);font-weight:400;font-size:15px}
+
+/* ---------- process ---------- */
+.lp .process-list {
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;
+  margin:0;padding:0;list-style:none;background:var(--line);
+  border:1px solid var(--line);border-radius:18px;overflow:hidden;
+}
+.lp .process-step {display:flex;flex-direction:column;gap:22px;padding:30px 24px;background:var(--deep)}
+.lp .process-step>span {
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--cyan);
+}
+.lp .process-step h3 {font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:8px}
+.lp .process-step p {color:var(--fog);font-size:14px;font-weight:400}
+
+/* ---------- why ---------- */
+.lp .why-grid {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.lp .why-card {
+  padding:26px 22px;border-radius:16px;border:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(var(--fg-rgb),.04),transparent);
+}
+.lp .why-card h3 {font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:10px}
+.lp .why-card p {color:var(--fog);font-size:14px;font-weight:400}
+
+/* ---------- pricing ---------- */
+.lp .pricing {padding:90px 0 30px}
+.lp .pricing-table-wrap {overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--deep)}
+.lp .pricing-table {width:100%;border-collapse:collapse;min-width:700px}
+.lp .pricing-table th,
+.lp .pricing-table td {padding:18px 22px;text-align:left;border-bottom:1px solid var(--line)}
+.lp .pricing-table th {
+  font-family:var(--font-head);font-size:14px;background:rgba(var(--fg-rgb),.06);color:var(--white);
+}
+.lp .pricing-table th:first-child,
+.lp .pricing-table td:first-child {width:40%}
+.lp .pricing-table strong {display:block;font-family:var(--font-head);font-size:20px;color:var(--white)}
+.lp .pricing-table small {display:block;margin-top:3px;color:var(--fog);font-family:var(--font-mono);font-size:10px;font-weight:400}
+.lp .pricing-table .pricing-example td {
+  padding:10px 22px;background:rgba(34,211,238,.10);color:var(--cyan);
+  font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+}
+.lp .pricing-table .pricing-savings strong,
+.lp .pricing-table .pricing-savings small {color:#5CFF9D}
+.lp .pricing-table tbody tr:last-child td {border-bottom:0}
+.lp .pricing-note {max-width:70ch;margin-top:14px;color:var(--fog);font-family:var(--font-mono);font-size:10px;font-weight:400}
 
 /* ---------- final ---------- */
 .lp .final {position:relative;padding:150px 0 130px;text-align:center;overflow:hidden}
@@ -442,6 +487,17 @@ html{scroll-behavior:smooth}
 }
 .lp .sform .snote.ok {color:#5CFF9D}
 @media(max-width:560px){.lp .sform .row2f{grid-template-columns:1fr}}
+@media(max-width:1000px){
+.lp .process-list {grid-template-columns:repeat(2,minmax(0,1fr))}
+.lp .why-grid {grid-template-columns:repeat(2,minmax(0,1fr))}
+.lp .audience-grid {grid-template-columns:1fr}
+}
+@media(max-width:620px){
+.lp .process-list,
+.lp .why-grid {grid-template-columns:1fr}
+.lp .process-step {flex-direction:row}
+.lp .pricing {padding-top:60px}
+}
 
 @media (prefers-reduced-motion:reduce){
 .lp *,

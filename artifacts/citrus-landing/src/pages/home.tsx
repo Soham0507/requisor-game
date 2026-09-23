@@ -262,9 +262,9 @@ export default function Home() {
                 <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
               </svg>
             </button>
-            <a className="btn" href="#start">
-              Start a project
-            </a>
+            <Link className="btn" href="/games">
+              Activate now
+            </Link>
           </div>
         </div>
       </nav>
@@ -284,20 +284,19 @@ export default function Home() {
         <div className="wrap hero-in">
           <div className="hero-copy">
             <div className="kicker rise d1">
-              <i></i>Branded games · Interactive installations · Live events
+              <i></i>Turnkey · Branded · Measurable
             </div>
             <h1 className="rise d2">
-              Turn brand stories into <span className="lit">experiences people join.</span>
+              Activate memorable <span className="lit">experiences instantly.</span>
             </h1>
             <p className="rise d3">
-              Activate partners with experiential and advertising agencies to create branded games, interactive
-              installations, and digital extensions that <b>draw an audience, make participation simple, and keep
-              the brand at the center of the experience.</b>
+              Turnkey, branded interactive experiences deployed in real time, built to <b>boost engagement and
+              capture leads.</b>
             </p>
             
             <div className="row rise d4">
-              <Link className="btn" href="/games">Explore activation formats</Link>
-              <a className="btn line" href="#demos">See live demos</a>
+              <Link className="btn" href="/games">Activate now</Link>
+              <a className="btn line" href="#work">See the games</a>
             </div>
             <div className="tags rise d4">
               <span className="tag">Basketball</span>
@@ -340,15 +339,13 @@ export default function Home() {
       <section className="manifesto">
         <div className="wrap">
           <p id="mani" ref={maniRef}>
-            <span>A</span> <span>brand</span> <span>message</span> <span>can</span> <span>be</span>{" "}
-            <span>seen.</span> <span>A</span> <span className="hot">participatory</span> <span>moment</span>{" "}
-            <span>gets</span> <span>remembered,</span> <span>replayed,</span> <span>and</span>{" "}
-            <span>shared.</span>
+            <span>Pick</span> <span>a</span> <span>game.</span> <span>Brand</span> <span>it.</span>{" "}
+            <span className="hot">Go</span> <span className="hot">live.</span>
           </p>
           <div className="foot rv">
-            We help agency teams turn a brief into an experience people understand in seconds and want to try again.
-            The brand is built into the play, the participation creates a natural reason to share, and the format can
-            extend across event screens, personal devices, and campaign touchpoints.
+            Custom interactive experiences used to mean long timelines and bloated budgets. Activate skips both.
+            Attendees get something worth stopping for, and you get the lead data and engagement metrics to prove it
+            worked — at a fraction of the cost of a custom build.
           </div>
         </div>
       </section>
@@ -356,11 +353,10 @@ export default function Home() {
       <section className="work" id="work">
         <div className="wrap">
           <div className="sec-head rv">
-            <h2>Proven formats, built around the brand.</h2>
+            <h2>Pick the experience that fits your audience.</h2>
             <p>
-              Start with a tested interaction, then shape the world, rules, visuals, and leaderboard around the
-              campaign idea. Agencies get a faster path from pitch to participation without settling for a generic
-              reskin.
+              Start with a proven game, then apply your logos, colors, messaging, and branded elements. Go live
+              quickly without taking on a full custom-development schedule.
             </p>
           </div>
 
@@ -369,10 +365,9 @@ export default function Home() {
               <div className="cat"><i style={{ background: "#FD3629" }}></i>AppViewX · Cybersecurity</div>
               <h3>Basketball Game</h3>
               <p className="story">
-                At cybersecurity exhibitions, <b>AppViewX</b> needed to capture attention fast. We built a
-                fast-paced, gesture-controlled basketball game optimized for booth interaction — easy to start,
-                highly replayable, and running live for <b>47 straight days</b> with a floor-visible leaderboard
-                driving repeat plays.
+                Fast, gesture-controlled hoops that attendees keep coming back to beat their score. A floor-visible
+                leaderboard drives repeat plays, every player registers so you capture the lead, and play metrics
+                show your results.
               </p>
               <div className="links"><a className="go" href="https://appviewx6.requisor.io/" target="_blank" rel="noopener">Play the demo →</a></div>
             </div>
@@ -390,9 +385,9 @@ export default function Home() {
               <div className="cat"><i style={{ background: "#FEC553" }}></i>Peak Technology · Endless runner</div>
               <h3>Cyber Runner</h3>
               <p className="story">
-                <b>Peak Technology</b> wanted a more immersive, theme-driven booth experience. We built a
-                cyber-themed endless runner inspired by digital threats — dodge phishing attacks, block malware,
-                stay one step ahead of the breach — giving Peak a strong thematic tie to their product story.
+                A cyber-themed endless runner: dodge phishing attacks, block malware, stay ahead of the breach. It
+                turns your product story into gameplay, captures a lead on every run, and gives you engagement data
+                on how visitors play.
               </p>
               <div className="links"><a className="go" href="https://cybersecurity.requisor.io/" target="_blank" rel="noopener">Play the demo →</a></div>
             </div>
@@ -410,9 +405,8 @@ export default function Home() {
               <div className="cat"><i style={{ background: "#FEC553" }}></i>Peak Technology · Reused engine</div>
               <h3>Soccer Game</h3>
               <p className="story">
-                Same core engine as our basketball game, reskinned into a fast-paced soccer match. Built to give{" "}
-                <b>Peak Technology</b> a second game format — a broader audience, faster delivery, and a consistent
-                experience across both builds.
+                The same proven engine as our basketball game, reskinned as a fast-paced soccer match. Get a second
+                format for a broader audience, with the same lead capture and metrics, delivered quickly.
               </p>
             </div>
             <div className="visual" data-tilt="">
@@ -429,9 +423,9 @@ export default function Home() {
               <div className="cat"><i style={{ background: "#FEC553" }}></i>Peak Technology · Reflex arcade</div>
               <h3>Lazer Shooter</h3>
               <p className="story">
-                A fast, instant-engagement arcade shooter built for physical environments — designed to pull a
-                crowd from across the hall and hand every visitor a reason to stop and try to beat the score in
-                front of them.
+                An instant-engagement arcade shooter that pulls a crowd from across the hall. Short rounds keep the
+                line moving, so more visitors play, more leads get captured, and score data shows the traffic it
+                drove to your booth.
               </p>
               <div className="links"><a className="go" href="https://ai.studio/apps/7168d6f7-e6cb-45a2-bd22-e6d113ceb891?fullscreenApplet=true" target="_blank" rel="noopener">Play the demo →</a></div>
             </div>
@@ -482,8 +476,9 @@ export default function Home() {
               </div>
               <h3>Golf Challenge</h3>
               <p className="story">
-                A premium timed putting challenge designed for branded activations — quick to understand, competitive
-                from the first shot, and built around a live score race that keeps spectators watching.
+                Integrate your brand into the game itself. A premium timed putting challenge that's quick to learn
+                and competitive from the first shot. A live score race keeps spectators watching, which gives your
+                team more time to talk, while registration captures leads and score data tracks participation.
               </p>
             </div>
             <div className="visual" data-tilt="">
@@ -512,8 +507,9 @@ export default function Home() {
               </div>
               <h3>Jeopardy</h3>
               <p className="story">
-                A branded trivia board built for teams, themed categories, and fast-paced audience participation —
-                designed to turn product knowledge into a memorable live leaderboard moment at your next activation.
+                A branded trivia board for teams, with themed categories and fast audience participation. It turns
+                product knowledge into a live leaderboard moment, captures team leads up front, and shows you which
+                topics resonate.
               </p>
             </div>
             <div className="visual" data-tilt="">
@@ -525,134 +521,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="anatomy">
-        <div className="wrap">
-          <div className="sec-head rv">
-            <h2>What makes an activation work.</h2>
-            <p>Every format is designed to attract attention, invite participation, express the brand, and create a measurable next step.</p>
-          </div>
-          <div className="pillars rv">
-            <div className="pillar">
-              <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" strokeWidth={1.6}>
-                  <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
-                  <circle cx="12" cy="12" r="3.4" />
-                </svg>
-              </div>
-              <h3>Immediate appeal</h3>
-              <p>A clear visual hook and simple premise give people a reason to stop, understand the experience, and join without a long explanation.</p>
-            </div>
-            <div className="pillar">
-              <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#EC4899" strokeWidth={1.6}>
-                  <path d="M8 12.5l2.6 2.6L16.5 9" />
-                  <circle cx="12" cy="12" r="9" />
-                </svg>
-              </div>
-              <h3>Active participation</h3>
-              <p>Guests play, compete, and create instead of watching from the edge. Repeatable challenges give them a reason to try again and bring others in.</p>
-            </div>
-            <div className="pillar">
-              <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth={1.6}>
-                  <circle cx="12" cy="8.5" r="3.5" />
-                  <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
-                </svg>
-              </div>
-              <h3>Brand integration</h3>
-              <p>The campaign idea shapes the environment, interaction, and reward so the brand feels essential to the experience rather than added afterward.</p>
-            </div>
-            <div className="pillar">
-              <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth={1.6}>
-                  <path d="M4 19V9M10 19V5M16 19v-8M22 19H2" />
-                </svg>
-              </div>
-              <h3>Useful outcomes</h3>
-              <p>Leaderboards, lead capture, and play data can connect audience participation to the goals agencies and brands need to report.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="demos" id="demos">
-        <div className="wrap">
-          <div className="sec-head rv">
-            <h2>Don't take our word for it.</h2>
-            <p>Two live, deployed games. Open them on your phone right now.</p>
-          </div>
-          <div className="demo-row rv">
-            <a className="demo" style={{ "--tint": "rgba(253,54,41,.22)" } as React.CSSProperties} href="https://appviewx6.requisor.io/" target="_blank" rel="noopener">
-              <span className="live"><i></i>Live now</span>
-              <h3>AppViewX Basketball</h3>
-              <p>The booth game, in the wild — built for a cybersecurity brand, live for 47 straight days.</p>
-              <span className="open">Open the experience →</span>
-            </a>
-            <a className="demo" style={{ "--tint": "rgba(23,207,161,.22)" } as React.CSSProperties} href="https://90sspacewar.requisor.io/" target="_blank" rel="noopener">
-              <span className="live"><i></i>Live now</span>
-              <h3>Retro Space Shooter</h3>
-              <p>Retro arcade shooting, controlled entirely by hand gesture — no touchscreen required.</p>
-              <span className="open">Open the experience →</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="craft">
-        <div className="wrap">
-          <div className="sec-head rv" style={{ marginBottom: 30 }}>
-            <h2 style={{ fontSize: "clamp(20px,2.6vw,28px)" }}>Flexible delivery across screens, venues, and campaigns.</h2>
-          </div>
-          <div className="craft-list rv">
-            {[
-              "Basketball", "Soccer", "Cyber Runner", "Lazer Shooter", "Retro Space Shooter", "Space Shooter",
-              "Gamification", "Curved LED walls", "65\"–85\" touchscreens", "iPad kiosks", "AR triggers",
-              "Real-time AI video", "Live leaderboards", "Lead capture & analytics", "Weeks, not quarters",
-            ].map((chip) => (
-              <span className="chip" key={chip}>{chip}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="partners">
-        <div className="wrap">
-          <div className="split rv">
-            <div className="side">
-              <h3>For experiential &amp; advertising agencies</h3>
-              <p>
-                Bring us the brief, audience, and campaign idea. Activate works alongside your team as the interactive
-                production partner — helping shape the concept, build the branded experience, and prepare it for the
-                screens and venue in your plan.
-              </p>
-            </div>
-            <div className="side">
-              <h3>For brands &amp; production partners</h3>
-              <p>
-                Start with the audience action you want: play, compete, create, or share. We turn that goal into an
-                approachable branded format that can live at an event and continue on personal devices afterward.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="final" id="start">
-        <div className="wrap">
-          <h2 className="rv">Bring us the brief. We’ll build the reason people stop.</h2>
-          <p className="rv">
-            Tell us about the brand, audience, venue, and moment you want to create. We’ll help turn it into an
-            interactive experience people can understand quickly, enjoy together, and remember afterward.
-          </p>
-          <a className="btn rv" href="https://requisor.io" target="_blank" rel="noopener">Start the conversation</a>
-        </div>
-      </section>
-
       <section className="suggest" id="suggest">
         <div className="wrap">
           <div className="suggest-box rv">
-            <h2>What should your audience get to do?</h2>
-            <p>Share the interaction you imagine for the next event or campaign. We’ll follow up by email to explore the idea with you.</p>
+            <h2>Tell us what games and interactives you’d like us to build next.</h2>
+            <p>
+              Share the game or interactive experience you want to bring to an event, booth, or campaign. We’ll
+              follow up by email to explore the idea with you.
+            </p>
             <form className="sform" onSubmit={submitIdea}>
               <div className="row2f">
                 <div>
@@ -665,13 +541,187 @@ export default function Home() {
                 </div>
               </div>
               <div>
-                <label htmlFor="idea-text">Your activation idea</label>
+                <label htmlFor="idea-text">Your game or interactive idea</label>
                 <textarea ref={ideaRef} id="idea-text" name="idea" placeholder="e.g. a branded team challenge with a live leaderboard for an expo floor..." required></textarea>
               </div>
-              <button type="submit" className="sbtn">Share the brief →</button>
+              <button type="submit" className="sbtn">Share your idea →</button>
               <div className={"snote" + (note.ok ? " ok" : "")} role="status" aria-live="polite">{note.text}</div>
             </form>
           </div>
+        </div>
+      </section>
+
+      <section className="anatomy">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>Built to move at event speed.</h2>
+            <p>Launch a custom-feeling experience quickly, capture every interaction, and leave the show with results.</p>
+          </div>
+          <div className="pillars rv">
+            <div className="pillar">
+              <div className="glyph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" strokeWidth={1.6}>
+                  <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+                  <circle cx="12" cy="12" r="3.4" />
+                </svg>
+              </div>
+              <h3>Live fast.</h3>
+              <p>Games are already built. Branding and deployment happen in real time, not over a production schedule.</p>
+            </div>
+            <div className="pillar">
+              <div className="glyph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#EC4899" strokeWidth={1.6}>
+                  <path d="M8 12.5l2.6 2.6L16.5 9" />
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              </div>
+              <h3>Spend less.</h3>
+              <p>A custom-feeling experience without the custom-build price tag.</p>
+            </div>
+            <div className="pillar">
+              <div className="glyph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth={1.6}>
+                  <circle cx="12" cy="8.5" r="3.5" />
+                  <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
+                </svg>
+              </div>
+              <h3>Prove it.</h3>
+              <p>Every play captures lead data and interaction metrics, so you walk out of the show with results, not just foot traffic.</p>
+            </div>
+            <div className="pillar">
+              <div className="glyph">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth={1.6}>
+                  <path d="M4 19V9M10 19V5M16 19v-8M22 19H2" />
+                </svg>
+              </div>
+              <h3>Customize it.</h3>
+              <p>Build upon the platform. Add branded elements directly into gameplay, reskin the entire UI, or modify the interactive experience.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="partners">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>Who it’s for.</h2>
+            <p>Activate gives agencies and brands a faster way to put meaningful interactivity at the center of an event.</p>
+          </div>
+          <div className="split audience-grid rv">
+            <div className="side">
+              <h3>Exhibit &amp; Experiential Agencies</h3>
+              <p>
+                Give your clients an interactive centerpiece without adding a dev project to your build schedule.
+                Activate drops into your booth designs, deploys on your timeline, and makes you look like the team
+                that thought of everything. Add interactivity to any proposal without adding risk or overhead.
+              </p>
+            </div>
+            <div className="side">
+              <h3>Marketing Agencies</h3>
+              <p>
+                Stop telling clients an interactive activation is out of budget. Activate lets you pitch, brand, and
+                launch engaging experiences quickly, with lead capture and reporting built in, so you can show
+                clients real numbers after the event.
+              </p>
+            </div>
+            <div className="side">
+              <h3>Brands</h3>
+              <p>
+                Your booth competes with hundreds of others. Activate gives attendees a reason to walk up, experience
+                your brand in an interactive way, and share their details willingly. Your team gets qualified leads
+                and clear engagement data without waiting on long development cycles.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="craft">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>How it works.</h2>
+            <p>From choosing a game to measuring the results, Activate keeps every step direct and fast.</p>
+          </div>
+          <ol className="process-list rv">
+            {[
+              ["Choose your game.", "Browse the library and pick the experience that fits your event and audience."],
+              ["Brand it.", "Your logos, colors, and messaging go in, so it feels built for you."],
+              ["Pitch it.", "Record the live gameplay with branding applied and close more business."],
+              ["Activate.", "Go live in real time and start engaging attendees immediately."],
+              ["Capture and measure.", "Collect lead data and track interaction metrics as people play."],
+            ].map(([title, description], index) => (
+              <li className="process-step" key={title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div><h3>{title}</h3><p>{description}</p></div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="demos" id="demos">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>Why Activate.</h2>
+            <p>No long lead times, no generic branding, and no guessing whether the experience worked.</p>
+          </div>
+          <div className="why-grid rv">
+            {[
+              ["Turnkey.", "No custom development, no long lead times, no surprises."],
+              ["Branded.", "Every experience carries your identity, not ours."],
+              ["Lead-focused.", "Player registration and data capture are part of the game flow, not an afterthought."],
+              ["Measurable.", "Interaction metrics show what worked so you can justify the spend and improve the next event."],
+              ["Affordable.", "Custom-feeling results at a fraction of custom-build pricing."],
+            ].map(([title, description]) => (
+              <div className="why-card" key={title}>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="pricing" id="pricing">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>Suggested pricing.</h2>
+            <p>Flexible options for a single activation or an ongoing library of branded experiences.</p>
+          </div>
+          <div className="pricing-table-wrap rv">
+            <table className="pricing-table">
+              <thead>
+                <tr>
+                  <th>Standard Game Options</th>
+                  <th>Suggested Retail <small>Published price</small></th>
+                  <th>Channel Partners <small>Discounted price</small></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Game/Activation</td><td><strong>$13,000</strong></td><td><strong>$7,500</strong></td></tr>
+                <tr><td>Annual Subscription</td><td><strong>$7,500</strong><small>One seat</small></td><td><strong>$5,000</strong><small>One seat</small></td></tr>
+                <tr><td>Game/Activation w/Subscription</td><td><strong>$10,000</strong></td><td><strong>$5,500</strong></td></tr>
+                <tr className="pricing-example"><td colSpan={3}>Example: total spend on 5 games</td></tr>
+                <tr><td>w/o Subscription</td><td><strong>$65,000</strong></td><td><strong>$37,500</strong></td></tr>
+                <tr className="pricing-savings"><td>w/Subscription</td><td><strong>$57,500</strong><small>13% Savings</small></td><td><strong>$32,500</strong><small>15% Savings</small></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="pricing-note rv">
+            $500 credit per game is retroactively applied to games purchased prior to the subscription; credit is
+            applied across the next two games purchased.
+          </p>
+        </div>
+      </section>
+
+      <section className="final" id="start">
+        <div className="wrap">
+          <h2 className="rv">Ready to activate?</h2>
+          <p className="rv">
+            Choose a game, apply your brand, and launch an experience that captures attention, leads, and measurable
+            engagement.
+          </p>
+          <Link className="btn rv" href="/games">Activate now</Link>
         </div>
       </section>
 

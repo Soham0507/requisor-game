@@ -50,6 +50,7 @@ export default function GamesCatalog() {
               (game.thumbnailUrl
                 ? { type: "image" as const, src: game.thumbnailUrl }
                 : undefined);
+            const customizationAvailable = game.brandSupport === "full" && game.slug !== "boat-booth";
             return (
               <Card key={game.id} className="flex flex-col bg-card border-border overflow-hidden">
                 {preview && (
@@ -74,8 +75,10 @@ export default function GamesCatalog() {
                 <div className="p-6 flex flex-col flex-grow">
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="text-xl font-bold text-foreground">{game.name}</h3>
-                    {game.brandSupport === "full" ? (
+                    {customizationAvailable ? (
                       <Badge className="bg-primary/20 text-primary border-primary/40">Live re-skin</Badge>
+                    ) : game.slug === "boat-booth" ? (
+                      <Badge variant="secondary">Preview only</Badge>
                     ) : (
                       <Badge variant="secondary">Coming soon</Badge>
                     )}
@@ -88,11 +91,11 @@ export default function GamesCatalog() {
                     </p>
                   )}
                   <div className="flex justify-end">
-                    {game.brandSupport === "full" ? (
+                    {customizationAvailable ? (
                       <Link href={`/customize/${game.slug}`}>
                         <Button data-testid={`button-customize-${game.slug}`}>Customize</Button>
                       </Link>
-                    ) : (
+                    ) : game.slug === "boat-booth" ? null : (
                       <Button disabled data-testid={`button-customize-${game.slug}`}>Customize</Button>
                     )}
                   </div>
