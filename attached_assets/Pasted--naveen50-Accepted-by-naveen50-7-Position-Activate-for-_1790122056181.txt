@@ -1,0 +1,28 @@
+
+naveen50
+Accepted by naveen50
+#7 - Position Activate for agencies
+What & Why
+Refine the Activate landing page so experiential marketing agencies and ad agencies immediately understand RequisorAI as a partner for creating high-impact branded activations—not just a library of booth games. The messaging should take inspiration from Elevation3D's clear experiential-design positioning while using original language grounded in Activate's actual capabilities.
+
+Done looks like
+The hero clearly speaks to agencies that need to showcase a brand, attract an audience, and create memorable participation.
+The page presents Activate as an experiential design and production partner for branded games, interactive installations, live events, and digital extensions.
+Supporting copy explains the agency value: fast-to-understand experiences, strong brand integration, repeat engagement, shareability, and flexible delivery across screens and venues.
+Work, capability, partner, and final-call-to-action sections use consistent agency-facing language and give visitors a clear reason to start a conversation.
+Copy remains accurate to the current product and does not invent clients, capabilities, performance claims, or case-study results.
+Existing Activate branding, game catalog requirements, Coming soon labels/order, and social links remain unchanged.
+Out of scope
+Visual redesign, layout changes, animation changes, or new media assets.
+Changes to game behavior, Customize flows, embedded previews, or production asset paths.
+Changes to the existing catalog, game availability, Coming soon ordering, or social destinations.
+Creating the separate stakeholder pitch deck covered by Task #4 (Present Requisor.AI clearly to partners and stakeholders).
+Steps
+Audit the current message hierarchy -- Identify the homepage copy that should be revised first so the agency audience is clear within the hero and reinforced through the rest of the page.
+Rewrite the positioning -- Update the hero, manifesto, work introduction, capabilities, partner framing, and CTA language around branded experiential work, audience participation, and memorable brand moments.
+Keep proof grounded -- Retain or sharpen existing examples only where they are supported by the current page, and avoid adding unsupported agency or production claims.
+Preserve the existing product flow -- Keep navigation, Activate branding, catalog statuses and ordering, social links, and all game interactions intact while validating the updated copy at desktop and mobile widths.
+Relevant files
+artifacts/citrus-landing/src/pages/home.tsx:241-642
+artifacts/citrus-landing/src/pages/landing.css:128-365
+artifacts/citrus-landing/src/components/Navbar.tsx:6-38

@@ -12,7 +12,7 @@ export function Navbar() {
         <div className="nav-in">
           <Link className="mark" href="/">
             Activate <i aria-hidden="true"></i>{" "}
-            <small>by RequisorAI — games &amp; live experiences</small>
+            <small>by RequisorAI — experiential games &amp; brand activations</small>
           </Link>
           <div className="nav-r">
             <button
@@ -31,7 +31,7 @@ export function Navbar() {
               </svg>
             </button>
             <a className="btn" href="/#start">
-              Activate Now
+              Start a project
             </a>
           </div>
         </div>

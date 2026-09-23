@@ -1,3 +1,2 @@
 - [Recursive artifact discovery](recursive-artifact-discovery.md) — publishing discovers nested manifests; imported copies need unique ports and workspace-relative output paths.
 - [Shared React Query runtime](shared-react-query-runtime.md) — Vite must dedupe React Query when generated workspace hooks consume the app provider.
-- [Duplicate source corruption](duplicate-source-corruption.md) — exact module copies may be appended unexpectedly; verify identical halves before trimming and scan before delivery.
