@@ -55544,6 +55544,20 @@ var UpsertBrandingDraftBody = objectType({
   "logoDataUrl": stringType().nullish(),
   "bgDataUrl": stringType().nullish(),
   "fontDataUrl": stringType().nullish(),
+  "quiz": arrayType(objectType({
+    "text": stringType(),
+    "options": arrayType(objectType({
+      "text": stringType(),
+      "scores": objectType({
+        "ES": numberType().int(),
+        "NX": numberType().int(),
+        "RX": numberType().int(),
+        "RZ": numberType().int(),
+        "TX": numberType().int(),
+        "TZ": numberType().int()
+      })
+    }).describe("Lexus Energy Quiz only \u2014 one answer choice and how many points it adds to each of the 6 fixed outcome models."))
+  }).describe("Lexus Energy Quiz only \u2014 one question and its answer options.")).nullish(),
   "heading": stringType(),
   "tagline": stringType().nullish()
 });
@@ -55557,6 +55571,20 @@ var UpsertBrandingDraftResponse = objectType({
   "logoDataUrl": stringType().nullish(),
   "bgDataUrl": stringType().nullish(),
   "fontDataUrl": stringType().nullish(),
+  "quiz": arrayType(objectType({
+    "text": stringType(),
+    "options": arrayType(objectType({
+      "text": stringType(),
+      "scores": objectType({
+        "ES": numberType().int(),
+        "NX": numberType().int(),
+        "RX": numberType().int(),
+        "RZ": numberType().int(),
+        "TX": numberType().int(),
+        "TZ": numberType().int()
+      })
+    }).describe("Lexus Energy Quiz only \u2014 one answer choice and how many points it adds to each of the 6 fixed outcome models."))
+  }).describe("Lexus Energy Quiz only \u2014 one question and its answer options.")).nullish(),
   "heading": stringType(),
   "tagline": stringType().nullish(),
   "status": enumType(["draft", "finalized"])
@@ -55574,6 +55602,20 @@ var GetBrandingDraftResponse = objectType({
   "logoDataUrl": stringType().nullish(),
   "bgDataUrl": stringType().nullish(),
   "fontDataUrl": stringType().nullish(),
+  "quiz": arrayType(objectType({
+    "text": stringType(),
+    "options": arrayType(objectType({
+      "text": stringType(),
+      "scores": objectType({
+        "ES": numberType().int(),
+        "NX": numberType().int(),
+        "RX": numberType().int(),
+        "RZ": numberType().int(),
+        "TX": numberType().int(),
+        "TZ": numberType().int()
+      })
+    }).describe("Lexus Energy Quiz only \u2014 one answer choice and how many points it adds to each of the 6 fixed outcome models."))
+  }).describe("Lexus Energy Quiz only \u2014 one question and its answer options.")).nullish(),
   "heading": stringType(),
   "tagline": stringType().nullish(),
   "status": enumType(["draft", "finalized"])
