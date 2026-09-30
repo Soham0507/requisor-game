@@ -172,6 +172,80 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
     logoDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     bgDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     fontDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    quiz: zod.ZodOptional<zod.ZodNullable<zod.ZodArray<zod.ZodObject<{
+        text: zod.ZodString;
+        options: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            scores: zod.ZodObject<{
+                ES: zod.ZodNumber;
+                NX: zod.ZodNumber;
+                RX: zod.ZodNumber;
+                RZ: zod.ZodNumber;
+                TX: zod.ZodNumber;
+                TZ: zod.ZodNumber;
+            }, "strip", zod.ZodTypeAny, {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            }, {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            }>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }, {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }>, "many">;
+    }, "strip", zod.ZodTypeAny, {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }, {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }>, "many">>>;
     heading: zod.ZodString;
     tagline: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
 }, "strip", zod.ZodTypeAny, {
@@ -185,6 +259,20 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
     logoDataUrl?: string | null | undefined;
     bgDataUrl?: string | null | undefined;
     fontDataUrl?: string | null | undefined;
+    quiz?: {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }[] | null | undefined;
 }, {
     gameId: string;
     draftToken: string;
@@ -196,6 +284,20 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
     logoDataUrl?: string | null | undefined;
     bgDataUrl?: string | null | undefined;
     fontDataUrl?: string | null | undefined;
+    quiz?: {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }[] | null | undefined;
 }>;
 export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
     id: zod.ZodString;
@@ -207,6 +309,80 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
     logoDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     bgDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     fontDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    quiz: zod.ZodOptional<zod.ZodNullable<zod.ZodArray<zod.ZodObject<{
+        text: zod.ZodString;
+        options: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            scores: zod.ZodObject<{
+                ES: zod.ZodNumber;
+                NX: zod.ZodNumber;
+                RX: zod.ZodNumber;
+                RZ: zod.ZodNumber;
+                TX: zod.ZodNumber;
+                TZ: zod.ZodNumber;
+            }, "strip", zod.ZodTypeAny, {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            }, {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            }>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }, {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }>, "many">;
+    }, "strip", zod.ZodTypeAny, {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }, {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }>, "many">>>;
     heading: zod.ZodString;
     tagline: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     status: zod.ZodEnum<["draft", "finalized"]>;
@@ -223,6 +399,20 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
     logoDataUrl?: string | null | undefined;
     bgDataUrl?: string | null | undefined;
     fontDataUrl?: string | null | undefined;
+    quiz?: {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }[] | null | undefined;
 }, {
     status: "draft" | "finalized";
     id: string;
@@ -236,6 +426,20 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
     logoDataUrl?: string | null | undefined;
     bgDataUrl?: string | null | undefined;
     fontDataUrl?: string | null | undefined;
+    quiz?: {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }[] | null | undefined;
 }>;
 /**
  * @summary Get a branding draft by id
@@ -257,6 +461,80 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
     logoDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     bgDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     fontDataUrl: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
+    quiz: zod.ZodOptional<zod.ZodNullable<zod.ZodArray<zod.ZodObject<{
+        text: zod.ZodString;
+        options: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            scores: zod.ZodObject<{
+                ES: zod.ZodNumber;
+                NX: zod.ZodNumber;
+                RX: zod.ZodNumber;
+                RZ: zod.ZodNumber;
+                TX: zod.ZodNumber;
+                TZ: zod.ZodNumber;
+            }, "strip", zod.ZodTypeAny, {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            }, {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            }>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }, {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }>, "many">;
+    }, "strip", zod.ZodTypeAny, {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }, {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }>, "many">>>;
     heading: zod.ZodString;
     tagline: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     status: zod.ZodEnum<["draft", "finalized"]>;
@@ -273,6 +551,20 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
     logoDataUrl?: string | null | undefined;
     bgDataUrl?: string | null | undefined;
     fontDataUrl?: string | null | undefined;
+    quiz?: {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }[] | null | undefined;
 }, {
     status: "draft" | "finalized";
     id: string;
@@ -286,6 +578,20 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
     logoDataUrl?: string | null | undefined;
     bgDataUrl?: string | null | undefined;
     fontDataUrl?: string | null | undefined;
+    quiz?: {
+        options: {
+            text: string;
+            scores: {
+                ES: number;
+                NX: number;
+                RX: number;
+                RZ: number;
+                TX: number;
+                TZ: number;
+            };
+        }[];
+        text: string;
+    }[] | null | undefined;
 }>;
 /**
  * @summary Finalize a branding draft and create a pending order

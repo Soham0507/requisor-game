@@ -29,12 +29,23 @@ const GAMES = [
   { slug: "basketball-shootout", pkg: "rest-express", dist: "artifacts/citrus-landing/game/AI-versionBB2-5/AI-versionBB2-5/dist/public", mode: "envBase" },
   { slug: "gesture-space-war", pkg: "@workspace/space-game", dist: "artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game/dist/public", mode: "envBase" },
   { slug: "boat-booth", pkg: "@workspace/boat-booth", dist: "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth/dist/public", mode: "envBase" },
+  { slug: "lexus-energy-quiz", dist: "artifacts/citrus-landing/game/Lexus/public", mode: "static" },
 ];
 
 const outRoot = path.join(repoRoot, "artifacts/citrus-landing/dist/public/game-previews");
 
 function run(game) {
   const base = `/game-previews/${game.slug}/`;
+  if (game.mode === "static") {
+    // Stage the single-file quiz and its relative assets without changing its source.
+    execFileSync("node", ["scripts/stage-lexus-preview.mjs"], { cwd: repoRoot, stdio: "inherit" });
+    const to = path.join(outRoot, game.slug);
+    rmSync(to, { recursive: true, force: true });
+    mkdirSync(to, { recursive: true });
+    cpSync(path.join(repoRoot, game.dist), to, { recursive: true });
+    console.log(`--- staged ${game.slug} -> dist/public/game-previews/${game.slug}/`);
+    return;
+  }
   const args = ["--filter", game.pkg, "run", "build"];
   // Several game vite configs throw unless PORT is set, even for a build that
   // never starts a server, so supply a placeholder.

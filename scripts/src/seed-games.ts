@@ -79,12 +79,12 @@ const GAMES: InsertGame[] = [
   },
 
   {
-    slug: "Quiz game",
-    name: "Quiz game",
+    slug: "lexus-energy-quiz",
+    name: "Lexus Energy Quiz",
     tagline: "5-question multiple-choice quiz that matches a driver's energy and lifestyle preferences to a result.",
-    thumbnailUrl: null,
+    thumbnailUrl: "/logo/lexus-quiz.jpg",
     folderPath: "artifacts/citrus-landing/game/Lexus",
-    previewBasePath: null,
+    previewBasePath: "/game-previews/lexus-energy-quiz/",
     brandSupport: "full",
     defaultPrimaryColor: "#1a1a1a",
     defaultSecondaryColor: "#c8102e",
@@ -96,7 +96,12 @@ const GAMES: InsertGame[] = [
 ];
 
 async function main() {
-  for (const game of GAMES) {
+  const requestedSlug = process.argv[2];
+  const games = requestedSlug ? GAMES.filter((game) => game.slug === requestedSlug) : GAMES;
+  if (requestedSlug && games.length === 0) {
+    throw new Error(`Unknown game slug: ${requestedSlug}`);
+  }
+  for (const game of games) {
     await db
       .insert(gamesTable)
       .values(game)

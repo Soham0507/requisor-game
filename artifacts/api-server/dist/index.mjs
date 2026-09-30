@@ -51533,6 +51533,7 @@ CREATE TABLE IF NOT EXISTS branding_drafts (
   logo_data_url text,
   bg_data_url text,
   font_data_url text,
+  quiz_json jsonb,
   heading text not null,
   tagline text,
   status draft_status not null default 'draft',
@@ -51545,6 +51546,7 @@ CREATE TABLE IF NOT EXISTS branding_drafts (
 -- explicit ALTER to actually show up.
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS bg_data_url text;
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS font_data_url text;
+ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS quiz_json jsonb;
 
 CREATE TABLE IF NOT EXISTS orders (
   id uuid primary key default gen_random_uuid(),
@@ -67159,6 +67161,10 @@ var brandingDraftsTable = pgTable("branding_drafts", {
   // game title text, as a data: URI. Universal across every game, unlike
   // bgDataUrl above.
   fontDataUrl: text("font_data_url"),
+  // to the game's own built-in 5 questions. JS property is `quiz` (matching
+  // the API's field name 1:1, like every other column here) even though the
+  // SQL column is quiz_json.
+  quiz: jsonb("quiz_json").$type(),
   heading: text("heading").notNull(),
   tagline: text("tagline"),
   status: draftStatusEnum("status").notNull().default("draft"),
@@ -67339,6 +67345,7 @@ router3.post("/branding-drafts", async (req, res) => {
     logoDataUrl: body2.logoDataUrl ?? null,
     bgDataUrl: body2.bgDataUrl ?? null,
     fontDataUrl: body2.fontDataUrl ?? null,
+    quiz: body2.quiz ?? null,
     heading: body2.heading,
     tagline: body2.tagline ?? null,
     updatedAt: /* @__PURE__ */ new Date()
@@ -67993,6 +68000,13 @@ var GAME_PREVIEWS = [
       repoRoot,
       "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth/dist/public"
     )
+  },
+  {
+    // No Vite build for this one — it's a static HTML quiz staged by
+    // scripts/stage-lexus-preview.mjs (run that after editing the source
+    // HTML/manifest/service-worker). Not yet in build-games.mjs.
+    slug: "lexus-energy-quiz",
+    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/Lexus/public")
   }
 ];
 var router10 = (0, import_express10.Router)();

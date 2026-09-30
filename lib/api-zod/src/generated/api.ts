@@ -75,6 +75,20 @@ export const UpsertBrandingDraftBody = zod.object({
   "logoDataUrl": zod.string().nullish(),
   "bgDataUrl": zod.string().nullish(),
   "fontDataUrl": zod.string().nullish(),
+  "quiz": zod.array(zod.object({
+  "text": zod.string(),
+  "options": zod.array(zod.object({
+  "text": zod.string(),
+  "scores": zod.object({
+  "ES": zod.number().int(),
+  "NX": zod.number().int(),
+  "RX": zod.number().int(),
+  "RZ": zod.number().int(),
+  "TX": zod.number().int(),
+  "TZ": zod.number().int()
+})
+}).describe('Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.'))
+}).describe('Lexus Energy Quiz only — one question and its answer options.')).nullish(),
   "heading": zod.string(),
   "tagline": zod.string().nullish()
 })
@@ -89,6 +103,20 @@ export const UpsertBrandingDraftResponse = zod.object({
   "logoDataUrl": zod.string().nullish(),
   "bgDataUrl": zod.string().nullish(),
   "fontDataUrl": zod.string().nullish(),
+  "quiz": zod.array(zod.object({
+  "text": zod.string(),
+  "options": zod.array(zod.object({
+  "text": zod.string(),
+  "scores": zod.object({
+  "ES": zod.number().int(),
+  "NX": zod.number().int(),
+  "RX": zod.number().int(),
+  "RZ": zod.number().int(),
+  "TX": zod.number().int(),
+  "TZ": zod.number().int()
+})
+}).describe('Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.'))
+}).describe('Lexus Energy Quiz only — one question and its answer options.')).nullish(),
   "heading": zod.string(),
   "tagline": zod.string().nullish(),
   "status": zod.enum(['draft', 'finalized'])
@@ -112,6 +140,20 @@ export const GetBrandingDraftResponse = zod.object({
   "logoDataUrl": zod.string().nullish(),
   "bgDataUrl": zod.string().nullish(),
   "fontDataUrl": zod.string().nullish(),
+  "quiz": zod.array(zod.object({
+  "text": zod.string(),
+  "options": zod.array(zod.object({
+  "text": zod.string(),
+  "scores": zod.object({
+  "ES": zod.number().int(),
+  "NX": zod.number().int(),
+  "RX": zod.number().int(),
+  "RZ": zod.number().int(),
+  "TX": zod.number().int(),
+  "TZ": zod.number().int()
+})
+}).describe('Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.'))
+}).describe('Lexus Energy Quiz only — one question and its answer options.')).nullish(),
   "heading": zod.string(),
   "tagline": zod.string().nullish(),
   "status": zod.enum(['draft', 'finalized'])

@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { BrandingDraftStatus } from './brandingDraftStatus';
+import type { QuizQuestion } from './quizQuestion';
 export interface BrandingDraft {
     id: string;
     gameId: string;
@@ -16,6 +17,7 @@ export interface BrandingDraft {
     logoDataUrl?: string | null;
     bgDataUrl?: string | null;
     fontDataUrl?: string | null;
+    quiz?: QuizQuestion[] | null;
     heading: string;
     tagline?: string | null;
     status: BrandingDraftStatus;

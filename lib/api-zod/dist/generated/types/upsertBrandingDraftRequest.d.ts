@@ -5,6 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { QuizQuestion } from './quizQuestion';
 export interface UpsertBrandingDraftRequest {
     gameId: string;
     draftToken: string;
@@ -14,6 +15,7 @@ export interface UpsertBrandingDraftRequest {
     logoDataUrl?: string | null;
     bgDataUrl?: string | null;
     fontDataUrl?: string | null;
+    quiz?: QuizQuestion[] | null;
     heading: string;
     tagline?: string | null;
 }

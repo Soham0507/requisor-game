@@ -33,6 +33,31 @@ export interface Game {
   priceCents: number;
 }
 
+export type QuizOptionScores = {
+  ES: number;
+  NX: number;
+  RX: number;
+  RZ: number;
+  TX: number;
+  TZ: number;
+};
+
+/**
+ * Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.
+ */
+export interface QuizOption {
+  text: string;
+  scores: QuizOptionScores;
+}
+
+/**
+ * Lexus Energy Quiz only — one question and its answer options.
+ */
+export interface QuizQuestion {
+  text: string;
+  options: QuizOption[];
+}
+
 export interface UpsertBrandingDraftRequest {
   gameId: string;
   draftToken: string;
@@ -42,6 +67,7 @@ export interface UpsertBrandingDraftRequest {
   logoDataUrl?: string | null;
   bgDataUrl?: string | null;
   fontDataUrl?: string | null;
+  quiz?: QuizQuestion[] | null;
   heading: string;
   tagline?: string | null;
 }
@@ -64,6 +90,7 @@ export interface BrandingDraft {
   logoDataUrl?: string | null;
   bgDataUrl?: string | null;
   fontDataUrl?: string | null;
+  quiz?: QuizQuestion[] | null;
   heading: string;
   tagline?: string | null;
   status: BrandingDraftStatus;
