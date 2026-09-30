@@ -47,6 +47,13 @@ const GAME_PREVIEWS: { slug: string; distDir: string }[] = [
       "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth/dist/public",
     ),
   },
+  {
+    // No Vite build for this one — it's a static HTML quiz staged by
+    // scripts/stage-lexus-preview.mjs (run that after editing the source
+    // HTML/manifest/service-worker). Not yet in build-games.mjs.
+    slug: "lexus-energy-quiz",
+    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/Lexus/public"),
+  },
 ];
 
 const router: IRouter = Router();

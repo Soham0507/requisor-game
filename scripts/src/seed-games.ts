@@ -77,6 +77,22 @@ const GAMES: InsertGame[] = [
     defaultHeading: "Boat Booth",
     priceCents: 5900,
   },
+
+  {
+    slug: "Quiz game",
+    name: "Quiz game",
+    tagline: "5-question multiple-choice quiz that matches a driver's energy and lifestyle preferences to a result.",
+    thumbnailUrl: null,
+    folderPath: "artifacts/citrus-landing/game/Lexus",
+    previewBasePath: null,
+    brandSupport: "full",
+    defaultPrimaryColor: "#1a1a1a",
+    defaultSecondaryColor: "#c8102e",
+    defaultAccentColor: "#8a8d8f",
+    defaultLogoUrl: null,
+    defaultHeading: "Energy Quiz",
+    priceCents: 5900,
+  },
 ];
 
 async function main() {

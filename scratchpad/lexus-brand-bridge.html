@@ -1,0 +1,40 @@
+<script>
+  // Minimal brand-bridge, following the same contract every other game
+  // uses (see game/BRANDING_CONTRACT.md) even though this one isn't a
+  // bundled JS app: listens for a CDH_BRAND_UPDATE postMessage from the
+  // customizer (see GamePreviewFrame.tsx), and — for a plain link, no
+  // iframe — reads the same fields from the URL's query params instead.
+  // Currently only the logo is wired up; more fields land as the rest
+  // of the branding gets wired.
+  (function () {
+    var brandLogoImg = document.getElementById("brandLogo");
+
+    function applyBrand(theme) {
+      if (!theme) return;
+      if (theme.logoUrl && brandLogoImg) {
+        brandLogoImg.src = theme.logoUrl;
+      }
+    }
+
+    function themeFromQueryParams() {
+      var params = new URLSearchParams(window.location.search);
+      var theme = {};
+      if (params.has("logo")) theme.logoUrl = params.get("logo");
+      return theme;
+    }
+
+    applyBrand(themeFromQueryParams());
+
+    window.addEventListener("message", function (event) {
+      if (event.data && event.data.type === "CDH_BRAND_UPDATE") {
+        applyBrand(event.data.theme);
+      }
+    });
+
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: "CDH_BRAND_READY" }, "*");
+    }
+  })();
+</script>
+</body>
+</html>

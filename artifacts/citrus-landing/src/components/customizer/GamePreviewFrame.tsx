@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import type { QuizQuestion } from "@workspace/api-client-react";
 export interface BrandThemeMessage {
   primaryColor: string;
   secondaryColor: string;
@@ -19,6 +19,9 @@ export interface BrandThemeMessage {
   // A custom uploaded font (woff2/woff/ttf/otf), applied to the brand name
   // and game title text. null falls back to each game's own default font.
   fontUrl: string | null;
+  // Lexus Energy Quiz only — a fully custom question set, replacing the
+  // game's built-in 5 questions. null/undefined falls back to those.
+  quiz?: QuizQuestion[] | null;
 }
 
 export interface DeviceSize {

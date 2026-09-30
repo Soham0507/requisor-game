@@ -390,6 +390,11 @@ components:
         fontDataUrl:
           type: string
           nullable: true
+          quiz:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QuizQuestion"
         heading:
           type: string
         tagline:
@@ -426,6 +431,11 @@ components:
         fontDataUrl:
           type: string
           nullable: true
+          quiz:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/QuizQuestion"
         heading:
           type: string
         tagline:
@@ -443,6 +453,44 @@ components:
         - accentColor
         - heading
         - status
+        QuizOption:
+          type: object
+          description: Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.
+          properties:
+            text:
+              type: string
+            scores:
+              type: object
+              properties:
+                ES:
+                  type: integer
+                NX:
+                  type: integer
+                RX:
+                  type: integer
+                RZ:
+                  type: integer
+                TX:
+                  type: integer
+                TZ:
+                  type: integer
+              required: [ES, NX, RX, RZ, TX, TZ]
+          required:
+            - text
+            - scores
+        QuizQuestion:
+          type: object
+          description: Lexus Energy Quiz only — one question and its answer options.
+          properties:
+            text:
+              type: string
+            options:
+              type: array
+              items:
+                $ref: "#/components/schemas/QuizOption"
+          required:
+            - text
+            - options
     FinalizeBrandingDraftRequest:
       type: object
       properties:

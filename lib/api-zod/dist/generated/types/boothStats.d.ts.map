@@ -1,0 +1,1 @@
+{"version":3,"file":"boothStats.d.ts","sourceRoot":"","sources":["../../../src/generated/types/boothStats.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,cAAc,CAAC;AAE/C,MAAM,WAAW,UAAU;IACzB,cAAc,EAAE,MAAM,CAAC;IACvB,aAAa,EAAE,MAAM,CAAC;IACtB,cAAc,EAAE,UAAU,EAAE,CAAC;CAC9B"}

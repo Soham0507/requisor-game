@@ -39,6 +39,7 @@ const PREVIEW_BASE_PATHS: Record<string, string> = {
   "basketball-shootout": "/game-previews/basketball-shootout/",
   "gesture-space-war": "/game-previews/gesture-space-war/",
   "boat-booth": "/game-previews/boat-booth/",
+   "lexus-energy-quiz": "/game-previews/lexus-energy-quiz/",
 };
 
 export default function Customize() {

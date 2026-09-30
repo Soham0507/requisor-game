@@ -1,0 +1,2675 @@
+<!doctype html>
+<html>
+  <head>
+    {{GA4_SNIPPET}}
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Energy Quiz" />
+    <meta name="theme-color" content="#000000" />
+    <style>
+      @font-face {
+        font-family: "Nobel";
+        src: local("Nobel Book"), local("Nobel-Book"), local("Nobel");
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        min-height: 100dvh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        font-family:
+          "Nobel Book", "Nobel", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      }
+      /* Full-bleed stage — the phone-frame "mobile shape" is gone; the
+     experience now fills whatever screen it runs on (built for iPad Pro,
+     11" and 13", either orientation). Per-device reflow lives in the
+     #ipad-responsive block below. */
+      .device {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 0;
+        overflow: hidden;
+        position: relative;
+        box-shadow: none;
+      }
+      canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      /* ── Persistent vehicle car layer ──────────────────────────────
+     Sits above the liquid-metal canvas, below the UI/frosted cards.
+     Fades in once on the vehicle-reveal screen and stays visible
+     continuously through the final reveal screen, only disappearing
+     on Restart. Position/size never change between the two screens —
+     only the UI on top of it changes. */
+      .vehicle-car {
+        position: absolute;
+        left: 65.5%;
+        top: 54%;
+        width: 211%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1.6s ease-out;
+      }
+      .vehicle-car.visible {
+        opacity: 1;
+      }
+      .vehicle-car.fast-fade {
+        transition: opacity 0.45s ease-out;
+      }
+
+      /* Vehicle reveal screen — full-bleed color + car + tag, no card chrome */
+      #s-vehicle-reveal.active {
+        position: absolute;
+        inset: 0;
+        display: block;
+      }
+      /* Darkens the lower-left corner where the tag sits, independent of
+     whatever part of the car happens to be underneath — guarantees
+     contrast regardless of vehicle color or camera angle once the
+     real renders are swapped in. */
+      #s-vehicle-reveal.active::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.78) 0%,
+          rgba(0, 0, 0, 0.5) 20%,
+          rgba(0, 0, 0, 0) 46%
+        );
+        pointer-events: none;
+      }
+      .vehicle-tag {
+        position: absolute;
+        left: 32px;
+        bottom: 64px;
+        z-index: 2;
+        font-size: 64px;
+        font-weight: 300;
+        color: #fff;
+        letter-spacing: -1px;
+        text-shadow:
+          0 2px 6px rgba(0, 0, 0, 0.65),
+          0 4px 28px rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        transition: opacity 0.8s ease;
+      }
+      .vehicle-tag.visible {
+        opacity: 1;
+      }
+      .vehicle-tag.fading-out {
+        opacity: 0;
+      }
+      .ui {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lexus-l {
+        font-size: 22px;
+        font-weight: 200;
+        color: #fff;
+        letter-spacing: 6px;
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.3);
+      }
+      .divider {
+        display: none !important;
+      }
+
+      .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 0 32px 52px;
+      }
+      .content.reveal-active {
+        justify-content: flex-start;
+        padding-top: 18px;
+      }
+      #s-reveal .qr-row {
+        margin-top: 28px;
+        margin-bottom: 28px;
+      }
+      .text-scrim {
+        background: rgba(10, 10, 14, 0.42);
+        backdrop-filter: blur(18px) saturate(1.15);
+        -webkit-backdrop-filter: blur(18px) saturate(1.15);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          0 8px 28px rgba(0, 0, 0, 0.32);
+        padding: 22px 22px 10px;
+        margin: 0 0 18px;
+        border-radius: 20px;
+        opacity: 1;
+      }
+      .text-scrim.scrim-fade-in {
+        animation: scrimFadeIn 1.1s cubic-bezier(0.22, 0.7, 0.2, 1) forwards;
+      }
+      @keyframes scrimFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      .screen {
+        display: none;
+        flex-direction: column;
+      }
+      .screen.active {
+        display: flex;
+        animation: rise 0.7s cubic-bezier(0.16, 0.72, 0.18, 1) both;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .screen.restart-fade-out.active {
+        pointer-events: none;
+        animation: restartScreenFadeOut 0.75s cubic-bezier(0.22, 0.7, 0.2, 1)
+          forwards !important;
+      }
+      @keyframes restartScreenFadeOut {
+        from {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(10px) scale(0.985);
+          filter: blur(8px);
+        }
+      }
+      .start-title {
+        font-size: 54px;
+        font-weight: 200;
+        color: #fff;
+        line-height: 1;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+        text-shadow: 0 3px 24px rgba(0, 0, 0, 0.35);
+      }
+      .start-sub {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.82);
+        line-height: 1.6;
+        font-weight: 300;
+        letter-spacing: 0.3px;
+      }
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(8, 8, 12, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 100px;
+        padding: 15px 26px;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 16px;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 400;
+        transition: all 0.2s ease;
+        width: fit-content;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        margin: 24px auto 0;
+        align-self: center;
+      }
+      .cta-btn:hover {
+        background: rgba(20, 20, 26, 0.55);
+        color: rgba(255, 255, 255, 1);
+        border-color: rgba(255, 255, 255, 0.38);
+      }
+      /* Start screen CTA: no border at any screen size */
+      #s-start .cta-btn,
+      #s-start .cta-btn:hover {
+        border: none;
+      }
+      #s-start .cta-btn[disabled] {
+        pointer-events: none;
+      }
+      .q-label {
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: rgba(255, 255, 255, 0.6);
+        text-transform: uppercase;
+        margin-bottom: 18px;
+      }
+      .q-text {
+        font-size: 26px;
+        font-weight: 300;
+        color: #fff;
+        line-height: 1.25;
+        letter-spacing: -0.3px;
+        text-shadow: 0 3px 22px rgba(0, 0, 0, 0.35);
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .opt-btn {
+        background: rgba(8, 8, 12, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 100px;
+        padding: 15px 22px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 300;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.2s ease;
+        font-family: inherit;
+        backdrop-filter: blur(16px);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+      .opt-btn:hover {
+        background: rgba(20, 20, 26, 0.55);
+        border-color: rgba(255, 255, 255, 0.45);
+      }
+      .opt-btn.selected {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.8);
+      }
+      .reveal-label {
+        font-size: 10px;
+        letter-spacing: 4px;
+        color: rgba(255, 255, 255, 0.65);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      /* Label + vehicle code on one line */
+      .reveal-subheading {
+        font-size: 15px;
+        letter-spacing: 0px;
+        color: rgba(255,255,255,0.88);
+        text-transform: none;
+        margin-bottom: 14px;
+        line-height: 1.75;
+        font-weight: 300;
+      }
+
+      .reveal-vehicle-hero {
+        font-size: 66px;
+        font-weight: 100;
+        color: #fff;
+        letter-spacing: -1px;
+        line-height: 1;
+        margin-bottom: 6px;
+        text-shadow: 0 4px 28px rgba(0, 0, 0, 0.3);
+        white-space: nowrap;
+      }
+      .reveal-energy-caption {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.65);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+      }
+      .reveal-desc {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.75;
+        font-weight: 300;
+      }
+      .qr-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .qr-box {
+        width: 58px;
+        height: 58px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      /* Universal, not scoped to the iPad breakpoint — without this the
+     raw QR <img> (1600x1600 native) renders at full native size and
+     covers the screen on any viewport narrower than 700px, since only
+     the tablet media query previously constrained it. */
+      .qr-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .qr-text {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.65);
+        line-height: 1.6;
+        letter-spacing: 0.3px;
+      }
+      .restart-btn {
+        background: rgba(0, 0, 0, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 100px;
+        padding: 10px 20px;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 10px;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        cursor: pointer;
+        font-family: inherit;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        transition: all 0.2s ease;
+        width: fit-content;
+        margin: 4px auto 0;
+        align-self: center;
+      }
+      .restart-btn:hover {
+        background: rgba(20, 20, 26, 0.55);
+        color: rgba(255, 255, 255, 1);
+        border-color: rgba(255, 255, 255, 0.38);
+      }
+
+      .start-title,
+      .start-sub,
+      .cta-btn,
+      .q-label,
+      .q-text,
+      .opt-btn,
+      .reveal-label,
+      .reveal-vehicle-hero,
+      .reveal-energy-caption,
+      .reveal-desc,
+      .qr-text,
+      .restart-btn {
+        text-transform: uppercase;
+      }
+
+      .top-line,
+      .header-line,
+      .logo-divider,
+      .divider-line,
+      .top-divider,
+      .header-divider {
+        display: none !important;
+      }
+
+      .top-bar {
+        padding: 28px 0 0;
+        position: relative;
+      }
+      .top-bar::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        height: 78px;
+        pointer-events: none;
+        background: linear-gradient(
+          to bottom,
+          rgba(0, 0, 0, 0.26) 0%,
+          rgba(0, 0, 0, 0.14) 46%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        z-index: -1;
+      }
+      .logo-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        margin: 0 0 16px 0;
+        gap: 8px;
+      }
+      .logo-line {
+        display: block;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.34);
+        flex: 1 1 auto;
+        min-width: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .logo-line.left {
+        flex: 0 0 28px;
+        background: rgba(255, 255, 255, 0.92);
+      }
+      .logo-line.right {
+        background: rgba(255, 255, 255, 0.28);
+      }
+      .logo-progress {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0%;
+        background: rgba(255, 255, 255, 0.96);
+        transition: width 0.7s ease;
+      }
+      .lexus-mark {
+        display: block;
+        width: 34px;
+        height: 34px;
+        object-fit: contain;
+        flex: 0 0 auto;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.55))
+          drop-shadow(0 0 14px rgba(0, 0, 0, 0.38));
+      }
+      .divider,
+      .progress-bar {
+        display: none !important;
+      }
+
+      .qr-row {
+        position: relative;
+        border-radius: 16px;
+        padding: 10px 12px;
+        margin-left: -12px;
+        margin-right: -12px;
+        background: rgba(0, 0, 0, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow:
+          0 8px 24px rgba(0, 0, 0, 0.22),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+      .qr-text {
+        text-shadow:
+          0 2px 8px rgba(0, 0, 0, 0.72),
+          0 0 16px rgba(0, 0, 0, 0.45);
+      }
+
+      .device.start-state .logo-line {
+        background: rgba(255, 255, 255, 0.96) !important;
+      }
+      .device.start-state .logo-progress {
+        width: 100% !important;
+        background: rgba(255, 255, 255, 0.96) !important;
+      }
+
+      /* --- reference-match overrides --- */
+      #s-start .text-scrim {
+        margin: 150px 10px 22px;
+        padding: 28px 18px 12px;
+        border-radius: 22px;
+      }
+      #s-start .start-title {
+        white-space: nowrap;
+
+        font-size: 44px;
+        line-height: 1.02;
+        letter-spacing: -1.2px;
+        margin-bottom: 22px;
+      }
+      #s-start .start-sub {
+        font-size: 14px;
+        line-height: 1.42;
+        max-width: 100%;
+        margin: 0;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+      #s-start .cta-btn {
+        width: calc(100% - 36px);
+        justify-content: center;
+        padding: 14px 18px;
+        font-size: 12px;
+        letter-spacing: 1.5px;
+        margin-top: 18px;
+        text-align: center;
+        position: relative;
+      }
+      #s-reveal .text-scrim {
+        margin: 70px 22px 20px;
+        padding: 24px 24px 26px;
+        border-radius: 22px;
+      }
+      #s-reveal .reveal-label {
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-bottom: 18px;
+      }
+      #s-reveal .reveal-vehicle-hero {
+        font-size: 86px;
+        margin-bottom: 10px;
+      }
+      #s-reveal .reveal-energy-caption {
+        font-size: 18px;
+        letter-spacing: 4px;
+        margin-bottom: 26px;
+      }
+      #s-reveal .reveal-desc {
+        font-size: 15px;
+        line-height: 1.55;
+        text-transform: none;
+      }
+      #s-reveal .reveal-subheading {
+        font-size: 15px;
+      }
+      #s-reveal .qr-row {
+        margin: 0 22px 18px;
+        border-radius: 18px;
+        min-height: 92px;
+      }
+      #s-reveal .qr-text {
+        font-size: 11px;
+        letter-spacing: 2px;
+      }
+      #s-reveal .restart-btn {
+        min-width: 180px;
+        font-size: 12px;
+        padding: 12px 26px;
+        margin-top: 32px;
+      }
+
+      #s-start .start-divider {
+        width: 100%;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.72);
+        margin: 12px 0 18px;
+      }
+      #s-start .start-sub {
+        font-size: 14px;
+        line-height: 1.42;
+        max-width: 100%;
+        margin: 0;
+        letter-spacing: 0;
+        text-transform: none;
+      }
+
+      #s-reveal .text-scrim {
+        text-align: left;
+      }
+      #s-reveal .reveal-label {
+        text-align: left;
+      }
+      #s-reveal .reveal-vehicle-hero {
+        text-align: left;
+        display: block;
+        width: 100%;
+        margin-left: 0;
+        white-space: nowrap;
+      }
+      #s-reveal .reveal-energy-caption {
+        text-align: left;
+        display: block;
+        width: 100%;
+      }
+
+      #s-reveal .reveal-energy-caption {
+        text-align: left;
+        display: block;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 40px;
+        font-size: 14px;
+        letter-spacing: 3px;
+        line-height: 1.2;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+      }
+      #s-reveal .reveal-desc,
+      #s-reveal .reveal-subheading {
+        font-size: 15px;
+      }
+
+      #s-reveal .text-scrim {
+        text-align: left !important;
+      }
+      #s-reveal .reveal-label,
+      #s-reveal .reveal-vehicle-hero,
+      #s-reveal .reveal-energy-caption,
+      #s-reveal .reveal-desc {
+        text-align: left !important;
+        margin-left: 0 !important;
+        padding-left: 0 !important;
+        width: 100% !important;
+      }
+
+      /* --- final reveal readability boost --- */
+      #s-reveal .text-scrim {
+        background: rgba(8, 8, 12, 0.62);
+        backdrop-filter: blur(20px) saturate(1.15);
+        -webkit-backdrop-filter: blur(20px) saturate(1.15);
+      }
+
+      #s-reveal .reveal-vehicle-hero {
+        text-shadow:
+          0 2px 8px rgba(0, 0, 0, 0.88),
+          0 10px 34px rgba(0, 0, 0, 0.78),
+          0 0 24px rgba(0, 0, 0, 0.58);
+      }
+
+      #s-reveal .reveal-energy-caption,
+      #s-reveal .reveal-desc {
+        text-shadow:
+          0 2px 10px rgba(0, 0, 0, 0.82),
+          0 0 22px rgba(0, 0, 0, 0.62);
+      }
+    </style>
+    <style id="tailwind-compiled">
+      /* Compiled Tailwind v3 utilities (preflight disabled, .visible blocklisted).
+   Rebuild after adding new utility classes:
+   npx tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.build.css --minify
+   then re-embed the output here. */
+      .container {
+        width: 100%;
+      }
+      @media (min-width: 640px) {
+        .container {
+          max-width: 640px;
+        }
+      }
+      @media (min-width: 768px) {
+        .container {
+          max-width: 768px;
+        }
+      }
+      @media (min-width: 1024px) {
+        .container {
+          max-width: 1024px;
+        }
+      }
+      @media (min-width: 1280px) {
+        .container {
+          max-width: 1280px;
+        }
+      }
+      @media (min-width: 1536px) {
+        .container {
+          max-width: 1536px;
+        }
+      }
+      .invisible {
+        visibility: hidden;
+      }
+      .static {
+        position: static;
+      }
+      .fixed {
+        position: fixed;
+      }
+      .absolute {
+        position: absolute;
+      }
+      .relative {
+        position: relative;
+      }
+      .block {
+        display: block;
+      }
+      .flex {
+        display: flex;
+      }
+      .grid {
+        display: grid;
+      }
+      .hidden {
+        display: none;
+      }
+      .flex-shrink {
+        flex-shrink: 1;
+      }
+      .transform {
+        transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+          rotate(var(--tw-rotate)) skewX(var(--tw-skew-x))
+          skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x))
+          scaleY(var(--tw-scale-y));
+      }
+      .border {
+        border-width: 1px;
+      }
+      .uppercase {
+        text-transform: uppercase;
+      }
+      .blur {
+        --tw-blur: blur(8px);
+      }
+      .blur,
+      .drop-shadow {
+        filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+          var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert)
+          var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+      }
+      .drop-shadow {
+        --tw-drop-shadow: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))
+          drop-shadow(0 1px 1px rgba(0, 0, 0, 0.06));
+      }
+      .filter {
+        filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast)
+          var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert)
+          var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+      }
+      .backdrop-filter {
+        -webkit-backdrop-filter: var(--tw-backdrop-blur)
+          var(--tw-backdrop-brightness) var(--tw-backdrop-contrast)
+          var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate)
+          var(--tw-backdrop-invert) var(--tw-backdrop-opacity)
+          var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+        backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
+          var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
+          var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
+          var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
+          var(--tw-backdrop-sepia);
+      }
+      .transition {
+        transition-property:
+          color,
+          background-color,
+          border-color,
+          text-decoration-color,
+          fill,
+          stroke,
+          opacity,
+          box-shadow,
+          transform,
+          filter,
+          -webkit-backdrop-filter;
+        transition-property:
+          color, background-color, border-color, text-decoration-color, fill,
+          stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-property:
+          color,
+          background-color,
+          border-color,
+          text-decoration-color,
+          fill,
+          stroke,
+          opacity,
+          box-shadow,
+          transform,
+          filter,
+          backdrop-filter,
+          -webkit-backdrop-filter;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 0.15s;
+      }
+    </style>
+    <style id="mobile-optimizations">
+      /* ── Mobile optimizations ─────────────────────────────────────────
+   Phones get a full-bleed experience; the framed 390x750 card look
+   is preserved on tablets/desktop (>640px). */
+
+      /* Touch behavior — applies everywhere, harmless on desktop */
+      html,
+      body {
+        overscroll-behavior: none;
+      }
+      button,
+      .cta-btn,
+      .opt-btn,
+      .restart-btn {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      /* Touch devices: hover states don't exist — mirror them on :active */
+      @media (hover: none) {
+        .cta-btn:hover,
+        .restart-btn:hover,
+        .opt-btn:hover {
+          /* neutralized below */
+        }
+        .opt-btn:hover {
+          background: rgba(8, 8, 12, 0.4);
+          border-color: rgba(255, 255, 255, 0.22);
+        }
+        .cta-btn:hover,
+        .restart-btn:hover {
+          background: rgba(8, 8, 12, 0.4);
+          color: rgba(255, 255, 255, 0.85);
+          border-color: rgba(255, 255, 255, 0.18);
+        }
+        .opt-btn:active {
+          background: rgba(20, 20, 26, 0.55);
+          border-color: rgba(255, 255, 255, 0.45);
+        }
+        .cta-btn:active,
+        .restart-btn:active {
+          background: rgba(20, 20, 26, 0.55);
+          color: #fff;
+          border-color: rgba(255, 255, 255, 0.38);
+        }
+      }
+
+      /* Phones: full-bleed, no frame */
+      @media (max-width: 640px) {
+        body {
+          padding: 0;
+        }
+        .device {
+          width: 100vw;
+          height: 100vh; /* fallback */
+          height: 100dvh; /* accounts for mobile browser chrome */
+          border-radius: 0;
+          box-shadow: none;
+        }
+        /* Safe areas (notch / home indicator) */
+        .top-bar {
+          padding-top: max(28px, env(safe-area-inset-top));
+        }
+        .content {
+          padding-bottom: calc(52px + env(safe-area-inset-bottom));
+        }
+        #s-vehicle-reveal .vehicle-tag {
+          bottom: calc(64px + env(safe-area-inset-bottom));
+        }
+
+        /* Fluid type for narrow phones (<=390px designs assume 390 width) */
+        #s-start .start-title {
+          font-size: clamp(34px, 11.2vw, 44px);
+        }
+        #s-reveal .reveal-vehicle-hero {
+          font-size: clamp(62px, 22vw, 86px);
+        }
+        .vehicle-tag {
+          font-size: clamp(48px, 16.4vw, 64px);
+        }
+        .q-text {
+          font-size: clamp(22px, 6.6vw, 26px);
+        }
+
+        /* Height-relative spacing so short screens don't clip bottom content */
+        #s-start .text-scrim {
+          margin-top: min(80px, 11dvh);
+        }
+        #s-reveal .text-scrim {
+          margin-top: min(70px, 9dvh);
+        }
+      }
+
+      /* Short-but-wide (landscape phones): let the card fill too */
+      @media (max-height: 480px) {
+        body {
+          padding: 0;
+        }
+        .device {
+          width: 100vw;
+          height: 100vh;
+          height: 100dvh;
+          border-radius: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+    <style id="title-fit-fix">
+      /* Keep "YOUR ENERGY" inside the scrim: at 44px nowrap it overflows the
+   box's 270px inner width (~7.4em glyph run). 37px fits with margin. */
+      #s-start .start-title {
+        font-size: 37px;
+        letter-spacing: -1px;
+        max-width: 100%;
+      }
+      @media (max-width: 640px) {
+        /* Full-bleed phones: inner width = 100vw - 120px chrome.
+     Scale so the nowrap line always fits, capped at the desktop size. */
+        #s-start .start-title {
+          font-size: clamp(26px, calc((100vw - 108px) / 7.5), 37px);
+        }
+      }
+    </style>
+
+    <style id="redesign-v2">
+      /* ── Redesign v2: home box + question section ─────────────────────
+   Background/canvas untouched. Cards move from rounded dark glass
+   to a sharp, architectural language: squared corners, thin frame,
+   accent bars, solid-white primary actions. */
+
+      /* Shared card: squared, thin frame, flatter glass */
+      .text-scrim {
+        border-radius: 2px;
+        background: rgba(8, 8, 12, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        padding: 26px 24px 24px;
+      }
+
+      /* ── Home box ── */
+      #s-start .text-scrim {
+        padding: 30px 26px 14px;
+      }
+      #s-start .start-divider {
+        width: 44px;
+        height: 2px;
+        background: #fff;
+        margin: 16px 0 16px;
+      }
+      #s-start .start-title {
+        font-weight: 300;
+        margin-bottom: 0;
+      }
+      #s-start .start-sub {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      /* CTA: solid white, sharp — unmistakable primary action */
+      #s-start .cta-btn {
+        background: rgba(0, 0, 0, 0.6);
+        color: rgba(255, 255, 255, 1);
+        border: none;
+        border-radius: 999px;
+        padding: 17px 18px;
+        font-size: 16px;
+        letter-spacing: 3px;
+        font-weight: 500;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      #s-start .cta-btn:hover {
+        background: rgba(0, 0, 0, 0.75);
+        color: rgba(255, 255, 255, 1);
+        border: none;
+      }
+
+      /* ── Question section ── */
+      /* Question boxes stay rounded (home box remains squared) */
+      [id^="s-q"] .text-scrim {
+        border-radius: 20px;
+      }
+      .q-label {
+        font-size: 10px;
+        letter-spacing: 4px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 14px;
+      }
+      .q-label::before {
+        content: "";
+        display: block;
+        width: 44px;
+        height: 2px;
+        background: #fff;
+        margin-bottom: 14px;
+      }
+      .q-text {
+        font-size: 25px;
+        letter-spacing: 0;
+      }
+
+      /* Answers: architectural list rows, not pills */
+      .options {
+        gap: 10px;
+      }
+      .opt-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        border-radius: 100px;
+        background: rgba(8, 8, 12, 0.52);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 18px 20px;
+        font-size: 13px;
+        letter-spacing: 0.6px;
+        transition:
+          background 0.18s ease,
+          color 0.18s ease,
+          border-color 0.18s ease,
+          transform 0.1s ease;
+      }
+      .opt-btn:hover {
+        background: #fff;
+        color: #111;
+        border-color: #fff;
+      }
+      .opt-btn:active {
+        transform: scale(0.988);
+      }
+      .opt-btn.selected {
+        background: #fff;
+        color: #111;
+        border-color: #fff;
+        text-shadow: none;
+      }
+
+      /* Staggered entrance keeps screens feeling composed */
+      .screen.active .opt-btn {
+        animation: optRiseV2 0.5s cubic-bezier(0.16, 0.72, 0.18, 1) backwards;
+      }
+      .screen.active .opt-btn:nth-child(1) {
+        animation-delay: 0.08s;
+      }
+      .screen.active .opt-btn:nth-child(2) {
+        animation-delay: 0.16s;
+      }
+      .screen.active .opt-btn:nth-child(3) {
+        animation-delay: 0.24s;
+      }
+      @keyframes optRiseV2 {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Keyboard access */
+      .opt-btn:focus-visible,
+      .cta-btn:focus-visible {
+        outline: 1px solid rgba(255, 255, 255, 0.8);
+        outline-offset: 3px;
+      }
+
+      /* Touch: neutralize sticky hover, keep new look */
+      @media (hover: none) {
+        .opt-btn:hover {
+          background: rgba(8, 8, 12, 0.52);
+          color: #fff;
+          border-color: rgba(255, 255, 255, 0.3);
+        }
+        #s-start .cta-btn:hover {
+          background: #fff;
+          color: #111;
+        }
+        .opt-btn.selected,
+        .opt-btn.selected:hover {
+          background: #fff;
+          color: #111;
+          border-color: #fff;
+        }
+      }
+    </style>
+    <style id="icon-layer">
+      .opt-btn .opt-label {
+        flex: 1 1 auto;
+        text-align: left;
+      }
+    </style>
+    <style id="ipad-responsive">
+      /* ── iPad reflow ──────────────────────────────────────────────────
+   With the phone frame gone, tablet-class screens (>=700px) reflow to
+   use the whole canvas: full-bleed liquid-metal background, wider
+   content column, and larger type/spacing. Sizes are driven by `vmin`
+   so an iPad Pro 11" (834pt) and 13" (1032pt) both scale off their
+   short edge and read consistently in portrait and landscape.
+   Landscape additionally splits the question screens into two columns
+   (prompt left, answers right) so the extra width isn't wasted. */
+      @media (min-width: 700px) {
+        /* Content column: sits low like the original composition, with
+     generous gutters that grow with the screen. */
+        .content {
+          /* Figma spec card was a fixed 753px (halved from a 2x/1506px
+       frame); --card-w scales that by vmin so both iPad sizes and
+       both orientations hit it proportionally instead of overflowing
+       the smaller 11" portrait viewport. Shared here (not on the card
+       itself) so #s-start and #s-reveal, as siblings, both inherit it. */
+          --card-w: min(753px, 73vmin);
+          /* Reveal's own box is a separate Figma spec (1272x1243 @2x, halved
+       to 636x621.5) — narrower and much taller than --card-w, so it
+       gets its own scale variable rather than sharing --card-w. */
+          --reveal-card-w: min(636px, 61.63vmin);
+          padding-left: clamp(48px, 8vw, 160px);
+          padding-right: clamp(48px, 8vw, 160px);
+          padding-bottom: clamp(56px, 8vh, 130px);
+        }
+
+        /* Top bar / logo scale up and share the content gutters. */
+        .top-bar {
+          padding: clamp(30px, 4vh, 60px) clamp(48px, 8vw, 160px) 0;
+        }
+        .top-bar::before {
+          height: clamp(110px, 16vh, 210px);
+        }
+        .logo-row {
+          margin-bottom: clamp(20px, 2.6vh, 40px);
+          gap: clamp(10px, 1.4vw, 20px);
+        }
+        .lexus-mark {
+          width: clamp(42px, 4.6vmin, 66px);
+          height: clamp(42px, 4.6vmin, 66px);
+        }
+        .logo-line {
+          height: clamp(2px, 0.32vmin, 4px);
+        }
+        .logo-line.left {
+          flex: 0 0 clamp(28px, 4vmin, 56px);
+        }
+
+        /* Shared card chrome. */
+        .text-scrim {
+          border-radius: clamp(20px, 2.4vmin, 34px);
+          padding: clamp(30px, 4vmin, 64px) clamp(28px, 3.6vmin, 60px);
+          border: none;
+        }
+
+        /* ── Start ──
+     Figma spec was authored at a fixed 753x469 card (2x frame halved).
+     --card-w scales that proportionally by vmin so the same design
+     holds across BOTH iPad sizes and BOTH orientations — 753px is hit
+     exactly at the 13" reference (1032 vmin), and everything below
+     (height, title/sub font-size, cta size) derives from it by ratio
+     so nothing overflows on the smaller 11" portrait viewport. */
+        #s-start .text-scrim {
+          --sp: clamp(34px, 4vmin, 64px);
+          width: var(--card-w);
+          height: calc(var(--card-w) * 0.60);
+          overflow: hidden;
+          max-width: 100%;
+          margin: 0 auto;
+          border-radius: calc(var(--card-w) * 0.02324);
+          background: rgba(18, 18, 26, 0.72);
+          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          padding: clamp(38px, 4.6vmin, 72px) var(--sp) clamp(16px, 2vmin, 32px);
+        }
+        /* "YOUR ENERGY / YOUR LEXUS" is nowrap; the second min() term is an
+     overflow guard (conservative even for fallback fonts) so it can
+     never spill past the card regardless of which font renders. */
+        #s-start .start-title {
+          --title-fs: min(
+            calc(var(--card-w) * 0.1328),
+            calc((var(--card-w) - 2 * var(--sp)) / 7.5)
+          );
+          font-family:
+            "Nobel Book", "Nobel", "Helvetica Neue", Helvetica, Arial,
+            sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: var(--title-fs);
+          line-height: 1.1;
+          letter-spacing: calc(var(--title-fs) * -0.005);
+          color: rgba(255, 255, 255, 1);
+          margin-bottom: clamp(16px, 2.2vmin, 32px);
+        }
+        #s-start .start-divider {
+          margin: clamp(12px, 1.6vmin, 22px) 0 clamp(16px, 2.2vmin, 30px);
+        }
+        #s-start .start-sub {
+          width: 100%;
+          font-family:
+            "Nobel Book", "Nobel", "Helvetica Neue", Helvetica, Arial,
+            sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: calc(var(--card-w) * 0.042);
+          line-height: 1.45;
+          letter-spacing: 0;
+          color: rgba(255, 255, 255, 1);
+        }
+        #s-start .cta-btn {
+          width: var(--card-w, min(520px, 100%));
+          height: calc(var(--card-w) * 0.12883);
+          margin: clamp(22px, 3vmin, 40px) auto 0;
+          padding: 0 24px;
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.6);
+          border: none;
+          color: rgba(255, 255, 255, 1);
+          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+          backdrop-filter: none;
+          -webkit-backdrop-filter: none;
+          font-size: clamp(18px, 2.2vmin, 28px);
+          letter-spacing: 2px;
+        }
+        #s-start .cta-btn:hover {
+          background: rgba(0, 0, 0, 0.55);
+          color: rgba(255, 255, 255, 1);
+        }
+
+        /* ── Questions ── */
+        /* Figma spec, 2x/retina frame (1505x508, radius 35) halved to CSS px,
+     same --card-w scaling as the start/reveal cards. Landscape resets
+     height back to auto below — the two-column layout renders this at
+     ~46vw instead of --card-w, so a height ratio'd off --card-w would
+     be the wrong aspect ratio there. */
+        [id^="s-q"] .text-scrim,
+        [id^="s-q"] .options {
+          width: var(--card-w);
+          max-width: 100%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        [id^="s-q"] .text-scrim {
+          height: calc(var(--card-w) * 0.3373);
+          overflow: hidden;
+          border-radius: calc(var(--card-w) * 0.02324);
+          background: rgba(0, 0, 0, 0.4);
+          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+        }
+        .q-label {
+          font-size: clamp(11px, 1.4vmin, 17px);
+          letter-spacing: 4px;
+          margin-bottom: clamp(14px, 1.8vmin, 24px);
+        }
+        .q-text {
+          font-size: clamp(28px, 4.2vmin, 52px);
+          line-height: 1.2;
+        }
+        .options {
+          gap: clamp(10px, 1.4vmin, 20px);
+        }
+        /* Figma spec, 2x/retina frame (1505x174, radius 100) halved to CSS
+     px — each answer pill, not the .options wrapper (width comes from
+     the flex-stretch onto .options above). */
+        .opt-btn {
+          height: calc(var(--card-w) * 0.11554);
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.4);
+          border: none;
+          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+          padding: clamp(16px, 2.2vmin, 30px) clamp(20px, 2.6vmin, 38px);
+          font-size: clamp(15px, 1.9vmin, 24px);
+          gap: clamp(12px, 1.6vmin, 22px);
+        }
+
+        /* ── Vehicle reveal tag ── */
+        .vehicle-tag {
+          left: clamp(40px, 7vw, 150px);
+          bottom: clamp(64px, 10vh, 150px);
+          font-size: clamp(72px, 12vmin, 168px);
+        }
+
+        /* ── Final reveal ──
+     Figma spec, 2x/retina frame (1272x1243, radius 35) halved to CSS
+     px — its own --reveal-card-w, distinct from the start card's
+     --card-w. Height also capped by vh: at a near-1:1 aspect ratio
+     this box is tall enough to risk overflowing the shorter landscape
+     viewport once the QR row + restart button stack below it. */
+        #s-reveal .text-scrim {
+          width: var(--reveal-card-w);
+          height: auto;
+          max-width: 100%;
+          margin: 0 auto clamp(16px, 2.4vmin, 30px);
+          border-radius: calc(var(--reveal-card-w) * 0.02752);
+          background: rgba(0, 0, 0, 0.75);
+          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+          padding: clamp(32px, 4vmin, 64px) clamp(30px, 3.8vmin, 58px);
+        }
+        /* Figma spec, 2x/retina frame: font-size 36→18px, line-height
+     16.8→8.4px, letter-spacing 21% (of the halved 18px = 3.78px). */
+        #s-reveal .reveal-label {
+          font-family:
+            "Nobel Book", "Nobel", "Helvetica Neue", Helvetica, Arial,
+            sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 22px;
+          line-height: 1.2;
+          letter-spacing: 3.78px;
+          color: rgba(255, 255, 255, 1);
+        }
+        #s-reveal .reveal-vehicle-hero {
+          font-size: clamp(72px, 10vmin, 150px);
+        }
+        #s-reveal .reveal-subheading {
+          font-size: clamp(18px, 2.4vmin, 32px);
+          letter-spacing: 0px;
+          margin-bottom: 18px;
+        }
+        #s-reveal .reveal-energy-caption {
+          font-size: clamp(18px, 2.4vmin, 32px);
+        }
+        #s-reveal .reveal-desc {
+          font-size: clamp(18px, 2.4vmin, 32px);
+          line-height: 1.6;
+        }
+        /* Figma spec, 2x/retina frame (1272x289, radius 35) halved to CSS px
+     — width matches --reveal-card-w exactly (636px), so the QR row
+     lines up with the card above it. */
+        #s-reveal .qr-row {
+          width: var(--reveal-card-w);
+          max-width: 100%;
+          margin-left: auto;
+          margin-right: auto;
+          height: calc(var(--reveal-card-w) * 0.2272);
+          border-radius: calc(var(--reveal-card-w) * 0.02752);
+          background: rgba(0, 0, 0, 0.75);
+          border: none;
+        }
+        #s-reveal .qr-box {
+          width: calc(var(--reveal-card-w) * 0.19);
+          height: calc(var(--reveal-card-w) * 0.19);
+          border-radius: calc(var(--reveal-card-w) * 0.0094);
+          overflow: hidden;
+        }
+        #s-reveal .qr-box img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+        /* Figma spec, 2x/retina frame: font-size 36→18px, line-height
+     46→23px, letter-spacing 21% (of the halved 18px = 3.78px). */
+        #s-reveal .qr-text {
+          font-family:
+            "Nobel Book", "Nobel", "Helvetica Neue", Helvetica, Arial,
+            sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 18px;
+          line-height: 23px;
+          letter-spacing: 3.78px;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 1);
+        }
+        #s-reveal .restart-btn {
+          min-width: clamp(180px, 24vmin, 320px);
+          font-size: clamp(12px, 1.5vmin, 18px);
+          padding: clamp(12px, 1.6vmin, 22px) clamp(26px, 3vmin, 44px);
+          margin: clamp(28px, 4vmin, 48px) auto 0;
+          background: rgba(0, 0, 0, 0.75);
+          border: none;
+        }
+        /* Reveal is top-anchored via .reveal-active; give it breathing room
+     so it isn't jammed against the top edge on a tall panel. */
+        .content.reveal-active {
+          padding-top: clamp(40px, 8vh, 140px);
+        }
+      }
+
+      /* Landscape: short and wide. Center content vertically and lay each
+   question out as two columns so the width carries the answers. */
+      @media (min-width: 700px) and (orientation: landscape) {
+        .content {
+          justify-content: center;
+        }
+
+        [id^="s-q"].screen.active {
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          gap: clamp(40px, 6vw, 120px);
+        }
+        [id^="s-q"] .text-scrim,
+        [id^="s-q"] .options {
+          flex: 1 1 0;
+          width: auto;
+          max-width: 46vw;
+          margin-bottom: 0;
+        }
+        /* Undo the --card-w-ratio'd height above — in the two-column layout
+     this box renders at ~46vw, not --card-w, so that ratio would be
+     the wrong aspect ratio here. Let it stay content-driven instead. */
+        [id^="s-q"] .text-scrim {
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="device start-state">
+      <canvas id="c"></canvas>
+      <img id="vehicleCar" class="vehicle-car" src="" alt="" />
+      <div class="ui">
+        <div class="top-bar">
+          <div class="logo-row">
+            <span class="logo-line left"></span
+            ><img
+              id="brandLogo" class="lexus-mark"
+              src=""
+              alt="Brand logo"
+              style="display: none"
+            /><span class="logo-line right"
+              ><span class="logo-progress" id="prog" style="width: 100%"></span
+            ></span>
+          </div>
+        </div>
+        <div class="content">
+          <div class="screen active" id="s-start">
+            <div class="text-scrim">
+              <div class="start-title">
+                YOUR&nbsp;ENERGY<br />YOUR&nbsp;<span id="startBrandName">MATCH</span>
+              </div>
+              <div class="start-divider"></div>
+              <div class="start-sub" id="startTagline">
+                Timeless craftsmanship. Effortless power. Design built to be
+                experienced. Discover which result matches your lifestyle.
+              </div>
+            </div>
+            <button class="cta-btn" onclick="startQuiz()">
+              <span class="cta-label">DISCOVER YOUR ENERGY</span>
+            </button>
+          </div>
+          <div id="question-screens-slot"></div>
+          <div class="screen" id="s-reveal">
+            <div class="text-scrim">
+              <div class="reveal-label">THANK YOU</div>
+              <div class="reveal-subheading" id="rSubheading">Thanks for taking the Energy Quiz.</div>
+            </div>
+            <button class="restart-btn" onclick="restart()">START OVER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("c");
+      const gl = canvas.getContext("webgl");
+      const W = 390,
+        H = 750;
+      canvas.width = W;
+      canvas.height = H;
+      gl.viewport(0, 0, W, H);
+
+      const vsSource = `
+  attribute vec2 a_pos;
+  void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+`;
+
+      const fsSource = `
+  precision highp float;
+  uniform float u_time;
+  uniform vec2  u_res;
+  uniform vec3  u_colors[7];
+  uniform float u_weights[7];
+  uniform vec2  u_anchors[7];
+
+  uniform float u_scale;
+  uniform float u_rotSpeed;
+  uniform float u_warpSpeed;
+  uniform float u_depthMul;
+  uniform float u_depthScale;
+  uniform float u_roughness;
+  uniform float u_metalness;
+  uniform float u_coatPow;
+  uniform float u_coatStr;
+  uniform float u_coatScale;
+  uniform float u_coatEnabled;
+  uniform float u_sat;
+  uniform float u_blobSpeed;
+  uniform float u_grainScale;
+  uniform float u_grainStrength;
+  uniform float u_grainFresnelPow;
+  const float ax = 5.0, ay = 7.0, az = 9.0, aw = 13.0;
+  const float bx = 1.0, by = 1.0;
+
+  float cheapNoise(vec3 stp) {
+    vec3 p = vec3(stp.st, stp.p);
+    vec4 a = vec4(ax, ay, az, aw);
+    return mix(
+      sin(p.z + p.x*a.x + cos(p.x*a.x - p.z)) * cos(p.z + p.y*a.y + cos(p.y*a.x + p.z)),
+      sin(1.0 + p.x*a.z + p.z + cos(p.y*a.w - p.z)) * cos(1.0 + p.y*a.w + p.z + cos(p.x*a.x + p.z)),
+      0.436
+    );
+  }
+
+  vec2 blobPos(int idx, float t, vec2 anchor) {
+    // Each blob orbits its own fixed reference-image anchor (u_anchors)
+    // instead of the shared screen center — keeps the same continuous
+    // drifting motion but holds the overall composition (blue top-left,
+    // purple top-center, orange right, mint bottom-left, yellow
+    // bottom-right, cream top-right) close to the reference layout.
+    float p  = float(idx)*1.6180339;
+    float p2 = float(idx)*2.3999632;
+    float x = anchor.x+sin(t*0.071+p)*0.075+sin(t*0.113+p2)*0.045+sin(t*0.047+p*1.7)*0.035+sin(t*0.089+p2*0.6)*0.025;
+    float y = anchor.y+cos(t*0.083+p*1.3)*0.075+cos(t*0.061+p2*1.1)*0.045+cos(t*0.097+p*0.8)*0.035+cos(t*0.053+p2*1.4)*0.025;
+    return vec2(x,y);
+  }
+
+  void main() {
+    vec2 uv = gl_FragCoord.xy / u_res;
+    uv.y = 1.0 - uv.y;
+    float t = u_time * u_blobSpeed;
+    float tWarp = u_time;
+
+    vec2 st = uv * vec2(u_res.x/u_res.y, 1.0) * u_scale;
+    float S = sin(tWarp * u_rotSpeed);
+    float C = cos(tWarp * u_rotSpeed);
+
+    vec2 v1 = vec2(cheapNoise(vec3(st, 2.0)), cheapNoise(vec3(st, 1.0)));
+    vec2 v2 = vec2(
+      cheapNoise(vec3(st + bx*v1 + vec2(C*1.7, S*9.2), u_warpSpeed*0.27*tWarp)),
+      cheapNoise(vec3(st + by*v1 + vec2(S*8.3, C*2.8), u_warpSpeed*0.23*tWarp))
+    );
+
+    // Unclamped — distUV only feeds distance() calculations against
+    // blob positions below, so it never needs to be bounded to [0,1].
+    // The clamp here was squashing many edge pixels onto the same
+    // coordinate, stretching the color shapes near the screen border.
+    vec2 distUV = uv + v2 * 0.045;
+
+    vec3  colorSum=vec3(0.0); float weightSum=0.0;
+    float dd; float w; vec2 pos; float d;
+    pos=blobPos(0,t,u_anchors[0]);d=distance(distUV,pos);dd=d*d;w=u_weights[0]/(dd*dd*8.0+0.012);colorSum+=u_colors[0]*w;weightSum+=w;
+    pos=blobPos(1,t,u_anchors[1]);d=distance(distUV,pos);dd=d*d;w=u_weights[1]/(dd*dd*8.0+0.012);colorSum+=u_colors[1]*w;weightSum+=w;
+    pos=blobPos(2,t,u_anchors[2]);d=distance(distUV,pos);dd=d*d;w=u_weights[2]/(dd*dd*8.0+0.012);colorSum+=u_colors[2]*w;weightSum+=w;
+    pos=blobPos(3,t,u_anchors[3]);d=distance(distUV,pos);dd=d*d;w=u_weights[3]/(dd*dd*8.0+0.012);colorSum+=u_colors[3]*w;weightSum+=w;
+    pos=blobPos(4,t,u_anchors[4]);d=distance(distUV,pos);dd=d*d;w=u_weights[4]/(dd*dd*8.0+0.012);colorSum+=u_colors[4]*w;weightSum+=w;
+    pos=blobPos(5,t,u_anchors[5]);d=distance(distUV,pos);dd=d*d;w=u_weights[5]/(dd*dd*8.0+0.012);colorSum+=u_colors[5]*w;weightSum+=w;
+    pos=blobPos(6,t,u_anchors[6]);d=distance(distUV,pos);dd=d*d;w=u_weights[6]/(dd*dd*8.0+0.012);colorSum+=u_colors[6]*w;weightSum+=w;
+
+    vec3 col = colorSum / max(weightSum, 0.001);
+    float lum = dot(col, vec3(0.299,0.587,0.114));
+    col = mix(vec3(lum), col, u_sat);
+    col = clamp(col, 0.0, 1.0);
+
+    // PANEL CURVATURE — broad smooth sheen, follows the moving color field
+    vec2 curveUV = uv * vec2(u_res.x/u_res.y, 1.0) * u_depthScale;
+    float curve = cheapNoise(vec3(curveUV + v2*0.15, tWarp*u_warpSpeed*0.04));
+    // Roughness: low = smooth/glossy (sharp contrast), high = rough/matte
+    // (softened, lower contrast). Mirrors the real PBR roughness concept
+    // by reshaping the curve value's contrast before it lights the surface.
+    float curveSigned = sign(curve) * pow(abs(curve), mix(0.5, 2.2, u_roughness));
+    float curveSheen = 1.0 + curveSigned * u_depthMul * 0.5;
+    col *= clamp(curveSheen, 0.55, 1.55);
+
+    // METALNESS — blends between flat diffuse pigment (low) and a more
+    // reflective, sheen-dominant surface (high). At low metalness the
+    // base color reads as matte paint; at high metalness the curvature
+    // sheen is amplified and a neutral reflective tint mixes in, like
+    // brushed/polished metal rather than painted pigment.
+    vec3 metalTint = vec3(0.92, 0.94, 0.97);
+    vec3 metalLook = mix(col, metalTint, 0.35) * clamp(curveSheen, 0.4, 1.9);
+    col = mix(col, metalLook, u_metalness);
+
+    // CLEAR COAT — broad hotspot
+    vec2 coatUV = uv * vec2(u_res.x/u_res.y, 1.0) * u_coatScale + vec2(0.8, -0.3);
+    float coatN = 0.5 + 0.5 * cheapNoise(vec3(coatUV + v2*0.2, tWarp*u_warpSpeed*0.03));
+    float coatGate = smoothstep(0.78, 0.92, coatN);
+    float coatSpec = pow(coatGate, u_coatPow);
+    vec3 coatTint = vec3(0.99, 0.98, 0.95);
+    col += coatTint * coatSpec * u_coatStr * u_coatEnabled;
+
+    // ── MICRO GRAIN — paint flake suggestion via coherent value noise ──
+    // Unlike a raw per-pixel hash (which has zero spatial coherence and
+    // reads as TV static), this interpolates between hash values at grid
+    // corners — giving the noise actual size/shape so it reads as grain
+    // or flake rather than flickering static. Still purely static math,
+    // no time dependency — sampled from distUV so it moves with the
+    // color field's warp without any independent animation of its own.
+    // Use the unclamped warped UV — distUV is clamped to [0,1] which
+    // squashes many different screen positions into the same boundary
+    // value near the edges, causing the grain to stretch/smear there.
+    // This unclamped version still drifts with v2 (the same field
+    // motion) but never collapses multiple pixels onto one coordinate.
+    // distUV is the same unclamped warped coordinate — reuse it directly
+    // rather than maintaining a duplicate expression.
+    // Grain gets its own much slower drift — reusing the full distUV
+    // motion made small grain cells flicker like static, since they'd
+    // cross many cell-widths per second relative to their own size.
+    // Scaling the warp contribution down here decouples grain speed
+    // from the main field's motion, letting us go smaller without
+    // hitting that flicker threshold.
+    vec2 grainDriftUV = uv + v2 * 0.045 * 0.35;
+    vec2 grainCoord = grainDriftUV * u_res * u_grainScale * 0.08;
+    vec2 grainCell  = floor(grainCoord);
+    vec2 grainFrac  = fract(grainCoord);
+    vec2 grainSmooth = grainFrac * grainFrac * (3.0 - 2.0 * grainFrac);
+
+    // Independent per-channel noise — this is what makes it CHROMA
+    // noise rather than luminance noise. Using a different hash
+    // constant per channel so R, G, and B each get their own
+    // uncorrelated random offset instead of moving together.
+    float gA_r = fract(sin(dot(grainCell + vec2(0.0,0.0), vec2(12.9898,78.233))) * 43758.5453);
+    float gB_r = fract(sin(dot(grainCell + vec2(1.0,0.0), vec2(12.9898,78.233))) * 43758.5453);
+    float gC_r = fract(sin(dot(grainCell + vec2(0.0,1.0), vec2(12.9898,78.233))) * 43758.5453);
+    float gD_r = fract(sin(dot(grainCell + vec2(1.0,1.0), vec2(12.9898,78.233))) * 43758.5453);
+    float grainR = mix(mix(gA_r, gB_r, grainSmooth.x), mix(gC_r, gD_r, grainSmooth.x), grainSmooth.y);
+
+    float gA_g = fract(sin(dot(grainCell + vec2(0.0,0.0), vec2(39.346,11.135))) * 24634.6345);
+    float gB_g = fract(sin(dot(grainCell + vec2(1.0,0.0), vec2(39.346,11.135))) * 24634.6345);
+    float gC_g = fract(sin(dot(grainCell + vec2(0.0,1.0), vec2(39.346,11.135))) * 24634.6345);
+    float gD_g = fract(sin(dot(grainCell + vec2(1.0,1.0), vec2(39.346,11.135))) * 24634.6345);
+    float grainG = mix(mix(gA_g, gB_g, grainSmooth.x), mix(gC_g, gD_g, grainSmooth.x), grainSmooth.y);
+
+    float gA_b = fract(sin(dot(grainCell + vec2(0.0,0.0), vec2(73.156,52.235))) * 18472.8392);
+    float gB_b = fract(sin(dot(grainCell + vec2(1.0,0.0), vec2(73.156,52.235))) * 18472.8392);
+    float gC_b = fract(sin(dot(grainCell + vec2(0.0,1.0), vec2(73.156,52.235))) * 18472.8392);
+    float gD_b = fract(sin(dot(grainCell + vec2(1.0,1.0), vec2(73.156,52.235))) * 18472.8392);
+    float grainB = mix(mix(gA_b, gB_b, grainSmooth.x), mix(gC_b, gD_b, grainSmooth.x), grainSmooth.y);
+
+    vec3 grainRGB = (vec3(grainR, grainG, grainB) - 0.5) * u_grainStrength;
+
+    // FRESNEL GATE — reuses the same curvature noise driving the panel
+    // sheen above as a stand-in for true 3D fresnel (no real surface
+    // normal in this 2D shader). Concentrates grain visibility toward
+    // the "edges" of the curvature field rather than showing it evenly
+    // everywhere — closer to how real metallic flake catches light
+    // more at glancing angles / along a panel's curve than dead-on.
+    float grainFresnel = pow(1.0 - smoothstep(0.0, 1.0, abs(curve)), u_grainFresnelPow);
+
+    // Apply as a MULTIPLICATIVE shift rather than additive — this is
+    // what keeps the variation visible even on bright pixels, since
+    // additive grain on a near-1.0 channel just gets clamped away.
+    // A multiplicative shift scales with the existing brightness
+    // instead of getting crushed against the ceiling.
+    col *= (1.0 + grainRGB * grainFresnel);
+
+    col = clamp(col, 0.0, 1.0);
+    gl_FragColor = vec4(col, 1.0);
+  }
+`;
+
+      function compileShader(type, src) {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS))
+          console.error(gl.getShaderInfoLog(s));
+        return s;
+      }
+      const prog = gl.createProgram();
+      gl.attachShader(prog, compileShader(gl.VERTEX_SHADER, vsSource));
+      gl.attachShader(prog, compileShader(gl.FRAGMENT_SHADER, fsSource));
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+        console.error("PROGRAM LINK ERROR:", gl.getProgramInfoLog(prog));
+      }
+      gl.useProgram(prog);
+
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+        gl.STATIC_DRAW,
+      );
+      const aPos = gl.getAttribLocation(prog, "a_pos");
+      gl.enableVertexAttribArray(aPos);
+      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+      const uTime = gl.getUniformLocation(prog, "u_time");
+      const uRes = gl.getUniformLocation(prog, "u_res");
+      const uColors = gl.getUniformLocation(prog, "u_colors");
+      const uWeights = gl.getUniformLocation(prog, "u_weights");
+      const uAnchors = gl.getUniformLocation(prog, "u_anchors");
+
+      const uScale = gl.getUniformLocation(prog, "u_scale");
+      const uRotSpeed = gl.getUniformLocation(prog, "u_rotSpeed");
+      const uWarpSpeed = gl.getUniformLocation(prog, "u_warpSpeed");
+      const uDepthMul = gl.getUniformLocation(prog, "u_depthMul");
+      const uDepthScale = gl.getUniformLocation(prog, "u_depthScale");
+      const uRoughness = gl.getUniformLocation(prog, "u_roughness");
+      const uMetalness = gl.getUniformLocation(prog, "u_metalness");
+      const uCoatPow = gl.getUniformLocation(prog, "u_coatPow");
+      const uCoatStr = gl.getUniformLocation(prog, "u_coatStr");
+      const uCoatScale = gl.getUniformLocation(prog, "u_coatScale");
+      const uCoatEnabled = gl.getUniformLocation(prog, "u_coatEnabled");
+      const uSat = gl.getUniformLocation(prog, "u_sat");
+      const uBlobSpeed = gl.getUniformLocation(prog, "u_blobSpeed");
+      const uGrainScale = gl.getUniformLocation(prog, "u_grainScale");
+      const uGrainStrength = gl.getUniformLocation(prog, "u_grainStrength");
+      const uGrainFresnelPow = gl.getUniformLocation(prog, "u_grainFresnelPow");
+
+      gl.uniform2f(uRes, W, H);
+
+      // ── Responsive canvas ─────────────────────────────────────────────
+      // The stage is full-bleed now (no fixed 390x750 phone frame), so the
+      // WebGL buffer must track the real element size and aspect. The shader
+      // uses u_res for aspect correction, so updating it on resize keeps the
+      // liquid-metal field correct (not stretched) at any iPad size or
+      // orientation.
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let w = Math.max(1, Math.round(rect.width * dpr));
+        let h = Math.max(1, Math.round(rect.height * dpr));
+        // Cap the longest side to the largest target panel so the shader
+        // renders at full native resolution on both iPad Pro M5 sizes
+        // (11" = 2420x1668, 13" = 2752x2064 physical px @2) while still
+        // bounding cost on any unexpectedly larger display.
+        const MAX_SIDE = 2752;
+        const s = Math.min(1, MAX_SIDE / Math.max(w, h));
+        w = Math.round(w * s);
+        h = Math.round(h * s);
+        if (canvas.width === w && canvas.height === h) return;
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+        gl.useProgram(prog);
+        gl.uniform2f(uRes, w, h);
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+      window.addEventListener("orientationchange", resizeCanvas);
+
+      // ── Material settings (locked values from creative review) ────────
+      // These were tuned interactively during development and are now fixed.
+      // Set once on shader init — material does not change at runtime.
+      const MATERIAL_SETTINGS = {
+        scale: 0.4, // base noise scale for the color field
+        rotSpeed: 0.013, // speed of the slow rotational warp
+        warpSpeed: 0.0006, // speed of the domain-warp animation
+        depthMul: 0.7, // panel curvature / sheen strength
+        depthScale: 0.9, // panel curvature noise scale
+        roughness: 0.05, // surface roughness (0 = glossy, 1 = matte)
+        metalness: 0.5, // blend between painted pigment and metallic sheen
+        coatPow: 8.0, // clear coat hotspot sharpness (only used if enabled)
+        coatStr: 0.22, // clear coat hotspot brightness (only used if enabled)
+        coatScale: 1.6, // clear coat hotspot rarity/scale (only used if enabled)
+        coatEnabled: 0.0, // clear coat is OFF by default per final creative direction
+        sat: 1.95, // color saturation boost — locked per creative review
+        blobSpeed: 0.6, // speed of the energy color blobs drifting
+        grainScale: 30, // micro grain frequency — higher = finer/smaller grain
+        grainStrength: 0,    // grain disabled
+        grainFresnelPow: 4, // fresnel concentration — higher = grain confined more to edges
+      };
+
+      function applyMaterialSettings() {
+        gl.uniform1f(uScale, MATERIAL_SETTINGS.scale);
+        gl.uniform1f(uRotSpeed, MATERIAL_SETTINGS.rotSpeed);
+        gl.uniform1f(uWarpSpeed, MATERIAL_SETTINGS.warpSpeed);
+        gl.uniform1f(uDepthMul, MATERIAL_SETTINGS.depthMul);
+        gl.uniform1f(uDepthScale, MATERIAL_SETTINGS.depthScale);
+        gl.uniform1f(uRoughness, MATERIAL_SETTINGS.roughness);
+        gl.uniform1f(uMetalness, MATERIAL_SETTINGS.metalness);
+        gl.uniform1f(uCoatPow, MATERIAL_SETTINGS.coatPow);
+        gl.uniform1f(uCoatStr, MATERIAL_SETTINGS.coatStr);
+        gl.uniform1f(uCoatScale, MATERIAL_SETTINGS.coatScale);
+        gl.uniform1f(uCoatEnabled, MATERIAL_SETTINGS.coatEnabled);
+        gl.uniform1f(uSat, MATERIAL_SETTINGS.sat);
+        gl.uniform1f(uBlobSpeed, MATERIAL_SETTINGS.blobSpeed);
+        gl.uniform1f(uGrainScale, MATERIAL_SETTINGS.grainScale);
+        gl.uniform1f(uGrainStrength, MATERIAL_SETTINGS.grainStrength);
+        gl.uniform1f(uGrainFresnelPow, MATERIAL_SETTINGS.grainFresnelPow);
+      }
+
+      // Pre-pipeline base values. The shader runs each blended blob color
+      // through THREE stages before it hits the screen: a 1.95x saturation
+      // boost (u_sat), a panel-curvature sheen multiply, then a metalness
+      // blend that pulls 35% of the color toward a near-white metal tint
+      // (0.92,0.94,0.97) — locked MATERIAL_SETTINGS from creative review.
+      // That metal blend is the dominant desaturating step, so each entry
+      // here is inverted through all three (base = invert(sat, avg-sheen,
+      // metal-blend) of the target) rather than just the sat boost — e.g.
+      // RZ's near-black-blue base still renders as a true #031DEA blue once
+      // the full pipeline runs, instead of washing out toward gray.
+      // Targets were pixel-sampled directly from the reference gradient
+      // (box-downsampled to filter out its film grain) at each color's most
+      // saturated region, then these base values were converged empirically
+      // in-browser (readPixels at each anchor, iterating base toward target)
+      // since the panel-curvature sheen isn't uniform across the screen —
+      // the analytic inverse above is only a starting point per position.
+      // TX/RZ/ES hit the 0-1 base range boundary before reaching an exact
+      // match — the pipeline's metal-tint blend can't reproduce those exact
+      // hues at full purity, so these are the closest achievable.
+      const BASE_COLORS = [
+        [0.6994, 0.7070, 0.7807], // TZ (Precision)    — #B2B4C7 silver-blue
+        [0.4431, 0.1608, 0.0471], // TX (Ignition)     — #71290C deep red
+        [0.1725, 0.3882, 0.2235], // RX (Regeneration) — #2C6339 forest green
+        [0.1490, 0.3412, 0.7882], // RZ (Future)       — #2657C9 blue
+        [0.7000, 0.5725, 0.3608], // NX (Radiance)     — #B3925C warm tan
+        [0.4980, 0.3255, 0.5333], // ES (Flow)         — #7F5388 purple
+        [0.9800, 0.9800, 0.9700], // Cream             — #FAFAF7 near-white
+      ];
+
+      // Screen-space anchor each color's blob orbits (uv space: 0,0 = top-left,
+      // 1,1 = bottom-right), sampled from the reference gradient's actual
+      // layout: blue top-left, purple top-center, cream top-right, orange
+      // right-mid, yellow bottom-right, mint bottom-left. blobPos() adds a
+      // small continuous drift on top so the field still flows, it just no
+      // longer wanders across the whole canvas.
+      const ANCHORS = [
+        [0.18, 0.12], // TZ (Precision)    — silver, upper-left (subtle fill)
+        [0.06, 0.06], // TX (Ignition)     — vivid red, top-left corner
+        [0.04, 0.44], // RX (Regeneration) — electric green, left-middle
+        [0.88, 0.82], // RZ (Future)       — deep blue, bottom-right
+        [0.68, 0.08], // NX (Radiance)     — vivid orange, top-right
+        [0.44, 0.90], // ES (Flow)         — rich purple, bottom-center
+        [0.92, 0.06], // Cream             — top-right corner
+      ];
+      gl.uniform2fv(uAnchors, ANCHORS.flat());
+
+      // Cream's weight (last entry) is raised well above the others (was
+      // 0.7, the lowest) because it needs to dominate the largest single
+      // region in the reference image (the top-right white field) against
+      // six competing blobs — empirically converged in-browser against the
+      // sampled target.
+      const NEUTRAL_WEIGHTS = [1, 1, 1, 1, 1, 1, 0.7];
+      let weights = NEUTRAL_WEIGHTS.slice();
+      let tWeights = NEUTRAL_WEIGHTS.slice();
+      let isRestartingFlag = false;
+      let restartEase = 0.0; // 0 = normal speed, 1 = full restart slow-mo
+      let paletteLockedUntilFirstAnswer = true;
+      let restartTransitionInProgress = false;
+      let restartPaletteStartedAt = 0;
+      let restartPaletteFromWeights = NEUTRAL_WEIGHTS.slice();
+      let restartPaletteFromRevealAmt = 0.0;
+      const RESTART_START_SCREEN_DELAY_MS = 750; // final screen fades away first
+      const RESTART_TOTAL_DURATION_MS = 1850; // start scrim fade-in + color reset land together
+      let targetRevealAmt = 0.0;
+      let revealAmt = 0.0;
+      let startTime = performance.now();
+
+      function setWeights(scores, stage) {
+        const keys = ["TZ", "TX", "RX", "RZ", "NX", "ES"];
+        const max = Math.max(...Object.values(scores), 1);
+        const ranked = [...keys].sort((a, b) => scores[b] - scores[a]);
+        const leaderScore = scores[ranked[0]];
+
+        keys.forEach((k, i) => {
+          const s = scores[k];
+          const prop = s / Math.max(leaderScore, 1);
+          const rank = ranked.indexOf(k);
+          let t;
+
+          // Stage now runs 1–5 (5 questions instead of 4) — scaled accordingly
+          if (stage === 1) {
+            t = s > 0 ? 1.0 : 0.42;
+          } else if (stage === 2) {
+            if (s === 0) t = 0.0;
+            else if (rank === 0) t = 1.0;
+            else if (prop >= 0.85) t = 0.7;
+            else t = 0.3;
+          } else if (stage === 3) {
+            if (s === 0) t = 0.0;
+            else if (rank === 0) t = 1.0;
+            else if (prop >= 0.75) t = 0.4;
+            else t = 0.1;
+          } else if (stage === 4) {
+            if (s === 0) t = 0.0;
+            else if (rank === 0) t = 1.0;
+            else if (rank === 1 && prop >= 0.7) t = 0.25;
+            else t = 0.0;
+          } else {
+            // stage 5 — final question, sharpest narrowing before reveal
+            t = rank === 0 ? 1.0 : 0.0;
+          }
+          tWeights[i] = Math.max(0, Math.min(1, t));
+        });
+
+        const beigeMap = { 1: 0.55, 2: 0.4, 3: 0.25, 4: 0.1, 5: 0.0 };
+        tWeights[6] = beigeMap[stage] !== undefined ? beigeMap[stage] : 0.7;
+      }
+
+      function setRevealWeights(winner) {
+        const keys = ["TZ", "TX", "RX", "RZ", "NX", "ES"];
+        // Winner rises to full; everyone else eases down to a faint trace
+        // rather than zero — true zero combined with the winner's rapid
+        // rise is what created the abrupt "snap" feeling. A small trace
+        // value lets the lerp itself do the fading work smoothly.
+        keys.forEach((k, i) => {
+          tWeights[i] = k === winner ? 1.0 : 0.0;
+        });
+        tWeights[6] = 0.22;
+        targetRevealAmt = 1.0;
+      }
+
+      function resetWeights() {
+        tWeights = NEUTRAL_WEIGHTS.slice();
+        targetRevealAmt = 0.0;
+      }
+
+      function restartPaletteProgress() {
+        const elapsed = performance.now() - restartPaletteStartedAt;
+        return Math.max(0, Math.min(1, elapsed / RESTART_TOTAL_DURATION_MS));
+      }
+
+      function applyTimedRestartPalette() {
+        // Use a time-based blend instead of a per-frame lerp so the color return
+        // lands exactly with the opening UI animation, regardless of frame rate.
+        const p = restartPaletteProgress();
+        for (let i = 0; i < NEUTRAL_WEIGHTS.length; i++) {
+          weights[i] =
+            restartPaletteFromWeights[i] +
+            (NEUTRAL_WEIGHTS[i] - restartPaletteFromWeights[i]) * p;
+          tWeights[i] = NEUTRAL_WEIGHTS[i];
+        }
+        revealAmt =
+          restartPaletteFromRevealAmt + (0.0 - restartPaletteFromRevealAmt) * p;
+        targetRevealAmt = 0.0;
+      }
+
+      function snapWeightsToNeutral() {
+        for (let i = 0; i < NEUTRAL_WEIGHTS.length; i++) {
+          weights[i] = NEUTRAL_WEIGHTS[i];
+          tWeights[i] = NEUTRAL_WEIGHTS[i];
+        }
+        targetRevealAmt = 0.0;
+        revealAmt = 0.0;
+        isRestartingFlag = false;
+        restartEase = 0.0;
+      }
+
+      function isNeutralReturnComplete() {
+        const weightsReady = weights.every(
+          (w, i) => Math.abs(w - NEUTRAL_WEIGHTS[i]) < 0.004,
+        );
+        const revealReady =
+          Math.abs(revealAmt) < 0.01 && Math.abs(targetRevealAmt) < 0.01;
+        return weightsReady && revealReady;
+      }
+
+      function setStartControlsEnabled(enabled) {
+        document.querySelectorAll("#s-start .cta-btn").forEach((b) => {
+          b.disabled = !enabled;
+        });
+      }
+
+      function showStartDuringRestart() {
+        if (!restartTransitionInProgress) return;
+        document.querySelector(".device").classList.add("start-state");
+        updateProgress(0);
+        setStartControlsEnabled(false);
+        showScreen("start");
+      }
+
+      function finishRestartToStart() {
+        // The start UI has been fading in while the background returns to neutral.
+        // Snap only the invisible tail of the interpolation, then lock the start/Q1
+        // palette so nothing can drift before the first Q1 answer.
+        snapWeightsToNeutral();
+        paletteLockedUntilFirstAnswer = true;
+        restartTransitionInProgress = false;
+        document.querySelectorAll(".restart-btn").forEach((b) => {
+          b.disabled = false;
+        });
+        setStartControlsEnabled(true);
+      }
+
+      function waitForRestartTimeline(startedAt, startShown) {
+        if (!restartTransitionInProgress) return;
+
+        const elapsed = performance.now() - startedAt;
+
+        if (!startShown && elapsed >= RESTART_START_SCREEN_DELAY_MS) {
+          showStartDuringRestart();
+          startShown = true;
+        }
+
+        if (elapsed >= RESTART_TOTAL_DURATION_MS) {
+          finishRestartToStart();
+          return;
+        }
+
+        requestAnimationFrame(() =>
+          waitForRestartTimeline(startedAt, startShown),
+        );
+      }
+
+      function render() {
+        if (paletteLockedUntilFirstAnswer) {
+          // Start and unanswered-Q1 are a hard neutral palette state.
+          // u_time still animates the blobs, but color weights cannot drift
+          // from a previous run until the first answer explicitly unlocks them.
+          snapWeightsToNeutral();
+        } else if (restartTransitionInProgress) {
+          // During Start Over, keep the palette on a fixed timeline so it
+          // finishes at the same moment the opening UI finishes fading in.
+          applyTimedRestartPalette();
+        } else {
+          // restartEase smoothly approaches 1 while restarting and 0 otherwise —
+          // continuous, not a hard switch. This removes the discontinuity that
+          // existed when isRestartingFlag flipped from true to false abruptly.
+          const restartTarget = isRestartingFlag ? 1.0 : 0.0;
+          restartEase += (restartTarget - restartEase) * 0.05;
+
+          // Smooth, continuous lerp speed — blends between restart pace, normal
+          // quiz pace, and reveal pace, all as continuous functions of state
+          // rather than any hard threshold switch.
+          const baseLerp = 0.028;
+          const revealLerp = 0.052;
+          const restartLerp = 0.0004;
+          const restartReturnLerp = 0.11;
+          const questionSpeed = baseLerp + (revealLerp - baseLerp) * revealAmt;
+          const lerpSpeed = restartTransitionInProgress
+            ? restartReturnLerp
+            : questionSpeed + (restartLerp - questionSpeed) * restartEase;
+
+          if (
+            isRestartingFlag &&
+            weights.every((w, i) => Math.abs(w - tWeights[i]) < 0.01)
+          ) {
+            isRestartingFlag = false;
+          }
+          for (let i = 0; i < 7; i++) {
+            weights[i] += (tWeights[i] - weights[i]) * lerpSpeed;
+          }
+          // Slightly faster ease on revealAmt itself so the speed-up above
+          // settles smoothly rather than lagging far behind the weight change.
+          const revealEaseSpeed = restartTransitionInProgress ? 0.08 : 0.035;
+          revealAmt += (targetRevealAmt - revealAmt) * revealEaseSpeed;
+        }
+
+        const t = (performance.now() - startTime) / 1000;
+        gl.uniform1f(uTime, t);
+        gl.uniform3fv(uColors, BASE_COLORS.flat());
+        gl.uniform1fv(uWeights, weights);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        requestAnimationFrame(render);
+      }
+      applyMaterialSettings();
+      render();
+
+      // ── Quiz data — questions/options, and each option's contribution
+      // toward every vehicle's score. Additive scoring: every answer adds
+      // its points to every vehicle simultaneously, per the original v5
+      // matrix. No elimination, no branching. Customizable via the
+      // CDH_BRAND_UPDATE postMessage (theme.quiz) — see the brand-bridge
+      // script at the end of this file.
+      const DEFAULT_QUIZ = [
+        {
+          text: "How far does the road usually take you?",
+          options: [
+            { text: "A quick trip around town — under 25 miles", scores: { ES: 3, NX: 0, RZ: 0, RX: 1, TX: 0, TZ: 1 } },
+            { text: "An easy daily commute — 25–50 miles", scores: { ES: 0, NX: 3, RZ: 1, RX: 0, TX: 0, TZ: 0 } },
+            { text: "However far it takes — 100+ miles", scores: { ES: 0, NX: 0, RZ: 0, RX: 3, TX: 0, TZ: 0 } },
+          ],
+        },
+        {
+          text: "Who's usually along for the drive?",
+          options: [
+            { text: "Just me, no compromises", scores: { ES: 1, NX: 3, RZ: 0, RX: 0, TX: 0, TZ: 0 } },
+            { text: "A tight crew — 2–4 people", scores: { ES: 0, NX: 0, RZ: 3, RX: 0, TX: 0, TZ: 1 } },
+            { text: "Everyone's coming — 5–6 people", scores: { ES: 0, NX: 0, RZ: 1, RX: 3, TX: 1, TZ: 0 } },
+          ],
+        },
+        {
+          text: "Describe your everyday drive.",
+          options: [
+            { text: "City streets, sharp turns, tight spots", scores: { ES: 1, NX: 2, RZ: 1, RX: 1, TX: 0, TZ: 0 } },
+            { text: "Highway miles, cruise control earned", scores: { ES: 0, NX: 0, RZ: 2, RX: 0, TX: 0, TZ: 3 } },
+            { text: "Long hauls that reward a good ride", scores: { ES: 0, NX: 0, RZ: 0, RX: 0, TX: 3, TZ: 0 } },
+          ],
+        },
+        {
+          text: "What should it be ready for?",
+          options: [
+            { text: "Getting you there, exactly on time", scores: { ES: 1, NX: 0, RZ: 1, RX: 0, TX: 0, TZ: 3 } },
+            { text: "Family first — every seat matters", scores: { ES: 2, NX: 0, RZ: 0, RX: 2, TX: 1, TZ: 0 } },
+            { text: "People and gear, no trade-offs", scores: { ES: 0, NX: 2, RZ: 0, RX: 0, TX: 2, TZ: 0 } },
+          ],
+        },
+        {
+          text: "Plans change. Where does the day take you?",
+          options: [
+            { text: "Somewhere close, decided on a whim", scores: { ES: 3, NX: 0, RZ: 0, RX: 0, TX: 0, TZ: 1 } },
+            { text: "Worth the drive — 100+ miles out", scores: { ES: 1, NX: 2, RZ: 0, RX: 0, TX: 2, TZ: 0 } },
+            { text: "A weekend worth chasing", scores: { ES: 0, NX: 0, RZ: 3, RX: 0, TX: 0, TZ: 1 } },
+          ],
+        },
+      ];
+
+      let QUIZ = DEFAULT_QUIZ;
+
+      // Builds the <div class="screen" id="s-qN"> question elements from
+      // QUIZ into #question-screens-slot, replacing whatever was there
+      // before. Used for the initial render and to rebuild everything when
+      // a customized quiz arrives via CDH_BRAND_UPDATE. Every class name
+      // here matches the original hand-authored markup exactly, so all
+      // existing CSS/animation code — which selects by class, and by the
+      // `[id^="s-q"]` prefix for the landscape two-column layout — keeps
+      // working no matter how many questions/options there are.
+      function renderQuestionScreens(quiz) {
+        const slot = document.getElementById("question-screens-slot");
+        if (!slot) return;
+        slot.innerHTML = "";
+        quiz.forEach((q, qi) => {
+          const qNum = qi + 1;
+          const screen = document.createElement("div");
+          screen.className = "screen";
+          screen.id = "s-q" + qNum;
+
+          const scrim = document.createElement("div");
+          scrim.className = "text-scrim";
+          const label = document.createElement("div");
+          label.className = "q-label";
+          label.textContent = "Question " + qNum + " of " + quiz.length;
+          const text = document.createElement("div");
+          text.className = "q-text";
+          text.textContent = q.text;
+          scrim.appendChild(label);
+          scrim.appendChild(text);
+          screen.appendChild(scrim);
+
+          const options = document.createElement("div");
+          options.className = "options";
+          q.options.forEach((opt, oi) => {
+            const btn = document.createElement("button");
+            btn.className = "opt-btn";
+            btn.addEventListener("click", function () {
+              answer(qNum, oi, btn);
+            });
+            const optLabel = document.createElement("span");
+            optLabel.className = "opt-label";
+            optLabel.textContent = opt.text;
+            btn.appendChild(optLabel);
+            options.appendChild(btn);
+          });
+          screen.appendChild(options);
+
+          slot.appendChild(screen);
+        });
+      }
+      renderQuestionScreens(QUIZ);
+
+      // Called by the brand-bridge script (a separate <script> tag, later in
+      // this file) to swap in a customized quiz — a `let` declared here
+      // isn't visible from a different <script> element, so this function
+      // is the bridge between the two. Resets to the start screen, since a
+      // mid-quiz swap would leave stale progress/answers pointing at
+      // questions that may no longer exist.
+      function setQuiz(newQuiz) {
+        QUIZ = Array.isArray(newQuiz) && newQuiz.length ? newQuiz : DEFAULT_QUIZ;
+        renderQuestionScreens(QUIZ);
+        scores = { ES: 0, NX: 0, RZ: 0, RX: 0, TX: 0, TZ: 0 };
+        lastAnswer = null;
+        answerHistory = [];
+        answeredQs.clear();
+        const deviceEl = document.querySelector(".device");
+        if (deviceEl) deviceEl.classList.add("start-state");
+        showScreen("start");
+      }
+
+      // Called by the brand-bridge script to recolor the animated
+      // background. BASE_COLORS entries aren't literal on-screen colors —
+      // each is pre-inverted through the shader's saturation boost +
+      // metalness blend (see the comment above BASE_COLORS) so it renders
+      // as its intended hue. invertPipeline() runs that same inversion
+      // generically for an arbitrary customer color, using the pipeline's
+      // average sheen (~1, the sheen itself varies per-pixel) as an
+      // approximation — close enough for a brand color wash, even though
+      // the original 7 defaults were additionally hand-tuned pixel-by-pixel.
+      var METAL_TINT = [0.92, 0.94, 0.97];
+      var PIPELINE_METAL_K = 0.5 * 0.35; // metalness * metal-tint-mix-fraction
+      // Precomputed inverse of the (saturation boost + metalness blend)
+      // linear transform for PIPELINE_SAT = 1.95, already divided by
+      // (1 - PIPELINE_METAL_K).
+      var INV_PIPELINE = [
+        [0.7981662781662783, 0.34663558663558663, 0.06731934731934731],
+        [0.17656565656565656, 0.9682362082362084, 0.06731934731934731],
+        [0.17656565656565656, 0.34663558663558663, 0.688919968919969],
+      ];
+      function hexToRgb01(hex) {
+        var m = /^#?([0-9a-f]{6})$/i.exec(hex || "");
+        if (!m) return null;
+        var n = parseInt(m[1], 16);
+        return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+      }
+      function invertPipeline(target) {
+        var rhs = [
+          target[0] - PIPELINE_METAL_K * METAL_TINT[0],
+          target[1] - PIPELINE_METAL_K * METAL_TINT[1],
+          target[2] - PIPELINE_METAL_K * METAL_TINT[2],
+        ];
+        var base = [0, 1, 2].map(function (row) {
+          return INV_PIPELINE[row][0] * rhs[0] + INV_PIPELINE[row][1] * rhs[1] + INV_PIPELINE[row][2] * rhs[2];
+        });
+        return base.map(function (v) {
+          return Math.max(0, Math.min(1, v));
+        });
+      }
+      // Maps the 3 customer brand colors onto the 6 result-linked blob
+      // slots (TZ, TX, RX, RZ, NX, ES — BASE_COLORS indices 0-5); the 7th
+      // slot (Cream, index 6) is the dominant bright highlight and is left
+      // at its default so the effect keeps some contrast rather than going
+      // flat when all colors are close in tone.
+      function setBackgroundColors(colors) {
+        if (!colors) return;
+        var primary = colors.primaryColor && hexToRgb01(colors.primaryColor);
+        var secondary = colors.secondaryColor && hexToRgb01(colors.secondaryColor);
+        var accent = colors.accentColor && hexToRgb01(colors.accentColor);
+        if (!primary && !secondary && !accent) return;
+        [accent, primary, secondary, primary, accent, secondary].forEach(function (rgb, i) {
+          if (rgb) BASE_COLORS[i] = invertPipeline(rgb);
+        });
+      }
+
+      let scores = { ES: 0, NX: 0, RZ: 0, RX: 0, TX: 0, TZ: 0 };
+      let lastAnswer = null;
+      let answerHistory = []; // tracks every answer text given, used for tiebreak step 2
+      let answeredQs = new Set(); // double-tap guard: each question scores exactly once
+
+      function showScreen(id) {
+        document.querySelectorAll(".screen").forEach((s) => {
+          s.classList.remove("active");
+          s.classList.remove("restart-fade-out");
+        });
+        const target = document.getElementById("s-" + id);
+        target.classList.add("active");
+
+        // Reveal screen sits higher with more generous spacing, per reference —
+        // toggle a class on the content container rather than the screen itself,
+        // since justify-content lives on .content, not .screen.
+        const contentEl = document.querySelector(".content");
+        if (contentEl) {
+          contentEl.classList.toggle("reveal-active", id === "reveal");
+        }
+
+        // Explicitly retrigger the scrim fade-in every time a screen is shown,
+        // rather than relying on display:none toggling to replay a CSS
+        // animation (which can fail to fire reliably on repeated/restarted runs).
+        const scrim = target.querySelector(".text-scrim");
+        if (scrim) {
+          scrim.classList.remove("scrim-fade-in");
+          // Force a reflow so the browser registers the class removal before
+          // we re-add it — without this the animation won't restart.
+          void scrim.offsetWidth;
+          scrim.classList.add("scrim-fade-in");
+        }
+      }
+      function updateProgress(q) {
+        document.getElementById("prog").style.width = (q / QUIZ.length) * 100 + "%";
+      }
+
+      function startQuiz() {
+        document.querySelector(".device").classList.remove("start-state");
+        scores = { ES: 0, NX: 0, RZ: 0, RX: 0, TX: 0, TZ: 0 };
+        lastAnswer = null;
+        answerHistory = [];
+        answeredQs.clear();
+        paletteLockedUntilFirstAnswer = true;
+        restartTransitionInProgress = false;
+        snapWeightsToNeutral();
+        updateProgress(0);
+        showScreen("q1");
+        _quizTrack.sessionStart();
+        if (typeof gtag === "function") gtag("event", "quiz_start");
+      }
+
+      function answer(q, optIndex, btn) {
+        const choiceText = QUIZ[q - 1].options[optIndex].text;
+        // Guard: ignore repeat taps on an already-answered question. Without
+        // this, a double-tap double-counts the answer's points and launches a
+        // second reveal timeline (e.g. TX reveal overwritten by RZ).
+        if (answeredQs.has(q)) return;
+        answeredQs.add(q);
+        _quizTrack.click(q, choiceText);
+        if (typeof gtag === "function") gtag("event", "quiz_answer", { question: q, choice: choiceText });
+        document
+          .querySelectorAll("#s-q" + q + " .opt-btn")
+          .forEach((b) => b.classList.remove("selected"));
+        btn.classList.add("selected");
+
+        // Start and unanswered-Q1 stay locked to the neutral palette so a
+        // previous winner can never drift into the next run. The first answer
+        // is the only moment that unlocks the palette and allows color weights
+        // to begin easing toward a vehicle-specific mix.
+        paletteLockedUntilFirstAnswer = false;
+        restartTransitionInProgress = false;
+        isRestartingFlag = false;
+        restartEase = 0.0;
+
+        // Additive scoring — every answer adds its points to every vehicle
+        // simultaneously, per the v5 matrix. No elimination, no branching.
+        const points = QUIZ[q - 1].options[optIndex].scores;
+        Object.keys(points).forEach((v) => {
+          scores[v] += points[v];
+        });
+        answerHistory.push({ text: choiceText, scores: points });
+
+        lastAnswer = choiceText;
+        setWeights(scores, q);
+        updateProgress(q);
+
+        setTimeout(() => {
+          if (q < QUIZ.length) {
+            showScreen("q" + (q + 1));
+          } else {
+            // No "which Lexus matches you" reveal anymore — the quiz just
+            // ends. The session is still marked complete (see
+            // _quizTrack.complete below) so completion-rate stats keep
+            // working; it just no longer carries a vehicle-match result.
+            document.getElementById("prog").style.width = "100%";
+            _quizTrack.complete();
+            if (typeof gtag === "function") gtag("event", "quiz_complete");
+            showScreen("reveal");
+          }
+        }, 500);
+      }
+
+      function restart() {
+        if (restartTransitionInProgress) return;
+        restartTransitionInProgress = true;
+
+        scores = { ES: 0, NX: 0, RZ: 0, RX: 0, TX: 0, TZ: 0 };
+        lastAnswer = null;
+        answerHistory = [];
+        answeredQs.clear();
+
+        // Start the return-to-neutral the instant START OVER is clicked, fade
+        // the final-result UI away immediately, then bring the start UI in while
+        // the last part of the color transition is still resolving. The opening
+        // controls are disabled until both transitions land together.
+        document.querySelectorAll(".restart-btn").forEach((b) => {
+          b.disabled = true;
+        });
+
+        const finalScreen = document.getElementById("s-reveal");
+        if (finalScreen) {
+          finalScreen.classList.remove("restart-fade-out");
+          // Force a reflow so the fade-out animation reliably retriggers on
+          // every run, even after repeated kiosk sessions.
+          void finalScreen.offsetWidth;
+          finalScreen.classList.add("restart-fade-out");
+        }
+
+        paletteLockedUntilFirstAnswer = false;
+        isRestartingFlag = false;
+        restartEase = 0.0;
+        restartPaletteFromWeights = weights.slice();
+        restartPaletteFromRevealAmt = revealAmt;
+        restartPaletteStartedAt = performance.now();
+        resetWeights();
+
+        // The vehicle car image persists across both reveal screens and is
+        // only ever cleared here, on restart — per spec, it never fades out
+        // at any other transition.
+        const carEl = document.getElementById("vehicleCar");
+        if (carEl) {
+          carEl.classList.add("fast-fade");
+          carEl.classList.remove("visible");
+          setTimeout(() => carEl.classList.remove("fast-fade"), 500);
+        }
+        const tagEl = document.getElementById("vehicleTag");
+        if (tagEl) {
+          tagEl.classList.remove("visible");
+          tagEl.classList.remove("fading-out");
+        }
+
+        // Clear any lingering "selected" highlight on answer buttons from
+        // the previous run-through, so a fresh quiz starts with no answers
+        // visually marked.
+        document
+          .querySelectorAll(".opt-btn.selected")
+          .forEach((b) => b.classList.remove("selected"));
+
+        const restartStartedAt = restartPaletteStartedAt;
+        requestAnimationFrame(() =>
+          waitForRestartTimeline(restartStartedAt, false),
+        );
+      }
+    </script>
+
+    <script>
+      (function () {
+        var QUEUE_KEY = "lx_track_queue";
+
+        // Read ?event= from URL, e.g. ?event=Dubai_Jul26
+        var _eventName = (function () {
+          try {
+            return (
+              new URLSearchParams(window.location.search).get("event") ||
+              "default"
+            );
+          } catch (e) {
+            return "default";
+          }
+        })();
+
+        function uid() {
+          return (
+            "xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+              var r = (Math.random() * 16) | 0,
+                v = c === "x" ? r : (r & 0x3) | 0x8;
+              return v.toString(16);
+            }) +
+            "_" +
+            Date.now().toString(36)
+          );
+        }
+
+        function getQueue() {
+          try {
+            return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
+          } catch (e) {
+            return [];
+          }
+        }
+        function saveQueue(q) {
+          try {
+            localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+          } catch (e) {}
+        }
+        function enqueue(event) {
+          var q = getQueue();
+          q.push(event);
+          saveQueue(q);
+        }
+
+        function sendEvent(event) {
+          return fetch("/track", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(event),
+          });
+        }
+
+        function flushQueue() {
+          var q = getQueue();
+          if (!q.length) return;
+          fetch("/sync", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ events: q }),
+          })
+            .then(function (r) {
+              if (r.ok) {
+                saveQueue([]); // clear only on success
+                console.log("[track] Synced " + q.length + " offline event(s)");
+              }
+            })
+            .catch(function () {});
+        }
+
+        // Flush whenever we come back online
+        window.addEventListener("online", flushQueue);
+        // Also try on load (in case a previous session left events)
+        if (navigator.onLine) {
+          setTimeout(flushQueue, 1000);
+        }
+
+        var _sid = null;
+
+        window._quizTrack = {
+          sessionStart: function () {
+            _sid = uid();
+            var event = {
+              type: "start",
+              id: _sid,
+              ts: new Date().toISOString(),
+              event_name: _eventName,
+            };
+            function dispatch(ev) {
+              if (navigator.onLine) {
+                sendEvent(ev).catch(function () { enqueue(ev); });
+              } else { enqueue(ev); }
+            }
+            if (navigator.onLine) {
+              fetch("https://ipapi.co/json/")
+                .then(function(r) { return r.json(); })
+                .then(function(geo) {
+                  event.country = geo.country_name || "";
+                  event.city    = geo.city    || "";
+                  event.region  = geo.region  || "";
+                  dispatch(event);
+                })
+                .catch(function() { dispatch(event); });
+            } else {
+              enqueue(event);
+            }
+          },
+          click: function (q, text) {
+            if (!_sid) return;
+            var event = {
+              type: "answer",
+              id: _sid,
+              q: q,
+              text: text,
+              ts: new Date().toISOString(),
+              event_name: _eventName,
+            };
+            if (navigator.onLine) {
+              sendEvent(event).catch(function () {
+                enqueue(event);
+              });
+            } else {
+              enqueue(event);
+            }
+          },
+          complete: function () {
+            if (!_sid) return;
+            var event = {
+              type: "result",
+              id: _sid,
+              winner: null,
+              ts: new Date().toISOString(),
+              event_name: _eventName,
+            };
+            if (navigator.onLine) {
+              sendEvent(event).catch(function () {
+                enqueue(event);
+              });
+            } else {
+              enqueue(event);
+            }
+          },
+        };
+      })();
+    </script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/sw.js")
+            .then(function (reg) {
+              console.log("[SW] Registered, scope:", reg.scope);
+            })
+            .catch(function (e) {
+              console.warn("[SW] Registration failed:", e);
+            });
+        });
+      }
+    </script>
+    <script>
+      // Minimal brand-bridge, following the same contract every other game
+      // uses (see game/BRANDING_CONTRACT.md) even though this one isn't a
+      // bundled JS app: listens for a CDH_BRAND_UPDATE postMessage from the
+      // customizer (see GamePreviewFrame.tsx), and — for a plain link, no
+      // iframe — reads the same fields from the URL's query params instead.
+      // Currently only the logo, brand name, tagline, background colors,
+      // and quiz are wired up; more fields land as the rest of the
+      // branding gets wired.
+      (function () {
+        var brandLogoImg = document.getElementById("brandLogo");
+        var brandNameEl = document.getElementById("startBrandName");
+        var taglineEl = document.getElementById("startTagline");
+        var hex = /^#[0-9a-fA-F]{6}$/;
+
+        function applyBrand(theme) {
+          if (!theme) return;
+          if (theme.logoUrl && brandLogoImg) {
+            brandLogoImg.src = theme.logoUrl;
+            brandLogoImg.style.display = "";
+          }
+          if (theme.logoSize && brandLogoImg) {
+            brandLogoImg.style.width = theme.logoSize + "px";
+            brandLogoImg.style.height = theme.logoSize + "px";
+          }
+          if (theme.brandName && brandNameEl) {
+            brandNameEl.textContent = theme.brandName.toUpperCase();
+          }
+          if (theme.tagline && taglineEl) {
+            taglineEl.textContent = theme.tagline;
+          }
+          if (typeof window.setBackgroundColors === "function") {
+            window.setBackgroundColors({
+              primaryColor: theme.primaryColor,
+              secondaryColor: theme.secondaryColor,
+              accentColor: theme.accentColor,
+            });
+          }
+          if (theme.quiz && typeof window.setQuiz === "function") {
+            window.setQuiz(theme.quiz);
+          }
+        }
+
+        function themeFromQueryParams() {
+          var params = new URLSearchParams(window.location.search);
+          var theme = {};
+          if (params.has("logo")) theme.logoUrl = params.get("logo");
+          var logoSize = Number(params.get("logoSize"));
+          if (Number.isFinite(logoSize) && logoSize > 0) theme.logoSize = logoSize;
+          if (params.has("brandName")) theme.brandName = params.get("brandName");
+          if (params.has("tagline")) theme.tagline = params.get("tagline");
+          var primaryColor = params.get("primaryColor");
+          var secondaryColor = params.get("secondaryColor");
+          var accentColor = params.get("accentColor");
+          if (primaryColor && hex.test(primaryColor)) theme.primaryColor = primaryColor;
+          if (secondaryColor && hex.test(secondaryColor)) theme.secondaryColor = secondaryColor;
+          if (accentColor && hex.test(accentColor)) theme.accentColor = accentColor;
+          return theme;
+        }
+
+        applyBrand(themeFromQueryParams());
+
+        // The quiz can't travel inline in a query param the way logoUrl
+        // does — a fully custom quiz could be far too large — so for a
+        // standalone/live-link load (no iframe, no postMessage) it's
+        // referenced by URL instead and fetched here.
+        (function () {
+          var params = new URLSearchParams(window.location.search);
+          var quizUrl = params.get("quiz");
+          if (!quizUrl || typeof window.setQuiz !== "function") return;
+          fetch(quizUrl)
+            .then(function (r) {
+              return r.ok ? r.json() : null;
+            })
+            .then(function (quiz) {
+              if (quiz) window.setQuiz(quiz);
+            })
+            .catch(function () {
+              /* keep the default quiz if the fetch fails */
+            });
+        })();
+
+        window.addEventListener("message", function (event) {
+          if (event.data && event.data.type === "CDH_BRAND_UPDATE") {
+            applyBrand(event.data.theme);
+          }
+        });
+
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: "CDH_BRAND_READY" }, "*");
+        }
+      })();
+    </script>
+  </body>
+</html>

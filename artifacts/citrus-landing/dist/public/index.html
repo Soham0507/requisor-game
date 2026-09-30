@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <script>
+      // Applies the persisted theme (src/hooks/use-theme.ts, same
+      // localStorage key the landing page's own toggle uses) before first
+      // paint, on every route — otherwise a page that loads with "dark"
+      // missing from <html> would flash light until React hydrates.
+      try {
+        if (localStorage.getItem("immerse-theme") !== "light") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+    <title>Immerse — Games people play, moments people remember</title>
+    <meta name="description" content="Immerse builds interactive web games and AI-powered brand experiences for show floors, tours, and live activations — the arcade energy of a game, the spectacle of a booth built to be remembered." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-DPO5moSv.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-tdWKM6s1.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

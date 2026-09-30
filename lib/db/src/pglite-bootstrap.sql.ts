@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS branding_drafts (
   logo_data_url text,
   bg_data_url text,
   font_data_url text,
+  quiz_json jsonb,
   heading text not null,
   tagline text,
   status draft_status not null default 'draft',
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS branding_drafts (
 -- explicit ALTER to actually show up.
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS bg_data_url text;
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS font_data_url text;
+ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS quiz_json jsonb;
 
 CREATE TABLE IF NOT EXISTS orders (
   id uuid primary key default gen_random_uuid(),

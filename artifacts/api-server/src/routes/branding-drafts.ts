@@ -70,6 +70,7 @@ router.post("/branding-drafts", async (req, res) => {
     logoDataUrl: body.logoDataUrl ?? null,
     bgDataUrl: body.bgDataUrl ?? null,
     fontDataUrl: body.fontDataUrl ?? null,
+    quiz: body.quiz ?? null,
     heading: body.heading,
     tagline: body.tagline ?? null,
     updatedAt: new Date(),

@@ -1,0 +1,142 @@
+import { z } from "zod/v4";
+export declare const playerSubmissionsTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "player_submissions";
+    schema: undefined;
+    columns: {
+        id: import("drizzle-orm/pg-core").PgColumn<{
+            name: "id";
+            tableName: "player_submissions";
+            dataType: "string";
+            columnType: "PgUUID";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: true;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        gameId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "game_id";
+            tableName: "player_submissions";
+            dataType: "string";
+            columnType: "PgUUID";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        orderId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "order_id";
+            tableName: "player_submissions";
+            dataType: "string";
+            columnType: "PgUUID";
+            data: string;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        name: import("drizzle-orm/pg-core").PgColumn<{
+            name: "name";
+            tableName: "player_submissions";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        email: import("drizzle-orm/pg-core").PgColumn<{
+            name: "email";
+            tableName: "player_submissions";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        extra: import("drizzle-orm/pg-core").PgColumn<{
+            name: "extra";
+            tableName: "player_submissions";
+            dataType: "json";
+            columnType: "PgJsonb";
+            data: Record<string, unknown>;
+            driverParam: unknown;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {
+            $type: Record<string, unknown>;
+        }>;
+        createdAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "created_at";
+            tableName: "player_submissions";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+    };
+    dialect: "pg";
+}>;
+export declare const insertPlayerSubmissionSchema: z.ZodObject<{
+    name: z.ZodString;
+    gameId: z.ZodUUID;
+    email: z.ZodString;
+    orderId: z.ZodOptional<z.ZodNullable<z.ZodUUID>>;
+    extra: z.ZodOptional<z.ZodNullable<z.ZodType<Record<string, unknown>, Record<string, unknown>, z.core.$ZodTypeInternals<Record<string, unknown>, Record<string, unknown>>>>>;
+}, {
+    out: {};
+    in: {};
+}>;
+export type InsertPlayerSubmission = z.infer<typeof insertPlayerSubmissionSchema>;
+export type PlayerSubmission = typeof playerSubmissionsTable.$inferSelect;
+//# sourceMappingURL=player-submissions.d.ts.map

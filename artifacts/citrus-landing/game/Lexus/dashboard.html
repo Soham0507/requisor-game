@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{{GA4_SNIPPET}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Energy Quiz — Analytics</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #08080c;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: rgba(255,255,255,0.10);
+    --text: rgba(255,255,255,0.92);
+    --muted: rgba(255,255,255,0.45);
+    --accent: rgba(255,255,255,0.18);
+    --ES: #AF21FF; --NX: #F1ED7B; --RZ: #4a6fff; --RX: #9EFFBB; --TX: #FF6B31; --TZ: #B9BDDD;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.5; min-height: 100vh; padding: 0 0 60px; }
+
+  /* ── Header ── */
+  header { border-bottom: 1px solid var(--border); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  header h1 { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 400; margin-top: 3px; }
+  header .logo { font-size: 18px; font-weight: 200; letter-spacing: 2px; color: var(--text); }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .refresh-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 8px 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all .2s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+  .refresh-btn:hover { border-color: rgba(255,255,255,0.35); color: var(--text); }
+
+  /* ── Event Filter ── */
+  .event-bar { padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .event-bar-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .event-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { background: none; border: 1px solid var(--border); color: var(--muted); padding: 5px 14px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; border-radius: 999px; transition: all .2s; font-family: inherit; white-space: nowrap; }
+  .pill:hover { border-color: rgba(255,255,255,0.35); color: var(--text); }
+  .pill.active { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.55); color: var(--text); }
+
+  /* ── Date Filter ── */
+  .date-bar { padding: 14px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .date-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .date-field { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 11px; }
+  .date-field input { color-scheme: dark; background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; color: var(--text); font: inherit; padding: 6px 8px; min-height: 32px; }
+  .date-field input:focus-visible, .date-clear:focus-visible { outline: 2px solid rgba(255,255,255,0.75); outline-offset: 2px; }
+  .date-clear { background: none; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); cursor: pointer; font: inherit; font-size: 10px; letter-spacing: 1.5px; min-height: 32px; padding: 6px 11px; text-transform: uppercase; }
+  .date-clear:hover { border-color: rgba(255,255,255,0.35); color: var(--text); }
+  .date-filter-status { color: var(--muted); font-size: 11px; }
+  .date-filter-status.error { color: #ff9b9b; }
+  @media (min-width: 700px) { .date-bar { padding: 14px 40px; } }
+
+  /* ── Main ── */
+  .main { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+  /* ── KPI Row ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 28px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 18px 16px; }
+  .kpi-label { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .kpi-value { font-size: 30px; font-weight: 200; letter-spacing: -1px; }
+  .kpi-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* ── Event Comparison Table ── */
+  .event-table-wrap { overflow-x: auto; }
+  .event-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .event-table th { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-weight: 400; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .event-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+  .event-table tr:last-child td { border-bottom: none; }
+  .event-table .ev-name { font-size: 13px; font-weight: 400; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ev-badge { display: inline-block; padding: 2px 8px; border-radius: 2px; font-size: 10px; letter-spacing: 2px; font-weight: 500; }
+  .ev-badge.ES { background: rgba(175,33,255,.2); color: var(--ES); }
+  .ev-badge.NX { background: rgba(241,237,123,.15); color: var(--NX); }
+  .ev-badge.RZ { background: rgba(74,111,255,.2); color: var(--RZ); }
+  .ev-badge.RX { background: rgba(158,255,187,.15); color: var(--RX); }
+  .ev-badge.TX { background: rgba(255,107,49,.2); color: var(--TX); }
+  .ev-badge.TZ { background: rgba(185,189,221,.15); color: var(--TZ); }
+
+  /* ── Section ── */
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  /* ── Car Results ── */
+  .cars-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .car-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 16px; position: relative; overflow: hidden; }
+  .car-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; }
+  .car-card.ES::before { background: var(--ES); }
+  .car-card.NX::before { background: var(--NX); }
+  .car-card.RZ::before { background: var(--RZ); }
+  .car-card.RX::before { background: var(--RX); }
+  .car-card.TX::before { background: var(--TX); }
+  .car-card.TZ::before { background: var(--TZ); }
+  .car-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 2px; }
+  .car-code { font-size: 22px; font-weight: 200; letter-spacing: -0.5px; }
+  .car-count { font-size: 26px; font-weight: 200; }
+  .car-energy { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .car-pct { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .car-bar-track { background: rgba(255,255,255,0.07); border-radius: 2px; height: 3px; margin-top: 12px; }
+  .car-bar { height: 3px; border-radius: 2px; transition: width .4s ease; }
+  .car-card.ES .car-bar { background: var(--ES); }
+  .car-card.NX .car-bar { background: var(--NX); }
+  .car-card.RZ .car-bar { background: var(--RZ); }
+  .car-card.RX .car-bar { background: var(--RX); }
+  .car-card.TX .car-bar { background: var(--TX); }
+  .car-card.TZ .car-bar { background: var(--TZ); }
+
+  /* ── Questions ── */
+  .questions-grid { display: flex; flex-direction: column; gap: 14px; }
+  .q-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 18px 16px; }
+  .q-num { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .q-text { font-size: 14px; font-weight: 300; margin-bottom: 16px; line-height: 1.4; }
+  .answers { display: flex; flex-direction: column; gap: 12px; }
+  .answer-row { display: flex; flex-direction: column; gap: 6px; }
+  .answer-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .answer-label { font-size: 12px; color: var(--muted); flex: 1; min-width: 0; }
+  .answer-stats { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .answer-count { font-size: 12px; min-width: 20px; text-align: right; }
+  .answer-pct { font-size: 11px; color: var(--muted); min-width: 34px; text-align: right; }
+  .bar-track { width: 100%; background: rgba(255,255,255,0.07); border-radius: 2px; height: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; background: rgba(255,255,255,0.4); border-radius: 2px; transition: width .4s ease; }
+  .bar-fill.top { background: rgba(255,255,255,0.85); }
+
+  /* ── Locations ── */
+  .loc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .loc-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+  .loc-card-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .loc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .loc-name { font-size: 12px; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .loc-count { font-size: 11px; color: var(--muted); flex-shrink: 0; min-width: 24px; text-align: right; }
+  .loc-bar-track { flex: 1; background: rgba(255,255,255,0.07); border-radius: 2px; height: 4px; min-width: 40px; }
+  .loc-bar-fill { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.4); transition: width .4s ease; }
+  .loc-empty { font-size: 11px; color: var(--muted); font-style: italic; }
+  @media (min-width: 700px) { .loc-grid { gap: 16px; } .loc-card { padding: 20px; } }
+
+  /* ── Survey Reports ── */
+  .reports-section { max-width: 1200px; margin: 0 auto; padding: 24px 16px 0; }
+  .reports-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .report-card-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 16px; }
+  .report-card-title { font-size: 17px; font-weight: 300; }
+  .report-card-meta { color: var(--muted); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  .report-preview { background: #f5f6f2; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); height: 390px; }
+  .report-preview iframe { display: block; width: 100%; height: 100%; border: 0; }
+  .report-actions { display: flex; gap: 8px; padding: 12px 16px; }
+  .report-actions a { color: var(--text); border: 1px solid var(--border); border-radius: 2px; padding: 7px 11px; font-size: 10px; letter-spacing: 1.5px; text-decoration: none; text-transform: uppercase; }
+  .report-actions a:hover, .report-actions a:focus-visible { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.07); }
+  @media (min-width: 700px) {
+    .reports-section { padding: 40px 40px 0; }
+    .reports-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .report-preview { height: 430px; }
+  }
+
+  /* ── Sessions ── */
+  .session-cards { display: flex; flex-direction: column; gap: 10px; }
+  .session-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; }
+  .session-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+  .session-num { font-size: 11px; color: var(--muted); }
+  .session-time { font-size: 11px; color: var(--muted); }
+  .session-event { font-size: 10px; letter-spacing: 1px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); border-radius: 2px; padding: 2px 7px; }
+  .session-answers { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .ans-chip { background: rgba(255,255,255,0.07); border-radius: 2px; padding: 3px 8px; font-size: 11px; }
+  .q-label { font-size: 9px; letter-spacing: 1px; color: var(--muted); display: block; margin-bottom: 1px; }
+  .result-badge { display: inline-block; padding: 3px 10px; border-radius: 2px; font-size: 11px; letter-spacing: 2px; font-weight: 500; }
+  .result-badge.ES { background: rgba(175,33,255,.2); color: var(--ES); }
+  .result-badge.NX { background: rgba(241,237,123,.15); color: var(--NX); }
+  .result-badge.RZ { background: rgba(74,111,255,.2); color: var(--RZ); }
+  .result-badge.RX { background: rgba(158,255,187,.15); color: var(--RX); }
+  .result-badge.TX { background: rgba(255,107,49,.2); color: var(--TX); }
+  .result-badge.TZ { background: rgba(185,189,221,.15); color: var(--TZ); }
+
+  /* ── Desktop ── */
+  @media (min-width: 700px) {
+    header { padding: 28px 40px; }
+    header h1 { font-size: 13px; letter-spacing: 4px; }
+    header .logo { font-size: 20px; }
+    .event-bar { padding: 14px 40px; }
+    .main { padding: 40px; }
+    .kpi-row { grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 40px; }
+    .kpi { padding: 24px; }
+    .kpi-value { font-size: 36px; }
+    .section { margin-bottom: 40px; }
+    .cars-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .car-card { padding: 20px; }
+    .car-code { font-size: 28px; }
+    .car-count { font-size: 32px; }
+    .q-card { padding: 24px; }
+    .q-text { font-size: 15px; }
+    .answer-row { flex-direction: row; align-items: center; gap: 14px; }
+    .answer-top { flex: none; width: 200px; flex-shrink: 0; justify-content: flex-start; gap: 0; }
+    .answer-label { font-size: 12px; width: 200px; }
+    .answer-stats { gap: 8px; }
+    .bar-track { height: 8px; }
+  }
+  @media (min-width: 1000px) {
+    .cars-grid { grid-template-columns: repeat(6, 1fr); }
+    .answer-top { width: 220px; }
+    .answer-label { width: 220px; }
+  }
+
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 13px; letter-spacing: 1px; }
+  .url-hint { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 16px 20px; margin-bottom: 28px; font-size: 12px; color: var(--muted); line-height: 1.8; }
+  .url-hint code { background: rgba(255,255,255,0.08); border-radius: 2px; padding: 2px 6px; font-family: monospace; color: var(--text); font-size: 12px; }
+
+  /* ── Excel download ── */
+  .dl-wrap { position: relative; flex-shrink: 0; }
+  .dl-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 8px 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all .2s; font-family: inherit; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+  .dl-btn:hover { border-color: rgba(255,255,255,0.35); color: var(--text); }
+  .dl-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+  .dl-dropdown { position: absolute; right: 0; top: calc(100% + 6px); background: #1a1a26; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; min-width: 180px; z-index: 100; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.55); }
+  .dl-dropdown button { display: block; width: 100%; text-align: left; padding: 11px 16px; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; background: none; border: none; color: var(--muted); cursor: pointer; font-family: inherit; border-bottom: 1px solid rgba(255,255,255,0.06); transition: background .15s, color .15s; }
+  .dl-dropdown button:last-child { border-bottom: none; }
+  .dl-dropdown button:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+  .dl-dropdown .dl-divider { height: 1px; background: rgba(255,255,255,0.10); margin: 2px 0; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">QUIZ</div>
+    <h1>Energy Quiz &mdash; Analytics</h1>
+  </div>
+  <div class="header-right">
+    <button class="refresh-btn" onclick="load()">↻ Refresh</button>
+    <div class="dl-wrap" id="dlWrap">
+      <button class="dl-btn" onclick="toggleDlMenu(event)">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 1v8M4 6l3 3 3-3M2 11h10"/>
+        </svg>
+        Export Excel
+      </button>
+      <div class="dl-dropdown" id="dlMenu" style="display:none"></div>
+    </div>
+  </div>
+</header>
+
+<div class="event-bar" id="eventBar" style="display:none">
+  <span class="event-bar-label">Event</span>
+  <div class="event-pills" id="eventPills"></div>
+</div>
+
+<div class="date-bar" aria-label="Filter dashboard by session date">
+  <span class="event-bar-label">Session date</span>
+  <div class="date-controls">
+    <label class="date-field" for="dateFrom">From <input id="dateFrom" type="date" onchange="applyDateFilter()"></label>
+    <label class="date-field" for="dateTo">To <input id="dateTo" type="date" onchange="applyDateFilter()"></label>
+    <button class="date-clear" type="button" onclick="clearDateFilter()">Clear</button>
+  </div>
+  <span class="date-filter-status" id="dateFilterStatus" aria-live="polite">All session dates</span>
+</div>
+
+<section class="reports-section" aria-labelledby="reports-title">
+  <h2 class="section-title" id="reports-title">Survey Reports</h2>
+  <div class="reports-grid">
+    <article class="report-card">
+      <div class="report-card-header">
+        <h3 class="report-card-title">Arizona</h3>
+        <span class="report-card-meta">4 pages</span>
+      </div>
+      <div class="report-preview">
+        <iframe src="/reports/arizona-survey-results.pdf#page=1&view=FitH" title="Arizona survey results report preview" loading="lazy"></iframe>
+      </div>
+      <div class="report-actions">
+        <a href="/reports/arizona-survey-results.pdf" target="_blank" rel="noopener">Open report</a>
+        <a href="/reports/arizona-survey-results.pdf" download>Download PDF</a>
+      </div>
+    </article>
+    <article class="report-card">
+      <div class="report-card-header">
+        <h3 class="report-card-title">Ohio</h3>
+        <span class="report-card-meta">4 pages</span>
+      </div>
+      <div class="report-preview">
+        <iframe src="/reports/ohio-survey-results.pdf#page=1&view=FitH" title="Ohio survey results report preview" loading="lazy"></iframe>
+      </div>
+      <div class="report-actions">
+        <a href="/reports/ohio-survey-results.pdf" target="_blank" rel="noopener">Open report</a>
+        <a href="/reports/ohio-survey-results.pdf" download>Download PDF</a>
+      </div>
+    </article>
+    <article class="report-card">
+      <div class="report-card-header">
+        <h3 class="report-card-title">Texas</h3>
+        <span class="report-card-meta">5 pages</span>
+      </div>
+      <div class="report-preview">
+        <iframe src="/reports/texas-survey-results.pdf#page=1&view=FitH" title="Texas survey results report preview" loading="lazy"></iframe>
+      </div>
+      <div class="report-actions">
+        <a href="/reports/texas-survey-results.pdf" target="_blank" rel="noopener">Open report</a>
+        <a href="/reports/texas-survey-results.pdf" download>Download PDF</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<div class="main" id="main">
+  <div class="empty">Loading…</div>
+</div>
+
+<script>
+const QUESTIONS = [
+  { text: "How far does the road usually take you?", answers: ["A quick trip around town — under 25 miles","An easy daily commute — 25–50 miles","However far it takes — 100+ miles"] },
+  { text: "Who's usually along for the drive?", answers: ["Just me, no compromises","A tight crew — 2–4 people","Everyone's coming — 5–6 people"] },
+  { text: "Describe your everyday drive.", answers: ["City streets, sharp turns, tight spots","Highway miles, cruise control earned","Long hauls that reward a good ride"] },
+  { text: "What should it be ready for?", answers: ["Getting you there, exactly on time","Family first — every seat matters","People and gear, no trade-offs"] },
+  { text: "Plans change. Where does the day take you?", answers: ["Somewhere close, decided on a whim","Worth the drive — 100+ miles out","A weekend worth chasing"] },
+];
+
+let _allSessions = [];
+let _activeEvent = "ALL";
+let _dateFrom = "";
+let _dateTo = "";
+
+function fmt(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', {day:'2-digit',month:'short'}) + ' ' +
+         d.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+}
+
+async function load() {
+  document.getElementById('main').innerHTML = '<div class="empty">Loading…</div>';
+  const res = await fetch('/dashboard/data');
+  const data = await res.json();
+  _allSessions = data.sessions || [];
+  syncDateFilterBounds();
+  updateDateFilterStatus();
+  buildEventPills();
+  render();
+}
+
+function buildEventPills() {
+  const events = [...new Set(_allSessions.map(s => s.eventName || 'default'))].sort();
+  const bar = document.getElementById('eventBar');
+  const pills = document.getElementById('eventPills');
+
+  if (events.length <= 1 && events[0] === 'default') {
+    bar.style.display = 'none';
+    return;
+  }
+
+  bar.style.display = 'flex';
+  const allEvents = ['ALL', ...events];
+  pills.innerHTML = allEvents.map(e =>
+    `<button class="pill ${e === _activeEvent ? 'active' : ''}" onclick="selectEvent('${e}')">${e === 'ALL' ? 'All Events' : e}</button>`
+  ).join('');
+}
+
+function selectEvent(name) {
+  _activeEvent = name;
+  buildEventPills();
+  render();
+}
+
+function filteredSessions() {
+  const sessions = _activeEvent === 'ALL'
+    ? _allSessions
+    : _allSessions.filter(s => (s.eventName || 'default') === _activeEvent);
+  return filterByDate(sessions);
+}
+
+function sessionDateKey(session) {
+  const value = session.startedAt || session.completedAt;
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function filterByDate(sessions) {
+  return sessions.filter(session => {
+    const dateKey = sessionDateKey(session);
+    if (_dateFrom && _dateTo && _dateFrom > _dateTo) return false;
+    if (_dateFrom && (!dateKey || dateKey < _dateFrom)) return false;
+    if (_dateTo && (!dateKey || dateKey > _dateTo)) return false;
+    return true;
+  });
+}
+
+function syncDateFilterBounds() {
+  const keys = _allSessions.map(sessionDateKey).filter(Boolean).sort();
+  const from = document.getElementById("dateFrom");
+  const to = document.getElementById("dateTo");
+  if (!from || !to || !keys.length) return;
+  from.min = keys[0];
+  from.max = keys[keys.length - 1];
+  to.min = keys[0];
+  to.max = keys[keys.length - 1];
+}
+
+function updateDateFilterStatus() {
+  const status = document.getElementById("dateFilterStatus");
+  if (!status) return;
+  status.classList.toggle("error", Boolean(_dateFrom && _dateTo && _dateFrom > _dateTo));
+  if (_dateFrom && _dateTo && _dateFrom > _dateTo) {
+    status.textContent = "End date must be on or after start date";
+  } else if (_dateFrom || _dateTo) {
+    status.textContent = `Showing ${_dateFrom || "earliest"} to ${_dateTo || "latest"}`;
+  } else {
+    status.textContent = "All session dates";
+  }
+}
+
+function applyDateFilter() {
+  _dateFrom = document.getElementById("dateFrom")?.value || "";
+  _dateTo = document.getElementById("dateTo")?.value || "";
+  updateDateFilterStatus();
+  render();
+}
+
+function clearDateFilter() {
+  _dateFrom = "";
+  _dateTo = "";
+  const from = document.getElementById("dateFrom");
+  const to = document.getElementById("dateTo");
+  if (from) from.value = "";
+  if (to) to.value = "";
+  updateDateFilterStatus();
+  render();
+}
+
+function render() {
+  const sessions = filteredSessions();
+  // A session no longer resolves to a "which result matches you" reveal —
+  // completion is just "did they finish the quiz" now (see
+  // _quizTrack.complete in the game itself, which sets completedAt without
+  // a result).
+  const completed = sessions.filter(s => s.completedAt);
+  const total = completed.length;
+  const started = sessions.length;
+
+  const qCounts = QUESTIONS.map((q, qi) => {
+    const counts = {};
+    q.answers.forEach(a => counts[a] = 0);
+    completed.forEach(s => {
+      const ans = (s.answers || [])[qi];
+      if (ans && counts[ans] !== undefined) counts[ans]++;
+    });
+    return counts;
+  });
+
+  const main = document.getElementById('main');
+  if (total === 0 && started === 0) {
+    main.innerHTML = `<div class="empty">${_allSessions.length ? 'No sessions match the selected filters.' : 'No sessions yet. Start the quiz to collect data.'}</div>`;
+    return;
+  }
+
+  let html = '';
+
+  // URL usage hint — only show when viewing ALL and there are real event names
+  const events = [...new Set(_allSessions.map(s => s.eventName || 'default'))].filter(e => e !== 'default');
+  if (_activeEvent === 'ALL' && events.length === 0) {
+    html += `<div class="url-hint">
+      <strong style="color:var(--text);letter-spacing:1px">Tracking events by location</strong><br>
+      Add <code>?event=EventName</code> to the quiz URL for each deployment.<br>
+      Example: <code>https://yourapp.replit.app/?event=Dubai_Jul26</code>
+    </div>`;
+  }
+
+  // Event comparison table — only when ALL selected and multiple events exist
+  if (_activeEvent === 'ALL' && events.length > 0) {
+    const allEvents = [...new Set(_allSessions.map(s => s.eventName || 'default'))].sort();
+    html += `<div class="section"><div class="section-title">Event Comparison</div>
+      <div class="event-table-wrap"><table class="event-table">
+      <thead><tr>
+        <th>Event</th><th>Completions</th><th>Started</th><th>Completion %</th>
+      </tr></thead><tbody>`;
+    allEvents.forEach(ev => {
+      const evSessions = _allSessions.filter(s => (s.eventName || 'default') === ev);
+      const evCompleted = evSessions.filter(s => s.completedAt);
+      const pct = evSessions.length ? Math.round(evCompleted.length / evSessions.length * 100) : 0;
+      html += `<tr>
+        <td><div class="ev-name">${ev}</div></td>
+        <td>${evCompleted.length}</td>
+        <td>${evSessions.length}</td>
+        <td>${pct}%</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div></div>`;
+  }
+
+  // KPI
+  html += `<div class="kpi-row">
+    <div class="kpi"><div class="kpi-label">Completions</div><div class="kpi-value">${total}</div></div>
+    <div class="kpi"><div class="kpi-label">Started</div><div class="kpi-value">${started}</div></div>
+    <div class="kpi"><div class="kpi-label">Completion Rate</div><div class="kpi-value">${started ? Math.round(total/started*100) : 0}%</div></div>
+  </div>`;
+
+  // Locations
+  const countryCounts = {}, cityCounts = {};
+  sessions.forEach(s => {
+    if (s.country) countryCounts[s.country] = (countryCounts[s.country] || 0) + 1;
+    if (s.city)    cityCounts[s.city]        = (cityCounts[s.city]    || 0) + 1;
+  });
+  const topCountries = Object.entries(countryCounts).sort((a,b) => b[1]-a[1]).slice(0,8);
+  const topCities    = Object.entries(cityCounts).sort((a,b) => b[1]-a[1]).slice(0,8);
+  const hasLoc = topCountries.length > 0 || topCities.length > 0;
+  if (hasLoc) {
+    const maxC = topCountries[0]?.[1] || 1;
+    const maxCi = topCities[0]?.[1] || 1;
+    html += `<div class="section"><div class="section-title">Location Breakdown</div><div class="loc-grid">`;
+    html += `<div class="loc-card"><div class="loc-card-title">By Country</div>`;
+    if (topCountries.length) {
+      topCountries.forEach(([name, cnt]) => {
+        const w = Math.round(cnt / maxC * 100);
+        html += `<div class="loc-row"><div class="loc-name">${name}</div><div class="loc-bar-track"><div class="loc-bar-fill" style="width:${w}%"></div></div><div class="loc-count">${cnt}</div></div>`;
+      });
+    } else { html += `<div class="loc-empty">No data yet</div>`; }
+    html += `</div>`;
+    html += `<div class="loc-card"><div class="loc-card-title">By City</div>`;
+    if (topCities.length) {
+      topCities.forEach(([name, cnt]) => {
+        const w = Math.round(cnt / maxCi * 100);
+        html += `<div class="loc-row"><div class="loc-name">${name}</div><div class="loc-bar-track"><div class="loc-bar-fill" style="width:${w}%"></div></div><div class="loc-count">${cnt}</div></div>`;
+      });
+    } else { html += `<div class="loc-empty">No data yet</div>`; }
+    html += `</div></div></div>`;
+  }
+
+  // Questions
+  html += `<div class="section"><div class="section-title">Answer Breakdown — by Question</div><div class="questions-grid">`;
+  QUESTIONS.forEach((q, qi) => {
+    const counts = qCounts[qi];
+    const qTotal = Object.values(counts).reduce((a,b) => a+b, 0);
+    const maxCount = Math.max(...Object.values(counts), 1);
+    html += `<div class="q-card">
+      <div class="q-num">Question ${qi+1} of 5</div>
+      <div class="q-text">${q.text}</div>
+      <div class="answers">`;
+    q.answers.forEach(ans => {
+      const cnt = counts[ans] || 0;
+      const pct = qTotal ? Math.round(cnt / qTotal * 100) : 0;
+      const barW = qTotal ? Math.round(cnt / maxCount * 100) : 0;
+      const isTop = cnt === maxCount && cnt > 0;
+      html += `<div class="answer-row">
+        <div class="answer-top">
+          <div class="answer-label">${ans}</div>
+          <div class="answer-stats">
+            <div class="answer-count">${cnt}</div>
+            <div class="answer-pct">${pct}%</div>
+          </div>
+        </div>
+        <div class="bar-track"><div class="bar-fill ${isTop?'top':''}" style="width:${barW}%"></div></div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</div></div>`;
+
+  // Sessions
+  const sorted = [...completed].sort((a,b) => new Date(b.completedAt||0) - new Date(a.completedAt||0));
+  html += `<div class="section"><div class="section-title">Individual Sessions (${completed.length})</div><div class="session-cards">`;
+  sorted.forEach((s, i) => {
+    const answers = s.answers || [];
+    const evName = s.eventName && s.eventName !== 'default' ? `<span class="session-event">${s.eventName}</span>` : '';
+    html += `<div class="session-card">
+      <div class="session-card-header">
+        <span class="session-num">#${sorted.length - i}</span>
+        ${evName}
+        <span class="session-time">${fmt(s.completedAt)}</span>
+      </div>
+      <div class="session-answers">
+        ${[0,1,2,3,4].map(qi => `<span class="ans-chip"><span class="q-label">Q${qi+1}</span>${answers[qi]||'—'}</span>`).join('')}
+      </div>
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  main.innerHTML = html;
+}
+
+load();
+
+// ── Excel Export ──────────────────────────────────────────────────
+
+function toggleDlMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('dlMenu');
+  if (menu.style.display === 'none') {
+    buildDlMenu();
+    menu.style.display = 'block';
+  } else {
+    menu.style.display = 'none';
+  }
+}
+
+document.addEventListener('click', () => {
+  const menu = document.getElementById('dlMenu');
+  if (menu) menu.style.display = 'none';
+});
+
+function buildDlMenu() {
+  const menu = document.getElementById('dlMenu');
+  const events = [...new Set(_allSessions.map(s => s.eventName || 'default'))].sort();
+  const hasMultiple = events.length > 1 || (events.length === 1 && events[0] !== 'default');
+
+  let html = `<button onclick="downloadExcel('ALL')">All Regions / Events</button>`;
+  if (hasMultiple) {
+    html += `<div class="dl-divider"></div>`;
+    events.forEach(ev => {
+      const label = ev === 'default' ? 'Untagged' : ev;
+      html += `<button onclick="downloadExcel('${ev}')">${label}</button>`;
+    });
+  }
+  menu.innerHTML = html;
+}
+
+function sessionsForEvent(ev) {
+  const sessions = ev === 'ALL'
+    ? _allSessions
+    : _allSessions.filter(s => (s.eventName || 'default') === ev);
+  return filterByDate(sessions);
+}
+
+function buildSessionRows(sessions) {
+  const completed = sessions.filter(s => s.completedAt);
+  const rows = [['#', 'Region / Event', 'Country', 'City', 'Region', 'Started At', 'Completed At',
+    'Q1 — Road Distance', 'Q2 — Passengers', 'Q3 — Everyday Drive', 'Q4 — Ready For', 'Q5 — Day Takes You']];
+  const sorted = [...completed].sort((a, b) => new Date(b.completedAt || 0) - new Date(a.completedAt || 0));
+  sorted.forEach((s, i) => {
+    const ans = s.answers || [];
+    rows.push([
+      i + 1,
+      s.eventName && s.eventName !== 'default' ? s.eventName : 'Untagged',
+      s.country || '—',
+      s.city    || '—',
+      s.region  || '—',
+      s.startedAt ? new Date(s.startedAt).toLocaleString('en-GB') : '—',
+      s.completedAt ? new Date(s.completedAt).toLocaleString('en-GB') : '—',
+      ans[0] || '—', ans[1] || '—', ans[2] || '—', ans[3] || '—', ans[4] || '—'
+    ]);
+  });
+  return rows;
+}
+
+function buildSummaryRows(events) {
+  const rows = [['Region / Event', 'Completions', 'Started', 'Completion %']];
+  events.forEach(ev => {
+    const evSessions = sessionsForEvent(ev);
+    const completed = evSessions.filter(s => s.completedAt);
+    const pct = evSessions.length ? Math.round(completed.length / evSessions.length * 100) : 0;
+    rows.push([
+      ev === 'default' ? 'Untagged' : ev,
+      completed.length, evSessions.length, pct + '%'
+    ]);
+  });
+  return rows;
+}
+
+function sheetFromRows(rows) {
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  // Auto-width
+  const cols = rows[0].map((_, ci) => ({
+    wch: Math.max(...rows.map(r => String(r[ci] ?? '').length), String(rows[0][ci]).length) + 2
+  }));
+  ws['!cols'] = cols;
+  return ws;
+}
+
+function downloadExcel(target) {
+  document.getElementById('dlMenu').style.display = 'none';
+  const wb = XLSX.utils.book_new();
+  const allEvents = [...new Set(_allSessions.map(s => s.eventName || 'default'))].sort();
+
+  if (target === 'ALL') {
+    // Summary sheet
+    const summaryRows = buildSummaryRows(allEvents);
+    XLSX.utils.book_append_sheet(wb, sheetFromRows(summaryRows), 'Summary');
+    // One sheet per event
+    allEvents.forEach(ev => {
+      const rows = buildSessionRows(sessionsForEvent(ev));
+      const label = (ev === 'default' ? 'Untagged' : ev).replace(/[:\\/?*[\]]/g, '_').slice(0, 31);
+      XLSX.utils.book_append_sheet(wb, sheetFromRows(rows), label);
+    });
+    XLSX.writeFile(wb, `energy-quiz-all-regions-${datestamp()}.xlsx`);
+  } else {
+    const rows = buildSessionRows(sessionsForEvent(target));
+    const label = (target === 'default' ? 'Untagged' : target).replace(/[:\\/?*[\]]/g, '_').slice(0, 31);
+    XLSX.utils.book_append_sheet(wb, sheetFromRows(rows), label);
+    XLSX.writeFile(wb, `energy-quiz-${label}-${datestamp()}.xlsx`);
+  }
+}
+
+function datestamp() {
+  const d = new Date();
+  return d.getFullYear() + ('0'+(d.getMonth()+1)).slice(-2) + ('0'+d.getDate()).slice(-2);
+}
+</script>
+</body>
+</html>
