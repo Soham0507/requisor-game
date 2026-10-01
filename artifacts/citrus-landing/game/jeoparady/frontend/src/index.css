@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Type pairing modelled on visitmilwaukee.org: a tall condensed all-caps
+     display face for headlines, labels and numbers, over a clean grotesk for
+     body copy. Both load from Google Fonts in index.html; the fallbacks keep
+     the layout usable offline. */
+  --font-sans: "Schibsted Grotesk", system-ui, "Segoe UI", sans-serif;
+  --font-display: "Big Shoulders Display", Impact, "Arial Narrow", sans-serif;
+
+  /* Navy + teal scale. brand-900 (#002944) is the Visit Milwaukee navy and
+     the main ink/surface colour of this skin. Token names match the default
+     theme so shared components keep working. */
+  --color-brand-50: #eefcff;
+  --color-brand-100: #d9f4f8;
+  --color-brand-200: #b3e8f0;
+  --color-brand-300: #7fd4e3;
+  --color-brand-400: #4eb6c3;
+  --color-brand-500: #17a2b8;
+  --color-brand-600: #0f7a8f;
+  --color-brand-700: #0a4d63;
+  --color-brand-800: #063a52;
+  --color-brand-900: #002944;
+  --color-brand-950: #001824;
+
+  /* Coral. crimson-600 is the button fill - dark enough for white text. */
+  --color-crimson-50: #fdf0eb;
+  --color-crimson-200: #f9ccbf;
+  --color-crimson-300: #f4ab95;
+  --color-crimson-400: #ef8a6d;
+  --color-crimson-500: #ea6a47;
+  --color-crimson-600: #c84a26;
+  --color-crimson-700: #9c3719;
+  --color-crimson-800: #8a3118;
+  --color-crimson-900: #6e2a13;
+  --color-crimson-950: #4a1c0d;
+
+  /* Gold, for the balance pill, $1000 tiles and secondary buttons. */
+  --color-gold-200: #faf0c8;
+  --color-gold-300: #f5e29b;
+  --color-gold-400: #edd05f;
+  --color-gold-500: #e4c642;
+  --color-gold-600: #c2a52a;
+  --color-gold-700: #a8902a;
+
+  /* Cream page ground and the dark brown used for panels and the ticker. */
+  --color-cream-50: #fdfcf6;
+  --color-cream-100: #f3f0d4;
+  --color-cream-200: #e2ddbd;
+  --color-cream-300: #d8d3b0;
+  --color-cream-400: #d9d3b8;
+  --color-ink-900: #211a11;
+
+  /* Pine green for correct answers and positive deltas. */
+  --color-pine-500: #4b8c7f;
+  --color-pine-600: #2f6d61;
+  --color-pine-700: #1d4a41;
+}
+
+/* Display type: condensed, uppercase. Used for every headline, label,
+   button and dollar value. */
+@utility headline {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #f3f0d4;
+  color: #211a11;
+  font-family: var(--font-sans);
+}
+
+.dark body {
+  background-color: #001824;
+  color: #f3f0d4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Stitched dashed inset border, kept from the original skin as the shared
+   button language. Uses currentColor so it follows each button's text. */
+.dashed-outline {
+  position: relative;
+}
+
+.dashed-outline::after {
+  content: "";
+  position: absolute;
+  inset: 0.3em;
+  border-radius: inherit;
+  border: 0.12em dashed currentColor;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-2px, 1px) rotate(-3deg);
+  }
+  50% {
+    transform: translate(2px, -1px) rotate(3deg);
+  }
+  75% {
+    transform: translate(-1px, -1px) rotate(-2deg);
+  }
+}
+
+@keyframes flash-correct {
+  0%,
+  100% {
+    background-color: #2f6d61;
+  }
+  50% {
+    background-color: #4b8c7f;
+  }
+}
+
+@keyframes flash-incorrect {
+  0%,
+  100% {
+    background-color: #c84a26;
+  }
+  50% {
+    background-color: #ea6a47;
+  }
+}
+
+/* Landing page sizing. The booth screens must never scroll, so the media
+   block takes a share of the viewport height instead of a fixed size, and
+   the rules below compact everything further on short screens. */
+.landing-media {
+  height: clamp(6rem, 14vh, 14rem);
+}
+
+@media (min-width: 1024px) {
+  .landing-media {
+    height: clamp(18rem, 44vh, 30rem);
+  }
+}
+
+/* The Milwaukee photo gallery - always visible (booth screens should show
+   the theme, not just the video), sized fluidly so its thumbnails stay
+   compact enough to never force a scrollbar on a short/tablet screen. */
+.landing-strip {
+  display: grid;
+}
+
+.landing-strip-photo {
+  height: clamp(2.75rem, 7vh, 4.5rem);
+}
+
+@media (min-width: 1024px) {
+  .landing-strip-photo {
+    height: clamp(6rem, 16vh, 10rem);
+  }
+}
+
+@media (max-height: 820px) {
+  .landing-strip-photo {
+    height: clamp(2.75rem, 8vh, 4rem);
+  }
+}
+
+@media (max-height: 900px) {
+  .landing-page h1 {
+    font-size: clamp(3rem, 7.5vw, 5.5rem);
+  }
+  .landing-page {
+    gap: 1.25rem;
+  }
+}
+
+@media (max-height: 820px) {
+  .app-header {
+    height: 4rem;
+  }
+  .landing-page {
+    gap: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .landing-intro {
+    display: none;
+  }
+}
+
+@media (max-height: 650px) {
+  .landing-media {
+    display: none;
+  }
+  .landing-page h1 {
+    font-size: 2.75rem;
+  }
+}
+
+/* Board tiles grow with the viewport height so five rows fill a tablet
+   screen but still fit a short laptop one. */
+.board-tile {
+  height: clamp(3.25rem, 8.5vh, 6.5rem);
+}
+
+.board-header {
+  height: clamp(4.5rem, 10vh, 8rem);
+}
+
+/* Leaderboard marquee: two copies of the entry list sit side by side in a
+   double-wide track, animated from -50% to 0% so the track moves rightward.
+   Because the copies are identical, the loop restarts seamlessly. */
+.leaderboard-track {
+  animation: leaderboard-scroll linear infinite;
+  animation-duration: var(--leaderboard-duration, 20s);
+}
+
+@keyframes leaderboard-scroll {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}

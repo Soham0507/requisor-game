@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap"
+    />
+    <style>
+      :root {
+        --brand-100: #d9f4f8;
+        --brand-300: #7fd4e3;
+        --brand-500: #17a2b8;
+        --brand-700: #0a4d63;
+        --brand-900: #002944;
+        --brand-950: #001824;
+        --gold-500: #e4c642;
+        --emerald: #059669;
+        --emerald-dark: #34d399;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        font-family: 'Schibsted Grotesk', system-ui, sans-serif;
+      }
+
+      body.theme-light {
+        color: var(--brand-900);
+      }
+
+      body.theme-dark {
+        color: #fff;
+      }
+
+      #card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: clamp(0.75rem, 2.5vh, 1.5rem);
+        padding: clamp(0.75rem, 2.5vh, 1.5rem) 1.5rem;
+        width: 100vw;
+        background-image: linear-gradient(rgba(0, 24, 36, 0.55), rgba(0, 24, 36, 0.55)),
+          url('/milwaukee/hoan-leaderboard-bg.jpg');
+        background-size: cover;
+        background-position: center;
+      }
+
+      h1 {
+        margin: 0;
+        text-align: center;
+        font-family: 'Big Shoulders Display', Impact, sans-serif;
+        font-size: clamp(1.75rem, 6vh, 4.5rem);
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.01em;
+        text-transform: uppercase;
+        color: var(--gold-500);
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+      }
+
+      #ticker-wrap {
+        width: 100%;
+        overflow: hidden;
+        border-top: 1px solid var(--brand-300);
+        border-bottom: 1px solid var(--brand-300);
+        padding: clamp(0.75rem, 2.5vh, 2rem) 0;
+        background: rgba(0, 24, 36, 0.55);
+        backdrop-filter: blur(2px);
+      }
+
+      #ticker-track {
+        display: flex;
+        align-items: center;
+        gap: clamp(2rem, 6vw, 6rem);
+        width: max-content;
+        padding: 0 1rem;
+        animation: scroll-right linear infinite;
+      }
+
+      @keyframes scroll-right {
+        from {
+          transform: translateX(-50%);
+        }
+        to {
+          transform: translateX(0%);
+        }
+      }
+
+      .entry {
+        display: flex;
+        align-items: center;
+        gap: clamp(0.75rem, 1.5vw, 1.5rem);
+        white-space: nowrap;
+        flex-shrink: 0;
+        font-family: 'Big Shoulders Display', Impact, sans-serif;
+        font-weight: 800;
+        font-size: clamp(1.25rem, 3.2vw, 3.5rem);
+        text-transform: uppercase;
+        color: #fff;
+      }
+
+      .entry .rank {
+        color: var(--brand-300);
+      }
+
+      .entry .balance {
+        color: var(--emerald-dark);
+      }
+
+      #empty {
+        text-align: center;
+        font-size: 1.1rem;
+        opacity: 0.85;
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="card">
+      <h1>Leaderboard</h1>
+      <div id="ticker-wrap">
+        <div id="ticker-track"></div>
+      </div>
+      <div id="empty" style="display: none">No completed games yet.</div>
+    </div>
+
+    <script>
+      // Same-origin in the packaged app (and any other build the backend
+      // itself serves the frontend for) - the dev frontends run on their
+      // own Vite ports (5173 for the default skin, 5174 for this one) while
+      // the API is always on :8000, so fall back explicitly for those.
+      // Same-origin in the desktop app (FastAPI serves this file itself).
+      // On a hosted deploy (e.g. Vercel) there's no backend on this origin,
+      // so PROD_API_BASE must be set to the deployed backend's URL (e.g.
+      // Render) once it's known.
+      var PROD_API_BASE = ''
+      var DEV_PORTS = ['5173', '5174']
+      var API_BASE = DEV_PORTS.indexOf(window.location.port) !== -1 ? 'http://localhost:8000' : PROD_API_BASE
+      var MEDALS = ['🥇', '🥈', '🥉']
+      var POLL_MS = 15000
+
+      function applyTheme() {
+        var theme = localStorage.getItem('djtt-theme') === 'light' ? 'light' : 'dark'
+        document.body.classList.toggle('theme-light', theme === 'light')
+        document.body.classList.toggle('theme-dark', theme === 'dark')
+      }
+
+      function render(entries) {
+        var track = document.getElementById('ticker-track')
+        var empty = document.getElementById('empty')
+        var wrap = document.getElementById('ticker-wrap')
+
+        if (!entries || entries.length === 0) {
+          wrap.style.display = 'none'
+          empty.style.display = 'block'
+          return
+        }
+        wrap.style.display = 'block'
+        empty.style.display = 'none'
+
+        var track2x = entries.concat(entries)
+        track.innerHTML = track2x
+          .map(function (entry, i) {
+            var rank = i % entries.length
+            var medal = MEDALS[rank] || '#' + (rank + 1)
+            return (
+              '<div class="entry">' +
+              '<span class="rank">' + medal + '</span>' +
+              '<span class="name">' + escapeHtml(entry.username) + '</span>' +
+              '<span class="balance">$' + entry.balance.toLocaleString() + '</span>' +
+              '</div>'
+            )
+          })
+          .join('')
+        track.style.animationDuration = Math.max(entries.length * 6, 10) + 's'
+      }
+
+      function escapeHtml(s) {
+        var div = document.createElement('div')
+        div.textContent = s
+        return div.innerHTML
+      }
+
+      function loadLeaderboard() {
+        fetch(API_BASE + '/api/v1/game/leaderboard')
+          .then(function (res) {
+            if (!res.ok) throw new Error('request failed')
+            return res.json()
+          })
+          .then(render)
+          .catch(function () {
+            /* keep showing the last successful render */
+          })
+      }
+
+      applyTheme()
+      loadLeaderboard()
+      setInterval(loadLeaderboard, POLL_MS)
+      // Keeps the theme in sync if it's changed in the main app tab while
+      // this page stays open.
+      window.addEventListener('storage', function (e) {
+        if (e.key === 'djtt-theme') applyTheme()
+      })
+    </script>
+  </body>
+</html>
