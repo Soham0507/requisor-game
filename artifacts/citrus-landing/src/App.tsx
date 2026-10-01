@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import GamesCatalog from "@/pages/games-catalog";
 import Customize from "@/pages/customize";
+import { GameFinderChat } from "@/components/GameFinderChat";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <Router />
+          <GameFinderChat />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

@@ -1,3 +1,4 @@
 - [Recursive artifact discovery](recursive-artifact-discovery.md) — publishing discovers nested manifests; imported copies need unique ports and workspace-relative output paths.
 - [Shared React Query runtime](shared-react-query-runtime.md) — Vite must dedupe React Query when generated workspace hooks consume the app provider.
 - [Generated API declaration refresh](generated-api-declaration-refresh.md) — regenerating OpenAPI source may leave leaf typechecks reading old library declarations; rebuild those libs.
+- [Protect root workspace metadata](workspace-metadata-protection.md) — imports and cleanup have repeatedly removed required root files while filtered dev servers kept working.
