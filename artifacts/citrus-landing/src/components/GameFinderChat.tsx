@@ -7,11 +7,13 @@ import {
   Sparkles,
   Bot,
   Zap,
-  PersonStanding,
+  Store,
+  GraduationCap,
+  Tv,
+  Monitor,
   HelpCircle,
   Camera,
   ShieldCheck,
-  ShieldAlert,
   Rocket,
   CircleDot,
   ChevronRight,
@@ -24,7 +26,7 @@ import { Button } from "@/components/ui/button";
 // questions, max, down to one of the games in the catalog. Deterministic
 // and free to run — no LLM call, no API key — so it floats on every page
 // (mounted once in App.tsx) without any backend cost.
-type QuestionId = "q1" | "skill-theme" | "gesture-theme";
+type QuestionId = "q1" | "booth" | "training" | "retail" | "online";
 type Next = QuestionId | { result: string };
 
 interface QuestionOption {
@@ -33,29 +35,44 @@ interface QuestionOption {
   next: Next;
 }
 
+// Event type first, then the vibe — every path is exactly two questions.
 const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] }> = {
   q1: {
-    prompt: "What are you setting up?",
+    prompt: "Where will it run?",
     options: [
-      { label: "A fast-paced skill game", icon: Zap, next: "skill-theme" },
-      { label: "A movement / gesture activity", icon: PersonStanding, next: "gesture-theme" },
-      { label: "A quick quiz for booth visitors", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
-      { label: "A fun photo/video keepsake", icon: Camera, next: { result: "boat-booth" } },
-      { label: "Security awareness training / education", icon: ShieldCheck, next: { result: "cyber-adventure" } },
+      { label: "Trade show booth", icon: Store, next: "booth" },
+      { label: "Training / classroom", icon: GraduationCap, next: "training" },
+      { label: "Retail / kiosk", icon: Tv, next: "retail" },
+      { label: "Online / desktop", icon: Monitor, next: "online" },
     ],
   },
-  "skill-theme": {
-    prompt: "Pick a theme",
+  booth: {
+    prompt: "What vibe?",
     options: [
-      { label: "Space combat", icon: Rocket, next: { result: "space-shooter-1" } },
-      { label: "Cybersecurity — dodge obstacles", icon: ShieldAlert, next: { result: "cyber-adventure" } },
+      { label: "Active & competitive", icon: CircleDot, next: { result: "basketball-shootout" } },
+      { label: "Immersive sci-fi", icon: Rocket, next: { result: "gesture-space-war" } },
+      { label: "Quick lead capture", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
     ],
   },
-  "gesture-theme": {
-    prompt: "Pick a theme",
+  training: {
+    prompt: "What for?",
     options: [
-      { label: "Sports — basketball", icon: CircleDot, next: { result: "basketball-shootout" } },
-      { label: "Space combat — gesture controlled", icon: Rocket, next: { result: "gesture-space-war" } },
+      { label: "Security awareness", icon: ShieldCheck, next: { result: "cyber-adventure" } },
+      { label: "Knowledge check", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
+    ],
+  },
+  retail: {
+    prompt: "What vibe?",
+    options: [
+      { label: "Photo / video keepsake", icon: Camera, next: { result: "boat-booth" } },
+      { label: "Quick quiz", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
+    ],
+  },
+  online: {
+    prompt: "What style?",
+    options: [
+      { label: "Arcade shooter", icon: Rocket, next: { result: "space-shooter-1" } },
+      { label: "Endless runner", icon: Zap, next: { result: "cyber-adventure" } },
     ],
   },
 };
@@ -69,17 +86,17 @@ const INITIAL_MESSAGES: Message[] = [{ type: "bot-question", questionId: "q1" }]
 
 function BotAvatar() {
   return (
-    <div className="shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-primary to-pink-500 grid place-items-center shadow-sm">
-      <Bot size={14} className="text-primary-foreground" />
+    <div className="shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-primary to-pink-500 grid place-items-center shadow-sm">
+      <Bot size={12} className="text-primary-foreground" />
     </div>
   );
 }
 
 function BotBubble({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-2 animate-in fade-in-0 slide-in-from-bottom-1 duration-300">
+    <div className="flex items-start gap-1.5 animate-in fade-in-0 slide-in-from-bottom-1 duration-300">
       <BotAvatar />
-      <div className="rounded-2xl rounded-tl-sm bg-muted px-3.5 py-2.5 text-sm text-foreground max-w-[85%]">
+      <div className="rounded-2xl rounded-tl-sm bg-muted px-3 py-1.5 text-sm text-foreground max-w-[85%]">
         {children}
       </div>
     </div>
@@ -89,7 +106,7 @@ function BotBubble({ children }: { children: React.ReactNode }) {
 function UserBubble({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex justify-end animate-in fade-in-0 slide-in-from-bottom-1 duration-300">
-      <div className="rounded-2xl rounded-tr-sm bg-primary text-primary-foreground px-3.5 py-2.5 text-sm max-w-[85%]">
+      <div className="rounded-2xl rounded-tr-sm bg-primary text-primary-foreground px-3 py-1.5 text-sm max-w-[85%]">
         {children}
       </div>
     </div>
@@ -101,14 +118,14 @@ function QuickReply({ icon: Icon, onClick, children }: { icon: LucideIcon; onCli
     <button
       type="button"
       onClick={onClick}
-      className="group w-full flex items-center gap-2.5 rounded-full border border-border bg-background pl-3 pr-2.5 py-2 text-sm text-foreground hover:border-primary/50 hover:bg-primary/5 transition-colors"
+      className="group w-full flex items-center gap-2 rounded-full border border-border bg-background pl-2 pr-2.5 py-1 text-sm text-foreground hover:border-primary/50 hover:bg-primary/5 transition-colors"
     >
-      <span className="shrink-0 w-6 h-6 rounded-full bg-muted grid place-items-center text-muted-foreground group-hover:bg-primary/15 group-hover:text-primary transition-colors">
-        <Icon size={13} />
+      <span className="shrink-0 w-5 h-5 rounded-full bg-muted grid place-items-center text-muted-foreground group-hover:bg-primary/15 group-hover:text-primary transition-colors">
+        <Icon size={11} />
       </span>
       <span className="flex-grow text-left">{children}</span>
       <ChevronRight
-        size={15}
+        size={14}
         className="shrink-0 text-muted-foreground opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
       />
     </button>
@@ -120,19 +137,19 @@ function GameRecommendation({ slug }: { slug: string }) {
   const game = games?.find((g) => g.slug === slug);
 
   return (
-    <div className="flex items-start gap-2 animate-in fade-in-0 slide-in-from-bottom-1 duration-300">
+    <div className="flex items-start gap-1.5 animate-in fade-in-0 slide-in-from-bottom-1 duration-300">
       <BotAvatar />
-      <div className="rounded-2xl rounded-tl-sm border border-primary/30 bg-gradient-to-br from-primary/10 to-pink-500/5 p-3.5 max-w-[88%] space-y-2.5">
+      <div className="rounded-2xl rounded-tl-sm border border-primary/30 bg-gradient-to-br from-primary/10 to-pink-500/5 p-3 max-w-[90%] space-y-1.5">
         <p className="flex items-center gap-1.5 text-xs font-medium text-primary">
           <Sparkles size={13} />
-          Sounds like a good fit
+          Best match
         </p>
         {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
         {game && (
           <div>
             <p className="font-semibold text-foreground">{game.name}</p>
-            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{game.tagline}</p>
-            <div className="mt-3">
+            <p className="text-xs text-muted-foreground mt-0.5 leading-snug line-clamp-2">{game.tagline}</p>
+            <div className="mt-2">
               {game.brandSupport === "full" ? (
                 <Link href={`/customize/${game.slug}`}>
                   <Button size="sm" className="rounded-full" data-testid="button-chat-customize">
@@ -179,31 +196,26 @@ export function GameFinderChat() {
   return (
     <div className="fixed bottom-5 right-5 z-50">
       {open && (
-        <div className="mb-3 w-80 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-border bg-card/95 backdrop-blur-sm shadow-2xl shadow-black/20 overflow-hidden flex flex-col max-h-[70vh] animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-4 duration-200">
-          <div className="flex items-center justify-between px-4 py-3.5 border-b border-border bg-gradient-to-r from-primary/10 via-transparent to-pink-500/10">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-pink-500 grid place-items-center">
-                <Sparkles size={15} className="text-primary-foreground" />
+        <div className="mb-2 w-72 max-w-[calc(100vw-2.5rem)] rounded-2xl border border-border bg-card/95 backdrop-blur-sm shadow-2xl shadow-black/20 overflow-hidden flex flex-col h-[28rem] max-h-[75vh] animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-4 duration-200">
+          <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-gradient-to-r from-primary/10 via-transparent to-pink-500/10">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-pink-500 grid place-items-center">
+                <Sparkles size={13} className="text-primary-foreground" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground leading-tight">Game Finder</p>
-                <p className="text-[11px] text-muted-foreground leading-tight">Usually replies instantly</p>
-              </div>
+              <p className="text-sm font-semibold text-foreground">Game Finder</p>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close"
-              className="w-7 h-7 rounded-full grid place-items-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              className="w-6 h-6 rounded-full grid place-items-center text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
               data-testid="button-chat-close"
             >
-              <X size={16} />
+              <X size={14} />
             </button>
           </div>
 
-          <div ref={scrollRef} className="p-4 space-y-3 overflow-y-auto">
-            <BotBubble>Answer a couple questions and I'll point you at the game that fits your booth.</BotBubble>
-
+          <div ref={scrollRef} className="flex-1 p-3 space-y-2 overflow-y-auto">
             {messages.map((message, i) => {
               if (message.type === "bot-question") {
                 const isLatest = i === messages.length - 1;
@@ -216,7 +228,7 @@ export function GameFinderChat() {
             })}
 
             {activeQuestion && (
-              <div className="space-y-1.5 pl-9">
+              <div className="space-y-1 pl-8">
                 {activeQuestion.options.map((option) => (
                   <QuickReply key={option.label} icon={option.icon} onClick={() => choose(option.label, option.next)}>
                     {option.label}
@@ -229,7 +241,7 @@ export function GameFinderChat() {
               <button
                 type="button"
                 onClick={restart}
-                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors pl-9"
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors pl-8"
                 data-testid="button-chat-restart"
               >
                 <RotateCcw size={12} />
@@ -244,7 +256,7 @@ export function GameFinderChat() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close game finder" : "Open game finder"}
-        className="w-14 h-14 rounded-full grid place-items-center bg-gradient-to-br from-primary to-pink-500 text-primary-foreground shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-transform"
+        className="w-12 h-12 rounded-full grid place-items-center bg-gradient-to-br from-primary to-pink-500 text-primary-foreground shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-transform"
         data-testid="button-chat-toggle"
       >
         {open ? <X size={22} /> : <MessageCircle size={22} />}
