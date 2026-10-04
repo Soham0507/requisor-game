@@ -56,11 +56,11 @@
   function merge(theme) {
     if (!theme) return;
     var c = App.custom;
-    if (typeof theme.brandName === 'string') c.name = theme.brandName;
+    if (typeof theme.brandName === 'string') c.name = theme.brandName.slice(0, 120);
     if (theme.primaryColor && HEX.test(theme.primaryColor)) c.color = theme.primaryColor;
     if (theme.logoUrl !== undefined) c.logoImg = safeLogo(theme.logoUrl);
-    if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim() : original.title;
-    if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim() || original.subtitle;
+    if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim().slice(0, 160) : original.title;
+    if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim().slice(0, 500) || original.subtitle;
     var size = Number(theme.logoSize);
     if (isFinite(size) && size > 0) logoStyle.textContent = '.stage .topbar .logo img{height:' + Math.min(size, 80) + 'px}';
   }
@@ -107,24 +107,54 @@
 
   // Leads: name + email go in the shared player_submissions columns, the rest
   // (game, result, score, answers, code, ...) in `extra`.
+  function submissionStatus(message, retry) {
+    var status = document.querySelector('.a8-save-status');
+    if (!status) {
+      status = document.createElement('div');
+      status.className = 'a8-save-status';
+      status.setAttribute('role', 'status');
+      document.body.appendChild(status);
+    }
+    status.replaceChildren(document.createTextNode(message));
+    var button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = retry ? 'Retry' : 'Dismiss';
+    button.addEventListener('click', retry || function () { status.remove(); });
+    status.appendChild(button);
+  }
   window.A8_ON_LEAD = function (lead) {
     if (!lead || !lead.email) return;
+    // Catalog/customizer previews are demos, not live campaigns. Do not send
+    // their personal details to persistent storage or promise real prizes.
+    if (!orderId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(orderId)) {
+      submissionStatus('Saved in this preview session only. Demo prizes; no emails are sent.');
+      return;
+    }
     var name = ((lead.firstName || '') + ' ' + (lead.lastName || '')).trim() || 'Player';
     var extra = {};
-    for (var key in lead) {
-      if (key !== 'firstName' && key !== 'lastName' && key !== 'email' && key !== 'id') extra[key] = lead[key];
-    }
-    try {
+    ['game', 'result', 'score', 'code', 'optIn'].forEach(function (key) {
+      if (lead[key] !== undefined) extra[key] = lead[key];
+    });
+    function save() {
+      submissionStatus('Saving your entry…');
       fetch('/api/player-submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ gameSlug: slug, orderId: orderId || null, name: name, email: lead.email, extra: extra }),
-      }).catch(function () {});
-    } catch (e) { /* lead is still in the in-memory list */ }
+      }).then(function (response) {
+        if (!response.ok) throw new Error('Submission failed');
+        submissionStatus('Your entry has been saved.');
+      }).catch(function () {
+        submissionStatus('Your entry could not be saved. Please retry before leaving this page.', save);
+      });
+    }
+    save();
   };
 
   window.addEventListener('message', function (event) {
-    if (event.data && event.data.type === 'CDH_BRAND_UPDATE') onTheme(event.data.theme);
+    if (event.source !== window.parent || event.origin !== window.location.origin) return;
+    if (event.data && event.data.type === 'CDH_BRAND_UPDATE' &&
+        event.data.theme && typeof event.data.theme === 'object') onTheme(event.data.theme);
   });
 
   // Standalone / live-link load: same fields as query params.

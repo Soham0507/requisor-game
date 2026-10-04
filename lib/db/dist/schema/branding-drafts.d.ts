@@ -1,5 +1,20 @@
 import { z } from "zod/v4";
 export declare const draftStatusEnum: import("drizzle-orm/pg-core").PgEnum<["draft", "finalized"]>;
+export interface QuizOption {
+    text: string;
+    scores: {
+        ES: number;
+        NX: number;
+        RX: number;
+        RZ: number;
+        TX: number;
+        TZ: number;
+    };
+}
+export interface QuizQuestion {
+    text: string;
+    options: QuizOption[];
+}
 export declare const brandingDraftsTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
     name: "branding_drafts";
     schema: undefined;
@@ -157,6 +172,25 @@ export declare const brandingDraftsTable: import("drizzle-orm/pg-core").PgTableW
             identity: undefined;
             generated: undefined;
         }, {}, {}>;
+        quiz: import("drizzle-orm/pg-core").PgColumn<{
+            name: "quiz_json";
+            tableName: "branding_drafts";
+            dataType: "json";
+            columnType: "PgJsonb";
+            data: QuizQuestion[];
+            driverParam: unknown;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {
+            $type: QuizQuestion[];
+        }>;
         heading: import("drizzle-orm/pg-core").PgColumn<{
             name: "heading";
             tableName: "branding_drafts";
@@ -255,6 +289,7 @@ export declare const insertBrandingDraftSchema: z.ZodObject<{
     logoDataUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     bgDataUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     fontDataUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
+    quiz: z.ZodOptional<z.ZodNullable<z.ZodType<QuizQuestion[], QuizQuestion[], z.core.$ZodTypeInternals<QuizQuestion[], QuizQuestion[]>>>>;
     heading: z.ZodString;
 }, {
     out: {};

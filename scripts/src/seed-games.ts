@@ -1,7 +1,8 @@
-import { db, gamesTable, type InsertGame } from "@workspace/db";
+import { db, gamesTable, FIVEGAMES_CATALOG, type InsertGame } from "@workspace/db";
 import { sql } from "drizzle-orm";
 
 const GAMES: InsertGame[] = [
+  ...FIVEGAMES_CATALOG,
   {
     slug: "space-shooter-1",
     name: "Space Shooter",

@@ -37,3 +37,4 @@ async function createPgliteDb() {
 }
 
 export * from "./schema";
+export { FIVEGAMES_CATALOG } from "./fivegames-catalog";

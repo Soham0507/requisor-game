@@ -67296,6 +67296,30 @@ var insertPlayerSubmissionSchema = createInsertSchema(playerSubmissionsTable).om
   createdAt: true
 });
 
+// ../../lib/db/src/fivegames-catalog.ts
+var SOURCE = "artifacts/citrus-landing/game/fivegames";
+var FIVEGAMES_CATALOG = [
+  ["a8-match", "Match", "Five personality questions match each player with a product and reveal a personalized result."],
+  ["a8-trivia-rush", "Trivia Rush", "A 60-second trivia challenge with rapid-fire questions, streak bonuses, and a leaderboard."],
+  ["a8-the-number", "The Number", "Guess brand facts and product statistics using an interactive number dial."],
+  ["a8-spin-to-win", "Spin to Win", "Answer three questions, grow your prize chances, and spin the reward wheel."],
+  ["a8-recall", "Recall", "Flip cards, match six pairs, and test how much you remember about the brand."]
+].map(([slug, name2, tagline]) => ({
+  slug,
+  name: name2,
+  tagline,
+  thumbnailUrl: `/logo/${slug}.svg`,
+  folderPath: SOURCE,
+  previewBasePath: `/game-previews/${slug}/`,
+  brandSupport: "full",
+  defaultPrimaryColor: "#0A84FF",
+  defaultSecondaryColor: "#0056B3",
+  defaultAccentColor: "#FFB340",
+  defaultLogoUrl: null,
+  defaultHeading: name2,
+  priceCents: 0
+}));
+
 // ../../lib/db/src/index.ts
 var db = process.env.DATABASE_URL ? await createNodePostgresDb(process.env.DATABASE_URL) : await createPgliteDb();
 async function createNodePostgresDb(connectionString) {
@@ -68011,6 +68035,10 @@ import fs2 from "fs";
 import path from "path";
 var repoRoot = path.resolve(import.meta.dirname, "../../..");
 var GAME_PREVIEWS = [
+  ...["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall"].map((slug) => ({
+    slug,
+    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/fivegames/dist/previews", slug)
+  })),
   {
     slug: "space-shooter-1",
     distDir: path.join(repoRoot, "artifacts/games/space-shooter-1/dist/public")
@@ -68092,6 +68120,7 @@ var app_default = app;
 
 // src/lib/catalog-bootstrap.ts
 var DEFAULT_GAMES = [
+  ...FIVEGAMES_CATALOG,
   {
     slug: "space-shooter-1",
     name: "Space Shooter",

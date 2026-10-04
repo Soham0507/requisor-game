@@ -5,4 +5,5 @@ export declare const db: (import("drizzle-orm/node-postgres").NodePgDatabase<typ
     $client: import("@electric-sql/pglite").PGlite;
 });
 export * from "./schema";
+export { FIVEGAMES_CATALOG } from "./fivegames-catalog";
 //# sourceMappingURL=index.d.ts.map

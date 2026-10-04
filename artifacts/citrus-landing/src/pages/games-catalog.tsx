@@ -24,8 +24,21 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
   },
 };
 
-export default function GamesCatalog() {
+const QUIZ_SURVEY_GAMES = new Set([
+  "a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall",
+]);
+const VERTICALS = [
+  { id: "all", label: "All experiences", href: "/games" },
+  { id: "activations", label: "Games & Activations", href: "/games/activations" },
+  { id: "quiz-questionnaire-survey", label: "Quiz / Questionnaire / Survey", href: "/games/quiz-questionnaire-survey" },
+] as const;
+type Vertical = (typeof VERTICALS)[number]["id"];
+
+export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical }) {
   const { data: games, isLoading, isError } = useListGames();
+  const isQuizVertical = vertical === "quiz-questionnaire-survey";
+  const visibleGames = games?.filter((game) =>
+    vertical === "all" || QUIZ_SURVEY_GAMES.has(game.slug) === isQuizVertical);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -33,18 +46,42 @@ export default function GamesCatalog() {
       <main className="container mx-auto px-6 md:px-12 pt-32 pb-24">
         <div className="mb-12 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Pick a game to brand
+            {isQuizVertical ? "Quiz / Questionnaire / Survey" : "Pick a game to brand"}
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Choose a game, customize its logo, colors, and heading, try it live, then finalize your branding.
+            {isQuizVertical
+              ? "Explore five interactive experiences for quizzes, questionnaires, and surveys. Customize your branding and try them live."
+              : "Choose a game, customize its logo, colors, and heading, try it live, then finalize your branding."}
           </p>
+          {isQuizVertical && (
+            <p className="text-sm text-muted-foreground max-w-xl mx-auto mt-3">
+              Apple-inspired light interfaces with SF Pro on Apple devices, iOS-style forms, switches, and sheets.
+            </p>
+          )}
         </div>
+
+        <nav aria-label="Experience verticals" className="flex flex-wrap justify-center gap-3 mb-10">
+          {VERTICALS.map((item) => (
+            <Link
+              key={item.id}
+              href={item.href}
+              aria-current={vertical === item.id ? "page" : undefined}
+              className={`rounded-full border px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                vertical === item.id
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-card text-foreground border-border hover:bg-muted"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
         {isLoading && <p className="text-center text-muted-foreground">Loading catalog…</p>}
         {isError && <p className="text-center text-destructive">Couldn't load the game catalog. Please try again.</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {games?.map((game) => {
+          {visibleGames?.map((game) => {
             const preview =
               GAME_PREVIEWS[game.slug] ??
               (game.thumbnailUrl
@@ -73,6 +110,11 @@ export default function GamesCatalog() {
                   </div>
                 )}
                 <div className="p-6 flex flex-col flex-grow">
+                  {QUIZ_SURVEY_GAMES.has(game.slug) && (
+                    <p className="text-xs font-medium text-muted-foreground mb-3">
+                      Quiz / Questionnaire / Survey
+                    </p>
+                  )}
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="text-xl font-bold text-foreground">{game.name}</h3>
                     {customizationAvailable ? (

@@ -40,6 +40,11 @@ const PREVIEW_BASE_PATHS: Record<string, string> = {
   "gesture-space-war": "/game-previews/gesture-space-war/",
   "boat-booth": "/game-previews/boat-booth/",
   "lexus-energy-quiz": "/game-previews/lexus-energy-quiz/",
+  "a8-match": "/game-previews/a8-match/",
+  "a8-trivia-rush": "/game-previews/a8-trivia-rush/",
+  "a8-the-number": "/game-previews/a8-the-number/",
+  "a8-spin-to-win": "/game-previews/a8-spin-to-win/",
+  "a8-recall": "/game-previews/a8-recall/",
 };
 
 export default function Customize() {

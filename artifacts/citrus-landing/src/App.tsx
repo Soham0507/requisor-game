@@ -15,7 +15,15 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/games" component={GamesCatalog} />
+      <Route path="/games">
+        <GamesCatalog />
+      </Route>
+      <Route path="/games/activations">
+        <GamesCatalog vertical="activations" />
+      </Route>
+      <Route path="/games/quiz-questionnaire-survey">
+        <GamesCatalog vertical="quiz-questionnaire-survey" />
+      </Route>
       <Route path="/customize/:slug" component={Customize} />
       <Route component={NotFound} />
     </Switch>

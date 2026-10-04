@@ -15,6 +15,10 @@ const repoRoot = path.resolve(import.meta.dirname, "../../..");
 // that don't read BASE_PATH) whenever its source changes — these are static
 // snapshots, not live dev servers.
 const GAME_PREVIEWS: { slug: string; distDir: string }[] = [
+  ...["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall"].map((slug) => ({
+    slug,
+    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/fivegames/dist/previews", slug),
+  })),
   {
     slug: "space-shooter-1",
     distDir: path.join(repoRoot, "artifacts/games/space-shooter-1/dist/public"),

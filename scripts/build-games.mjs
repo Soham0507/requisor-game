@@ -82,11 +82,18 @@ function run(game) {
 
 const only = process.argv[2];
 const selected = only ? GAMES.filter((g) => g.slug === only) : GAMES;
-if (only && selected.length === 0) {
+const fiveGameSlugs = ["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall"];
+if (only && selected.length === 0 && !fiveGameSlugs.includes(only)) {
   console.error(`Unknown game "${only}". Known: ${GAMES.map((g) => g.slug).join(", ")}`);
   process.exit(1);
 }
 
 mkdirSync(outRoot, { recursive: true });
 for (const game of selected) run(game);
-console.log(`\nAll ${selected.length} game build(s) staged into artifacts/citrus-landing/dist/public/game-previews/`);
+if (!only || fiveGameSlugs.includes(only)) {
+  execFileSync("node", ["scripts/stage-fivegames-preview.mjs", ...(only ? [only] : [])], {
+    cwd: repoRoot,
+    stdio: "inherit",
+  });
+}
+console.log(`\nAll ${selected.length + (!only ? 5 : fiveGameSlugs.includes(only) ? 1 : 0)} game build(s) staged into artifacts/citrus-landing/dist/public/game-previews/`);
