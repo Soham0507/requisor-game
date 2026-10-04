@@ -1,0 +1,145 @@
+/* =====================================================================
+   Platform embed bridge: runs ONE Activate8 game per page (chosen by the
+   /game-previews/<slug>/ path or ?game=), implements the CDH_BRAND_READY /
+   CDH_BRAND_UPDATE contract (game/BRANDING_CONTRACT.md), and forwards each
+   captured lead to /api/player-submissions. Loaded after the library code,
+   only in the staged platform build (see scripts/stage-fivegames-preview.mjs).
+   ===================================================================== */
+(function () {
+  var SLUG_TO_GAME = {
+    'a8-match': 'match',
+    'a8-trivia-rush': 'trivia',
+    'a8-the-number': 'number',
+    'a8-spin-to-win': 'spin',
+    'a8-recall': 'recall',
+  };
+  var A = window.Activate8;
+  if (!A) return;
+  var App = A.App;
+  var params = new URLSearchParams(window.location.search);
+
+  var gameId = params.get('game');
+  if (!gameId) {
+    for (var s in SLUG_TO_GAME) if (window.location.pathname.indexOf(s) !== -1) gameId = SLUG_TO_GAME[s];
+  }
+  if (!gameId || !A.GAMES[gameId]) return; // no game picked: leave the library page as is
+
+  var slug = '';
+  for (var k in SLUG_TO_GAME) if (SLUG_TO_GAME[k] === gameId) slug = k;
+  var orderId = params.get('orderId');
+  var HEX = /^#[0-9a-fA-F]{6}$/;
+  // The customizer's "Game title" field defaults to the game's name; only a title
+  // the customer actually changed should replace the start-screen headline.
+  var DEFAULT_HEADING = { match: 'Match', trivia: 'Trivia Rush', number: 'The Number', spin: 'Spin to Win', recall: 'Recall' };
+  var copy = A.BRANDS.halden.games[gameId];
+  var original = { title: copy.title, subtitle: copy.subtitle };
+  var logoStyle = document.createElement('style');
+  document.head.appendChild(logoStyle);
+
+  document.body.classList.add('a8-single');
+
+  // Generic "Your Brand" kit until the host sends a theme; the library's demo
+  // brands (Halden etc.) never show.
+  App.brandId = 'custom';
+  App.customBase = 'halden';
+  App.custom = { name: '', color: '#0A84FF', logoImg: null };
+
+  // The kit renders the logo URL straight into an <img src>, so only accept
+  // image data URIs, http(s) URLs or same-origin paths, and drop characters
+  // that could break out of the attribute.
+  function safeLogo(url) {
+    if (!url || typeof url !== 'string') return null;
+    if (!/^(data:image\/|https?:\/\/|\/)/i.test(url)) return null;
+    return url.replace(/["'<>\s]/g, '');
+  }
+
+  function merge(theme) {
+    if (!theme) return;
+    var c = App.custom;
+    if (typeof theme.brandName === 'string') c.name = theme.brandName;
+    if (theme.primaryColor && HEX.test(theme.primaryColor)) c.color = theme.primaryColor;
+    if (theme.logoUrl !== undefined) c.logoImg = safeLogo(theme.logoUrl);
+    if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim() : original.title;
+    if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim() || original.subtitle;
+    var size = Number(theme.logoSize);
+    if (isFinite(size) && size > 0) logoStyle.textContent = '.stage .topbar .logo img{height:' + Math.min(size, 80) + 'px}';
+  }
+
+  function signature() {
+    var c = App.custom;
+    return [c.name, c.color, c.logoImg, copy.title, copy.subtitle].join('|');
+  }
+
+  function setTitle() {
+    var name = App.custom.name.trim();
+    document.title = name ? name + ' — ' + A.GAMES[gameId].name : A.GAMES[gameId].name;
+  }
+
+  function openGame() {
+    if (!App.stage.el) App.play(gameId);
+  }
+
+  // Leaving the stage (the X is hidden, but Esc still closes it) just reopens
+  // the same game: a platform page is never the library.
+  var originalClosed = App.onStageClosed.bind(App);
+  App.onStageClosed = function () {
+    originalClosed();
+    setTimeout(openGame, 150);
+  };
+
+  var applied = signature();
+  var timer = null;
+  function onTheme(theme) {
+    merge(theme);
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      var next = signature();
+      if (next === applied) return;
+      applied = next;
+      setTitle();
+      App.applyBrand();
+      // The open stage keeps the brand it started with: closing it reopens the
+      // game (via onStageClosed above) with the new brand. Resets any round in
+      // progress, like every other game's live preview.
+      if (App.stage.el) App.stage.close(); else openGame();
+    }, 300);
+  }
+
+  // Leads: name + email go in the shared player_submissions columns, the rest
+  // (game, result, score, answers, code, ...) in `extra`.
+  window.A8_ON_LEAD = function (lead) {
+    if (!lead || !lead.email) return;
+    var name = ((lead.firstName || '') + ' ' + (lead.lastName || '')).trim() || 'Player';
+    var extra = {};
+    for (var key in lead) {
+      if (key !== 'firstName' && key !== 'lastName' && key !== 'email' && key !== 'id') extra[key] = lead[key];
+    }
+    try {
+      fetch('/api/player-submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gameSlug: slug, orderId: orderId || null, name: name, email: lead.email, extra: extra }),
+      }).catch(function () {});
+    } catch (e) { /* lead is still in the in-memory list */ }
+  };
+
+  window.addEventListener('message', function (event) {
+    if (event.data && event.data.type === 'CDH_BRAND_UPDATE') onTheme(event.data.theme);
+  });
+
+  // Standalone / live-link load: same fields as query params.
+  var initial = {};
+  if (params.has('brandName')) initial.brandName = params.get('brandName');
+  if (params.has('primaryColor')) initial.primaryColor = params.get('primaryColor');
+  if (params.has('logo')) initial.logoUrl = params.get('logo');
+  if (params.has('heading')) initial.heading = params.get('heading');
+  if (params.has('tagline')) initial.tagline = params.get('tagline');
+  if (params.has('logoSize')) initial.logoSize = params.get('logoSize');
+  merge(initial);
+  applied = signature();
+  setTitle();
+  App.applyBrand();
+  openGame();
+
+  if (window.parent !== window) window.parent.postMessage({ type: 'CDH_BRAND_READY' }, '*');
+})();
