@@ -12,7 +12,7 @@ import { MOBILE_UNSUPPORTED, MOBILE_UNSUPPORTED_MESSAGE } from "@/lib/mobile-sup
 // section on the home page (see Cyber.tsx's `projects` list), so visitors
 // recognize the game before they click Customize. A game with no entry here
 // just skips the preview clip on its card.
-const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; poster?: string }> = {
+const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; poster?: string; fit?: "contain" }> = {
   "space-shooter-1": { type: "video", src: "/logo/spaceshooter.mp4" },
   "cyber-adventure": { type: "video", src: "/logo/cyber.mp4" },
   "basketball-shootout": { type: "video", src: "/logo/app1.mp4" },
@@ -22,6 +22,11 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
     src: "/logo/golf.mp4",
     poster: "/logo/golf-poster.jpg",
   },
+  "a8-match": { type: "video", src: "/recordings/match.mp4", poster: "/recordings/match-poster.jpg", fit: "contain" },
+  "a8-trivia-rush": { type: "video", src: "/recordings/rush.mp4", poster: "/recordings/rush-poster.jpg", fit: "contain" },
+  "a8-the-number": { type: "video", src: "/recordings/number.mp4", poster: "/recordings/number-poster.jpg", fit: "contain" },
+  "a8-spin-to-win": { type: "video", src: "/recordings/spin.mp4", poster: "/recordings/spin-poster.jpg", fit: "contain" },
+  "a8-recall": { type: "video", src: "/recordings/recall.mp4", poster: "/recordings/recall-poster.jpg", fit: "contain" },
 };
 
 const QUIZ_SURVEY_GAMES = new Set([
@@ -105,7 +110,7 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
                         muted
                         playsInline
                         aria-label={`${game.name} gameplay preview`}
-                        className="w-full h-full object-cover"
+                        className={`w-full h-full ${preview.fit === "contain" ? "object-contain bg-black" : "object-cover"}`}
                       />
                     )}
                   </div>
