@@ -75,6 +75,7 @@ const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] 
   quiz: {
     prompt: "Which style?",
     options: [
+      { label: "Jeopardy", icon: HelpCircle, next: { result: "jeopardy" } },
       { label: "Match visitors to a product", icon: Sparkles, next: { result: "a8-match" } },
       { label: "Fast trivia race", icon: Timer, next: { result: "a8-trivia-rush" } },
       { label: "Guess the stat", icon: Gauge, next: { result: "a8-the-number" } },
