@@ -289,6 +289,11 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
           <Button type="button" variant="outline" size="sm" onClick={() => fileInputRef.current?.click()} data-testid="button-upload-logo">
             <Upload size={14} /> Upload logo
           </Button>
+          {theme.logoUrl && (
+            <Button type="button" variant="outline" size="sm" onClick={() => set("logoUrl", null)} data-testid="button-remove-logo">
+              Remove logo
+            </Button>
+          )}
           <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleLogoPick} />
         </div>
         <div className="space-y-1">

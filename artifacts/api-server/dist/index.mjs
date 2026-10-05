@@ -68035,6 +68035,10 @@ import fs2 from "fs";
 import path from "path";
 var repoRoot = path.resolve(import.meta.dirname, "../../..");
 var GAME_PREVIEWS = [
+  {
+    slug: "jeopardy",
+    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/jeoparady/frontend/dist/catalog")
+  },
   ...["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall"].map((slug) => ({
     slug,
     distDir: path.join(repoRoot, "artifacts/citrus-landing/game/fivegames/dist/previews", slug)
@@ -68216,9 +68220,9 @@ var DEFAULT_GAMES = [
     name: "Jeopardy",
     tagline: "A branded trivia board experience with themed categories, escalating challenges, and live leaderboard play.",
     thumbnailUrl: "/logo/jeopardy.png",
-    folderPath: "coming-soon/jeopardy",
-    previewBasePath: null,
-    brandSupport: "chrome_only",
+    folderPath: "artifacts/citrus-landing/game/jeoparady/frontend",
+    previewBasePath: "/game-previews/jeopardy/",
+    brandSupport: "full",
     defaultPrimaryColor: "#00384f",
     defaultSecondaryColor: "#f0cf3a",
     defaultAccentColor: "#4aa7bd",

@@ -26,6 +26,25 @@ export default function QuestionModal({ category, question, playerId, onResolved
   const [isTimedOut, setIsTimedOut] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const startedAtRef = useRef(Date.now())
+  const dialogRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null
+    dialogRef.current?.focus()
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return
+      const buttons = Array.from(dialogRef.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [])
+      const first = buttons[0], last = buttons.at(-1)
+      if (!first) { event.preventDefault(); dialogRef.current?.focus(); return }
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
+        event.preventDefault(); last.focus()
+      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialogRef.current)) {
+        event.preventDefault(); first.focus()
+      }
+    }
+    document.addEventListener('keydown', trapFocus)
+    return () => { document.removeEventListener('keydown', trapFocus); previous?.focus() }
+  }, [question.id])
 
   useEffect(() => {
     startedAtRef.current = Date.now()
@@ -89,7 +108,7 @@ export default function QuestionModal({ category, question, playerId, onResolved
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-brand-950/90 p-4 backdrop-blur-sm sm:p-6">
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-label={question.prompt} tabIndex={-1} className="fixed inset-0 z-50 flex items-center justify-center bg-brand-950/90 p-4 backdrop-blur-sm sm:p-6">
       <div className="w-full max-w-[45rem] overflow-hidden rounded-[1.75rem] bg-cream-100 shadow-[0_30px_80px_rgba(0,0,0,0.45)] lg:max-w-[55rem] dark:bg-brand-950">
         <div className="flex items-center justify-between gap-4 bg-brand-900 px-5 pb-5 pt-5 sm:px-8 sm:pt-6">
           <div className="flex min-w-0 flex-col gap-1">

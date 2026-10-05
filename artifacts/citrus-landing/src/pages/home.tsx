@@ -456,15 +456,15 @@ export default function Home() {
             </div>
           </article>
 
-          <div className="coming-divider rv" role="separator" aria-label="Upcoming experiences">
+          <div className="coming-divider rv" role="separator" aria-label="More experiences">
             <span className="coming-divider-line"></span>
             <span className="coming-divider-label">
               <i></i>
-              Coming Soon
+              More Experiences
               <i></i>
             </span>
             <span className="coming-divider-line end"></span>
-            <span className="coming-divider-copy">New branded activations in development</span>
+            <span className="coming-divider-copy">Playable previews and upcoming branded activations</span>
           </div>
 
           <article className="xp rv">
@@ -503,7 +503,7 @@ export default function Home() {
               <div className="cat">
                 <i style={{ background: "#4AA7BD" }}></i>
                 Activate · Trivia activation
-                <span className="coming-tag">Coming soon</span>
+                <span className="coming-tag">Customize now</span>
               </div>
               <h3>Jeopardy</h3>
               <p className="story">
@@ -511,11 +511,12 @@ export default function Home() {
                 product knowledge into a live leaderboard moment, captures team leads up front, and shows you which
                 topics resonate.
               </p>
+              <Link className="btn p" href="/customize/jeopardy">Customize Jeopardy</Link>
             </div>
             <div className="visual" data-tilt="">
               <img src="/logo/jeopardy.png" alt="Jeopardy branded activation preview" loading="lazy" />
               <div className="glass"></div>
-              <div className="plate">Coming soon · Jeopardy activation</div>
+              <div className="plate">Jeopardy · Playable branding preview</div>
             </div>
           </article>
         </div>

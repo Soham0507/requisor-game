@@ -104,9 +104,9 @@ const DEFAULT_GAMES: InsertGame[] = [
     tagline:
       "A branded trivia board experience with themed categories, escalating challenges, and live leaderboard play.",
     thumbnailUrl: "/logo/jeopardy.png",
-    folderPath: "coming-soon/jeopardy",
-    previewBasePath: null,
-    brandSupport: "chrome_only",
+    folderPath: "artifacts/citrus-landing/game/jeoparady/frontend",
+    previewBasePath: "/game-previews/jeopardy/",
+    brandSupport: "full",
     defaultPrimaryColor: "#00384f",
     defaultSecondaryColor: "#f0cf3a",
     defaultAccentColor: "#4aa7bd",

@@ -3,3 +3,4 @@
 - [Generated API declaration refresh](generated-api-declaration-refresh.md) — regenerating OpenAPI source may leave leaf typechecks reading old library declarations; rebuild those libs.
 - [Protect root workspace metadata](workspace-metadata-protection.md) — imports and cleanup have repeatedly removed required root files while filtered dev servers kept working.
 - [Quiz and survey vertical](quiz-survey-vertical.md) — fivegames belongs to Quiz / Questionnaire / Survey and retains its Apple-inspired light game interface.
+- [Imported game preview boundaries](imported-game-preview-boundaries.md) — full branding support does not imply a live campaign backend; keep guest demos explicit.

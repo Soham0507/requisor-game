@@ -30,12 +30,17 @@ const GAMES = [
   { slug: "gesture-space-war", pkg: "@workspace/space-game", dist: "artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game/dist/public", mode: "envBase" },
   { slug: "boat-booth", pkg: "@workspace/boat-booth", dist: "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth/dist/public", mode: "envBase" },
   { slug: "lexus-energy-quiz", dist: "artifacts/citrus-landing/game/Lexus/public", mode: "static" },
+  { slug: "jeopardy", dist: "artifacts/citrus-landing/game/jeoparady/frontend/dist/catalog", mode: "jeopardy" },
 ];
 
 const outRoot = path.join(repoRoot, "artifacts/citrus-landing/dist/public/game-previews");
 
 function run(game) {
   const base = `/game-previews/${game.slug}/`;
+  if (game.mode === "jeopardy") {
+    execFileSync("node", ["scripts/stage-jeopardy-preview.mjs"], { cwd: repoRoot, stdio: "inherit" });
+    return;
+  }
   if (game.mode === "static") {
     // Stage the single-file quiz and its relative assets without changing its source.
     execFileSync("node", ["scripts/stage-lexus-preview.mjs"], { cwd: repoRoot, stdio: "inherit" });

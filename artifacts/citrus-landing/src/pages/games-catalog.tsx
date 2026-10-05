@@ -26,6 +26,7 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
 
 const QUIZ_SURVEY_GAMES = new Set([
   "a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall",
+  "jeopardy",
 ]);
 const VERTICALS = [
   { id: "all", label: "All experiences", href: "/games" },
@@ -50,12 +51,12 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
             {isQuizVertical
-              ? "Explore five interactive experiences for quizzes, questionnaires, and surveys. Customize your branding and try them live."
+              ? "Explore interactive experiences for quizzes, questionnaires, and surveys. Customize your branding and try them live."
               : "Choose a game, customize its logo, colors, and heading, try it live, then finalize your branding."}
           </p>
           {isQuizVertical && (
             <p className="text-sm text-muted-foreground max-w-xl mx-auto mt-3">
-              Apple-inspired light interfaces with SF Pro on Apple devices, iOS-style forms, switches, and sheets.
+              Our five-game collection features Apple-inspired light interfaces with SF Pro on Apple devices, iOS-style forms, switches, and sheets.
             </p>
           )}
         </div>

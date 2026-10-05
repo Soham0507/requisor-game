@@ -43,6 +43,7 @@ interface GamePreviewFrameProps {
 /** Embeds the real game and pushes live branding updates via the postMessage contract in game/BRANDING_CONTRACT.md. */
 export function GamePreviewFrame({ previewBasePath, theme, deviceSize = null }: GamePreviewFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const themeRef = useRef(theme);
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [scale, setScale] = useState(1);
@@ -50,7 +51,10 @@ export function GamePreviewFrame({ previewBasePath, theme, deviceSize = null }: 
   useEffect(() => {
     setReady(false);
     const onMessage = (event: MessageEvent) => {
-      if (event.data?.type === "CDH_BRAND_READY" && event.source === iframeRef.current?.contentWindow) {
+      if (event.origin === window.location.origin && event.data?.type === "CDH_BRAND_READY" && event.source === iframeRef.current?.contentWindow) {
+        // Device-mode changes remount the iframe. A second READY does not
+        // change an already-true state, so send the current theme every time.
+        iframeRef.current.contentWindow?.postMessage({ type: "CDH_BRAND_UPDATE", theme: themeRef.current }, window.location.origin);
         setReady(true);
       }
     };
@@ -59,8 +63,9 @@ export function GamePreviewFrame({ previewBasePath, theme, deviceSize = null }: 
   }, [previewBasePath]);
 
   useEffect(() => {
+    themeRef.current = theme;
     if (!ready) return;
-    iframeRef.current?.contentWindow?.postMessage({ type: "CDH_BRAND_UPDATE", theme }, "*");
+    iframeRef.current?.contentWindow?.postMessage({ type: "CDH_BRAND_UPDATE", theme }, window.location.origin);
   }, [ready, theme]);
 
   // Recompute the scale-to-fit factor whenever the panel is resized (e.g. the

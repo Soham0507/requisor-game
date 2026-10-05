@@ -16,6 +16,10 @@ import {
   ShieldCheck,
   Rocket,
   CircleDot,
+  Timer,
+  Gauge,
+  Gift,
+  Brain,
   ChevronRight,
   type LucideIcon,
 } from "lucide-react";
@@ -26,7 +30,7 @@ import { Button } from "@/components/ui/button";
 // questions, max, down to one of the games in the catalog. Deterministic
 // and free to run — no LLM call, no API key — so it floats on every page
 // (mounted once in App.tsx) without any backend cost.
-type QuestionId = "q1" | "booth" | "training" | "retail" | "online";
+type QuestionId = "q1" | "booth" | "training" | "retail" | "online" | "quiz";
 type Next = QuestionId | { result: string };
 
 interface QuestionOption {
@@ -51,21 +55,32 @@ const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] 
     options: [
       { label: "Active & competitive", icon: CircleDot, next: { result: "basketball-shootout" } },
       { label: "Immersive sci-fi", icon: Rocket, next: { result: "gesture-space-war" } },
-      { label: "Quick lead capture", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
+      { label: "Quiz / lead capture", icon: HelpCircle, next: "quiz" },
     ],
   },
   training: {
     prompt: "What for?",
     options: [
       { label: "Security awareness", icon: ShieldCheck, next: { result: "cyber-adventure" } },
-      { label: "Knowledge check", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
+      { label: "Knowledge check", icon: HelpCircle, next: "quiz" },
     ],
   },
   retail: {
     prompt: "What vibe?",
     options: [
       { label: "Photo / video keepsake", icon: Camera, next: { result: "boat-booth" } },
-      { label: "Quick quiz", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
+      { label: "Quick quiz", icon: HelpCircle, next: "quiz" },
+    ],
+  },
+  quiz: {
+    prompt: "Which style?",
+    options: [
+      { label: "Match visitors to a product", icon: Sparkles, next: { result: "a8-match" } },
+      { label: "Fast trivia race", icon: Timer, next: { result: "a8-trivia-rush" } },
+      { label: "Guess the stat", icon: Gauge, next: { result: "a8-the-number" } },
+      { label: "Spin to win a prize", icon: Gift, next: { result: "a8-spin-to-win" } },
+      { label: "Test brand recall", icon: Brain, next: { result: "a8-recall" } },
+      { label: "Lifestyle personality quiz", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
     ],
   },
   online: {
@@ -135,6 +150,10 @@ function QuickReply({ icon: Icon, onClick, children }: { icon: LucideIcon; onCli
 function GameRecommendation({ slug }: { slug: string }) {
   const { data: games, isLoading } = useListGames();
   const game = games?.find((g) => g.slug === slug);
+  // The catalog is the source of truth: if it failed to load or doesn't list
+  // this game (e.g. a database that hasn't been seeded with it yet), say so
+  // and point at the catalog instead of rendering an empty card.
+  const missing = !isLoading && !game;
 
   return (
     <div className="flex items-start gap-1.5 animate-in fade-in-0 slide-in-from-bottom-1 duration-300">
@@ -145,6 +164,19 @@ function GameRecommendation({ slug }: { slug: string }) {
           Best match
         </p>
         {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+        {missing && (
+          <div>
+            <p className="text-sm text-foreground">That game isn't available right now.</p>
+            <div className="mt-2">
+              <Link href="/games">
+                <Button size="sm" className="rounded-full">
+                  Browse all games
+                  <ChevronRight size={14} />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
         {game && (
           <div>
             <p className="font-semibold text-foreground">{game.name}</p>

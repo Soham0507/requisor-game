@@ -83,7 +83,7 @@ export function playTick(): void {
 
 /** Plays when a correct answer credits the tile value to the player's balance. */
 export function playCorrect(): void {
-  playFile('/money-credit.mp3', 0.5)
+  playFile(`${import.meta.env.BASE_URL}money-credit.mp3`, 0.5)
 }
 
 export function playIncorrect(): void {
