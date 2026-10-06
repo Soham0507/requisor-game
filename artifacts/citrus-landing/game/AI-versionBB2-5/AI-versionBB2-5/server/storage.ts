@@ -62,7 +62,7 @@ export class DatabaseStorage implements IStorage {
       .from(scores)
       .where(
         and(
-          eq(scores.playerEmail, insertScore.playerEmail),
+          eq(scores.playerEmail, insertScore.playerEmail ?? ""),
           eq(scores.score, insertScore.score),
           eq(scores.shotsTaken, insertScore.shotsTaken),
           eq(scores.shotsMade, insertScore.shotsMade)

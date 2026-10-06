@@ -16,10 +16,10 @@
   },
   "private": true,
   "devDependencies": {
-    "@rollup/rollup-win32-x64-msvc": "^4.62.2",
+    "@rollup/rollup-win32-x64-msvc": "^4.64.0",
     "@tailwindcss/oxide-win32-x64-msvc": "^4.3.3",
     "lightningcss-win32-x64-msvc": "^1.33.0",
-    "prettier": "^3.8.1",
-    "typescript": "~5.9.2"
+    "prettier": "^3.9.9",
+    "typescript": "~5.9.3"
   }
 }

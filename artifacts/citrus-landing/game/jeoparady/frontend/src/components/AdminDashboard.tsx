@@ -108,7 +108,7 @@ export default function AdminDashboard({ adminId, onBack }: AdminDashboardProps)
 
   function handleExportPlayersExcel() {
     if (!players) return
-    exportToExcel(
+    void exportToExcel(
       'players',
       'Players',
       players.map((p) => ({
@@ -120,7 +120,9 @@ export default function AdminDashboard({ adminId, onBack }: AdminDashboardProps)
         Answers: p.questions_answered,
         'Accuracy (%)': p.accuracy !== null ? Math.round(p.accuracy * 100) : null,
       })),
-    )
+    ).catch((cause: unknown) => {
+      setError(cause instanceof Error ? cause.message : 'Excel export failed')
+    })
   }
 
   function handleExportPlayersPdf() {
@@ -143,7 +145,7 @@ export default function AdminDashboard({ adminId, onBack }: AdminDashboardProps)
 
   function handleExportAnswersExcel() {
     if (!filteredAnswers || !selectedPlayer) return
-    exportToExcel(
+    void exportToExcel(
       `${selectedPlayer.username}-answers`,
       'Answers',
       filteredAnswers.map((a) => ({
@@ -156,7 +158,9 @@ export default function AdminDashboard({ adminId, onBack }: AdminDashboardProps)
         'Time taken (s)': a.time_taken_seconds,
         When: new Date(a.answered_at).toLocaleString(),
       })),
-    )
+    ).catch((cause: unknown) => {
+      setError(cause instanceof Error ? cause.message : 'Excel export failed')
+    })
   }
 
   function handleExportAnswersPdf() {

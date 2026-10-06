@@ -35,7 +35,7 @@ export default function QuestionModal({ category, question, playerId, onResolved
       if (event.key !== 'Tab') return
       const buttons = Array.from(dialogRef.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [])
       const first = buttons[0], last = buttons.at(-1)
-      if (!first) { event.preventDefault(); dialogRef.current?.focus(); return }
+      if (!first || !last) { event.preventDefault(); dialogRef.current?.focus(); return }
       if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogRef.current)) {
         event.preventDefault(); last.focus()
       } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialogRef.current)) {

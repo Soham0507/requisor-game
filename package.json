@@ -7,6 +7,7 @@
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "test:dependency-security": "node --test scripts/dependency-security.test.mjs",
     "build:games": "node scripts/build-games.mjs",
     "build:web": "node scripts/build-site.mjs",
     "build:api": "pnpm --filter @workspace/api-server run build",
@@ -19,7 +20,7 @@
     "@replit/connectors-sdk": "^0.4.3"
   },
   "devDependencies": {
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.9",
     "typescript": "~5.9.3"
   }
 }

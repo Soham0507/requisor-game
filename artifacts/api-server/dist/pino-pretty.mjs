@@ -656,9 +656,9 @@ var require_pino_abstract_transport = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/constants.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/constants.js
 var require_constants = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/constants.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/constants.js"(exports, module) {
     "use strict";
     module.exports = {
       DATE_FORMAT: "yyyy-mm-dd HH:MM:ss.l o",
@@ -702,9 +702,9 @@ var require_constants = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/get-level-label-data.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/get-level-label-data.js
 var require_get_level_label_data = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/get-level-label-data.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/get-level-label-data.js"(exports, module) {
     "use strict";
     module.exports = getLevelLabelData;
     var { LEVELS, LEVEL_NAMES } = require_constants();
@@ -724,9 +724,9 @@ var require_get_level_label_data = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/colors.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/colors.js
 var require_colors = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/colors.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/colors.js"(exports, module) {
     "use strict";
     var nocolor = (input) => input;
     var plain = {
@@ -853,16 +853,16 @@ var require_atomic_sleep = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/sonic-boom@4.2.1/node_modules/sonic-boom/index.js
+// ../../node_modules/.pnpm/sonic-boom@5.0.1/node_modules/sonic-boom/index.js
 var require_sonic_boom = __commonJS({
-  "../../node_modules/.pnpm/sonic-boom@4.2.1/node_modules/sonic-boom/index.js"(exports, module) {
+  "../../node_modules/.pnpm/sonic-boom@5.0.1/node_modules/sonic-boom/index.js"(exports, module) {
     "use strict";
-    var fs = __require("fs");
-    var EventEmitter = __require("events");
-    var inherits = __require("util").inherits;
-    var path = __require("path");
+    var fs = __require("node:fs");
+    var EventEmitter = __require("node:events");
+    var inherits = __require("node:util").inherits;
+    var path = __require("node:path");
+    var assert = __require("node:assert");
     var sleep = require_atomic_sleep();
-    var assert = __require("assert");
     var BUSY_WRITE_TIMEOUT = 100;
     var kEmptyBuffer = Buffer.allocUnsafe(0);
     var MAX_WRITE = 16 * 1024;
@@ -906,7 +906,7 @@ var require_sonic_boom = __commonJS({
         }
         if (!sonic._writing && sonic._len > sonic.minLength || sonic._flushPending) {
           sonic._actualWrite();
-        } else if (reopening) {
+        } else if (reopening && !sonic._writing) {
           process.nextTick(() => sonic.emit("drain"));
         }
       }
@@ -934,7 +934,7 @@ var require_sonic_boom = __commonJS({
       if (!(this instanceof SonicBoom)) {
         return new SonicBoom(opts);
       }
-      let { fd, dest, minLength, maxLength, maxWrite, periodicFlush, sync, append = true, mkdir, retryEAGAIN, fsync, contentMode, mode } = opts || {};
+      let { fd, dest, minLength, maxLength, maxWrite, periodicFlush, sync, append = true, mkdir, retryEAGAIN, maxWriteRetries, fsync, contentMode, mode } = opts || {};
       fd = fd || dest;
       this._len = 0;
       this.fd = -1;
@@ -959,6 +959,8 @@ var require_sonic_boom = __commonJS({
       this.append = append || false;
       this.mode = mode;
       this.retryEAGAIN = retryEAGAIN || (() => true);
+      this.maxWriteRetries = maxWriteRetries || 0;
+      this._writeRetries = 0;
       this.mkdir = mkdir || false;
       let fsWriteSync;
       let fsWrite;
@@ -1004,7 +1006,12 @@ var require_sonic_boom = __commonJS({
       }
       this.release = (err, n) => {
         if (err) {
-          if ((err.code === "EAGAIN" || err.code === "EBUSY") && this.retryEAGAIN(err, this._writingBuf.length, this._len - this._writingBuf.length)) {
+          const isRetryableErr = err.code === "EAGAIN" || err.code === "EBUSY";
+          if (isRetryableErr) {
+            this._writeRetries++;
+          }
+          const retriesExhausted = this.maxWriteRetries > 0 && this._writeRetries > this.maxWriteRetries;
+          if (isRetryableErr && !retriesExhausted && this.retryEAGAIN(err, this._writingBuf.length, this._len - this._writingBuf.length)) {
             if (this.sync) {
               try {
                 sleep(BUSY_WRITE_TIMEOUT);
@@ -1020,6 +1027,9 @@ var require_sonic_boom = __commonJS({
             this.emit("error", err);
           }
           return;
+        }
+        if (n > 0) {
+          this._writeRetries = 0;
         }
         this.emit("write", n);
         const releasedBufObj = releaseWritingBuf(this._writingBuf, this._len, n);
@@ -1309,6 +1319,7 @@ var require_sonic_boom = __commonJS({
         }
         try {
           const n = Buffer.isBuffer(buf) ? fs.writeSync(this.fd, buf) : fs.writeSync(this.fd, buf, "utf8");
+          this._writeRetries = 0;
           const releasedBufObj = releaseWritingBuf(buf, this._len, n);
           buf = releasedBufObj.writingBuf;
           this._len = releasedBufObj.len;
@@ -1317,7 +1328,11 @@ var require_sonic_boom = __commonJS({
           }
         } catch (err) {
           const shouldRetry = err.code === "EAGAIN" || err.code === "EBUSY";
-          if (shouldRetry && !this.retryEAGAIN(err, buf.length, this._len - buf.length)) {
+          if (shouldRetry) {
+            this._writeRetries++;
+          }
+          const retriesExhausted = this.maxWriteRetries > 0 && this._writeRetries > this.maxWriteRetries;
+          if (!shouldRetry || retriesExhausted || !this.retryEAGAIN(err, buf.length, this._len - buf.length)) {
             throw err;
           }
           sleep(BUSY_WRITE_TIMEOUT);
@@ -1346,6 +1361,7 @@ var require_sonic_boom = __commonJS({
         }
         try {
           const n = fs.writeSync(this.fd, buf);
+          this._writeRetries = 0;
           buf = buf.subarray(n);
           this._len = Math.max(this._len - n, 0);
           if (buf.length <= 0) {
@@ -1354,7 +1370,11 @@ var require_sonic_boom = __commonJS({
           }
         } catch (err) {
           const shouldRetry = err.code === "EAGAIN" || err.code === "EBUSY";
-          if (shouldRetry && !this.retryEAGAIN(err, buf.length, this._len - buf.length)) {
+          if (shouldRetry) {
+            this._writeRetries++;
+          }
+          const retriesExhausted = this.maxWriteRetries > 0 && this._writeRetries > this.maxWriteRetries;
+          if (!shouldRetry || retriesExhausted || !this.retryEAGAIN(err, buf.length, this._len - buf.length)) {
             throw err;
           }
           sleep(BUSY_WRITE_TIMEOUT);
@@ -1440,9 +1460,9 @@ var require_sonic_boom = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/noop.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/noop.js
 var require_noop = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/noop.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/noop.js"(exports, module) {
     "use strict";
     module.exports = function noop() {
     };
@@ -1543,9 +1563,9 @@ var require_on_exit_leak_free = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/build-safe-sonic-boom.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/build-safe-sonic-boom.js
 var require_build_safe_sonic_boom = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/build-safe-sonic-boom.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/build-safe-sonic-boom.js"(exports, module) {
     "use strict";
     module.exports = buildSafeSonicBoom;
     var { isMainThread } = __require("node:worker_threads");
@@ -1594,9 +1614,9 @@ var require_build_safe_sonic_boom = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/is-valid-date.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/is-valid-date.js
 var require_is_valid_date = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/is-valid-date.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/is-valid-date.js"(exports, module) {
     "use strict";
     module.exports = isValidDate;
     function isValidDate(date) {
@@ -1605,9 +1625,9 @@ var require_is_valid_date = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/create-date.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/create-date.js
 var require_create_date = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/create-date.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/create-date.js"(exports, module) {
     "use strict";
     module.exports = createDate;
     var isValidDate = require_is_valid_date();
@@ -1622,9 +1642,9 @@ var require_create_date = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/split-property-key.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/split-property-key.js
 var require_split_property_key = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/split-property-key.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/split-property-key.js"(exports, module) {
     "use strict";
     module.exports = splitPropertyKey;
     function splitPropertyKey(key) {
@@ -1657,9 +1677,9 @@ var require_split_property_key = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/get-property-value.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/get-property-value.js
 var require_get_property_value = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/get-property-value.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/get-property-value.js"(exports, module) {
     "use strict";
     module.exports = getPropertyValue;
     var splitPropertyKey = require_split_property_key();
@@ -1676,9 +1696,9 @@ var require_get_property_value = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/delete-log-property.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/delete-log-property.js
 var require_delete_log_property = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/delete-log-property.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/delete-log-property.js"(exports, module) {
     "use strict";
     module.exports = deleteLogProperty;
     var getPropertyValue = require_get_property_value();
@@ -1955,21 +1975,51 @@ var require_cjs = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/filter-log.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/filter-log.js
 var require_filter_log = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/filter-log.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/filter-log.js"(exports, module) {
     "use strict";
     module.exports = filterLog;
     var { createCopier } = require_cjs();
     var fastCopy = createCopier({});
     var deleteLogProperty = require_delete_log_property();
+    var getPropertyValue = require_get_property_value();
+    var splitPropertyKey = require_split_property_key();
+    function hasLogProperty(log, property) {
+      const props = splitPropertyKey(property);
+      if (props.length === 0) {
+        return false;
+      }
+      let current = log;
+      for (const prop of props) {
+        if (current === null || typeof current !== "object" || !Object.prototype.hasOwnProperty.call(current, prop)) {
+          return false;
+        }
+        current = current[prop];
+      }
+      return true;
+    }
+    function setLogProperty(log, property, value) {
+      const props = splitPropertyKey(property);
+      const last = props.pop();
+      let current = log;
+      for (const prop of props) {
+        if (current[prop] === null || typeof current[prop] !== "object") {
+          current[prop] = {};
+        }
+        current = current[prop];
+      }
+      current[last] = value;
+    }
     function filterLog({ log, context }) {
       const { ignoreKeys, includeKeys } = context;
       const logCopy = fastCopy(log);
       if (includeKeys) {
         const logIncluded = {};
         includeKeys.forEach((key) => {
-          logIncluded[key] = logCopy[key];
+          if (hasLogProperty(logCopy, key)) {
+            setLogProperty(logIncluded, key, getPropertyValue(logCopy, key));
+          }
         });
         return logIncluded;
       }
@@ -2234,9 +2284,9 @@ var require_dateformat = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/format-time.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/format-time.js
 var require_format_time = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/format-time.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/format-time.js"(exports, module) {
     "use strict";
     module.exports = formatTime;
     var {
@@ -2273,9 +2323,9 @@ var require_format_time = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/handle-custom-levels-names-opts.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/handle-custom-levels-names-opts.js
 var require_handle_custom_levels_names_opts = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/handle-custom-levels-names-opts.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/handle-custom-levels-names-opts.js"(exports, module) {
     "use strict";
     module.exports = handleCustomLevelsNamesOpts;
     function handleCustomLevelsNamesOpts(cLevels) {
@@ -2298,9 +2348,9 @@ var require_handle_custom_levels_names_opts = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/handle-custom-levels-opts.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/handle-custom-levels-opts.js
 var require_handle_custom_levels_opts = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/handle-custom-levels-opts.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/handle-custom-levels-opts.js"(exports, module) {
     "use strict";
     module.exports = handleCustomLevelsOpts;
     function handleCustomLevelsOpts(cLevels) {
@@ -2326,17 +2376,19 @@ var require_handle_custom_levels_opts = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/interpret-conditionals.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/interpret-conditionals.js
 var require_interpret_conditionals = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/interpret-conditionals.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/interpret-conditionals.js"(exports, module) {
     "use strict";
     module.exports = interpretConditionals;
     var getPropertyValue = require_get_property_value();
     function interpretConditionals(messageFormat, log) {
-      messageFormat = messageFormat.replace(/{if (.*?)}(.*?){end}/g, replacer);
+      messageFormat = messageFormat.replace(/{if (.*?)}([\s\S]*?){end}/g, replacer);
       messageFormat = messageFormat.replace(/{if (.*?)}/g, "");
       messageFormat = messageFormat.replace(/{end}/g, "");
-      return messageFormat.replace(/\s+/g, " ").trim();
+      messageFormat = messageFormat.replace(/[^\S\r\n]+/g, " ");
+      messageFormat = messageFormat.replace(/\n[^\S\r\n]*\n/g, "\n");
+      return messageFormat.trim();
       function replacer(_, key, value) {
         const propertyValue = getPropertyValue(log, key);
         if (propertyValue && value.includes(key)) {
@@ -2349,9 +2401,9 @@ var require_interpret_conditionals = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/is-object.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/is-object.js
 var require_is_object = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/is-object.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/is-object.js"(exports, module) {
     "use strict";
     module.exports = isObject;
     function isObject(input) {
@@ -2360,9 +2412,9 @@ var require_is_object = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/join-lines-with-indentation.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/join-lines-with-indentation.js
 var require_join_lines_with_indentation = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/join-lines-with-indentation.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/join-lines-with-indentation.js"(exports, module) {
     "use strict";
     module.exports = joinLinesWithIndentation;
     function joinLinesWithIndentation({ input, ident = "    ", eol = "\n" }) {
@@ -2375,9 +2427,9 @@ var require_join_lines_with_indentation = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/parse-factory-options.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/parse-factory-options.js
 var require_parse_factory_options = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/parse-factory-options.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/parse-factory-options.js"(exports, module) {
     "use strict";
     module.exports = parseFactoryOptions;
     var {
@@ -2405,7 +2457,7 @@ var require_parse_factory_options = __commonJS({
         translateTime
       } = options;
       const errorProps = options.errorProps.split(",");
-      const useOnlyCustomProps = typeof options.useOnlyCustomProps === "boolean" ? options.useOnlyCustomProps : options.useOnlyCustomProps === "true";
+      const useOnlyCustomProps = options.useOnlyCustomProps;
       const customLevels = handleCustomLevelsOpts(options.customLevels);
       const customLevelNames = handleCustomLevelsNamesOpts(options.customLevels);
       const getLevelLabelData = handleLevelLabelData(useOnlyCustomProps, customLevels, customLevelNames);
@@ -2667,16 +2719,30 @@ var require_fast_safe_stringify = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-error.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/strip-unsafe-control-chars.js
+var require_strip_unsafe_control_chars = __commonJS({
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/strip-unsafe-control-chars.js"(exports, module) {
+    "use strict";
+    module.exports = stripUnsafeControlChars;
+    var unsafeControlChars = /[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/g;
+    function stripUnsafeControlChars(input) {
+      return String(input).replace(unsafeControlChars, "");
+    }
+  }
+});
+
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-error.js
 var require_prettify_error = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-error.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-error.js"(exports, module) {
     "use strict";
     module.exports = prettifyError;
     var joinLinesWithIndentation = require_join_lines_with_indentation();
-    function prettifyError({ keyName, lines, eol, ident }) {
+    var stripUnsafeControlChars = require_strip_unsafe_control_chars();
+    function prettifyError({ keyName, lines, eol, ident, sanitizeStack = true }) {
       let result = "";
       const joinedLines = joinLinesWithIndentation({ input: lines, ident, eol });
-      const splitLines = `${ident}${keyName}: ${joinedLines}${eol}`.split(eol);
+      const safeKeyName = stripUnsafeControlChars(keyName);
+      const splitLines = `${ident}${safeKeyName}: ${joinedLines}${eol}`.split(eol);
       for (let j = 0; j < splitLines.length; j += 1) {
         if (j !== 0) result += eol;
         const line = splitLines[j];
@@ -2686,7 +2752,9 @@ var require_prettify_error = __commonJS({
             const indentSize = /^\s*/.exec(line)[0].length + 4;
             const indentation = " ".repeat(indentSize);
             const stackMessage = matches[2];
-            result += matches[1] + eol + indentation + JSON.parse(stackMessage).replace(/\n/g, eol + indentation);
+            const parsedStack = JSON.parse(stackMessage);
+            const stack = sanitizeStack ? stripUnsafeControlChars(parsedStack) : parsedStack;
+            result += matches[1] + eol + indentation + stack.replace(/\n/g, eol + indentation);
           } else {
             result += line;
           }
@@ -2699,9 +2767,9 @@ var require_prettify_error = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-object.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-object.js
 var require_prettify_object = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-object.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-object.js"(exports, module) {
     "use strict";
     module.exports = prettifyObject;
     var {
@@ -2710,6 +2778,7 @@ var require_prettify_object = __commonJS({
     var stringifySafe = require_fast_safe_stringify();
     var joinLinesWithIndentation = require_join_lines_with_indentation();
     var prettifyError = require_prettify_error();
+    var stripUnsafeControlChars = require_strip_unsafe_control_chars();
     function prettifyObject({
       log,
       excludeLoggerKeys = true,
@@ -2751,22 +2820,24 @@ var require_prettify_object = __commonJS({
           if (lines === void 0) return;
           lines = lines.replace(/\\\\/gi, "\\");
           const joinedLines = joinLinesWithIndentation({ input: lines, ident, eol });
-          result += `${ident}${objectColorizer.property(keyName)}:${joinedLines.startsWith(eol) ? "" : " "}${joinedLines}${eol}`;
+          const safeKeyName = stripUnsafeControlChars(keyName);
+          result += `${ident}${objectColorizer.property(safeKeyName)}:${joinedLines.startsWith(eol) ? "" : " "}${joinedLines}${eol}`;
         });
       }
       Object.entries(errors).forEach(([keyName, keyValue]) => {
-        const lines = typeof customPrettifiers[keyName] === "function" ? keyValue : stringifySafe(keyValue, null, 2);
+        const hasCustomPrettifier = typeof customPrettifiers[keyName] === "function";
+        const lines = hasCustomPrettifier ? keyValue : stringifySafe(keyValue, null, 2);
         if (lines === void 0) return;
-        result += prettifyError({ keyName, lines, eol, ident });
+        result += prettifyError({ keyName, lines, eol, ident, sanitizeStack: !hasCustomPrettifier });
       });
       return result;
     }
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-error-log.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-error-log.js
 var require_prettify_error_log = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-error-log.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-error-log.js"(exports, module) {
     "use strict";
     module.exports = prettifyErrorLog;
     var {
@@ -2775,6 +2846,7 @@ var require_prettify_error_log = __commonJS({
     var isObject = require_is_object();
     var joinLinesWithIndentation = require_join_lines_with_indentation();
     var prettifyObject = require_prettify_object();
+    var stripUnsafeControlChars = require_strip_unsafe_control_chars();
     function prettifyErrorLog({ log, context }) {
       const {
         EOL: eol,
@@ -2782,7 +2854,7 @@ var require_prettify_error_log = __commonJS({
         errorProps: errorProperties,
         messageKey
       } = context;
-      const stack = log.stack;
+      const stack = stripUnsafeControlChars(log.stack);
       const joinedLines = joinLinesWithIndentation({ input: stack, ident, eol });
       let result = `${ident}${joinedLines}${eol}`;
       if (errorProperties.length > 0) {
@@ -2796,6 +2868,7 @@ var require_prettify_error_log = __commonJS({
         for (let i = 0; i < propertiesToPrint.length; i += 1) {
           const key = propertiesToPrint[i];
           if (key in log === false) continue;
+          const safeKey = stripUnsafeControlChars(key);
           if (isObject(log[key])) {
             const prettifiedObject = prettifyObject({
               log: log[key],
@@ -2805,10 +2878,11 @@ var require_prettify_error_log = __commonJS({
                 IDENT: ident + ident
               }
             });
-            result = `${result}${ident}${key}: {${eol}${prettifiedObject}${ident}}${eol}`;
+            result = `${result}${ident}${safeKey}: {${eol}${prettifiedObject}${ident}}${eol}`;
             continue;
           }
-          result = `${result}${ident}${key}: ${log[key]}${eol}`;
+          const value = stripUnsafeControlChars(log[key]);
+          result = `${result}${ident}${safeKey}: ${value}${eol}`;
         }
       }
       return result;
@@ -2816,9 +2890,9 @@ var require_prettify_error_log = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-level.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-level.js
 var require_prettify_level = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-level.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-level.js"(exports, module) {
     "use strict";
     module.exports = prettifyLevel;
     var getPropertyValue = require_get_property_value();
@@ -2843,9 +2917,9 @@ var require_prettify_level = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-message.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-message.js
 var require_prettify_message = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-message.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-message.js"(exports, module) {
     "use strict";
     module.exports = prettifyMessage;
     var {
@@ -2853,6 +2927,7 @@ var require_prettify_message = __commonJS({
     } = require_constants();
     var getPropertyValue = require_get_property_value();
     var interpretConditionals = require_interpret_conditionals();
+    var stripUnsafeControlChars = require_strip_unsafe_control_chars();
     function prettifyMessage({ log, context }) {
       const {
         colorizer,
@@ -2877,7 +2952,7 @@ var require_prettify_message = __commonJS({
             return value !== void 0 ? value : "";
           }
         );
-        return colorizer.message(message);
+        return colorizer.message(stripUnsafeControlChars(message));
       }
       if (messageFormat && typeof messageFormat === "function") {
         const msg = messageFormat(log, messageKey, levelLabel, { colors: colorizer.colors });
@@ -2885,26 +2960,27 @@ var require_prettify_message = __commonJS({
       }
       if (messageKey in log === false) return void 0;
       if (typeof log[messageKey] !== "string" && typeof log[messageKey] !== "number" && typeof log[messageKey] !== "boolean") return void 0;
-      return colorizer.message(log[messageKey]);
+      return colorizer.message(stripUnsafeControlChars(log[messageKey]));
     }
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-metadata.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-metadata.js
 var require_prettify_metadata = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-metadata.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-metadata.js"(exports, module) {
     "use strict";
     module.exports = prettifyMetadata;
+    var stripUnsafeControlChars = require_strip_unsafe_control_chars();
     function prettifyMetadata({ log, context }) {
       const { customPrettifiers: prettifiers, colorizer } = context;
       let line = "";
       if (log.name || log.pid || log.hostname) {
         line += "(";
         if (log.name) {
-          line += prettifiers.name ? prettifiers.name(log.name, "name", log, { colors: colorizer.colors }) : log.name;
+          line += prettifiers.name ? prettifiers.name(log.name, "name", log, { colors: colorizer.colors }) : stripUnsafeControlChars(log.name);
         }
         if (log.pid) {
-          const prettyPid = prettifiers.pid ? prettifiers.pid(log.pid, "pid", log, { colors: colorizer.colors }) : log.pid;
+          const prettyPid = prettifiers.pid ? prettifiers.pid(log.pid, "pid", log, { colors: colorizer.colors }) : stripUnsafeControlChars(log.pid);
           if (log.name && log.pid) {
             line += "/" + prettyPid;
           } else {
@@ -2912,13 +2988,13 @@ var require_prettify_metadata = __commonJS({
           }
         }
         if (log.hostname) {
-          const prettyHostname = prettifiers.hostname ? prettifiers.hostname(log.hostname, "hostname", log, { colors: colorizer.colors }) : log.hostname;
+          const prettyHostname = prettifiers.hostname ? prettifiers.hostname(log.hostname, "hostname", log, { colors: colorizer.colors }) : stripUnsafeControlChars(log.hostname);
           line += `${line === "(" ? "on" : " on"} ${prettyHostname}`;
         }
         line += ")";
       }
       if (log.caller) {
-        const prettyCaller = prettifiers.caller ? prettifiers.caller(log.caller, "caller", log, { colors: colorizer.colors }) : log.caller;
+        const prettyCaller = prettifiers.caller ? prettifiers.caller(log.caller, "caller", log, { colors: colorizer.colors }) : stripUnsafeControlChars(log.caller);
         line += `${line === "" ? "" : " "}<${prettyCaller}>`;
       }
       if (line === "") {
@@ -2930,12 +3006,13 @@ var require_prettify_metadata = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-time.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-time.js
 var require_prettify_time = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/prettify-time.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/prettify-time.js"(exports, module) {
     "use strict";
     module.exports = prettifyTime;
     var formatTime = require_format_time();
+    var stripUnsafeControlChars = require_strip_unsafe_control_chars();
     function prettifyTime({ log, context }) {
       const {
         timestampKey,
@@ -2950,14 +3027,14 @@ var require_prettify_time = __commonJS({
       }
       if (time === null) return void 0;
       const output = translateFormat ? formatTime(time, translateFormat) : time;
-      return prettifier ? prettifier(output) : `[${output}]`;
+      return prettifier ? prettifier(output) : `[${stripUnsafeControlChars(output)}]`;
     }
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/index.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/index.js
 var require_utils = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/utils/index.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/utils/index.js"(exports, module) {
     "use strict";
     module.exports = {
       buildSafeSonicBoom: require_build_safe_sonic_boom(),
@@ -2982,6 +3059,7 @@ var require_utils = __commonJS({
       prettifyObject: require_prettify_object(),
       prettifyTime: require_prettify_time(),
       splitPropertyKey: require_split_property_key(),
+      stripUnsafeControlChars: require_strip_unsafe_control_chars(),
       getLevelLabelData: require_get_level_label_data()
     };
   }
@@ -3091,9 +3169,9 @@ var require_secure_json_parse = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/pretty.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/pretty.js
 var require_pretty = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/lib/pretty.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/lib/pretty.js"(exports, module) {
     "use strict";
     module.exports = pretty;
     var sjs = require_secure_json_parse();
@@ -3226,9 +3304,9 @@ var require_pretty = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/index.js
+// ../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/index.js
 var require_pino_pretty = __commonJS({
-  "../../node_modules/.pnpm/pino-pretty@13.1.3/node_modules/pino-pretty/index.js"(exports, module) {
+  "../../node_modules/.pnpm/pino-pretty@13.2.0/node_modules/pino-pretty/index.js"(exports, module) {
     var { isColorSupported } = require_colorette();
     var pump = require_pump();
     var { Transform } = __require("node:stream");
@@ -3264,14 +3342,41 @@ var require_pino_pretty = __commonJS({
       messageFormat: null,
       messageKey: MESSAGE_KEY,
       minimumLevel: void 0,
-      outputStream: process.stdout,
       singleLine: false,
       timestampKey: TIMESTAMP_KEY,
       translateTime: true,
       useOnlyCustomProps: true
     };
+    function normalizeBoolean(value) {
+      if (value === "true") return true;
+      if (value === "false") return false;
+      return value;
+    }
+    function normalizeBooleanOptions(options) {
+      const normalized = { ...options };
+      const booleanOptions = [
+        "colorize",
+        "colorizeObjects",
+        "crlf",
+        "hideObject",
+        "levelFirst",
+        "singleLine",
+        "useOnlyCustomProps"
+      ];
+      for (const key of booleanOptions) {
+        if (key in normalized) {
+          normalized[key] = normalizeBoolean(normalized[key]);
+        }
+      }
+      if ("translateTime" in normalized && (normalized.translateTime === "true" || normalized.translateTime === "false")) {
+        normalized.translateTime = normalizeBoolean(normalized.translateTime);
+      }
+      return normalized;
+    }
     function prettyFactory(options) {
-      const context = parseFactoryOptions(Object.assign({}, defaultOptions, options));
+      const mergedOptions = Object.assign({}, defaultOptions, options);
+      const normalizedOptions = normalizeBooleanOptions(mergedOptions);
+      const context = parseFactoryOptions(normalizedOptions);
       return pretty.bind({ ...context, context });
     }
     function build(opts = {}) {

@@ -1,7 +1,7 @@
 /** Tailwind config for the Lexus Energy Quiz single-file build.
  *  preflight is OFF so Tailwind's CSS reset never touches the
  *  hand-tuned quiz styles. Rebuild command:
- *  npx tailwindcss -c tailwind.config.js -i tailwind.input.css -o tailwind.build.css --minify
+ *  pnpm run build:css (Tailwind v4 sources are in tailwind.input.css)
  */
 module.exports = {
   content: ['./lexus_energy_quiz_tuned_v018.html'],

@@ -1,2 +1,5 @@
-@tailwind components;
-@tailwind utilities;
+/* Deliberately omit Tailwind's preflight so the hand-tuned quiz stays intact. */
+@import "tailwindcss/theme";
+@import "tailwindcss/utilities";
+@source "./lexus_energy_quiz_tuned_v018.html";
+@source not inline("visible");
