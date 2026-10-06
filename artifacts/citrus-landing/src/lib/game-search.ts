@@ -1,8 +1,8 @@
 import data from "@/data/game-search.json";
 
-// Search + filter metadata per game (see public/games-keywords.pdf), keyed by
-// slug. A game with no entry is still listed and found by name/tagline; it
-// just can't match the structured filters.
+// Metadata from existing game mechanics and suggested campaign use cases,
+// not a promise of live backend capabilities. Unknown games remain searchable
+// by catalog name/tagline, but cannot match structured filters.
 export interface GameSearchMeta {
   family: string;
   mechanic: string;
@@ -57,6 +57,9 @@ const LABEL_OVERRIDES: Record<string, string> = {
   "presenter-led": "Presenter-led",
   "pop-up": "Pop-up",
   "lead-capture": "Lead capture",
+  "1-min": "1 min",
+  "self-paced": "Self-paced",
+  "webcam-photo": "Webcam photo",
 };
 
 export function facetLabel(value: string): string {

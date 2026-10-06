@@ -1,0 +1,117 @@
+{
+  "vocabulary": {
+    "goals": ["engagement", "product-recommendation", "knowledge-check", "brand-recall", "rewards", "security-awareness", "photo-keepsake"],
+    "settings": ["trade-show", "training", "classroom", "retail", "conference", "virtual"],
+    "formats": ["desktop", "phone", "tablet", "kiosk", "large-screen"],
+    "inputs": ["touch", "mouse", "keyboard", "webcam-gesture", "webcam-photo"],
+    "players": ["solo", "teams"],
+    "session": ["1-min", "self-paced", "timed", "endless"],
+    "energy": ["calm", "competitive", "high"]
+  },
+  "games": {
+    "a8-match": {
+      "family": "quiz", "mechanic": "personality-quiz",
+      "goals": ["engagement", "product-recommendation"], "settings": ["trade-show", "retail", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
+      "session": "self-paced", "energy": "calm", "hardware": [],
+      "synonyms": ["personality quiz", "product match", "match visitors to a product", "questionnaire", "survey", "recommendation quiz"],
+      "industries": [], "search_phrases": ["find the right product for a visitor", "five personality questions", "personalized product recommendation"]
+    },
+    "a8-trivia-rush": {
+      "family": "quiz", "mechanic": "rapid-trivia",
+      "goals": ["engagement", "knowledge-check"], "settings": ["trade-show", "training", "classroom", "conference", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
+      "session": "1-min", "energy": "competitive", "hardware": [],
+      "synonyms": ["fast trivia race", "trivia leaderboard", "rapid fire trivia", "timed quiz", "multiple choice", "mcq"],
+      "industries": [], "search_phrases": ["a 60 second knowledge challenge", "quiz with streak bonuses", "competitive trivia leaderboard"]
+    },
+    "a8-the-number": {
+      "family": "quiz", "mechanic": "number-guess",
+      "goals": ["engagement", "knowledge-check"], "settings": ["trade-show", "training", "classroom", "retail", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
+      "session": "self-paced", "energy": "calm", "hardware": [],
+      "synonyms": ["guess the stat", "guess the number", "number dial", "brand facts", "product statistics", "numeric quiz"],
+      "industries": [], "search_phrases": ["guess brand facts using an interactive number dial", "teach visitors product statistics"]
+    },
+    "a8-spin-to-win": {
+      "family": "quiz", "mechanic": "prize-wheel",
+      "goals": ["engagement", "rewards", "knowledge-check"], "settings": ["trade-show", "retail", "conference", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
+      "session": "self-paced", "energy": "competitive", "hardware": [],
+      "synonyms": ["prize wheel", "reward wheel", "spin to win a prize", "wheel of fortune", "spin the wheel"],
+      "industries": [], "search_phrases": ["answer three questions then spin for a reward", "grow your prize chances with a quiz"]
+    },
+    "a8-recall": {
+      "family": "quiz", "mechanic": "memory-match",
+      "goals": ["engagement", "brand-recall"], "settings": ["trade-show", "training", "classroom", "retail", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
+      "session": "self-paced", "energy": "calm", "hardware": [],
+      "synonyms": ["memory game", "match pairs", "flip cards", "test brand recall", "matching cards", "concentration"],
+      "industries": [], "search_phrases": ["remember brand facts by matching six pairs", "card matching memory challenge"]
+    },
+    "jeopardy": {
+      "family": "quiz", "mechanic": "category-trivia-board",
+      "goals": ["engagement", "knowledge-check"], "settings": ["trade-show", "training", "classroom", "conference", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "large-screen"], "inputs": ["touch", "mouse"], "players": ["solo", "teams"],
+      "session": "timed", "energy": "competitive", "hardware": [],
+      "synonyms": ["jeopardy", "trivia board", "category quiz", "team trivia", "quiz show", "pub trivia"],
+      "industries": [], "search_phrases": ["choose categories and point values", "classroom knowledge check with a trivia board", "presenter led team quiz"]
+    },
+    "lexus-energy-quiz": {
+      "family": "quiz", "mechanic": "personality-quiz",
+      "goals": ["engagement", "product-recommendation"], "settings": ["trade-show", "retail", "virtual"],
+      "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
+      "session": "self-paced", "energy": "calm", "hardware": [],
+      "synonyms": ["lifestyle personality quiz", "energy quiz", "multiple choice", "mcq", "questionnaire", "survey", "custom questions"],
+      "industries": ["automotive", "dealerships"], "search_phrases": ["match a driver's lifestyle preferences to a result", "five question lifestyle quiz"]
+    },
+    "space-shooter-1": {
+      "family": "arcade", "mechanic": "space-shooter",
+      "goals": ["engagement"], "settings": ["trade-show", "conference", "virtual"],
+      "formats": ["desktop", "large-screen"], "inputs": ["keyboard", "mouse"], "players": ["solo"],
+      "session": "self-paced", "energy": "high", "hardware": [],
+      "synonyms": ["arcade shooter", "space combat", "neon arcade", "2d shooter"],
+      "industries": [], "search_phrases": ["fast paced space shooter with a neon dashboard", "high energy arcade game"]
+    },
+    "cyber-adventure": {
+      "family": "arcade", "mechanic": "endless-runner",
+      "goals": ["engagement", "security-awareness"], "settings": ["trade-show", "training", "classroom", "conference", "virtual"],
+      "formats": ["desktop", "large-screen"], "inputs": ["keyboard", "webcam-gesture"], "players": ["solo"],
+      "session": "endless", "energy": "high", "hardware": ["webcam"],
+      "synonyms": ["cybersecurity game", "cyber runner", "endless runner", "temple run", "phishing", "malware", "touchless"],
+      "industries": ["cybersecurity"], "search_phrases": ["security awareness training with a runner game", "dodge phishing attacks and block malware"]
+    },
+    "basketball-shootout": {
+      "family": "sports", "mechanic": "basketball",
+      "goals": ["engagement"], "settings": ["trade-show", "retail", "conference"],
+      "formats": ["desktop", "kiosk", "large-screen"], "inputs": ["webcam-gesture"], "players": ["solo"],
+      "session": "timed", "energy": "high", "hardware": ["webcam"],
+      "synonyms": ["basketball", "shoot hoops", "gesture sports", "touchless", "active competitive"],
+      "industries": [], "search_phrases": ["gesture controlled basketball with real time scoring", "active sports game for an event booth"]
+    },
+    "gesture-space-war": {
+      "family": "arcade", "mechanic": "space-combat",
+      "goals": ["engagement"], "settings": ["trade-show", "conference"],
+      "formats": ["desktop", "kiosk", "large-screen"], "inputs": ["webcam-gesture"], "players": ["solo"],
+      "session": "self-paced", "energy": "high", "hardware": ["webcam"],
+      "synonyms": ["touchless", "gesture space combat", "hand tracking", "space survivor", "immersive sci fi"],
+      "industries": [], "search_phrases": ["webcam gesture controlled space combat", "hands free sci fi arcade game"]
+    },
+    "boat-booth": {
+      "family": "photo", "mechanic": "ai-photo-booth",
+      "goals": ["engagement", "photo-keepsake"], "settings": ["trade-show", "retail", "conference"],
+      "formats": ["desktop", "kiosk", "large-screen"], "inputs": ["webcam-photo"], "players": ["solo"],
+      "session": "self-paced", "energy": "calm", "hardware": ["webcam"],
+      "synonyms": ["photo booth", "ai photo booth", "selfie", "video keepsake", "boat video", "camera"],
+      "industries": [], "search_phrases": ["snap a webcam selfie and get transported onto the water", "photo or video keepsake for an event"]
+    },
+    "golf-challenge": {
+      "family": "sports", "mechanic": "golf-putting",
+      "goals": ["engagement"], "settings": ["trade-show", "retail", "conference", "virtual"],
+      "formats": ["desktop", "large-screen"], "inputs": ["mouse", "keyboard"], "players": ["solo"],
+      "session": "timed", "energy": "competitive", "hardware": [],
+      "synonyms": ["golf", "putting challenge", "mini golf", "golf leaderboard", "sports game"],
+      "industries": [], "search_phrases": ["timed putting challenge with a live scoreboard", "branded course visuals and power control"]
+    }
+  }
+}

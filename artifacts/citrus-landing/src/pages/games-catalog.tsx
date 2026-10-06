@@ -1,4 +1,5 @@
-import { Link } from "wouter";
+import { useMemo, type Dispatch, type SetStateAction } from "react";
+import { Link, useLocation, useSearch } from "wouter";
 import { AlertTriangle } from "lucide-react";
 import { useListGames } from "@workspace/api-client-react";
 import { Navbar } from "@/components/Navbar";
@@ -7,6 +8,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MOBILE_UNSUPPORTED, MOBILE_UNSUPPORTED_MESSAGE } from "@/lib/mobile-support";
+import { GameSearchBar } from "@/components/GameSearchBar";
+import { EMPTY_FILTERS, FACETS, searchAndFilter, type Filters } from "@/lib/game-search";
 
 // Reuses the same demo footage already shown per-project in the "Our Work"
 // section on the home page (see Cyber.tsx's `projects` list), so visitors
@@ -42,9 +45,38 @@ type Vertical = (typeof VERTICALS)[number]["id"];
 
 export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical }) {
   const { data: games, isLoading, isError } = useListGames();
+  const [location, navigate] = useLocation();
+  const search = useSearch();
+  const params = useMemo(() => new URLSearchParams(search), [search]);
+  const query = (params.get("q") ?? "").slice(0, 200);
+  const filters = useMemo(() => {
+    const next = { ...EMPTY_FILTERS };
+    for (const facet of FACETS) {
+      next[facet.id] = facet.values.filter((value) => params.getAll(facet.id).includes(value));
+    }
+    return next;
+  }, [params]);
   const isQuizVertical = vertical === "quiz-questionnaire-survey";
-  const visibleGames = games?.filter((game) =>
-    vertical === "all" || QUIZ_SURVEY_GAMES.has(game.slug) === isQuizVertical);
+  const verticalGames = useMemo(() => (games ?? []).filter((game) =>
+    vertical === "all" || QUIZ_SURVEY_GAMES.has(game.slug) === isQuizVertical), [games, vertical, isQuizVertical]);
+  const visibleGames = useMemo(() => searchAndFilter(verticalGames, query, filters), [verticalGames, query, filters]);
+
+  const updateSearch = (nextQuery: string, nextFilters: Filters) => {
+    const next = new URLSearchParams(search);
+    if (nextQuery) next.set("q", nextQuery.slice(0, 200));
+    else next.delete("q");
+    for (const facet of FACETS) {
+      next.delete(facet.id);
+      for (const value of facet.values) {
+        if (nextFilters[facet.id].includes(value)) next.append(facet.id, value);
+      }
+    }
+    const suffix = next.toString();
+    navigate(`${location}${suffix ? `?${suffix}` : ""}`, { replace: true });
+  };
+  const changeFilters: Dispatch<SetStateAction<Filters>> = (action) =>
+    updateSearch(query, typeof action === "function" ? action(filters) : action);
+  const clearSearch = () => updateSearch("", EMPTY_FILTERS);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -70,7 +102,7 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
           {VERTICALS.map((item) => (
             <Link
               key={item.id}
-              href={item.href}
+              href={`${item.href}${search ? `?${search}` : ""}`}
               aria-current={vertical === item.id ? "page" : undefined}
               className={`rounded-full border px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                 vertical === item.id
@@ -83,8 +115,26 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
           ))}
         </nav>
 
+        {!isLoading && !isError && games && (
+          <GameSearchBar
+            query={query}
+            onQueryChange={(next) => updateSearch(next, filters)}
+            filters={filters}
+            onFiltersChange={changeFilters}
+            onClear={clearSearch}
+            resultCount={visibleGames.length}
+            totalCount={verticalGames.length}
+          />
+        )}
         {isLoading && <p className="text-center text-muted-foreground">Loading catalog…</p>}
         {isError && <p className="text-center text-destructive">Couldn't load the game catalog. Please try again.</p>}
+        {!isLoading && !isError && games && visibleGames.length === 0 && (
+          <div className="rounded-xl border border-border bg-card p-8 text-center mb-8" data-testid="empty-game-search">
+            <h2 className="text-xl font-semibold mb-2">No matching games</h2>
+            <p className="text-muted-foreground mb-4">Try another search, remove a filter, or switch to All experiences.</p>
+            <Button variant="outline" onClick={clearSearch}>Clear search & filters</Button>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {visibleGames?.map((game) => {
