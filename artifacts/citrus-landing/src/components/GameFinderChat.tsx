@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import {
   MessageCircle,
+  Phone,
   X,
   RotateCcw,
   Sparkles,
@@ -248,7 +249,7 @@ export function GameFinderChat() {
             </button>
           </div>
 
-          <div ref={scrollRef} className="flex-1 p-3 space-y-2 overflow-y-auto">
+          <div ref={scrollRef} className="flex-1 min-h-0 p-3 space-y-2 overflow-y-auto">
             {messages.map((message, i) => {
               if (message.type === "bot-question") {
                 const isLatest = i === messages.length - 1;
@@ -281,6 +282,20 @@ export function GameFinderChat() {
                 Start over
               </button>
             )}
+          </div>
+          <div className="shrink-0 border-t border-border p-3">
+            <a
+              href="tel:+16314152581"
+              aria-label="Call live support at +1 (631) 415-2581"
+              data-testid="button-chat-live-support"
+              className="flex min-h-11 w-full items-center justify-center gap-2.5 rounded-xl border border-primary/40 bg-primary/10 px-3 py-2 text-foreground transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            >
+              <Phone size={18} aria-hidden="true" className="shrink-0 text-primary" />
+              <span>
+                <span className="block text-sm font-semibold">Live support</span>
+                <span className="block text-xs text-muted-foreground">Call +1 (631) 415-2581</span>
+              </span>
+            </a>
           </div>
         </div>
       )}
