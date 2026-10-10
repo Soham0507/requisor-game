@@ -22,12 +22,15 @@ export interface Game {
   slug: string;
   name: string;
   tagline: string;
+  /** @nullable */
   thumbnailUrl?: string | null;
+  /** @nullable */
   previewBasePath?: string | null;
   brandSupport: BrandSupport;
   defaultPrimaryColor: string;
   defaultSecondaryColor: string;
   defaultAccentColor: string;
+  /** @nullable */
   defaultLogoUrl?: string | null;
   defaultHeading: string;
   priceCents: number;
@@ -58,17 +61,104 @@ export interface QuizQuestion {
   options: QuizOption[];
 }
 
+export type GameContentGameSlug = typeof GameContentGameSlug[keyof typeof GameContentGameSlug];
+
+
+export const GameContentGameSlug = {
+  'a8-match': 'a8-match',
+  'a8-trivia-rush': 'a8-trivia-rush',
+  'a8-the-number': 'a8-the-number',
+  'a8-spin-to-win': 'a8-spin-to-win',
+  'a8-recall': 'a8-recall',
+  jeopardy: 'jeopardy',
+} as const;
+
+export interface GameContentQuestion {
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  text: string;
+  /**
+     * @minItems 2
+     * @maxItems 4
+     * @items.minLength 1
+     * @items.maxLength 200
+     */
+  options?: string[];
+  /**
+     * @minimum 0
+     * @maximum 3
+     */
+  answerIndex?: number;
+  /**
+     * @minItems 2
+     * @maxItems 4
+     * @items.minimum 0
+     * @items.maximum 3
+     */
+  outcomes?: number[];
+  /** @maxLength 60 */
+  category?: string;
+  /**
+     * @minimum 1
+     * @maximum 10000
+     */
+  points?: number;
+  answer?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  /** @maxLength 40 */
+  unit?: string;
+  /** @maxLength 1000 */
+  explanation?: string;
+}
+
+export interface MemoryCard {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  detail: string;
+}
+
+export interface GameContent {
+  gameSlug: GameContentGameSlug;
+  /**
+     * @minItems 1
+     * @maxItems 50
+     */
+  questions: GameContentQuestion[];
+  /**
+     * @minItems 6
+     * @maxItems 6
+     */
+  cards?: MemoryCard[];
+}
+
 export interface UpsertBrandingDraftRequest {
   gameId: string;
   draftToken: string;
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
+  /** @nullable */
   logoDataUrl?: string | null;
+  /** @nullable */
   bgDataUrl?: string | null;
+  /** @nullable */
   fontDataUrl?: string | null;
+  /** @nullable */
   quiz?: QuizQuestion[] | null;
+  gameContent?: GameContent | null;
   heading: string;
+  /** @nullable */
   tagline?: string | null;
 }
 
@@ -87,16 +177,28 @@ export interface BrandingDraft {
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
+  /** @nullable */
   logoDataUrl?: string | null;
+  /** @nullable */
   bgDataUrl?: string | null;
+  /** @nullable */
   fontDataUrl?: string | null;
+  /** @nullable */
   quiz?: QuizQuestion[] | null;
+  gameContent?: GameContent | null;
   heading: string;
+  /** @nullable */
   tagline?: string | null;
   status: BrandingDraftStatus;
 }
 
+export interface SavedGameContent {
+  gameSlug: string;
+  gameContent: GameContent | null;
+}
+
 export interface FinalizeBrandingDraftRequest {
+  /** @nullable */
   contactEmail?: string | null;
 }
 
@@ -113,10 +215,12 @@ export interface Order {
   gameId: string;
   status: OrderStatus;
   totalAmountCents: number;
+  /** @nullable */
   contactEmail?: string | null;
 }
 
 export interface CreateCustomUiRequestRequest {
+  /** @nullable */
   gameId?: string | null;
   name: string;
   email: string;
@@ -125,30 +229,41 @@ export interface CreateCustomUiRequestRequest {
 
 export interface CustomUiRequest {
   id: string;
+  /** @nullable */
   gameId?: string | null;
   name: string;
   email: string;
   message: string;
 }
 
+/**
+ * @nullable
+ */
 export type CreatePlayerSubmissionRequestExtra = { [key: string]: unknown } | null;
 
 export interface CreatePlayerSubmissionRequest {
   gameSlug: string;
+  /** @nullable */
   orderId?: string | null;
   name: string;
   email: string;
+  /** @nullable */
   extra?: CreatePlayerSubmissionRequestExtra;
 }
 
+/**
+ * @nullable
+ */
 export type PlayerSubmissionExtra = { [key: string]: unknown } | null;
 
 export interface PlayerSubmission {
   id: string;
   gameId: string;
+  /** @nullable */
   orderId?: string | null;
   name: string;
   email: string;
+  /** @nullable */
   extra?: PlayerSubmissionExtra;
 }
 
@@ -174,13 +289,17 @@ export interface Generation {
   id: string;
   sceneId: string;
   sceneName: string;
+  /** @nullable */
   visitorName?: string | null;
   /** One of pending, ready, failed */
   photoStatus: string;
   /** One of idle, pending, ready, failed */
   videoStatus: string;
+  /** @nullable */
   photoUrl?: string | null;
+  /** @nullable */
   videoUrl?: string | null;
+  /** @nullable */
   error?: string | null;
   createdAt: string;
 }

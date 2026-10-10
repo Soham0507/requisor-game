@@ -51599,6 +51599,7 @@ CREATE TABLE IF NOT EXISTS branding_drafts (
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS bg_data_url text;
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS font_data_url text;
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS quiz_json jsonb;
+ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS game_content jsonb;
 
 CREATE TABLE IF NOT EXISTS orders (
   id uuid primary key default gen_random_uuid(),
@@ -55587,6 +55588,25 @@ var GetGameResponse = objectType({
   "defaultHeading": stringType(),
   "priceCents": numberType().int()
 });
+var upsertBrandingDraftBodyGameContentOneQuestionsItemTextMax = 500;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsItemMax = 200;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMin = 2;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMax = 4;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMin = 0;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMax = 3;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMin = 0;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMax = 3;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMin = 2;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMax = 4;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryMax = 60;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax = 1e4;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax = 40;
+var upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1e3;
+var upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
+var upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
+var upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
+var upsertBrandingDraftBodyGameContentOneCardsMin = 6;
+var upsertBrandingDraftBodyGameContentOneCardsMax = 6;
 var UpsertBrandingDraftBody = objectType({
   "gameId": stringType(),
   "draftToken": stringType(),
@@ -55610,9 +55630,49 @@ var UpsertBrandingDraftBody = objectType({
       })
     }).describe("Lexus Energy Quiz only \u2014 one answer choice and how many points it adds to each of the 6 fixed outcome models."))
   }).describe("Lexus Energy Quiz only \u2014 one question and its answer options.")).nullish(),
+  "gameContent": unionType([objectType({
+    "gameSlug": enumType(["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]),
+    "questions": arrayType(objectType({
+      "text": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsItemTextMax),
+      "options": arrayType(stringType().min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsItemMax)).min(upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMax).optional(),
+      "answerIndex": numberType().int().min(upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMax).optional(),
+      "outcomes": arrayType(numberType().int().min(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMax)).min(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMax).optional(),
+      "category": stringType().max(upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryMax).optional(),
+      "points": numberType().int().min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax).optional(),
+      "answer": numberType().optional(),
+      "min": numberType().optional(),
+      "max": numberType().optional(),
+      "step": numberType().optional(),
+      "unit": stringType().max(upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax).optional(),
+      "explanation": stringType().max(upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax).optional()
+    })).min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
+    "cards": arrayType(objectType({
+      "title": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemTitleMax),
+      "detail": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax)
+    })).min(upsertBrandingDraftBodyGameContentOneCardsMin).max(upsertBrandingDraftBodyGameContentOneCardsMax).optional()
+  }), nullType()]).optional(),
   "heading": stringType(),
   "tagline": stringType().nullish()
 });
+var upsertBrandingDraftResponseGameContentOneQuestionsItemTextMax = 500;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMin = 2;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMax = 4;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin = 2;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax = 4;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 1e4;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
+var upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1e3;
+var upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
+var upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
+var upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+var upsertBrandingDraftResponseGameContentOneCardsMin = 6;
+var upsertBrandingDraftResponseGameContentOneCardsMax = 6;
 var UpsertBrandingDraftResponse = objectType({
   "id": stringType(),
   "gameId": stringType(),
@@ -55637,6 +55697,27 @@ var UpsertBrandingDraftResponse = objectType({
       })
     }).describe("Lexus Energy Quiz only \u2014 one answer choice and how many points it adds to each of the 6 fixed outcome models."))
   }).describe("Lexus Energy Quiz only \u2014 one question and its answer options.")).nullish(),
+  "gameContent": unionType([objectType({
+    "gameSlug": enumType(["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]),
+    "questions": arrayType(objectType({
+      "text": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsItemTextMax),
+      "options": arrayType(stringType().min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax)).min(upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMax).optional(),
+      "answerIndex": numberType().int().min(upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax).optional(),
+      "outcomes": arrayType(numberType().int().min(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax)).min(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax).optional(),
+      "category": stringType().max(upsertBrandingDraftResponseGameContentOneQuestionsItemCategoryMax).optional(),
+      "points": numberType().int().min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax).optional(),
+      "answer": numberType().optional(),
+      "min": numberType().optional(),
+      "max": numberType().optional(),
+      "step": numberType().optional(),
+      "unit": stringType().max(upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
+      "explanation": stringType().max(upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
+    })).min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
+    "cards": arrayType(objectType({
+      "title": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemTitleMax),
+      "detail": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax)
+    })).min(upsertBrandingDraftResponseGameContentOneCardsMin).max(upsertBrandingDraftResponseGameContentOneCardsMax).optional()
+  }), nullType()]).optional(),
   "heading": stringType(),
   "tagline": stringType().nullish(),
   "status": enumType(["draft", "finalized"])
@@ -55644,6 +55725,25 @@ var UpsertBrandingDraftResponse = objectType({
 var GetBrandingDraftParams = objectType({
   "id": coerce.string()
 });
+var getBrandingDraftResponseGameContentOneQuestionsItemTextMax = 500;
+var getBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+var getBrandingDraftResponseGameContentOneQuestionsItemOptionsMin = 2;
+var getBrandingDraftResponseGameContentOneQuestionsItemOptionsMax = 4;
+var getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+var getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+var getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+var getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+var getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin = 2;
+var getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax = 4;
+var getBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
+var getBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 1e4;
+var getBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
+var getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1e3;
+var getBrandingDraftResponseGameContentOneQuestionsMax = 50;
+var getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
+var getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+var getBrandingDraftResponseGameContentOneCardsMin = 6;
+var getBrandingDraftResponseGameContentOneCardsMax = 6;
 var GetBrandingDraftResponse = objectType({
   "id": stringType(),
   "gameId": stringType(),
@@ -55668,9 +55768,76 @@ var GetBrandingDraftResponse = objectType({
       })
     }).describe("Lexus Energy Quiz only \u2014 one answer choice and how many points it adds to each of the 6 fixed outcome models."))
   }).describe("Lexus Energy Quiz only \u2014 one question and its answer options.")).nullish(),
+  "gameContent": unionType([objectType({
+    "gameSlug": enumType(["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]),
+    "questions": arrayType(objectType({
+      "text": stringType().min(1).max(getBrandingDraftResponseGameContentOneQuestionsItemTextMax),
+      "options": arrayType(stringType().min(1).max(getBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax)).min(getBrandingDraftResponseGameContentOneQuestionsItemOptionsMin).max(getBrandingDraftResponseGameContentOneQuestionsItemOptionsMax).optional(),
+      "answerIndex": numberType().int().min(getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin).max(getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax).optional(),
+      "outcomes": arrayType(numberType().int().min(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin).max(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax)).min(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin).max(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax).optional(),
+      "category": stringType().max(getBrandingDraftResponseGameContentOneQuestionsItemCategoryMax).optional(),
+      "points": numberType().int().min(1).max(getBrandingDraftResponseGameContentOneQuestionsItemPointsMax).optional(),
+      "answer": numberType().optional(),
+      "min": numberType().optional(),
+      "max": numberType().optional(),
+      "step": numberType().optional(),
+      "unit": stringType().max(getBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
+      "explanation": stringType().max(getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
+    })).min(1).max(getBrandingDraftResponseGameContentOneQuestionsMax),
+    "cards": arrayType(objectType({
+      "title": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemTitleMax),
+      "detail": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax)
+    })).min(getBrandingDraftResponseGameContentOneCardsMin).max(getBrandingDraftResponseGameContentOneCardsMax).optional()
+  }), nullType()]).optional(),
   "heading": stringType(),
   "tagline": stringType().nullish(),
   "status": enumType(["draft", "finalized"])
+});
+var GetBrandingDraftContentParams = objectType({
+  "id": coerce.string().uuid()
+});
+var getBrandingDraftContentResponseGameContentOneQuestionsItemTextMax = 500;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMin = 2;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMax = 4;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMin = 2;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMax = 4;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemCategoryMax = 60;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax = 1e4;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax = 40;
+var getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1e3;
+var getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
+var getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
+var getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
+var getBrandingDraftContentResponseGameContentOneCardsMin = 6;
+var getBrandingDraftContentResponseGameContentOneCardsMax = 6;
+var GetBrandingDraftContentResponse = objectType({
+  "gameSlug": stringType(),
+  "gameContent": unionType([objectType({
+    "gameSlug": enumType(["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]),
+    "questions": arrayType(objectType({
+      "text": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsItemTextMax),
+      "options": arrayType(stringType().min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsItemMax)).min(getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMax).optional(),
+      "answerIndex": numberType().int().min(getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMax).optional(),
+      "outcomes": arrayType(numberType().int().min(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMax)).min(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMax).optional(),
+      "category": stringType().max(getBrandingDraftContentResponseGameContentOneQuestionsItemCategoryMax).optional(),
+      "points": numberType().int().min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax).optional(),
+      "answer": numberType().optional(),
+      "min": numberType().optional(),
+      "max": numberType().optional(),
+      "step": numberType().optional(),
+      "unit": stringType().max(getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax).optional(),
+      "explanation": stringType().max(getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax).optional()
+    })).min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
+    "cards": arrayType(objectType({
+      "title": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemTitleMax),
+      "detail": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax)
+    })).min(getBrandingDraftContentResponseGameContentOneCardsMin).max(getBrandingDraftContentResponseGameContentOneCardsMax).optional()
+  }), nullType()])
 });
 var FinalizeBrandingDraftParams = objectType({
   "id": coerce.string()
@@ -67259,6 +67426,8 @@ var brandingDraftsTable = pgTable("branding_drafts", {
   // the API's field name 1:1, like every other column here) even though the
   // SQL column is quiz_json.
   quiz: jsonb("quiz_json").$type(),
+  // Parsed question content only. Uploaded spreadsheet/document bytes are not stored.
+  gameContent: jsonb("game_content").$type(),
   heading: text("heading").notNull(),
   tagline: text("tagline"),
   status: draftStatusEnum("status").notNull().default("draft"),
@@ -67412,6 +67581,84 @@ var games_default = router2;
 
 // src/routes/branding-drafts.ts
 var import_express3 = __toESM(require_express2(), 1);
+
+// ../../lib/game-content/src/index.js
+var QUESTION_GAME_SLUGS = ["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"];
+function validateGameContent(input, slug) {
+  try {
+    const fail = (message) => {
+      throw new Error(message);
+    };
+    if (!QUESTION_GAME_SLUGS.includes(slug)) fail("This game does not support custom questions.");
+    if (!input || typeof input !== "object" || Array.isArray(input) || input.gameSlug !== slug) fail("The question file belongs to a different game.");
+    if (!Array.isArray(input.questions) || input.questions.length < 1 || input.questions.length > 50) fail("Add between 1 and 50 questions.");
+    const text2 = (value, label, max = 500, optional2 = false) => {
+      if (optional2 && (value === void 0 || value === "")) return "";
+      if (typeof value !== "string" || !value.trim() || value.length > max) fail(`${label} must contain 1\u2013${max} characters.`);
+      return value.trim();
+    };
+    const number4 = (value, label, integer3 = false) => {
+      if (typeof value !== "number" || !Number.isFinite(value) || Math.abs(value) > 1e9 || integer3 && !Number.isInteger(value)) fail(`${label} must be a valid ${integer3 ? "whole " : ""}number.`);
+      return value;
+    };
+    const questions = input.questions.map((q2, index) => {
+      const label = `Question ${index + 1}`;
+      if (!q2 || typeof q2 !== "object" || Array.isArray(q2)) fail(`${label} is not an object.`);
+      const clean = { text: text2(q2.text, label), explanation: text2(q2.explanation, `${label}: explanation`, 1e3, true) };
+      if (slug === "a8-the-number") {
+        for (const key of ["answer", "min", "max", "step"]) clean[key] = number4(q2[key], `${label}: ${key}`);
+        if (clean.max <= clean.min || clean.answer < clean.min || clean.answer > clean.max) fail(`${label}: answer must be inside a non-empty minimum/maximum range.`);
+        if (clean.step < 1e-3 || clean.step > clean.max - clean.min || (clean.max - clean.min) / clean.step > 1e5) fail(`${label}: step must be at least 0.001 and produce no more than 100,000 dial positions.`);
+        const steps = (clean.answer - clean.min) / clean.step;
+        const rangeSteps = (clean.max - clean.min) / clean.step;
+        if (Math.abs(steps - Math.round(steps)) > 1e-5 || Math.abs(rangeSteps - Math.round(rangeSteps)) > 1e-5) fail(`${label}: answer and maximum must align with the dial step.`);
+        clean.unit = text2(q2.unit, `${label}: unit`, 40, true);
+      } else {
+        if (!Array.isArray(q2.options) || q2.options.length < 2 || q2.options.length > 4) fail(`${label}: provide 2\u20134 answer choices.`);
+        clean.options = q2.options.map((option, i3) => text2(option, `${label}: answer ${i3 + 1}`, 200));
+        if (new Set(clean.options.map((o5) => o5.toLowerCase())).size !== clean.options.length) fail(`${label}: answer choices must be different.`);
+        if (slug === "a8-match") {
+          if (!Array.isArray(q2.outcomes) || q2.outcomes.length !== clean.options.length || q2.outcomes.some((v5) => !Number.isInteger(v5) || v5 < 0 || v5 > 3)) fail(`${label}: map each answer to one of the four product results.`);
+          clean.outcomes = q2.outcomes.slice();
+        } else {
+          clean.answerIndex = number4(q2.answerIndex, `${label}: correct answer`, true);
+          if (clean.answerIndex < 0 || clean.answerIndex >= clean.options.length) fail(`${label}: select a correct answer from its choices.`);
+        }
+        if (slug === "jeopardy") {
+          clean.category = text2(q2.category, `${label}: category`, 60);
+          clean.points = number4(q2.points, `${label}: points`, true);
+          if (clean.points < 1 || clean.points > 1e4) fail(`${label}: points must be between 1 and 10,000.`);
+        }
+      }
+      return clean;
+    });
+    if (slug === "jeopardy") {
+      const groups = /* @__PURE__ */ new Map();
+      questions.forEach((q2) => {
+        const key = q2.category.toLowerCase();
+        const points = groups.get(key) || /* @__PURE__ */ new Set();
+        if (points.has(q2.points)) fail(`Category "${q2.category}" contains duplicate point values.`);
+        points.add(q2.points);
+        groups.set(key, points);
+      });
+      if (groups.size > 6 || [...groups.values()].some((p5) => p5.size > 6)) fail("Jeopardy supports up to 6 categories with up to 6 questions each.");
+    }
+    const content = { gameSlug: slug, questions };
+    if (input.cards !== void 0) {
+      if (slug !== "a8-recall" || !Array.isArray(input.cards) || input.cards.length !== 6) fail("Recall needs exactly six memory cards.");
+      content.cards = input.cards.map((card, i3) => ({
+        title: text2(card?.title, `Memory card ${i3 + 1}: title`, 100),
+        detail: text2(card?.detail, `Memory card ${i3 + 1}: detail`, 200)
+      }));
+      if (new Set(content.cards.map((c4) => c4.title.toLowerCase())).size !== 6) fail("Memory-card titles must be different.");
+    }
+    return { ok: true, content };
+  } catch (error40) {
+    return { ok: false, error: error40 instanceof Error ? error40.message : "Invalid question content." };
+  }
+}
+
+// src/routes/branding-drafts.ts
 var router3 = (0, import_express3.Router)();
 var LOGO_MIME_TYPES = /* @__PURE__ */ new Set([
   "image/avif",
@@ -67446,30 +67693,78 @@ function setSafeMediaHeaders(res, mimeType) {
   res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
 }
 router3.post("/branding-drafts", async (req, res) => {
-  const body2 = UpsertBrandingDraftBody.parse(req.body);
-  const [existing] = await db.select().from(brandingDraftsTable).where(
-    and(
-      eq(brandingDraftsTable.gameId, body2.gameId),
-      eq(brandingDraftsTable.draftToken, body2.draftToken),
-      eq(brandingDraftsTable.status, "draft")
-    )
-  ).limit(1);
-  const values = {
-    gameId: body2.gameId,
-    draftToken: body2.draftToken,
-    primaryColor: body2.primaryColor,
-    secondaryColor: body2.secondaryColor,
-    accentColor: body2.accentColor,
-    logoDataUrl: body2.logoDataUrl ?? null,
-    bgDataUrl: body2.bgDataUrl ?? null,
-    fontDataUrl: body2.fontDataUrl ?? null,
-    quiz: body2.quiz ?? null,
-    heading: body2.heading,
-    tagline: body2.tagline ?? null,
-    updatedAt: /* @__PURE__ */ new Date()
-  };
-  const [draft] = existing ? await db.update(brandingDraftsTable).set(values).where(eq(brandingDraftsTable.id, existing.id)).returning() : await db.insert(brandingDraftsTable).values(values).returning();
-  res.json(UpsertBrandingDraftResponse.parse(draft));
+  const parsed = UpsertBrandingDraftBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid draft or question fields. Please check your content." });
+    return;
+  }
+  const body2 = parsed.data;
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body2.gameId) || !body2.draftToken || body2.draftToken.length > 128) {
+    res.status(400).json({ error: "Invalid game or draft identifier." });
+    return;
+  }
+  try {
+    const [game] = await db.select({ slug: gamesTable.slug }).from(gamesTable).where(eq(gamesTable.id, body2.gameId)).limit(1);
+    if (!game) {
+      res.status(404).json({ error: "Game not found." });
+      return;
+    }
+    let gameContent = body2.gameContent;
+    if (gameContent !== void 0 && gameContent !== null) {
+      const validated = validateGameContent(gameContent, game.slug);
+      if (!validated.ok) {
+        res.status(400).json({ error: validated.error });
+        return;
+      }
+      gameContent = validated.content;
+    }
+    const [existing] = await db.select().from(brandingDraftsTable).where(
+      and(
+        eq(brandingDraftsTable.gameId, body2.gameId),
+        eq(brandingDraftsTable.draftToken, body2.draftToken),
+        eq(brandingDraftsTable.status, "draft")
+      )
+    ).limit(1);
+    const values = {
+      gameId: body2.gameId,
+      draftToken: body2.draftToken,
+      primaryColor: body2.primaryColor,
+      secondaryColor: body2.secondaryColor,
+      accentColor: body2.accentColor,
+      logoDataUrl: body2.logoDataUrl ?? null,
+      bgDataUrl: body2.bgDataUrl ?? null,
+      fontDataUrl: body2.fontDataUrl ?? null,
+      quiz: body2.quiz ?? null,
+      gameContent: gameContent === void 0 ? existing?.gameContent ?? null : gameContent,
+      heading: body2.heading,
+      tagline: body2.tagline ?? null,
+      updatedAt: /* @__PURE__ */ new Date()
+    };
+    const [draft] = existing ? await db.update(brandingDraftsTable).set(values).where(eq(brandingDraftsTable.id, existing.id)).returning() : await db.insert(brandingDraftsTable).values(values).returning();
+    res.json(UpsertBrandingDraftResponse.parse(draft));
+  } catch (error40) {
+    req.log.error({ errorType: error40 instanceof Error ? error40.name : "UnknownError" }, "Could not save branding draft");
+    res.status(500).json({ error: "Your changes could not be saved. Please try again." });
+  }
+});
+router3.get("/branding-drafts/:id/content", async (req, res) => {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
+    res.status(400).json({ error: "Invalid content identifier." });
+    return;
+  }
+  try {
+    const [draft] = await db.select({ gameContent: brandingDraftsTable.gameContent, gameSlug: gamesTable.slug }).from(brandingDraftsTable).innerJoin(gamesTable, eq(gamesTable.id, brandingDraftsTable.gameId)).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
+    if (!draft) {
+      res.status(404).json({ error: "Questions not found." });
+      return;
+    }
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.json(GetBrandingDraftContentResponse.parse(draft));
+  } catch (error40) {
+    req.log.error({ errorType: error40 instanceof Error ? error40.name : "UnknownError" }, "Could not load game questions");
+    res.status(500).json({ error: "Questions could not be loaded. Please try again." });
+  }
 });
 router3.get("/branding-drafts/:id", async (req, res) => {
   const [draft] = await db.select().from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);

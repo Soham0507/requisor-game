@@ -9,13 +9,17 @@ export interface Generation {
     id: string;
     sceneId: string;
     sceneName: string;
+    /** @nullable */
     visitorName?: string | null;
     /** One of pending, ready, failed */
     photoStatus: string;
     /** One of idle, pending, ready, failed */
     videoStatus: string;
+    /** @nullable */
     photoUrl?: string | null;
+    /** @nullable */
     videoUrl?: string | null;
+    /** @nullable */
     error?: string | null;
     createdAt: string;
 }

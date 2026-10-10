@@ -1,12 +1,14 @@
 import { Router, type IRouter, type Response } from "express";
 import { and, eq } from "drizzle-orm";
 import { db, brandingDraftsTable, gamesTable, ordersTable } from "@workspace/db";
+import { validateGameContent } from "@workspace/game-content";
 import {
   UpsertBrandingDraftBody,
   UpsertBrandingDraftResponse,
   GetBrandingDraftResponse,
   FinalizeBrandingDraftBody,
   FinalizeBrandingDraftResponse,
+  GetBrandingDraftContentResponse,
 } from "@workspace/api-zod";
 
 const router: IRouter = Router();
@@ -47,7 +49,25 @@ function setSafeMediaHeaders(res: Response, mimeType: string) {
 }
 
 router.post("/branding-drafts", async (req, res) => {
-  const body = UpsertBrandingDraftBody.parse(req.body);
+  const parsed = UpsertBrandingDraftBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid draft or question fields. Please check your content." });
+    return;
+  }
+  const body = parsed.data;
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(body.gameId) || !body.draftToken || body.draftToken.length > 128) {
+    res.status(400).json({ error: "Invalid game or draft identifier." });
+    return;
+  }
+  try {
+  const [game] = await db.select({ slug: gamesTable.slug }).from(gamesTable).where(eq(gamesTable.id, body.gameId)).limit(1);
+  if (!game) { res.status(404).json({ error: "Game not found." }); return; }
+  let gameContent = body.gameContent;
+  if (gameContent !== undefined && gameContent !== null) {
+    const validated = validateGameContent(gameContent, game.slug);
+    if (!validated.ok) { res.status(400).json({ error: validated.error }); return; }
+    gameContent = validated.content;
+  }
 
   const [existing] = await db
     .select()
@@ -71,6 +91,7 @@ router.post("/branding-drafts", async (req, res) => {
     bgDataUrl: body.bgDataUrl ?? null,
     fontDataUrl: body.fontDataUrl ?? null,
     quiz: body.quiz ?? null,
+    gameContent: gameContent === undefined ? existing?.gameContent ?? null : gameContent,
     heading: body.heading,
     tagline: body.tagline ?? null,
     updatedAt: new Date(),
@@ -85,6 +106,28 @@ router.post("/branding-drafts", async (req, res) => {
     : await db.insert(brandingDraftsTable).values(values).returning();
 
   res.json(UpsertBrandingDraftResponse.parse(draft));
+  } catch (error) {
+    req.log.error({ errorType: error instanceof Error ? error.name : "UnknownError" }, "Could not save branding draft");
+    res.status(500).json({ error: "Your changes could not be saved. Please try again." });
+  }
+});
+
+router.get("/branding-drafts/:id/content", async (req, res) => {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
+    res.status(400).json({ error: "Invalid content identifier." }); return;
+  }
+  try {
+    const [draft] = await db.select({ gameContent: brandingDraftsTable.gameContent, gameSlug: gamesTable.slug })
+      .from(brandingDraftsTable).innerJoin(gamesTable, eq(gamesTable.id, brandingDraftsTable.gameId))
+      .where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
+    if (!draft) { res.status(404).json({ error: "Questions not found." }); return; }
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.json(GetBrandingDraftContentResponse.parse(draft));
+  } catch (error) {
+    req.log.error({ errorType: error instanceof Error ? error.name : "UnknownError" }, "Could not load game questions");
+    res.status(500).json({ error: "Questions could not be loaded. Please try again." });
+  }
 });
 
 router.get("/branding-drafts/:id", async (req, res) => {

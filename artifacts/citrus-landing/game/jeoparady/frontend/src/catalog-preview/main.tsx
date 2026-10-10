@@ -4,13 +4,23 @@ import GameBoard from '../components/GameBoard'
 import QuestionModal from '../components/QuestionModal'
 import SoundToggle from '../components/SoundToggle'
 import type { AnswerStatus, PublicCategory, PublicQuestion } from '../types/game'
-import { board } from './api'
+import { useQuestions } from './useQuestions'
 import { useBrand } from './useBrand'
 import '../index.css'
 import './preview.css'
 
 function CatalogPreview() {
   const { brand, fontError } = useBrand()
+  const questions = useQuestions()
+  if (questions.loading) return <main className="preview-content" role="status">Loading custom questions…</main>
+  if (questions.error) return <main className="preview-content"><p role="alert">{questions.error}</p><button className="preview-button" onClick={() => window.location.reload()}>Retry loading questions</button></main>
+  return <PlayablePreview key={questions.revision} brand={brand} fontError={fontError} board={questions.board} custom={questions.custom} />
+}
+
+function PlayablePreview({ brand, fontError, board, custom }: {
+  brand: ReturnType<typeof useBrand>['brand']; fontError: boolean;
+  board: ReturnType<typeof useQuestions>['board']; custom: boolean;
+}) {
   const [playing, setPlaying] = useState(false)
   const [score, setScore] = useState(board.starting_balance)
   const [answers, setAnswers] = useState<Record<string, AnswerStatus>>({})
@@ -28,13 +38,13 @@ function CatalogPreview() {
         <SoundToggle />
       </header>
       <main className="preview-content">
-        <p className="preview-demo">Catalog demo · Sample questions · Scores stay in this session only</p>
+        <p className="preview-demo">Catalog demo · {custom ? 'Custom questions' : 'Sample questions'} · Scores stay in this session only</p>
         {fontError && <p role="alert">The uploaded font could not be loaded. The system font is being used.</p>}
         <h1 className="headline" style={{ fontSize: brand.headingSize, color: brand.headingColor }}>{brand.heading}</h1>
         <p className="preview-tagline">{brand.tagline}</p>
         {!playing ? (
           <section className="preview-intro" aria-label="How to play">
-            <p>Start with 2,000 points. Choose from four categories and answer each question within 20 seconds.</p>
+            <p>Start with 2,000 points. Choose from {board.categories.length} {board.categories.length === 1 ? 'category' : 'categories'} and answer each question within 20 seconds.</p>
             <p>Correct answers add the tile value; incorrect answers and timeouts subtract it.</p>
             <button className="preview-button" onClick={() => setPlaying(true)}>Start game</button>
           </section>

@@ -8,9 +8,11 @@
 import type { CreatePlayerSubmissionRequestExtra } from './createPlayerSubmissionRequestExtra';
 export interface CreatePlayerSubmissionRequest {
     gameSlug: string;
+    /** @nullable */
     orderId?: string | null;
     name: string;
     email: string;
+    /** @nullable */
     extra?: CreatePlayerSubmissionRequestExtra;
 }
 //# sourceMappingURL=createPlayerSubmissionRequest.d.ts.map

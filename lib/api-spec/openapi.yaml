@@ -111,6 +111,26 @@ paths:
                 $ref: "#/components/schemas/BrandingDraft"
         "404":
           description: Draft not found
+  /branding-drafts/{id}/content:
+    get:
+      operationId: getBrandingDraftContent
+      tags: [branding-drafts]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Public question content only; no uploaded files or draft token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SavedGameContent"
+        "404":
+          description: Draft not found
   /branding-drafts/{id}/finalize:
     post:
       operationId: finalizeBrandingDraft
@@ -395,6 +415,10 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/QuizQuestion"
+        gameContent:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/GameContent"
         heading:
           type: string
         tagline:
@@ -436,6 +460,10 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/QuizQuestion"
+        gameContent:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/GameContent"
         heading:
           type: string
         tagline:
@@ -453,6 +481,98 @@ components:
         - accentColor
         - heading
         - status
+    GameContent:
+      type: object
+      additionalProperties: false
+      required: [gameSlug, questions]
+      properties:
+        gameSlug:
+          type: string
+          enum: [a8-match, a8-trivia-rush, a8-the-number, a8-spin-to-win, a8-recall, jeopardy]
+        questions:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/GameContentQuestion"
+        cards:
+          type: array
+          minItems: 6
+          maxItems: 6
+          items:
+            $ref: "#/components/schemas/MemoryCard"
+    GameContentQuestion:
+      type: object
+      additionalProperties: false
+      required: [text]
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 500
+        options:
+          type: array
+          minItems: 2
+          maxItems: 4
+          items:
+            type: string
+            minLength: 1
+            maxLength: 200
+        answerIndex:
+          type: integer
+          minimum: 0
+          maximum: 3
+        outcomes:
+          type: array
+          minItems: 2
+          maxItems: 4
+          items:
+            type: integer
+            minimum: 0
+            maximum: 3
+        category:
+          type: string
+          maxLength: 60
+        points:
+          type: integer
+          minimum: 1
+          maximum: 10000
+        answer:
+          type: number
+        min:
+          type: number
+        max:
+          type: number
+        step:
+          type: number
+        unit:
+          type: string
+          maxLength: 40
+        explanation:
+          type: string
+          maxLength: 1000
+    MemoryCard:
+      type: object
+      required: [title, detail]
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        detail:
+          type: string
+          minLength: 1
+          maxLength: 200
+    SavedGameContent:
+      type: object
+      required: [gameSlug, gameContent]
+      properties:
+        gameSlug:
+          type: string
+        gameContent:
+          nullable: true
+          allOf:
+            - $ref: "#/components/schemas/GameContent"
     QuizOption:
       type: object
       description: Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.

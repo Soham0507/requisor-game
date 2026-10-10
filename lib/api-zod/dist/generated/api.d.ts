@@ -163,6 +163,25 @@ export declare const GetGameResponse: zod.ZodObject<{
  * Upserts by the combination of gameId + draftToken
  * @summary Create or update a branding draft for a game
  */
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemTextMax = 500;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsItemMax = 200;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMin = 2;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMax = 4;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMin = 0;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMax = 3;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMin = 0;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMax = 3;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMin = 2;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMax = 4;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryMax = 60;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax = 10000;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax = 40;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
+export declare const upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
+export declare const upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
+export declare const upsertBrandingDraftBodyGameContentOneCardsMin = 6;
+export declare const upsertBrandingDraftBodyGameContentOneCardsMax = 6;
 export declare const UpsertBrandingDraftBody: zod.ZodObject<{
     gameId: zod.ZodString;
     draftToken: zod.ZodString;
@@ -246,6 +265,99 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         text: string;
     }>, "many">>>;
+    gameContent: zod.ZodOptional<zod.ZodUnion<[zod.ZodObject<{
+        gameSlug: zod.ZodEnum<["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]>;
+        questions: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            options: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
+            answerIndex: zod.ZodOptional<zod.ZodNumber>;
+            outcomes: zod.ZodOptional<zod.ZodArray<zod.ZodNumber, "many">>;
+            category: zod.ZodOptional<zod.ZodString>;
+            points: zod.ZodOptional<zod.ZodNumber>;
+            answer: zod.ZodOptional<zod.ZodNumber>;
+            min: zod.ZodOptional<zod.ZodNumber>;
+            max: zod.ZodOptional<zod.ZodNumber>;
+            step: zod.ZodOptional<zod.ZodNumber>;
+            unit: zod.ZodOptional<zod.ZodString>;
+            explanation: zod.ZodOptional<zod.ZodString>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }>, "many">;
+        cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
+            title: zod.ZodString;
+            detail: zod.ZodString;
+        }, "strip", zod.ZodTypeAny, {
+            title: string;
+            detail: string;
+        }, {
+            title: string;
+            detail: string;
+        }>, "many">>;
+    }, "strip", zod.ZodTypeAny, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }>, zod.ZodNull]>>;
     heading: zod.ZodString;
     tagline: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
 }, "strip", zod.ZodTypeAny, {
@@ -273,6 +385,27 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         text: string;
     }[] | null | undefined;
+    gameContent?: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null | undefined;
 }, {
     gameId: string;
     draftToken: string;
@@ -298,7 +431,47 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         text: string;
     }[] | null | undefined;
+    gameContent?: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null | undefined;
 }>;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemTextMax = 500;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMin = 2;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMax = 4;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin = 2;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax = 4;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 10000;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
+export declare const upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
+export declare const upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+export declare const upsertBrandingDraftResponseGameContentOneCardsMin = 6;
+export declare const upsertBrandingDraftResponseGameContentOneCardsMax = 6;
 export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
     id: zod.ZodString;
     gameId: zod.ZodString;
@@ -383,6 +556,99 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         text: string;
     }>, "many">>>;
+    gameContent: zod.ZodOptional<zod.ZodUnion<[zod.ZodObject<{
+        gameSlug: zod.ZodEnum<["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]>;
+        questions: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            options: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
+            answerIndex: zod.ZodOptional<zod.ZodNumber>;
+            outcomes: zod.ZodOptional<zod.ZodArray<zod.ZodNumber, "many">>;
+            category: zod.ZodOptional<zod.ZodString>;
+            points: zod.ZodOptional<zod.ZodNumber>;
+            answer: zod.ZodOptional<zod.ZodNumber>;
+            min: zod.ZodOptional<zod.ZodNumber>;
+            max: zod.ZodOptional<zod.ZodNumber>;
+            step: zod.ZodOptional<zod.ZodNumber>;
+            unit: zod.ZodOptional<zod.ZodString>;
+            explanation: zod.ZodOptional<zod.ZodString>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }>, "many">;
+        cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
+            title: zod.ZodString;
+            detail: zod.ZodString;
+        }, "strip", zod.ZodTypeAny, {
+            title: string;
+            detail: string;
+        }, {
+            title: string;
+            detail: string;
+        }>, "many">>;
+    }, "strip", zod.ZodTypeAny, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }>, zod.ZodNull]>>;
     heading: zod.ZodString;
     tagline: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     status: zod.ZodEnum<["draft", "finalized"]>;
@@ -413,6 +679,27 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         text: string;
     }[] | null | undefined;
+    gameContent?: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null | undefined;
 }, {
     status: "draft" | "finalized";
     id: string;
@@ -440,6 +727,27 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         text: string;
     }[] | null | undefined;
+    gameContent?: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null | undefined;
 }>;
 /**
  * @summary Get a branding draft by id
@@ -451,6 +759,25 @@ export declare const GetBrandingDraftParams: zod.ZodObject<{
 }, {
     id: string;
 }>;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemTextMax = 500;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOptionsMin = 2;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOptionsMax = 4;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin = 2;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax = 4;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 10000;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
+export declare const getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const getBrandingDraftResponseGameContentOneQuestionsMax = 50;
+export declare const getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
+export declare const getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+export declare const getBrandingDraftResponseGameContentOneCardsMin = 6;
+export declare const getBrandingDraftResponseGameContentOneCardsMax = 6;
 export declare const GetBrandingDraftResponse: zod.ZodObject<{
     id: zod.ZodString;
     gameId: zod.ZodString;
@@ -535,6 +862,99 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         text: string;
     }>, "many">>>;
+    gameContent: zod.ZodOptional<zod.ZodUnion<[zod.ZodObject<{
+        gameSlug: zod.ZodEnum<["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]>;
+        questions: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            options: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
+            answerIndex: zod.ZodOptional<zod.ZodNumber>;
+            outcomes: zod.ZodOptional<zod.ZodArray<zod.ZodNumber, "many">>;
+            category: zod.ZodOptional<zod.ZodString>;
+            points: zod.ZodOptional<zod.ZodNumber>;
+            answer: zod.ZodOptional<zod.ZodNumber>;
+            min: zod.ZodOptional<zod.ZodNumber>;
+            max: zod.ZodOptional<zod.ZodNumber>;
+            step: zod.ZodOptional<zod.ZodNumber>;
+            unit: zod.ZodOptional<zod.ZodString>;
+            explanation: zod.ZodOptional<zod.ZodString>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }>, "many">;
+        cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
+            title: zod.ZodString;
+            detail: zod.ZodString;
+        }, "strip", zod.ZodTypeAny, {
+            title: string;
+            detail: string;
+        }, {
+            title: string;
+            detail: string;
+        }>, "many">>;
+    }, "strip", zod.ZodTypeAny, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }>, zod.ZodNull]>>;
     heading: zod.ZodString;
     tagline: zod.ZodOptional<zod.ZodNullable<zod.ZodString>>;
     status: zod.ZodEnum<["draft", "finalized"]>;
@@ -565,6 +985,27 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         text: string;
     }[] | null | undefined;
+    gameContent?: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null | undefined;
 }, {
     status: "draft" | "finalized";
     id: string;
@@ -592,6 +1033,195 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         text: string;
     }[] | null | undefined;
+    gameContent?: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null | undefined;
+}>;
+export declare const GetBrandingDraftContentParams: zod.ZodObject<{
+    id: zod.ZodString;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+}, {
+    id: string;
+}>;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemTextMax = 500;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMin = 2;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMax = 4;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMin = 2;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMax = 4;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemCategoryMax = 60;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax = 10000;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax = 40;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
+export declare const getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
+export declare const getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
+export declare const getBrandingDraftContentResponseGameContentOneCardsMin = 6;
+export declare const getBrandingDraftContentResponseGameContentOneCardsMax = 6;
+export declare const GetBrandingDraftContentResponse: zod.ZodObject<{
+    gameSlug: zod.ZodString;
+    gameContent: zod.ZodUnion<[zod.ZodObject<{
+        gameSlug: zod.ZodEnum<["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"]>;
+        questions: zod.ZodArray<zod.ZodObject<{
+            text: zod.ZodString;
+            options: zod.ZodOptional<zod.ZodArray<zod.ZodString, "many">>;
+            answerIndex: zod.ZodOptional<zod.ZodNumber>;
+            outcomes: zod.ZodOptional<zod.ZodArray<zod.ZodNumber, "many">>;
+            category: zod.ZodOptional<zod.ZodString>;
+            points: zod.ZodOptional<zod.ZodNumber>;
+            answer: zod.ZodOptional<zod.ZodNumber>;
+            min: zod.ZodOptional<zod.ZodNumber>;
+            max: zod.ZodOptional<zod.ZodNumber>;
+            step: zod.ZodOptional<zod.ZodNumber>;
+            unit: zod.ZodOptional<zod.ZodString>;
+            explanation: zod.ZodOptional<zod.ZodString>;
+        }, "strip", zod.ZodTypeAny, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }, {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }>, "many">;
+        cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
+            title: zod.ZodString;
+            detail: zod.ZodString;
+        }, "strip", zod.ZodTypeAny, {
+            title: string;
+            detail: string;
+        }, {
+            title: string;
+            detail: string;
+        }>, "many">>;
+    }, "strip", zod.ZodTypeAny, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }, {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    }>, zod.ZodNull]>;
+}, "strip", zod.ZodTypeAny, {
+    gameSlug: string;
+    gameContent: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null;
+}, {
+    gameSlug: string;
+    gameContent: {
+        gameSlug: "a8-match" | "a8-trivia-rush" | "a8-the-number" | "a8-spin-to-win" | "a8-recall" | "jeopardy";
+        questions: {
+            text: string;
+            options?: string[] | undefined;
+            answerIndex?: number | undefined;
+            outcomes?: number[] | undefined;
+            category?: string | undefined;
+            points?: number | undefined;
+            answer?: number | undefined;
+            min?: number | undefined;
+            max?: number | undefined;
+            step?: number | undefined;
+            unit?: string | undefined;
+            explanation?: string | undefined;
+        }[];
+        cards?: {
+            title: string;
+            detail: string;
+        }[] | undefined;
+    } | null;
 }>;
 /**
  * @summary Finalize a branding draft and create a pending order
@@ -682,14 +1312,14 @@ export declare const CreatePlayerSubmissionBody: zod.ZodObject<{
     extra: zod.ZodOptional<zod.ZodNullable<zod.ZodRecord<zod.ZodString, zod.ZodUnknown>>>;
 }, "strip", zod.ZodTypeAny, {
     name: string;
-    email: string;
     gameSlug: string;
+    email: string;
     orderId?: string | null | undefined;
     extra?: Record<string, unknown> | null | undefined;
 }, {
     name: string;
-    email: string;
     gameSlug: string;
+    email: string;
     orderId?: string | null | undefined;
     extra?: Record<string, unknown> | null | undefined;
 }>;

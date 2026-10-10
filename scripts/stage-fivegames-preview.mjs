@@ -29,6 +29,7 @@ page = page.replace(/<style>[\s\S]*?<\/style>/, () =>
 page = page.replace(/<script>\s*[\s\S]*?<\/script>/, () =>
   `<script>(function(){'use strict';const ICONS=${icons[1]};\n${runtime}\n})();</script>`);
 const bridge = readFileSync(path.join(srcDir, "src/embed-bridge.js"), "utf8");
+const questionRuntime = readFileSync(path.join(repoRoot, "lib/game-content/src/index.js"), "utf8").replace(/^export /gm, "");
 
 const SINGLE_GAME_CSS = `
 body.a8-single #app { display: none; }
@@ -48,6 +49,9 @@ const html = `<!doctype html>
 ${page}
 <style>${SINGLE_GAME_CSS}</style>
 <script>
+(function(){${questionRuntime}
+window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
+})();
 ${bridge}</script>
 </body>
 </html>

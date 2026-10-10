@@ -191,6 +191,25 @@ export declare const brandingDraftsTable: import("drizzle-orm/pg-core").PgTableW
         }, {}, {
             $type: QuizQuestion[];
         }>;
+        gameContent: import("drizzle-orm/pg-core").PgColumn<{
+            name: "game_content";
+            tableName: "branding_drafts";
+            dataType: "json";
+            columnType: "PgJsonb";
+            data: Record<string, unknown>;
+            driverParam: unknown;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {
+            $type: Record<string, unknown>;
+        }>;
         heading: import("drizzle-orm/pg-core").PgColumn<{
             name: "heading";
             tableName: "branding_drafts";
@@ -290,6 +309,7 @@ export declare const insertBrandingDraftSchema: z.ZodObject<{
     bgDataUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     fontDataUrl: z.ZodOptional<z.ZodNullable<z.ZodString>>;
     quiz: z.ZodOptional<z.ZodNullable<z.ZodType<QuizQuestion[], QuizQuestion[], z.core.$ZodTypeInternals<QuizQuestion[], QuizQuestion[]>>>>;
+    gameContent: z.ZodOptional<z.ZodNullable<z.ZodType<Record<string, unknown>, Record<string, unknown>, z.core.$ZodTypeInternals<Record<string, unknown>, Record<string, unknown>>>>>;
     heading: z.ZodString;
 }, {
     out: {};

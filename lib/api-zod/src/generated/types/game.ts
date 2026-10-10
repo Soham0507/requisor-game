@@ -12,12 +12,15 @@ export interface Game {
   slug: string;
   name: string;
   tagline: string;
+  /** @nullable */
   thumbnailUrl?: string | null;
+  /** @nullable */
   previewBasePath?: string | null;
   brandSupport: BrandSupport;
   defaultPrimaryColor: string;
   defaultSecondaryColor: string;
   defaultAccentColor: string;
+  /** @nullable */
   defaultLogoUrl?: string | null;
   defaultHeading: string;
   priceCents: number;

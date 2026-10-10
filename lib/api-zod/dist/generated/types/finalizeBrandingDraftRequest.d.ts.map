@@ -1,1 +1,1 @@
-{"version":3,"file":"finalizeBrandingDraftRequest.d.ts","sourceRoot":"","sources":["../../../src/generated/types/finalizeBrandingDraftRequest.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,MAAM,WAAW,4BAA4B;IAC3C,YAAY,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;CAC9B"}
+{"version":3,"file":"finalizeBrandingDraftRequest.d.ts","sourceRoot":"","sources":["../../../src/generated/types/finalizeBrandingDraftRequest.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AAEH,MAAM,WAAW,4BAA4B;IAC3C,gBAAgB;IAChB,YAAY,CAAC,EAAE,MAAM,GAAG,IAAI,CAAC;CAC9B"}

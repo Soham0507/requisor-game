@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import type { QuizQuestion } from "@workspace/api-client-react";
+import type { QuizQuestion, GameContent } from "@workspace/api-client-react";
 export interface BrandThemeMessage {
+  gameContent?: GameContent | null;
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;

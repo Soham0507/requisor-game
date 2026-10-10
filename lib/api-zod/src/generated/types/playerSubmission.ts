@@ -10,8 +10,10 @@ import type { PlayerSubmissionExtra } from './playerSubmissionExtra';
 export interface PlayerSubmission {
   id: string;
   gameId: string;
+  /** @nullable */
   orderId?: string | null;
   name: string;
   email: string;
+  /** @nullable */
   extra?: PlayerSubmissionExtra;
 }

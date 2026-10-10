@@ -12,6 +12,7 @@ export interface Order {
     gameId: string;
     status: OrderStatus;
     totalAmountCents: number;
+    /** @nullable */
     contactEmail?: string | null;
 }
 //# sourceMappingURL=order.d.ts.map

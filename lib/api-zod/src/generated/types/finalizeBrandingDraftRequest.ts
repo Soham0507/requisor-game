@@ -7,5 +7,6 @@
  */
 
 export interface FinalizeBrandingDraftRequest {
+  /** @nullable */
   contactEmail?: string | null;
 }

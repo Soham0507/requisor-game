@@ -33,6 +33,10 @@
   var DEFAULT_HEADING = { match: 'Match', trivia: 'Trivia Rush', number: 'The Number', spin: 'Spin to Win', recall: 'Recall' };
   var copy = A.BRANDS.halden.games[gameId];
   var original = { title: copy.title, subtitle: copy.subtitle };
+  var questionApi = window.CDH_QUIZ_CONTENT;
+  var originalContent = JSON.parse(JSON.stringify(copy));
+  var customContent = null;
+  var contentReady = !params.has('contentId');
   var logoStyle = document.createElement('style');
   document.head.appendChild(logoStyle);
 
@@ -56,6 +60,27 @@
   function merge(theme) {
     if (!theme) return;
     var c = App.custom;
+    if (Object.prototype.hasOwnProperty.call(theme, 'gameContent') && questionApi) {
+      var nextContent = theme.gameContent;
+      if (nextContent !== null) {
+        var validated = questionApi.validateGameContent(nextContent, slug);
+        if (!validated.ok) {
+          submissionStatus('Custom questions are invalid: ' + validated.error);
+          return;
+        }
+        nextContent = validated.content;
+      }
+      customContent = nextContent;
+      ['questions', 'rounds', 'pairs', 'meta'].forEach(function (key) {
+        if (originalContent[key] !== undefined) copy[key] = JSON.parse(JSON.stringify(originalContent[key]));
+      });
+      if (customContent) {
+        Object.assign(copy, questionApi.adaptFiveGameContent(customContent, A.BRANDS.halden.products));
+        copy.meta = (copy.meta || []).map(function (item) {
+          return Object.assign({}, item, { text: item.text.replace(/\d+\s+(questions|rounds)/i, customContent.questions.length + ' $1') });
+        });
+      }
+    }
     if (typeof theme.brandName === 'string') c.name = theme.brandName.slice(0, 120);
     if (theme.primaryColor && HEX.test(theme.primaryColor)) c.color = theme.primaryColor;
     if (theme.logoUrl !== undefined) c.logoImg = safeLogo(theme.logoUrl);
@@ -67,7 +92,7 @@
 
   function signature() {
     var c = App.custom;
-    return [c.name, c.color, c.logoImg, copy.title, copy.subtitle].join('|');
+    return [c.name, c.color, c.logoImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
   }
 
   function setTitle() {
@@ -76,7 +101,7 @@
   }
 
   function openGame() {
-    if (!App.stage.el) App.play(gameId);
+    if (contentReady && !App.stage.el) App.play(gameId);
   }
 
   // Leaving the stage (the X is hidden, but Esc still closes it) just reopens
@@ -169,7 +194,30 @@
   applied = signature();
   setTitle();
   App.applyBrand();
-  openGame();
+  function loadSavedQuestions() {
+    var id = params.get('contentId');
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id || '')) {
+      submissionStatus('This custom-question link is invalid. Please request a new game link.');
+      return;
+    }
+    submissionStatus('Loading custom questions…');
+    fetch('/api/branding-drafts/' + encodeURIComponent(id) + '/content', { cache: 'no-store' })
+      .then(function (response) { if (!response.ok) throw new Error('load'); return response.json(); })
+      .then(function (saved) {
+        if (saved.gameSlug !== slug || !saved.gameContent) throw new Error('wrong game');
+        var result = questionApi.validateGameContent(saved.gameContent, slug);
+        if (!result.ok) throw new Error('invalid content');
+        merge({ gameContent: result.content });
+        applied = signature();
+        contentReady = true;
+        var status = document.querySelector('.a8-save-status');
+        if (status) status.remove();
+        App.applyBrand();
+        openGame();
+      })
+      .catch(function () { submissionStatus('Custom questions could not be loaded. No sample questions have been substituted.', loadSavedQuestions); });
+  }
+  if (!contentReady) loadSavedQuestions(); else openGame();
 
   if (window.parent !== window) window.parent.postMessage({ type: 'CDH_BRAND_READY' }, '*');
 })();

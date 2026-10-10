@@ -66,6 +66,41 @@ export const GetGameResponse = zod.object({
  * Upserts by the combination of gameId + draftToken
  * @summary Create or update a branding draft for a game
  */
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemTextMax = 500;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsItemMax = 200;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMin = 2;
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMax = 4;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMin = 0;
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMax = 3;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMin = 0;
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMax = 3;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMin = 2;
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMax = 4;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryMax = 60;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax = 10000;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax = 40;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1000;
+
+export const upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
+
+export const upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
+
+export const upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
+
+export const upsertBrandingDraftBodyGameContentOneCardsMin = 6;
+export const upsertBrandingDraftBodyGameContentOneCardsMax = 6;
+
+
+
 export const UpsertBrandingDraftBody = zod.object({
   "gameId": zod.string(),
   "draftToken": zod.string(),
@@ -89,9 +124,65 @@ export const UpsertBrandingDraftBody = zod.object({
 })
 }).describe('Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.'))
 }).describe('Lexus Energy Quiz only — one question and its answer options.')).nullish(),
+  "gameContent": zod.union([zod.object({
+  "gameSlug": zod.enum(['a8-match', 'a8-trivia-rush', 'a8-the-number', 'a8-spin-to-win', 'a8-recall', 'jeopardy']),
+  "questions": zod.array(zod.object({
+  "text": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsItemTextMax),
+  "options": zod.array(zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsItemMax)).min(upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOptionsMax).optional(),
+  "answerIndex": zod.number().int().min(upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemAnswerIndexMax).optional(),
+  "outcomes": zod.array(zod.number().int().min(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesItemMax)).min(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMin).max(upsertBrandingDraftBodyGameContentOneQuestionsItemOutcomesMax).optional(),
+  "category": zod.string().max(upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryMax).optional(),
+  "points": zod.number().int().min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax).optional(),
+  "answer": zod.number().optional(),
+  "min": zod.number().optional(),
+  "max": zod.number().optional(),
+  "step": zod.number().optional(),
+  "unit": zod.string().max(upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax).optional(),
+  "explanation": zod.string().max(upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax).optional()
+})).min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
+  "cards": zod.array(zod.object({
+  "title": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemTitleMax),
+  "detail": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax)
+})).min(upsertBrandingDraftBodyGameContentOneCardsMin).max(upsertBrandingDraftBodyGameContentOneCardsMax).optional()
+}),zod.null()]).optional(),
   "heading": zod.string(),
   "tagline": zod.string().nullish()
 })
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemTextMax = 500;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMin = 2;
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMax = 4;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin = 2;
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax = 4;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 10000;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
+
+export const upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
+
+export const upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
+
+export const upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+
+export const upsertBrandingDraftResponseGameContentOneCardsMin = 6;
+export const upsertBrandingDraftResponseGameContentOneCardsMax = 6;
+
+
 
 export const UpsertBrandingDraftResponse = zod.object({
   "id": zod.string(),
@@ -117,6 +208,27 @@ export const UpsertBrandingDraftResponse = zod.object({
 })
 }).describe('Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.'))
 }).describe('Lexus Energy Quiz only — one question and its answer options.')).nullish(),
+  "gameContent": zod.union([zod.object({
+  "gameSlug": zod.enum(['a8-match', 'a8-trivia-rush', 'a8-the-number', 'a8-spin-to-win', 'a8-recall', 'jeopardy']),
+  "questions": zod.array(zod.object({
+  "text": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsItemTextMax),
+  "options": zod.array(zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax)).min(upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOptionsMax).optional(),
+  "answerIndex": zod.number().int().min(upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax).optional(),
+  "outcomes": zod.array(zod.number().int().min(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax)).min(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin).max(upsertBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax).optional(),
+  "category": zod.string().max(upsertBrandingDraftResponseGameContentOneQuestionsItemCategoryMax).optional(),
+  "points": zod.number().int().min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax).optional(),
+  "answer": zod.number().optional(),
+  "min": zod.number().optional(),
+  "max": zod.number().optional(),
+  "step": zod.number().optional(),
+  "unit": zod.string().max(upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
+  "explanation": zod.string().max(upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
+})).min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
+  "cards": zod.array(zod.object({
+  "title": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemTitleMax),
+  "detail": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax)
+})).min(upsertBrandingDraftResponseGameContentOneCardsMin).max(upsertBrandingDraftResponseGameContentOneCardsMax).optional()
+}),zod.null()]).optional(),
   "heading": zod.string(),
   "tagline": zod.string().nullish(),
   "status": zod.enum(['draft', 'finalized'])
@@ -129,6 +241,41 @@ export const UpsertBrandingDraftResponse = zod.object({
 export const GetBrandingDraftParams = zod.object({
   "id": zod.coerce.string()
 })
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemTextMax = 500;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemOptionsMin = 2;
+export const getBrandingDraftResponseGameContentOneQuestionsItemOptionsMax = 4;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+export const getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+export const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin = 2;
+export const getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax = 4;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 10000;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
+
+export const getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
+
+export const getBrandingDraftResponseGameContentOneQuestionsMax = 50;
+
+export const getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
+
+export const getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+
+export const getBrandingDraftResponseGameContentOneCardsMin = 6;
+export const getBrandingDraftResponseGameContentOneCardsMax = 6;
+
+
 
 export const GetBrandingDraftResponse = zod.object({
   "id": zod.string(),
@@ -154,9 +301,95 @@ export const GetBrandingDraftResponse = zod.object({
 })
 }).describe('Lexus Energy Quiz only — one answer choice and how many points it adds to each of the 6 fixed outcome models.'))
 }).describe('Lexus Energy Quiz only — one question and its answer options.')).nullish(),
+  "gameContent": zod.union([zod.object({
+  "gameSlug": zod.enum(['a8-match', 'a8-trivia-rush', 'a8-the-number', 'a8-spin-to-win', 'a8-recall', 'jeopardy']),
+  "questions": zod.array(zod.object({
+  "text": zod.string().min(1).max(getBrandingDraftResponseGameContentOneQuestionsItemTextMax),
+  "options": zod.array(zod.string().min(1).max(getBrandingDraftResponseGameContentOneQuestionsItemOptionsItemMax)).min(getBrandingDraftResponseGameContentOneQuestionsItemOptionsMin).max(getBrandingDraftResponseGameContentOneQuestionsItemOptionsMax).optional(),
+  "answerIndex": zod.number().int().min(getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMin).max(getBrandingDraftResponseGameContentOneQuestionsItemAnswerIndexMax).optional(),
+  "outcomes": zod.array(zod.number().int().min(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMin).max(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesItemMax)).min(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMin).max(getBrandingDraftResponseGameContentOneQuestionsItemOutcomesMax).optional(),
+  "category": zod.string().max(getBrandingDraftResponseGameContentOneQuestionsItemCategoryMax).optional(),
+  "points": zod.number().int().min(1).max(getBrandingDraftResponseGameContentOneQuestionsItemPointsMax).optional(),
+  "answer": zod.number().optional(),
+  "min": zod.number().optional(),
+  "max": zod.number().optional(),
+  "step": zod.number().optional(),
+  "unit": zod.string().max(getBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
+  "explanation": zod.string().max(getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
+})).min(1).max(getBrandingDraftResponseGameContentOneQuestionsMax),
+  "cards": zod.array(zod.object({
+  "title": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemTitleMax),
+  "detail": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax)
+})).min(getBrandingDraftResponseGameContentOneCardsMin).max(getBrandingDraftResponseGameContentOneCardsMax).optional()
+}),zod.null()]).optional(),
   "heading": zod.string(),
   "tagline": zod.string().nullish(),
   "status": zod.enum(['draft', 'finalized'])
+})
+
+
+export const GetBrandingDraftContentParams = zod.object({
+  "id": zod.coerce.string().uuid()
+})
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemTextMax = 500;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsItemMax = 200;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMin = 2;
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMax = 4;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMin = 0;
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMax = 3;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMin = 0;
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMax = 3;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMin = 2;
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMax = 4;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemCategoryMax = 60;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax = 10000;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax = 40;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1000;
+
+export const getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
+
+export const getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
+
+export const getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
+
+export const getBrandingDraftContentResponseGameContentOneCardsMin = 6;
+export const getBrandingDraftContentResponseGameContentOneCardsMax = 6;
+
+
+
+export const GetBrandingDraftContentResponse = zod.object({
+  "gameSlug": zod.string(),
+  "gameContent": zod.union([zod.object({
+  "gameSlug": zod.enum(['a8-match', 'a8-trivia-rush', 'a8-the-number', 'a8-spin-to-win', 'a8-recall', 'jeopardy']),
+  "questions": zod.array(zod.object({
+  "text": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsItemTextMax),
+  "options": zod.array(zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsItemMax)).min(getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOptionsMax).optional(),
+  "answerIndex": zod.number().int().min(getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemAnswerIndexMax).optional(),
+  "outcomes": zod.array(zod.number().int().min(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesItemMax)).min(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMin).max(getBrandingDraftContentResponseGameContentOneQuestionsItemOutcomesMax).optional(),
+  "category": zod.string().max(getBrandingDraftContentResponseGameContentOneQuestionsItemCategoryMax).optional(),
+  "points": zod.number().int().min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax).optional(),
+  "answer": zod.number().optional(),
+  "min": zod.number().optional(),
+  "max": zod.number().optional(),
+  "step": zod.number().optional(),
+  "unit": zod.string().max(getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax).optional(),
+  "explanation": zod.string().max(getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax).optional()
+})).min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
+  "cards": zod.array(zod.object({
+  "title": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemTitleMax),
+  "detail": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax)
+})).min(getBrandingDraftContentResponseGameContentOneCardsMin).max(getBrandingDraftContentResponseGameContentOneCardsMax).optional()
+}),zod.null()])
 })
 
 

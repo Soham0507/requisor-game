@@ -7,6 +7,7 @@
  */
 
 export interface CreateCustomUiRequestRequest {
+  /** @nullable */
   gameId?: string | null;
   name: string;
   email: string;

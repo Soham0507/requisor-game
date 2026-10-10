@@ -41,9 +41,36 @@ export const board: GameBoardResponse = {
   })),
 }
 
+let currentBoard = board
+let customAnswers: Map<string, { correct: string; points: number; options: string[] }> | null = null
+
+export function setCustomQuestions(content: { questions: { text: string; options: string[]; answerIndex: number; category: string; points: number }[] } | null): GameBoardResponse {
+  if (!content) { currentBoard = board; customAnswers = null; return board }
+  const groups = new Map<string, GameBoardResponse['categories'][number]>()
+  customAnswers = new Map()
+  content.questions.forEach((q, index) => {
+    const key = q.category.toLowerCase()
+    if (!groups.has(key)) groups.set(key, {
+      id: `custom-category-${groups.size}`, title: q.category,
+      image_url: `${import.meta.env.BASE_URL}${categories[groups.size % categories.length].image}`, questions: [],
+    })
+    const id = `custom-question-${index}`
+    groups.get(key)!.questions.push({ id, value: q.points, prefix: '', prompt: q.text, options: q.options })
+    customAnswers!.set(id, { correct: q.options[q.answerIndex], points: q.points, options: q.options })
+  })
+  groups.forEach((group) => group.questions.sort((a, b) => a.value - b.value))
+  currentBoard = { starting_balance: 2000, categories: [...groups.values()] }
+  return currentBoard
+}
+
 export function resolveImageUrl(url: string): string { return url }
 
 export async function verifyAnswer(payload: VerifyRequest): Promise<VerifyResponse> {
+  if (customAnswers) {
+    const answer = customAnswers.get(payload.question_id)
+    if (!answer || (payload.selected_option !== null && !answer.options.includes(payload.selected_option))) throw new Error('Invalid custom question or answer')
+    return { is_correct: payload.selected_option === answer.correct, correct_answer: answer.correct, prize_value: answer.points }
+  }
   const category = categories.find((item) => payload.question_id.startsWith(`${item.id}-`))
   const index = Number(payload.question_id.split('-').at(-1))
   if (!category || !Number.isInteger(index) || !category.questions[index]) throw new Error('Unknown demo question')

@@ -1,0 +1,1 @@
+{"version":3,"file":"savedGameContent.d.ts","sourceRoot":"","sources":["../../../src/generated/types/savedGameContent.ts"],"names":[],"mappings":"AAAA;;;;;;GAMG;AACH,OAAO,KAAK,EAAE,WAAW,EAAE,MAAM,eAAe,CAAC;AAEjD,MAAM,WAAW,gBAAgB;IAC/B,QAAQ,EAAE,MAAM,CAAC;IACjB,WAAW,EAAE,WAAW,GAAG,IAAI,CAAC;CACjC"}

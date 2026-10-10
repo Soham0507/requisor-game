@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { BrandingDraftStatus } from './brandingDraftStatus';
+import type { GameContent } from './gameContent';
 import type { QuizQuestion } from './quizQuestion';
 
 export interface BrandingDraft {
@@ -15,11 +16,17 @@ export interface BrandingDraft {
   primaryColor: string;
   secondaryColor: string;
   accentColor: string;
+  /** @nullable */
   logoDataUrl?: string | null;
+  /** @nullable */
   bgDataUrl?: string | null;
+  /** @nullable */
   fontDataUrl?: string | null;
+  /** @nullable */
   quiz?: QuizQuestion[] | null;
+  gameContent?: GameContent | null;
   heading: string;
+  /** @nullable */
   tagline?: string | null;
   status: BrandingDraftStatus;
 }

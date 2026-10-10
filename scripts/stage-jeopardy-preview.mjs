@@ -19,6 +19,7 @@ await build({
   plugins: [react(), tailwind()],
   resolve: {
     alias: [
+      { find: "@workspace/game-content", replacement: require.resolve("@workspace/game-content") },
       { find: /^.*\/lib\/api(?:\.ts)?$/, replacement: path.join(source, "src/catalog-preview/api.ts") },
       { find: "react-dom", replacement: path.dirname(require.resolve("react-dom/package.json")) },
       { find: "react", replacement: path.dirname(require.resolve("react/package.json")) },

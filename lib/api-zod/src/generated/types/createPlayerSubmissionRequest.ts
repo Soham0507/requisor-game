@@ -9,8 +9,10 @@ import type { CreatePlayerSubmissionRequestExtra } from './createPlayerSubmissio
 
 export interface CreatePlayerSubmissionRequest {
   gameSlug: string;
+  /** @nullable */
   orderId?: string | null;
   name: string;
   email: string;
+  /** @nullable */
   extra?: CreatePlayerSubmissionRequestExtra;
 }

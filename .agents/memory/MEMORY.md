@@ -2,6 +2,7 @@
 - [Shared React Query runtime](shared-react-query-runtime.md) — Vite must dedupe React Query when generated workspace hooks consume the app provider.
 - [Generated API declaration refresh](generated-api-declaration-refresh.md) — regenerating OpenAPI source may leave leaf typechecks reading old library declarations; rebuild those libs.
 - [Protect root workspace metadata](workspace-metadata-protection.md) — imports and cleanup have repeatedly removed required root files while filtered dev servers kept working.
-- [Quiz and survey vertical](quiz-survey-vertical.md) — fivegames belongs to Quiz / Questionnaire / Survey and retains its Apple-inspired light game interface.
+- [Quiz and survey vertical](quiz-survey-vertical.md) — preserve light game styling; six-game question authoring must support direct Excel, CSV, and JSON imports.
 - [Imported game preview boundaries](imported-game-preview-boundaries.md) — full branding support does not imply a live campaign backend; keep guest demos explicit.
 - [Dependency remediation boundaries](dependency-remediation-boundaries.md) — audit retained imported lockfiles; verify reused package identities and preserve safe bundler behavior.
+- [Spreadsheet API compatibility](spreadsheet-api-compatibility.md) — old browser import/export examples use obsolete return shapes; inspect installed APIs and round-trip an actual workbook.

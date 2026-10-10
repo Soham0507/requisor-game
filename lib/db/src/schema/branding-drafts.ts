@@ -41,6 +41,8 @@ export const brandingDraftsTable = pgTable("branding_drafts", {
   // the API's field name 1:1, like every other column here) even though the
   // SQL column is quiz_json.
   quiz: jsonb("quiz_json").$type<QuizQuestion[]>(),
+  // Parsed question content only. Uploaded spreadsheet/document bytes are not stored.
+  gameContent: jsonb("game_content").$type<Record<string, unknown>>(),
   heading: text("heading").notNull(),
   tagline: text("tagline"),
   status: draftStatusEnum("status").notNull().default("draft"),

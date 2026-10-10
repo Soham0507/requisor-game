@@ -9,11 +9,12 @@ interface OrderSummaryPanelProps {
   gameName: string;
   order: Order | null;
   isFinalizing: boolean;
+  finalizeDisabled?: boolean;
   onFinalize: () => void;
   liveLink: string | null;
 }
 
-export function OrderSummaryPanel({ gameName, order, isFinalizing, onFinalize, liveLink }: OrderSummaryPanelProps) {
+export function OrderSummaryPanel({ gameName, order, isFinalizing, finalizeDisabled, onFinalize, liveLink }: OrderSummaryPanelProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -59,7 +60,7 @@ export function OrderSummaryPanel({ gameName, order, isFinalizing, onFinalize, l
             )}
           </div>
         ) : (
-          <Button className="w-full" onClick={onFinalize} disabled={isFinalizing} data-testid="button-finalize-branding">
+          <Button className="w-full" onClick={onFinalize} disabled={isFinalizing || finalizeDisabled} data-testid="button-finalize-branding">
             {isFinalizing ? "Finalizing…" : "Finalize branding — get live link"}
           </Button>
         )}

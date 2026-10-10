@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS branding_drafts (
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS bg_data_url text;
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS font_data_url text;
 ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS quiz_json jsonb;
+ALTER TABLE branding_drafts ADD COLUMN IF NOT EXISTS game_content jsonb;
 
 CREATE TABLE IF NOT EXISTS orders (
   id uuid primary key default gen_random_uuid(),

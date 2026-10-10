@@ -1,0 +1,45 @@
+/** @returns {{ok: true, content: any} | {ok: false, error: string}} */
+export function validateGameContent(input: any, slug: any): {
+    ok: true;
+    content: any;
+} | {
+    ok: false;
+    error: string;
+};
+export function sampleContent(slug: any): {
+    gameSlug: any;
+    questions: {
+        text: string;
+        options: string[];
+        answerIndex: number;
+        explanation: string;
+    }[];
+} | {
+    gameSlug: any;
+    questions: {
+        text: string;
+        answer: number;
+        min: number;
+        max: number;
+        step: number;
+        unit: string;
+        explanation: string;
+    }[];
+} | {
+    gameSlug: any;
+    questions: {
+        text: string;
+        options: string[];
+        outcomes: number[];
+    }[];
+};
+export function adaptFiveGameContent(content: any, products: any): {
+    questions: any;
+} | {
+    rounds?: undefined;
+} | {
+    rounds: any;
+};
+export const QUESTION_GAME_SLUGS: string[];
+export const MATCH_RESULTS: string[];
+//# sourceMappingURL=index.d.ts.map

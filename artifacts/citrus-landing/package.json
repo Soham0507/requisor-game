@@ -50,6 +50,7 @@
     "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "catalog:",
     "@workspace/api-client-react": "workspace:*",
+    "@workspace/game-content": "workspace:*",
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "cmdk": "^1.1.1",
@@ -65,6 +66,7 @@
     "react-hook-form": "^7.89.0",
     "react-icons": "^5.7.0",
     "react-resizable-panels": "^2.1.9",
+    "read-excel-file": "^9.3.12",
     "recharts": "^2.15.4",
     "sonner": "^2.0.8",
     "tailwind-merge": "catalog:",
@@ -73,6 +75,7 @@
     "vaul": "^1.1.2",
     "vite": "catalog:",
     "wouter": "^3.13.0",
+    "write-excel-file": "^4.1.1",
     "zod": "catalog:"
   },
   "dependencies": {

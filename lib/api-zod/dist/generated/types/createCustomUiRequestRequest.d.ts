@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 export interface CreateCustomUiRequestRequest {
+    /** @nullable */
     gameId?: string | null;
     name: string;
     email: string;

@@ -1,5 +1,5 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import type { ApiError, BoothStats, BrandingDraft, CreateCustomUiRequestRequest, CreatePlayerSubmissionRequest, CustomUiRequest, FinalizeBrandingDraftRequest, Game, Generation, GenerationInput, HealthStatus, ListGenerationsParams, Order, PlayerSubmission, Scene, UpsertBrandingDraftRequest } from './api.schemas';
+import type { ApiError, BoothStats, BrandingDraft, CreateCustomUiRequestRequest, CreatePlayerSubmissionRequest, CustomUiRequest, FinalizeBrandingDraftRequest, Game, Generation, GenerationInput, HealthStatus, ListGenerationsParams, Order, PlayerSubmission, SavedGameContent, Scene, UpsertBrandingDraftRequest } from './api.schemas';
 import { customFetch } from '../custom-fetch';
 import type { ErrorType, BodyType } from '../custom-fetch';
 type AwaitedInput<T> = PromiseLike<T> | T;
@@ -118,6 +118,23 @@ export type GetBrandingDraftQueryError = ErrorType<void>;
  */
 export declare function useGetBrandingDraft<TData = Awaited<ReturnType<typeof getBrandingDraft>>, TError = ErrorType<void>>(id: string, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraft>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+};
+export declare const getGetBrandingDraftContentUrl: (id: string) => string;
+export declare const getBrandingDraftContent: (id: string, options?: Parameters<typeof customFetch>[1]) => Promise<SavedGameContent>;
+export declare const getGetBrandingDraftContentQueryKey: (id: string) => readonly [`/api/branding-drafts/${string}/content`];
+export declare const getGetBrandingDraftContentQueryOptions: <TData = Awaited<ReturnType<typeof getBrandingDraftContent>>, TError = ErrorType<void>>(id: string, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraftContent>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraftContent>>, TError, TData> & {
+    queryKey: QueryKey;
+};
+export type GetBrandingDraftContentQueryResult = NonNullable<Awaited<ReturnType<typeof getBrandingDraftContent>>>;
+export type GetBrandingDraftContentQueryError = ErrorType<void>;
+export declare function useGetBrandingDraftContent<TData = Awaited<ReturnType<typeof getBrandingDraftContent>>, TError = ErrorType<void>>(id: string, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraftContent>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
