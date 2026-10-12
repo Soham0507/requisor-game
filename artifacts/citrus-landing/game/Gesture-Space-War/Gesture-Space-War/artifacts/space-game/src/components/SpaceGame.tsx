@@ -393,16 +393,9 @@ export default function SpaceGame() {
         }}
       >
         {brand.logoUrl && (
-          <img src={brand.logoUrl} alt={brand.brandName} width={34} height={34}
+          <img src={brand.logoUrl} alt="" width={brand.logoSize} height={brand.logoSize}
             style={{ objectFit: "contain", filter: "drop-shadow(0 0 6px rgba(0,210,180,0.6))" }}/>
         )}
-        <div className="flex flex-col leading-tight">
-          <span className="font-mono text-[9px] tracking-widest text-teal-400 opacity-60">BUILT WITH</span>
-          <span className="font-mono text-[12px] font-black tracking-wider"
-            style={{ color: "#00d4b4", textShadow: "0 0 10px #00d4b488", fontFamily: "var(--brand-font, inherit)" }}>
-            {brand.brandName}
-          </span>
-        </div>
       </div>
 
       {/* ── Title overlay ────────────────────────────────────────── */}
@@ -415,24 +408,20 @@ export default function SpaceGame() {
             }}>
             <div className="text-center">
               <div
-                className="font-mono font-black tracking-[0.08em] text-white"
+                className="font-mono font-black tracking-[0.08em] uppercase"
                 style={{
-                  fontSize: brand.brandNameSize,
+                  fontSize: Math.round(brand.headingSize * 1.6),
                   lineHeight: 1.1,
-                  color: brand.brandNameColor,
-                  textShadow: `0 0 30px ${hexToRgba(brand.brandNameColor, 0.6)}, 0 0 70px ${hexToRgba(brand.brandNameColor, 0.3)}`,
+                  color: brand.headingColor,
+                  textShadow: `0 0 30px ${hexToRgba(brand.headingColor, 0.6)}, 0 0 70px ${hexToRgba(brand.headingColor, 0.3)}`,
                   fontFamily: "var(--brand-font, inherit)",
                 }}
               >
-                {brand.brandName}
-              </div>
-              <div
-                className="font-mono tracking-[0.15em] uppercase mt-2"
-                style={{ fontSize: brand.headingSize, color: brand.headingColor, fontFamily: "var(--brand-font, inherit)" }}
-              >
                 {brand.heading}
               </div>
-              <div className="font-mono text-[10px] tracking-[0.3em] text-blue-400 opacity-60 mt-2">{brand.tagline}</div>
+              {brand.tagline && (
+                <div className="font-mono text-[10px] tracking-[0.3em] text-blue-400 opacity-60 mt-2">{brand.tagline}</div>
+              )}
             </div>
             <div className="w-full border-t border-white/10"/>
             <div className="flex gap-8 w-full">
@@ -481,16 +470,9 @@ export default function SpaceGame() {
               }}
             >
               {brand.logoUrl && (
-                <img src={brand.logoUrl} alt={brand.brandName} width={36} height={36}
+                <img src={brand.logoUrl} alt="" width={brand.logoSize} height={brand.logoSize}
                   style={{ objectFit: "contain", filter: "drop-shadow(0 0 8px rgba(0,210,180,0.7))" }}/>
               )}
-              <div className="flex flex-col leading-tight">
-                <span className="font-mono text-[8px] tracking-[0.25em] opacity-50 text-teal-300">BUILT WITH</span>
-                <span className="font-mono text-[15px] font-black tracking-wide"
-                  style={{ color: "#00d4b4", textShadow: "0 0 14px #00d4b466", fontFamily: "var(--brand-font, inherit)" }}>
-                  {brand.brandName}
-                </span>
-              </div>
             </div>
           </div>
         </div>

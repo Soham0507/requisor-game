@@ -153,7 +153,12 @@ function markSVG(brand, cls = 'mark') {
   return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`;
 }
 function logoHTML(brand, size = '') {
-  if (brand.logoImg) return `<span class="logo ${size}"><img src="${brand.logoImg}" alt="${esc(brand.name)}"></span>`;
+  // Single-game (platform) pages have no brand name: with no uploaded logo the
+  // top bar stays empty rather than showing a "Your Brand" placeholder.
+  if (brand.id === 'custom' && !brand.logoImg && !brand.nameSet && document.body.classList.contains('a8-single')) return '';
+  // A custom kit that has both a logo and a typed brand name shows the name
+  // next to the logo; the logo alone would hide the name the customer entered.
+  if (brand.logoImg) return `<span class="logo ${size}"><img src="${brand.logoImg}" alt="${esc(brand.name)}">${brand.nameSet ? `<span class="word">${esc(brand.name)}</span>` : ''}</span>`;
   const suffix = brand.wordSuffix ? `<span class="word light">${esc(brand.wordSuffix)}</span>` : '';
   return `<span class="logo ${size}" aria-label="${esc(brand.name)}">${markSVG(brand)}<span class="word ${brand.wordClass || ''}">${esc(brand.word || brand.name)}</span>${suffix}</span>`;
 }

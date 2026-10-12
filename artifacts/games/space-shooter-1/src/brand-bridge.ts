@@ -33,12 +33,12 @@ const DEFAULT_THEME: BrandTheme = {
   secondaryColor: "#ff2bd6",
   accentColor: "#a6ff3d",
   logoUrl: null,
-  logoSize: 28,
+  logoSize: 56,
   brandName: "",
   brandNameSize: 16,
   brandNameColor: "#ffffff",
   heading: "Space Shooter",
-  headingSize: 11,
+  headingSize: 28,
   headingColor: "#94a3b8",
   tagline: "",
   fontUrl: null,
@@ -82,7 +82,8 @@ window.__BRAND__ = { ...DEFAULT_THEME };
 const listeners = new Set<() => void>();
 
 function applyTheme(theme: Partial<BrandTheme>) {
-  window.__BRAND__ = { ...window.__BRAND__, ...theme };
+  // The customizer no longer offers a brand name: games show the logo and game title only.
+  window.__BRAND__ = { ...window.__BRAND__, ...theme, brandName: "" };
 
   const root = document.documentElement;
   root.style.setProperty("--brand-primary", window.__BRAND__.primaryColor);
@@ -107,7 +108,6 @@ window.addEventListener("message", (event: MessageEvent) => {
 function themeFromQueryParams(): Partial<BrandTheme> {
   const params = new URLSearchParams(window.location.search);
   const theme: Partial<BrandTheme> = {};
-  if (params.has("brandName")) theme.brandName = params.get("brandName") || "";
   if (params.has("heading")) theme.heading = params.get("heading") || DEFAULT_THEME.heading;
   if (params.has("tagline")) theme.tagline = params.get("tagline") || "";
   if (params.has("logo")) theme.logoUrl = params.get("logo");

@@ -210,12 +210,6 @@ function Logo() {
           <ImageIcon className="text-white/80" size={Math.round(brand.logoSize * 0.55)} />
         </div>
       )}
-      <span
-        className="font-semibold tracking-wide lg:mr-8 mr-4"
-        style={{ fontSize: brand.brandNameSize, color: brand.brandNameColor, fontFamily: "var(--brand-font, inherit)" }}
-      >
-        {brand.brandName}
-      </span>
     </div>
   );
 }

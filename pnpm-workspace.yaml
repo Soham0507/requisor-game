@@ -5,11 +5,18 @@ packages:
   - lib/integrations/*
   - scripts
   - artifacts/citrus-landing/game/AI-versionBB2-5/AI-versionBB2-5
+  - artifacts/citrus-landing/game/Soccer/Soccer
   - artifacts/citrus-landing/game/Cybergame/artifacts/gesturesec-runner
   - artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game
   - artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth
   - artifacts/citrus-landing/game/jeoparady/frontend
   - artifacts/citrus-landing/game/Lexus
+
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  bufferutil: set this to true or false
+  core-js: set this to true or false
+  esbuild: set this to true or false
 
 autoInstallPeers: false
 

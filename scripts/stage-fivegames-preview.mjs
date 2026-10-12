@@ -34,6 +34,7 @@ const questionRuntime = readFileSync(path.join(repoRoot, "lib/game-content/src/i
 const SINGLE_GAME_CSS = `
 body.a8-single #app { display: none; }
 body.a8-single .stage [data-act="exit"] { display: none; }
+body.a8-single .stage .topbar .logo img { height: 48px; max-width: 240px; }
 .a8-save-status { position:fixed; left:16px; right:16px; bottom:16px; z-index:10000; padding:12px 16px; border-radius:12px; background:#fff; color:#1a1a1a; box-shadow:0 4px 24px #0003; font:14px system-ui; }
 .a8-save-status button { margin-left:12px; padding:8px 12px; border:1px solid #555; border-radius:8px; background:#fff; color:#111; cursor:pointer; }
 `;

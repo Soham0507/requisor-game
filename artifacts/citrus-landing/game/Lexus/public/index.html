@@ -1465,7 +1465,7 @@
         <div class="content">
           <div class="screen active" id="s-start">
             <div class="text-scrim">
-              <div class="start-title">
+              <div class="start-title" id="startTitle">
                 YOUR&nbsp;ENERGY<br />YOUR&nbsp;<span id="startBrandName">MATCH</span>
               </div>
               <div class="start-divider"></div>
@@ -2589,7 +2589,7 @@
       // branding gets wired.
       (function () {
         var brandLogoImg = document.getElementById("brandLogo");
-        var brandNameEl = document.getElementById("startBrandName");
+        var titleEl = document.getElementById("startTitle");
         var taglineEl = document.getElementById("startTagline");
         var hex = /^#[0-9a-fA-F]{6}$/;
 
@@ -2603,8 +2603,15 @@
             brandLogoImg.style.width = theme.logoSize + "px";
             brandLogoImg.style.height = theme.logoSize + "px";
           }
-          if (theme.brandName && brandNameEl) {
-            brandNameEl.textContent = theme.brandName.toUpperCase();
+          // Game title: the customizer always sends one (defaulting to the
+          // catalog name), so only a title the customer changed replaces the
+          // built-in "YOUR ENERGY YOUR MATCH" headline. The brand name field
+          // no longer exists.
+          if (theme.heading && titleEl) {
+            var heading = String(theme.heading).trim();
+            if (heading && heading.toLowerCase() !== "energy quiz") {
+              titleEl.textContent = heading.toUpperCase();
+            }
           }
           if (theme.tagline && taglineEl) {
             taglineEl.textContent = theme.tagline;
@@ -2627,7 +2634,7 @@
           if (params.has("logo")) theme.logoUrl = params.get("logo");
           var logoSize = Number(params.get("logoSize"));
           if (Number.isFinite(logoSize) && logoSize > 0) theme.logoSize = logoSize;
-          if (params.has("brandName")) theme.brandName = params.get("brandName");
+          if (params.has("heading")) theme.heading = params.get("heading");
           if (params.has("tagline")) theme.tagline = params.get("tagline");
           var primaryColor = params.get("primaryColor");
           var secondaryColor = params.get("secondaryColor");

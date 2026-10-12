@@ -19,6 +19,7 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
   "space-shooter-1": { type: "video", src: "/logo/spaceshooter.mp4" },
   "cyber-adventure": { type: "video", src: "/logo/cyber.mp4" },
   "basketball-shootout": { type: "video", src: "/logo/app1.mp4" },
+  "soccer-shootout": { type: "video", src: "/logo/soccer1.mp4", poster: "/logo/soccer.jpg" },
   "gesture-space-war": { type: "video", src: "/logo/90.mp4" },
   "golf-challenge": {
     type: "video",

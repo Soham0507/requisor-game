@@ -10,7 +10,10 @@ function wedgePath(cx, cy, r, s, e) {
   const [x1, y1] = polar(cx, cy, r, s), [x2, y2] = polar(cx, cy, r, e);
   return `M${cx} ${cy}L${x1.toFixed(2)} ${y1.toFixed(2)}A${r} ${r} 0 ${e - s > 180 ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}Z`;
 }
-function segsSVG(prizes, weights) {
+// With a brand logo, every wedge shows it (not a per-prize icon). The logo sits
+// in a fixed-size white tile that is only shrunk when a wedge is too narrow to
+// hold it, so it always fits inside its own section.
+function segsSVG(prizes, weights, logo) {
   const geo = wheelGeometry(weights);
   let alt = 0;
   const wedges = geo.map((g, i) => {
@@ -19,16 +22,23 @@ function segsSVG(prizes, weights) {
     const ink = t === 'grand' ? 'var(--on-brand)' : t === 'major' ? 'var(--brand-700)' : t === 'none' ? '#8E8E93' : 'var(--brand-text)';
     const sz = g.w < 13 ? 18 : 28;
     const [ix, iy] = polar(200, 200, 128, g.m);
+    if (logo) {
+      const chord = 2 * 128 * Math.sin((g.w * Math.PI) / 360);
+      const box = Math.max(14, Math.min(44, chord * 0.82));
+      const pad = box * 0.12, inner = box - pad * 2;
+      return `<path d="${wedgePath(200, 200, 184, g.s, g.e)}" fill="${fill}" stroke="#fff" stroke-width="2.5"/>` +
+        `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)})"><rect x="${-box / 2}" y="${-box / 2}" width="${box}" height="${box}" rx="${(box * 0.22).toFixed(1)}" fill="#fff" stroke="rgba(0,0,0,.08)"/><image href="${logo}" x="${-inner / 2}" y="${-inner / 2}" width="${inner}" height="${inner}" preserveAspectRatio="xMidYMid meet"/></g>`;
+    }
     return `<path d="${wedgePath(200, 200, 184, g.s, g.e)}" fill="${fill}" stroke="#fff" stroke-width="2.5"/>` +
       `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)}) translate(${-sz / 2} ${-sz / 2}) scale(${sz / 24})" stroke="${ink}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[prizes[i].icon] || ''}</g>`;
   }).join('');
   const pegs = geo.map((g) => { const [x, y] = polar(200, 200, 191.5, g.s); return `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="3.6" fill="#fff" stroke="rgba(0,0,0,.12)" stroke-width="1"/>`; }).join('');
   return wedges + pegs;
 }
-function wheelMarkup(prizes, weights) {
+function wheelMarkup(prizes, weights, logo) {
   const id = uid();
   return `<svg class="wheel wheel-base" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="199" fill="#fff"/><circle cx="200" cy="200" r="198.5" fill="none" stroke="rgba(0,0,0,.07)"/></svg>` +
-    `<svg class="wheel wheel-spin" viewBox="0 0 400 400" aria-hidden="true"><g class="segs">${segsSVG(prizes, weights)}</g></svg>` +
+    `<svg class="wheel wheel-spin" viewBox="0 0 400 400" aria-hidden="true"><g class="segs">${segsSVG(prizes, weights, logo)}</g></svg>` +
     `<svg class="wheel wheel-gloss" viewBox="0 0 400 400" aria-hidden="true"><defs><radialGradient id="wg${id}" cx="34%" cy="22%" r="78%"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="184" fill="url(#wg${id})"/></svg>`;
 }
 const WHEEL_POINTER = '<svg class="wheel-pointer" viewBox="0 0 44 54" aria-hidden="true"><path d="M22 52C18.5 44.5 6 31.5 6 20.5a16 16 0 1 1 32 0C38 31.5 25.5 44.5 22 52Z" fill="#1D1D1F"/><circle cx="22" cy="20.5" r="6.5" fill="#fff"/></svg>';
@@ -43,7 +53,7 @@ GAMES.spin = {
   },
   art(stage) {
     const P = stage.content.prizes;
-    return `<div class="s-art" aria-hidden="true"><div class="wheel-box" style="--wsz:clamp(260px, 34vw, 430px)">${wheelMarkup(P, P.map((p) => p.weight))}${WHEEL_POINTER}<div class="wheel-hub">${hubInner(stage.brand)}</div></div></div>`;
+    return `<div class="s-art" aria-hidden="true"><div class="wheel-box" style="--wsz:clamp(260px, 34vw, 430px)">${wheelMarkup(P, P.map((p) => p.weight), stage.brand.logoImg)}${WHEEL_POINTER}<div class="wheel-hub">${hubInner(stage.brand)}</div></div></div>`;
   },
   cleanup(stage) { if (stage._fit) { window.removeEventListener('resize', stage._fit); stage._fit = null; } },
   play(stage) {
@@ -55,7 +65,7 @@ GAMES.spin = {
 
     const el = stage.screen(`
       <div class="s-layout">
-        <div class="wheel-box" data-wheel>${wheelMarkup(prizes, weights)}${WHEEL_POINTER}<button class="wheel-hub" data-hub disabled aria-label="Spin">${hubInner(stage.brand)}</button></div>
+        <div class="wheel-box" data-wheel>${wheelMarkup(prizes, weights, stage.brand.logoImg)}${WHEEL_POINTER}<button class="wheel-hub" data-hub disabled aria-label="Spin">${hubInner(stage.brand)}</button></div>
         <div class="s-panel" data-panel></div>
       </div>`);
     const box = $('[data-wheel]', el), segs = $('.segs', box), spinSvg = $('.wheel-spin', box), pointer = $('.wheel-pointer', box), hub = $('[data-hub]', box), panel = $('[data-panel]', el);
@@ -70,7 +80,7 @@ GAMES.spin = {
     const odds = (ws) => { const t = ws.reduce((a, b) => a + b, 0); return ws.map((w) => (w / t) * 100); };
     const topOdds = (ws) => { const o = odds(ws); return prizes.reduce((s, p, i) => s + (p.tier === 'grand' || p.tier === 'major' ? o[i] : 0), 0); };
     const setRot = (d) => { rot = d; spinSvg.style.transform = `rotate(${d.toFixed(3)}deg)`; };
-    const redraw = () => { segs.innerHTML = segsSVG(prizes, weights); };
+    const redraw = () => { segs.innerHTML = segsSVG(prizes, weights, stage.brand.logoImg); };
 
     const growWheel = async () => {
       const from = weights.slice();

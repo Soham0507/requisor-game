@@ -16,6 +16,10 @@ const FONT_EXTENSIONS = /\.(woff2?|ttf|otf)$/i;
 // capability every game's brand-bridge understands yet.
 const BACKGROUND_MEDIA_SLUGS = new Set(["basketball-shootout"]);
 
+// Recall reuses the same upload (theme.bgUrl) as a product image shown on its
+// face-down cards. Image only: the cards have no use for video.
+const PRODUCT_IMAGE_SLUGS = new Set(["a8-recall"]);
+
 interface BrandingFormProps {
   theme: BrandThemeMessage;
   onChange: (theme: BrandThemeMessage) => void;
@@ -135,6 +139,10 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
     const file = e.target.files?.[0];
     if (!file) return;
     setBgError(null);
+    if (isProductImage && !file.type.startsWith("image/")) {
+      setBgError("Please choose an image file.");
+      return;
+    }
     if (file.type.startsWith("video/")) {
       if (file.size > MAX_BG_VIDEO_BYTES) {
         setBgError(`That video is too large — please pick one under ${Math.round(MAX_BG_VIDEO_BYTES / (1024 * 1024))}MB.`);
@@ -164,6 +172,7 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
     setFontFileName(file.name);
   };
 
+  const isProductImage = PRODUCT_IMAGE_SLUGS.has(gameSlug);
   const isVideoBg = theme.bgUrl?.startsWith("data:video") || /\.(mp4|webm|mov)(\?|$)/i.test(theme.bgUrl ?? "");
 
   return (
@@ -173,41 +182,6 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
           Full in-game re-skin isn't wired up for this title yet — logo and heading still update live below.
         </p>
       )}
-
-      <div className="space-y-2">
-        <Label htmlFor="input-brand-name">Brand name</Label>
-        <Input
-          id="input-brand-name"
-          data-testid="input-brand-name"
-          value={theme.brandName}
-          onChange={(e) => set("brandName", e.target.value)}
-          placeholder="e.g. Acme Corp"
-          maxLength={40}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1">
-            <Label htmlFor="input-brand-name-size" className="text-xs text-muted-foreground">
-              Size ({theme.brandNameSize}px)
-            </Label>
-            <input
-              id="input-brand-name-size"
-              data-testid="input-brand-name-size"
-              type="range"
-              min={10}
-              max={100}
-              value={theme.brandNameSize}
-              onChange={(e) => set("brandNameSize", Number(e.target.value))}
-              className="w-full"
-            />
-          </div>
-          <ColorField
-            id="input-brand-name-color"
-            label="Color"
-            value={theme.brandNameColor}
-            onChange={(hex) => set("brandNameColor", hex)}
-          />
-        </div>
-      </div>
 
       <div className="space-y-2">
         <Label htmlFor="input-heading">Game title</Label>
@@ -244,12 +218,13 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="input-tagline">Tagline</Label>
+        <Label htmlFor="input-tagline">Tagline <span className="text-xs font-normal text-muted-foreground">(optional)</span></Label>
         <Input
           id="input-tagline"
           data-testid="input-tagline"
           value={theme.tagline}
           onChange={(e) => set("tagline", e.target.value)}
+          placeholder="Leave empty to show no tagline"
           maxLength={60}
         />
       </div>
@@ -316,7 +291,7 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
       <div className="space-y-2">
         <Label>Custom font</Label>
         <p className="text-xs text-muted-foreground">
-          Upload a font (.woff2, .woff, .ttf, or .otf) to apply to the brand name and game title text.
+          Upload a font (.woff2, .woff, .ttf, or .otf) to apply to the game title text.
         </p>
         {theme.fontUrl && (
           <>
@@ -325,7 +300,7 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
               className="rounded-md border border-border px-3 py-2 text-lg"
               style={{ fontFamily: "BrandFontPreview, inherit" }}
             >
-              {theme.brandName || "Brand Name"}
+              {theme.heading || "Game title"}
             </p>
           </>
         )}
@@ -365,11 +340,13 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
         {fontError && <p className="text-xs text-destructive">{fontError}</p>}
       </div>
 
-      {BACKGROUND_MEDIA_SLUGS.has(gameSlug) && (
+      {(BACKGROUND_MEDIA_SLUGS.has(gameSlug) || isProductImage) && (
         <div className="space-y-2">
-          <Label>Landing screen background</Label>
+          <Label>{isProductImage ? "Product image" : "Landing screen background"}</Label>
           <p className="text-xs text-muted-foreground">
-            Upload an image or video to replace the default background (max {Math.round(MAX_BG_VIDEO_BYTES / (1024 * 1024))}MB for video).
+            {isProductImage
+              ? "Upload a product image. It appears on the face-down cards on the start screen instead of the brand badge."
+              : `Upload an image or video to replace the default background (max ${Math.round(MAX_BG_VIDEO_BYTES / (1024 * 1024))}MB for video).`}
           </p>
           {theme.bgUrl && (
             isVideoBg ? (
@@ -391,7 +368,7 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
           )}
           <div className="flex items-center gap-3">
             <Button type="button" variant="outline" size="sm" onClick={() => bgFileInputRef.current?.click()} data-testid="button-upload-bg">
-              <Upload size={14} /> Upload background
+              <Upload size={14} /> {isProductImage ? "Upload product image" : "Upload background"}
             </Button>
             {theme.bgUrl && (
               <Button type="button" variant="ghost" size="sm" onClick={() => set("bgUrl", null)} data-testid="button-remove-bg">
@@ -399,7 +376,7 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
               </Button>
             )}
           </div>
-          <input ref={bgFileInputRef} type="file" accept="image/*,video/*" className="hidden" onChange={handleBgPick} />
+          <input ref={bgFileInputRef} type="file" accept={isProductImage ? "image/*" : "image/*,video/*"} className="hidden" onChange={handleBgPick} />
           {bgError && <p className="text-xs text-destructive">{bgError}</p>}
         </div>
       )}

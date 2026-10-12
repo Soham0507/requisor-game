@@ -92,9 +92,11 @@ export default function Sidebar({ active, onSelect, open, collapsed }: SidebarPr
             >
               {brand.heading}
             </div>
-            <div style={{ fontSize: 9, color: "var(--text-mute)", letterSpacing: "0.18em", marginTop: 2 }}>
-              {brand.tagline}
-            </div>
+            {brand.tagline && (
+              <div style={{ fontSize: 9, color: "var(--text-mute)", letterSpacing: "0.18em", marginTop: 2 }}>
+                {brand.tagline}
+              </div>
+            )}
           </div>
         )}
       </div>

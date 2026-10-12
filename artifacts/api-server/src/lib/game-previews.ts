@@ -42,6 +42,10 @@ const GAME_PREVIEWS: { slug: string; distDir: string }[] = [
     ),
   },
   {
+    slug: "soccer-shootout",
+    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/Soccer/Soccer/dist/public"),
+  },
+  {
     slug: "gesture-space-war",
     distDir: path.join(
       repoRoot,

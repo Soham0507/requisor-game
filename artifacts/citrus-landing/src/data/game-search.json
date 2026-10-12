@@ -89,6 +89,14 @@
       "synonyms": ["basketball", "shoot hoops", "gesture sports", "touchless", "active competitive"],
       "industries": [], "search_phrases": ["gesture controlled basketball with real time scoring", "active sports game for an event booth"]
     },
+    "soccer-shootout": {
+      "family": "sports", "mechanic": "soccer",
+      "goals": ["engagement"], "settings": ["trade-show", "retail", "conference"],
+      "formats": ["desktop", "kiosk", "large-screen"], "inputs": ["webcam-gesture"], "players": ["solo"],
+      "session": "timed", "energy": "high", "hardware": ["webcam"],
+      "synonyms": ["soccer", "football", "penalty shootout", "gesture sports", "touchless", "active competitive"],
+      "industries": [], "search_phrases": ["gesture controlled soccer shootout with real time scoring", "active sports game for an event booth"]
+    },
     "gesture-space-war": {
       "family": "arcade", "mechanic": "space-combat",
       "goals": ["engagement"], "settings": ["trade-show", "conference"],

@@ -47,12 +47,6 @@ export default function Home() {
             <ImageIcon className="text-white/80" size={16} />
           </div>
         )}
-        <span
-          className="font-semibold tracking-wide"
-          style={{ fontSize: brand.brandNameSize, color: brand.brandNameColor, fontFamily: "var(--brand-font, inherit)" }}
-        >
-          {brand.brandName}
-        </span>
       </div>
 
       <main className="flex-1 flex flex-col items-center justify-center p-8 max-w-7xl mx-auto w-full z-10 relative">
@@ -67,9 +61,11 @@ export default function Home() {
           >
             {brand.heading}
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {brand.tagline}
-          </p>
+          {brand.tagline && (
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              {brand.tagline}
+            </p>
+          )}
 
           <div className="pt-8">
             <Link href="/create" className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-24 px-12 py-6 rounded-full text-3xl bg-primary text-primary-foreground hover:bg-primary/90 shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95">

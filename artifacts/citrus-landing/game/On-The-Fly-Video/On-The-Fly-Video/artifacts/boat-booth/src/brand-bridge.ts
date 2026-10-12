@@ -33,12 +33,12 @@ const DEFAULT_THEME: BrandTheme = {
   secondaryColor: "#0369a1",
   accentColor: "#0ea5e9",
   logoUrl: null,
-  logoSize: 36,
-  brandName: "Brand Name",
+  logoSize: 56,
+  brandName: "",
   brandNameSize: 16,
   brandNameColor: "#ffffff",
   heading: "See Yourself On The Water",
-  headingSize: 56,
+  headingSize: 64,
   headingColor: "#ffffff",
   tagline:
     "Step up, strike a pose, and let us transport you to your perfect boat day. Get a free custom photo and video instantly.",
@@ -118,7 +118,8 @@ function hexToHslTriplet(hex: string): string | null {
 
 function applyTheme(theme: Partial<BrandTheme>) {
   const next = { ...window.__BRAND__, ...theme };
-  if (!next.brandName) next.brandName = DEFAULT_THEME.brandName;
+  // The customizer no longer offers a brand name: games show the logo and game title only.
+  next.brandName = "";
   if (!next.heading) next.heading = DEFAULT_THEME.heading;
   window.__BRAND__ = next;
 
@@ -148,7 +149,6 @@ window.addEventListener("message", (event: MessageEvent) => {
 function themeFromQueryParams(): Partial<BrandTheme> {
   const params = new URLSearchParams(window.location.search);
   const theme: Partial<BrandTheme> = {};
-  if (params.has("brandName")) theme.brandName = params.get("brandName") || DEFAULT_THEME.brandName;
   if (params.has("heading")) theme.heading = params.get("heading") || DEFAULT_THEME.heading;
   if (params.has("tagline")) theme.tagline = params.get("tagline") || "";
   if (params.has("logo")) theme.logoUrl = params.get("logo");

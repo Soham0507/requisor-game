@@ -8,7 +8,11 @@ GAMES.recall = {
   },
   art(stage) {
     const pairs = stage.content.pairs;
-    const back = `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
+    // A customer-supplied product image replaces the brand badge on the face-down cards.
+    const productImg = stage.brand.productImg;
+    const back = productImg
+      ? `<div class="card back has-img"><img src="${productImg}" alt=""></div>`
+      : `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
     const front = (p) => `<div class="card front">${ptile(p.icon, 'var(--brand)', null)}<b>${esc(p.title)}</b></div>`;
     return `<div class="r-art" aria-hidden="true">${back}${front(pairs[0]).replace('card front', 'card front hit')}${front(pairs[1])}${back}</div>`;
   },

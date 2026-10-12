@@ -97,12 +97,6 @@ export function GameOver({ stats, onRestart }: GameOverProps) {
             style={{ width: brand.logoSize, height: brand.logoSize }}
           />
         )}
-        <span
-          className="font-semibold tracking-wide"
-          style={{ fontSize: brand.brandNameSize * 0.2, color: brand.brandNameColor, fontFamily: "var(--brand-font, inherit)" }}
-        >
-          {brand.brandName}
-        </span>
       </div>
 
       {/* Background grid */}

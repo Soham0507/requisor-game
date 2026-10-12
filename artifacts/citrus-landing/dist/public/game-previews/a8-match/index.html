@@ -824,6 +824,8 @@ button.wheel-hub:active { transform: translate(-50%, -50%) scale(.94); }
 .r-art .card:nth-child(4) { left: 51%; top: 53%; transform: rotate(-7deg); }
 .r-art .card.hit { box-shadow: 0 0 0 3px var(--brand), var(--shadow-2); }
 .r-art .card .badge-mark { width: 52%; }
+.r-art .card.back.has-img { background: #fff; overflow: hidden; box-shadow: 0 0 0 1px var(--line), var(--shadow-2); }
+.r-art .card.back.has-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .r-board { display: grid; justify-items: center; gap: 18px; }
 .r-hud { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .mgrid { display: grid; gap: var(--gap, 14px); grid-template-columns: repeat(var(--cols, 4), var(--card, 150px)); grid-auto-rows: var(--card, 150px); }
@@ -1140,7 +1142,12 @@ function markSVG(brand, cls = 'mark') {
   return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`;
 }
 function logoHTML(brand, size = '') {
-  if (brand.logoImg) return `<span class="logo ${size}"><img src="${brand.logoImg}" alt="${esc(brand.name)}"></span>`;
+  // Single-game (platform) pages have no brand name: with no uploaded logo the
+  // top bar stays empty rather than showing a "Your Brand" placeholder.
+  if (brand.id === 'custom' && !brand.logoImg && !brand.nameSet && document.body.classList.contains('a8-single')) return '';
+  // A custom kit that has both a logo and a typed brand name shows the name
+  // next to the logo; the logo alone would hide the name the customer entered.
+  if (brand.logoImg) return `<span class="logo ${size}"><img src="${brand.logoImg}" alt="${esc(brand.name)}">${brand.nameSet ? `<span class="word">${esc(brand.name)}</span>` : ''}</span>`;
   const suffix = brand.wordSuffix ? `<span class="word light">${esc(brand.wordSuffix)}</span>` : '';
   return `<span class="logo ${size}" aria-label="${esc(brand.name)}">${markSVG(brand)}<span class="word ${brand.wordClass || ''}">${esc(brand.word || brand.name)}</span>${suffix}</span>`;
 }
@@ -2740,7 +2747,11 @@ GAMES.recall = {
   },
   art(stage) {
     const pairs = stage.content.pairs;
-    const back = `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
+    // A customer-supplied product image replaces the brand badge on the face-down cards.
+    const productImg = stage.brand.productImg;
+    const back = productImg
+      ? `<div class="card back has-img"><img src="${productImg}" alt=""></div>`
+      : `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
     const front = (p) => `<div class="card front">${ptile(p.icon, 'var(--brand)', null)}<b>${esc(p.title)}</b></div>`;
     return `<div class="r-art" aria-hidden="true">${back}${front(pairs[0]).replace('card front', 'card front hit')}${front(pairs[1])}${back}</div>`;
   },
@@ -2922,7 +2933,8 @@ const App = {
     const name = (this.custom.name || '').trim() || 'Your Brand';
     return {
       ...base, id: 'custom', name, word: name, wordClass: '', wordSuffix: '', mark: null,
-      color: this.custom.color, logoImg: this.custom.logoImg, vertical: 'Custom brand kit',
+      nameSet: !!(this.custom.name || '').trim(),
+      color: this.custom.color, logoImg: this.custom.logoImg, productImg: this.custom.productImg || null, vertical: 'Custom brand kit',
       code: name.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'A8',
     };
   },
@@ -3168,6 +3180,7 @@ window.Activate8 = { App, BRANDS, GAMES, Leads, Boards };
 <style>
 body.a8-single #app { display: none; }
 body.a8-single .stage [data-act="exit"] { display: none; }
+body.a8-single .stage .topbar .logo img { height: 48px; max-width: 240px; }
 .a8-save-status { position:fixed; left:16px; right:16px; bottom:16px; z-index:10000; padding:12px 16px; border-radius:12px; background:#fff; color:#1a1a1a; box-shadow:0 4px 24px #0003; font:14px system-ui; }
 .a8-save-status button { margin-left:12px; padding:8px 12px; border:1px solid #555; border-radius:8px; background:#fff; color:#111; cursor:pointer; }
 </style>
@@ -3338,7 +3351,7 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
   // brands (Halden etc.) never show.
   App.brandId = 'custom';
   App.customBase = 'halden';
-  App.custom = { name: '', color: '#0A84FF', logoImg: null };
+  App.custom = { name: '', color: '#0A84FF', logoImg: null, productImg: null };
 
   // The kit renders the logo URL straight into an <img src>, so only accept
   // image data URIs, http(s) URLs or same-origin paths, and drop characters
@@ -3373,9 +3386,12 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
         });
       }
     }
-    if (typeof theme.brandName === 'string') c.name = theme.brandName.slice(0, 120);
+    // No brand name: the customizer only offers a logo and a game title.
     if (theme.primaryColor && HEX.test(theme.primaryColor)) c.color = theme.primaryColor;
     if (theme.logoUrl !== undefined) c.logoImg = safeLogo(theme.logoUrl);
+    // The customizer's image upload (bgUrl) is the Recall product image: shown
+    // on the face-down cards of the start screen. Video is not accepted.
+    if (theme.bgUrl !== undefined) c.productImg = /^data:video/i.test(theme.bgUrl || '') ? null : safeLogo(theme.bgUrl);
     if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim().slice(0, 160) : original.title;
     if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim().slice(0, 500) || original.subtitle;
     var size = Number(theme.logoSize);
@@ -3384,7 +3400,7 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
 
   function signature() {
     var c = App.custom;
-    return [c.name, c.color, c.logoImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
+    return [c.name, c.color, c.logoImg, c.productImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
   }
 
   function setTitle() {
@@ -3476,9 +3492,9 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
 
   // Standalone / live-link load: same fields as query params.
   var initial = {};
-  if (params.has('brandName')) initial.brandName = params.get('brandName');
   if (params.has('primaryColor')) initial.primaryColor = params.get('primaryColor');
   if (params.has('logo')) initial.logoUrl = params.get('logo');
+  if (params.has('bg')) initial.bgUrl = params.get('bg');
   if (params.has('heading')) initial.heading = params.get('heading');
   if (params.has('tagline')) initial.tagline = params.get('tagline');
   if (params.has('logoSize')) initial.logoSize = params.get('logoSize');

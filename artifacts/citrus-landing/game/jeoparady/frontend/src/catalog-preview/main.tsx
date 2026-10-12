@@ -33,7 +33,6 @@ function PlayablePreview({ brand, fontError, board, custom }: {
       <header className="preview-header">
         <div className="preview-brand">
           {brand.logoUrl ? <img src={brand.logoUrl} alt={`${brand.brandName} logo`} style={{ height: brand.logoSize }} /> : <span className="preview-mark" aria-hidden="true">?</span>}
-          <span style={{ fontSize: brand.brandNameSize, color: brand.brandNameColor }}>{brand.brandName}</span>
         </div>
         <SoundToggle />
       </header>
@@ -41,7 +40,7 @@ function PlayablePreview({ brand, fontError, board, custom }: {
         <p className="preview-demo">Catalog demo · {custom ? 'Custom questions' : 'Sample questions'} · Scores stay in this session only</p>
         {fontError && <p role="alert">The uploaded font could not be loaded. The system font is being used.</p>}
         <h1 className="headline" style={{ fontSize: brand.headingSize, color: brand.headingColor }}>{brand.heading}</h1>
-        <p className="preview-tagline">{brand.tagline}</p>
+        {brand.tagline && <p className="preview-tagline">{brand.tagline}</p>}
         {!playing ? (
           <section className="preview-intro" aria-label="How to play">
             <p>Start with 2,000 points. Choose from {board.categories.length} {board.categories.length === 1 ? 'category' : 'categories'} and answer each question within 20 seconds.</p>

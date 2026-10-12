@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ===== Peak Technologies Brand Fonts =====
+ * Druk Wide Super (paid) -> Big Shoulders Display 900 (free, similar wide-blocky look)
+ * Video Medium -> kept (locally hosted)
+ * Inter Bold / Medium -> Google Fonts
+ */
+@font-face {
+  font-family: 'Video Med';
+  src: url('/fonnts.com-374064/fonts/fonnts.com-Video-Med-.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+}
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Big Shoulders Display', 'Inter', sans-serif;
+  --font-headline: 'Video Med', 'Big Shoulders Display', 'Inter', sans-serif;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* ===== Peak Technologies Palette =====
+   * Yellow (background primary)  #FFBF40
+   * Rich Black (copy / accent)   #1C1C1C
+   * Red (secondary)              #E42E20
+   * Orange 01 (secondary)        #FF6021
+   * Grey (background / accent)   #A1A1A1
+   * Blue 01 / 02 / 03            #3A6CD0 / #6286C9 / #99B3E1
+   */
+
+  /* Yellow background */
+  --background: 41 100% 63%;
+  /* Rich Black text */
+  --foreground: 0 0% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 11%;
+
+  --popover: 41 100% 63%;
+  --popover-foreground: 0 0% 11%;
+
+  /* Peak Red */
+  --primary: 4 78% 51%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Peak Yellow used as secondary surface */
+  --secondary: 41 100% 63%;
+  --secondary-foreground: 0 0% 11%;
+
+  --muted: 0 0% 91%;
+  --muted-foreground: 0 0% 38%;
+
+  /* Peak Blue 01 */
+  --accent: 218 56% 52%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 4 78% 51%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 0 0% 11%;
+  --input: 0 0% 11%;
+  --ring: 4 78% 51%;
+
+  --radius: 0.5rem;
+
+  /* Peak palette tokens for inline use */
+  --peak-yellow: #FFBF40;
+  --peak-yellow-soft: #FFD473;
+  --peak-black: #1C1C1C;
+  --peak-red: #E42E20;
+  --peak-orange: #FF6021;
+  --peak-grey: #A1A1A1;
+  --peak-blue-01: #3A6CD0;
+  --peak-blue-02: #6286C9;
+  --peak-blue-03: #99B3E1;
+}
+
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+  background-color: var(--peak-yellow);
+  color: var(--peak-black);
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .font-display {
+    font-family: 'Big Shoulders Display', 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  .font-headline {
+    font-family: 'Video Med', 'Big Shoulders Display', 'Inter', sans-serif;
+  }
+
+  .font-druk {
+    font-family: 'Big Shoulders Display', 'Inter', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px hsla(var(--primary), 0.5);
+  }
+
+  /* Peak gradient text (red -> orange) */
+  .text-gradient-brand {
+    background: linear-gradient(135deg, var(--peak-red) 0%, var(--peak-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, var(--peak-red) 0%, var(--peak-orange) 100%);
+  }
+
+  /* Yellow surface panel */
+  .glass-panel {
+    background: linear-gradient(135deg, rgba(255,191,64,0.95), rgba(255,212,115,0.92));
+    backdrop-filter: blur(12px);
+    border: 2px solid var(--peak-black);
+  }
+
+  /* Rich black panel for over-video HUD */
+  .panel-dark {
+    background: rgba(28, 28, 28, 0.78);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 191, 64, 0.35);
+  }
+
+  /* Peak tech-grid background motif */
+  .bg-peak-grid {
+    background-color: var(--peak-yellow);
+    background-image:
+      linear-gradient(rgba(28,28,28,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,28,28,0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .bg-peak-grid-dark {
+    background-color: var(--peak-black);
+    background-image:
+      linear-gradient(rgba(255,191,64,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,191,64,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Bracketed brand label (e.g. [ LIVE ]) — Peak signature motif */
+  .peak-bracket::before {
+    content: "[ ";
+    color: var(--peak-red);
+    font-weight: 900;
+  }
+  .peak-bracket::after {
+    content: " ]";
+    color: var(--peak-red);
+    font-weight: 900;
+  }
+}
+
+body {
+  cursor: url("/ball/ball-cursor.png") 16 16, auto;
+}
+
+button,
+a,
+[role="button"],
+.cursor-pointer {
+  cursor: url("/ball/ball-cursor.png") 16 16, pointer !important;
+}
+
+@keyframes neonGradient {
+  0% { filter: hue-rotate(0deg); }
+  50% { filter: hue-rotate(25deg); }
+  100% { filter: hue-rotate(0deg); }
+}
+
+.animate-neon-gradient {
+  animation: neonGradient 3s ease-in-out infinite;
+}
+
+@keyframes neonFlicker {
+  0% { opacity: 1; }
+  1% { opacity: 0.3; }
+  2% { opacity: 1; }
+  3% { opacity: 0.5; }
+  4% { opacity: 1; }
+  8% { opacity: 0.95; }
+  12% { opacity: 1; }
+  18% { opacity: 0.6; }
+  20% { opacity: 0.9; }
+  28% { opacity: 0.4; }
+  29% { opacity: 1; }
+  45% { opacity: 1; }
+  62% { opacity: 0.25; }
+  64% { opacity: 0.8; }
+  66% { opacity: 0.35; }
+  68% { opacity: 1; }
+  85% { opacity: 0.95; }
+  100% { opacity: 1; }
+}
+
+.neon-flicker {
+  animation: neonFlicker 6s infinite;
+  filter: brightness(1.1) saturate(1.2);
+}
+
+@keyframes whiteGlowPulse {
+  0%, 100% {
+    text-shadow:
+      0 0 2px rgba(255, 255, 255, 0.35),
+      0 0 6px rgba(255, 255, 255, 0.28),
+      0 0 12px rgba(255, 255, 255, 0.22);
+  }
+  50% {
+    text-shadow:
+      0 0 6px rgba(255, 255, 255, 0.55),
+      0 0 14px rgba(255, 255, 255, 0.45);
+  }
+}
+
+.neon-white-pulse {
+  animation: whiteGlowPulse 3.5s ease-in-out infinite;
+}
+
+.neon-white-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.35),
+      transparent 80%);
+  mix-blend-mode: overlay;
+  animation: shimmerSweep 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmerSweep {
+  0% { transform: translateX(-120%); }
+  40% { transform: translateX(120%); opacity: 0; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+
+@keyframes ribbonScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-bounce-gentle {
+  animation: bounce-gentle 1.5s ease-in-out infinite;
+}
+
+@keyframes btn-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(228,46,32,0.35), 0 4px 15px rgba(28,28,28,0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(228,46,32,0.6), 0 0 60px rgba(255,96,33,0.25), 0 4px 15px rgba(28,28,28,0.3);
+  }
+}
+
+.animate-btn-glow {
+  animation: btn-glow 2s ease-in-out infinite;
+  will-change: box-shadow;
+}

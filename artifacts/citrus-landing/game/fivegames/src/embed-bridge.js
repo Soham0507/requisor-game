@@ -46,7 +46,7 @@
   // brands (Halden etc.) never show.
   App.brandId = 'custom';
   App.customBase = 'halden';
-  App.custom = { name: '', color: '#0A84FF', logoImg: null };
+  App.custom = { name: '', color: '#0A84FF', logoImg: null, productImg: null };
 
   // The kit renders the logo URL straight into an <img src>, so only accept
   // image data URIs, http(s) URLs or same-origin paths, and drop characters
@@ -81,9 +81,12 @@
         });
       }
     }
-    if (typeof theme.brandName === 'string') c.name = theme.brandName.slice(0, 120);
+    // No brand name: the customizer only offers a logo and a game title.
     if (theme.primaryColor && HEX.test(theme.primaryColor)) c.color = theme.primaryColor;
     if (theme.logoUrl !== undefined) c.logoImg = safeLogo(theme.logoUrl);
+    // The customizer's image upload (bgUrl) is the Recall product image: shown
+    // on the face-down cards of the start screen. Video is not accepted.
+    if (theme.bgUrl !== undefined) c.productImg = /^data:video/i.test(theme.bgUrl || '') ? null : safeLogo(theme.bgUrl);
     if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim().slice(0, 160) : original.title;
     if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim().slice(0, 500) || original.subtitle;
     var size = Number(theme.logoSize);
@@ -92,7 +95,7 @@
 
   function signature() {
     var c = App.custom;
-    return [c.name, c.color, c.logoImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
+    return [c.name, c.color, c.logoImg, c.productImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
   }
 
   function setTitle() {
@@ -184,9 +187,9 @@
 
   // Standalone / live-link load: same fields as query params.
   var initial = {};
-  if (params.has('brandName')) initial.brandName = params.get('brandName');
   if (params.has('primaryColor')) initial.primaryColor = params.get('primaryColor');
   if (params.has('logo')) initial.logoUrl = params.get('logo');
+  if (params.has('bg')) initial.bgUrl = params.get('bg');
   if (params.has('heading')) initial.heading = params.get('heading');
   if (params.has('tagline')) initial.tagline = params.get('tagline');
   if (params.has('logoSize')) initial.logoSize = params.get('logoSize');

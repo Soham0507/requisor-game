@@ -1,0 +1,22 @@
+{
+  "name": "Soccer Shootout",
+  "short_name": "Soccer Shootout",
+  "description": "Beat the clock. Master the moment. Win like a pro.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFBF40",
+  "theme_color": "#1C1C1C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

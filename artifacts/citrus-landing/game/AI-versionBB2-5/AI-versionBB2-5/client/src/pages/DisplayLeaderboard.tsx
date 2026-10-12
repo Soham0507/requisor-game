@@ -111,7 +111,7 @@ export default function DisplayLeaderboard() {
 
         <header className="relative z-10 flex flex-col items-center pt-10 pb-6 border-b border-[rgba(75,0,255,0.2)]">
           {brand.logoUrl ? (
-            <img src={brand.logoUrl} alt={brand.brandName} className="h-14 mb-6 object-contain" />
+            <img src={brand.logoUrl} alt="" className="mb-6 object-contain" style={{ height: Math.round(brand.logoSize * 1.5) }} />
           ) : (
             <div
               className="h-14 w-14 mb-6 rounded-md flex items-center justify-center flex-shrink-0"
@@ -120,12 +120,6 @@ export default function DisplayLeaderboard() {
               <ImageIcon className="text-white/80" size={26} />
             </div>
           )}
-          <div
-            className="text-white/70 text-sm tracking-widest uppercase font-medium mb-2"
-            style={{ fontFamily: "var(--brand-font, inherit)" }}
-          >
-            {brand.brandName}
-          </div>
           <div className="flex items-center gap-5">
             <Trophy className="text-yellow-400" size={44} />
             <h1

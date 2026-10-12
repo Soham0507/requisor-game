@@ -438,24 +438,6 @@ export default function Home() {
             </div>
           </article>
 
-          <article className="xp rv">
-            <div>
-              <div className="cat"><i style={{ background: "#29CAE0" }}></i>Avistar · Custom branding</div>
-              <h3>Basketball Game — Custom UI</h3>
-              <p className="story">
-                <b>Avistar</b> needed a game that engaged users while visually matching their brand identity. We
-                reskinned our proven basketball engine with Avistar's UI, colors, and visual language — delivering
-                a branded, high-engagement experience without touching gameplay performance.
-              </p>
-              <div className="links"><a className="go" href="https://basket-ball-for-avistar.replit.app/" target="_blank" rel="noopener">Play the demo →</a></div>
-            </div>
-            <div className="visual" data-tilt="">
-              <img src="/logo/avistart1.png" alt="Avistar-branded basketball game UI" loading="lazy" />
-              <div className="glass"></div>
-              <div className="plate">Deployed · Avistar Basketball (Custom UI)</div>
-            </div>
-          </article>
-
           <div className="coming-divider rv" role="separator" aria-label="More experiences">
             <span className="coming-divider-line"></span>
             <span className="coming-divider-label">

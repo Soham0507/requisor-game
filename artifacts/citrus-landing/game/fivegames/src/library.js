@@ -50,7 +50,8 @@ const App = {
     const name = (this.custom.name || '').trim() || 'Your Brand';
     return {
       ...base, id: 'custom', name, word: name, wordClass: '', wordSuffix: '', mark: null,
-      color: this.custom.color, logoImg: this.custom.logoImg, vertical: 'Custom brand kit',
+      nameSet: !!(this.custom.name || '').trim(),
+      color: this.custom.color, logoImg: this.custom.logoImg, productImg: this.custom.productImg || null, vertical: 'Custom brand kit',
       code: name.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'A8',
     };
   },

@@ -26,11 +26,11 @@ export interface BrandTheme {
 const DEFAULT_THEME: BrandTheme = {
   logoUrl: null,
   logoSize: 80,
-  brandName: "Brand Name",
+  brandName: "",
   brandNameSize: 100,
   brandNameColor: "#ffffff",
   heading: "GestureSec Runner",
-  headingSize: 14,
+  headingSize: 28,
   headingColor: "#88ddff",
   fontUrl: null,
 };
@@ -77,7 +77,8 @@ function applyTheme(theme: Partial<BrandTheme>) {
   // An empty/missing brandName (e.g. the customizer's form starts blank)
   // must fall back to the placeholder, not render as blank text — brand
   // name is the game's main title here, not an optional label.
-  if (!next.brandName) next.brandName = DEFAULT_THEME.brandName;
+  // The customizer no longer offers a brand name: games show the logo and game title only.
+  next.brandName = "";
   if (!next.heading) next.heading = DEFAULT_THEME.heading;
   window.__BRAND__ = next;
   void applyCustomFont(next.fontUrl);
@@ -98,7 +99,6 @@ window.addEventListener("message", (event: MessageEvent) => {
 function themeFromQueryParams(): Partial<BrandTheme> {
   const params = new URLSearchParams(window.location.search);
   const theme: Partial<BrandTheme> = {};
-  if (params.has("brandName")) theme.brandName = params.get("brandName") || DEFAULT_THEME.brandName;
   if (params.has("heading")) theme.heading = params.get("heading") || DEFAULT_THEME.heading;
   if (params.has("logo")) theme.logoUrl = params.get("logo");
   if (params.has("font")) theme.fontUrl = params.get("font");

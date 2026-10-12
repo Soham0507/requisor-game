@@ -30,12 +30,12 @@ export interface BrandTheme {
 const DEFAULT_THEME: BrandTheme = {
   primaryColor: "#FF3627",
   logoUrl: null,
-  logoSize: 28,
-  brandName: "Brand Name",
+  logoSize: 56,
+  brandName: "",
   brandNameSize: 16,
   brandNameColor: "#ffffff",
   heading: "47-Day Shootout",
-  headingSize: 11,
+  headingSize: 28,
   headingColor: "#94a3b8",
   bgUrl: null,
   fontUrl: null,
@@ -80,7 +80,8 @@ const listeners = new Set<() => void>();
 
 function applyTheme(theme: Partial<BrandTheme>) {
   const next = { ...window.__BRAND__, ...theme };
-  if (!next.brandName) next.brandName = DEFAULT_THEME.brandName;
+  // The customizer no longer offers a brand name: games show the logo and game title only.
+  next.brandName = "";
   if (!next.heading) next.heading = DEFAULT_THEME.heading;
   window.__BRAND__ = next;
   void applyCustomFont(next.fontUrl);
@@ -101,7 +102,6 @@ window.addEventListener("message", (event: MessageEvent) => {
 function themeFromQueryParams(): Partial<BrandTheme> {
   const params = new URLSearchParams(window.location.search);
   const theme: Partial<BrandTheme> = {};
-  if (params.has("brandName")) theme.brandName = params.get("brandName") || DEFAULT_THEME.brandName;
   if (params.has("heading")) theme.heading = params.get("heading") || DEFAULT_THEME.heading;
   if (params.has("logo")) theme.logoUrl = params.get("logo");
   if (params.has("bg")) theme.bgUrl = params.get("bg");

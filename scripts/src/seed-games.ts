@@ -49,6 +49,22 @@ const GAMES: InsertGame[] = [
     priceCents: 4900,
   },
   {
+    slug: "soccer-shootout",
+    name: "Soccer Shootout",
+    tagline:
+      "Gesture-controlled soccer shootout: beat the clock and score goals with real-time hand tracking.",
+    thumbnailUrl: null,
+    folderPath: "artifacts/citrus-landing/game/Soccer",
+    previewBasePath: null,
+    brandSupport: "full",
+    defaultPrimaryColor: "#E42E20",
+    defaultSecondaryColor: "#FFBF40",
+    defaultAccentColor: "#E42E20",
+    defaultLogoUrl: null,
+    defaultHeading: "Soccer Shootout",
+    priceCents: 4900,
+  },
+  {
     slug: "gesture-space-war",
     name: "Gesture Space War",
     tagline: "Webcam gesture-controlled space combat.",

@@ -824,6 +824,8 @@ button.wheel-hub:active { transform: translate(-50%, -50%) scale(.94); }
 .r-art .card:nth-child(4) { left: 51%; top: 53%; transform: rotate(-7deg); }
 .r-art .card.hit { box-shadow: 0 0 0 3px var(--brand), var(--shadow-2); }
 .r-art .card .badge-mark { width: 52%; }
+.r-art .card.back.has-img { background: #fff; overflow: hidden; box-shadow: 0 0 0 1px var(--line), var(--shadow-2); }
+.r-art .card.back.has-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .r-board { display: grid; justify-items: center; gap: 18px; }
 .r-hud { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 .mgrid { display: grid; gap: var(--gap, 14px); grid-template-columns: repeat(var(--cols, 4), var(--card, 150px)); grid-auto-rows: var(--card, 150px); }
@@ -1140,7 +1142,12 @@ function markSVG(brand, cls = 'mark') {
   return `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${inner}</svg>`;
 }
 function logoHTML(brand, size = '') {
-  if (brand.logoImg) return `<span class="logo ${size}"><img src="${brand.logoImg}" alt="${esc(brand.name)}"></span>`;
+  // Single-game (platform) pages have no brand name: with no uploaded logo the
+  // top bar stays empty rather than showing a "Your Brand" placeholder.
+  if (brand.id === 'custom' && !brand.logoImg && !brand.nameSet && document.body.classList.contains('a8-single')) return '';
+  // A custom kit that has both a logo and a typed brand name shows the name
+  // next to the logo; the logo alone would hide the name the customer entered.
+  if (brand.logoImg) return `<span class="logo ${size}"><img src="${brand.logoImg}" alt="${esc(brand.name)}">${brand.nameSet ? `<span class="word">${esc(brand.name)}</span>` : ''}</span>`;
   const suffix = brand.wordSuffix ? `<span class="word light">${esc(brand.wordSuffix)}</span>` : '';
   return `<span class="logo ${size}" aria-label="${esc(brand.name)}">${markSVG(brand)}<span class="word ${brand.wordClass || ''}">${esc(brand.word || brand.name)}</span>${suffix}</span>`;
 }
@@ -2504,7 +2511,10 @@ function wedgePath(cx, cy, r, s, e) {
   const [x1, y1] = polar(cx, cy, r, s), [x2, y2] = polar(cx, cy, r, e);
   return `M${cx} ${cy}L${x1.toFixed(2)} ${y1.toFixed(2)}A${r} ${r} 0 ${e - s > 180 ? 1 : 0} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}Z`;
 }
-function segsSVG(prizes, weights) {
+// With a brand logo, every wedge shows it (not a per-prize icon). The logo sits
+// in a fixed-size white tile that is only shrunk when a wedge is too narrow to
+// hold it, so it always fits inside its own section.
+function segsSVG(prizes, weights, logo) {
   const geo = wheelGeometry(weights);
   let alt = 0;
   const wedges = geo.map((g, i) => {
@@ -2513,16 +2523,23 @@ function segsSVG(prizes, weights) {
     const ink = t === 'grand' ? 'var(--on-brand)' : t === 'major' ? 'var(--brand-700)' : t === 'none' ? '#8E8E93' : 'var(--brand-text)';
     const sz = g.w < 13 ? 18 : 28;
     const [ix, iy] = polar(200, 200, 128, g.m);
+    if (logo) {
+      const chord = 2 * 128 * Math.sin((g.w * Math.PI) / 360);
+      const box = Math.max(14, Math.min(44, chord * 0.82));
+      const pad = box * 0.12, inner = box - pad * 2;
+      return `<path d="${wedgePath(200, 200, 184, g.s, g.e)}" fill="${fill}" stroke="#fff" stroke-width="2.5"/>` +
+        `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)})"><rect x="${-box / 2}" y="${-box / 2}" width="${box}" height="${box}" rx="${(box * 0.22).toFixed(1)}" fill="#fff" stroke="rgba(0,0,0,.08)"/><image href="${logo}" x="${-inner / 2}" y="${-inner / 2}" width="${inner}" height="${inner}" preserveAspectRatio="xMidYMid meet"/></g>`;
+    }
     return `<path d="${wedgePath(200, 200, 184, g.s, g.e)}" fill="${fill}" stroke="#fff" stroke-width="2.5"/>` +
       `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)}) translate(${-sz / 2} ${-sz / 2}) scale(${sz / 24})" stroke="${ink}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[prizes[i].icon] || ''}</g>`;
   }).join('');
   const pegs = geo.map((g) => { const [x, y] = polar(200, 200, 191.5, g.s); return `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="3.6" fill="#fff" stroke="rgba(0,0,0,.12)" stroke-width="1"/>`; }).join('');
   return wedges + pegs;
 }
-function wheelMarkup(prizes, weights) {
+function wheelMarkup(prizes, weights, logo) {
   const id = uid();
   return `<svg class="wheel wheel-base" viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="199" fill="#fff"/><circle cx="200" cy="200" r="198.5" fill="none" stroke="rgba(0,0,0,.07)"/></svg>` +
-    `<svg class="wheel wheel-spin" viewBox="0 0 400 400" aria-hidden="true"><g class="segs">${segsSVG(prizes, weights)}</g></svg>` +
+    `<svg class="wheel wheel-spin" viewBox="0 0 400 400" aria-hidden="true"><g class="segs">${segsSVG(prizes, weights, logo)}</g></svg>` +
     `<svg class="wheel wheel-gloss" viewBox="0 0 400 400" aria-hidden="true"><defs><radialGradient id="wg${id}" cx="34%" cy="22%" r="78%"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="184" fill="url(#wg${id})"/></svg>`;
 }
 const WHEEL_POINTER = '<svg class="wheel-pointer" viewBox="0 0 44 54" aria-hidden="true"><path d="M22 52C18.5 44.5 6 31.5 6 20.5a16 16 0 1 1 32 0C38 31.5 25.5 44.5 22 52Z" fill="#1D1D1F"/><circle cx="22" cy="20.5" r="6.5" fill="#fff"/></svg>';
@@ -2537,7 +2554,7 @@ GAMES.spin = {
   },
   art(stage) {
     const P = stage.content.prizes;
-    return `<div class="s-art" aria-hidden="true"><div class="wheel-box" style="--wsz:clamp(260px, 34vw, 430px)">${wheelMarkup(P, P.map((p) => p.weight))}${WHEEL_POINTER}<div class="wheel-hub">${hubInner(stage.brand)}</div></div></div>`;
+    return `<div class="s-art" aria-hidden="true"><div class="wheel-box" style="--wsz:clamp(260px, 34vw, 430px)">${wheelMarkup(P, P.map((p) => p.weight), stage.brand.logoImg)}${WHEEL_POINTER}<div class="wheel-hub">${hubInner(stage.brand)}</div></div></div>`;
   },
   cleanup(stage) { if (stage._fit) { window.removeEventListener('resize', stage._fit); stage._fit = null; } },
   play(stage) {
@@ -2549,7 +2566,7 @@ GAMES.spin = {
 
     const el = stage.screen(`
       <div class="s-layout">
-        <div class="wheel-box" data-wheel>${wheelMarkup(prizes, weights)}${WHEEL_POINTER}<button class="wheel-hub" data-hub disabled aria-label="Spin">${hubInner(stage.brand)}</button></div>
+        <div class="wheel-box" data-wheel>${wheelMarkup(prizes, weights, stage.brand.logoImg)}${WHEEL_POINTER}<button class="wheel-hub" data-hub disabled aria-label="Spin">${hubInner(stage.brand)}</button></div>
         <div class="s-panel" data-panel></div>
       </div>`);
     const box = $('[data-wheel]', el), segs = $('.segs', box), spinSvg = $('.wheel-spin', box), pointer = $('.wheel-pointer', box), hub = $('[data-hub]', box), panel = $('[data-panel]', el);
@@ -2564,7 +2581,7 @@ GAMES.spin = {
     const odds = (ws) => { const t = ws.reduce((a, b) => a + b, 0); return ws.map((w) => (w / t) * 100); };
     const topOdds = (ws) => { const o = odds(ws); return prizes.reduce((s, p, i) => s + (p.tier === 'grand' || p.tier === 'major' ? o[i] : 0), 0); };
     const setRot = (d) => { rot = d; spinSvg.style.transform = `rotate(${d.toFixed(3)}deg)`; };
-    const redraw = () => { segs.innerHTML = segsSVG(prizes, weights); };
+    const redraw = () => { segs.innerHTML = segsSVG(prizes, weights, stage.brand.logoImg); };
 
     const growWheel = async () => {
       const from = weights.slice();
@@ -2740,7 +2757,11 @@ GAMES.recall = {
   },
   art(stage) {
     const pairs = stage.content.pairs;
-    const back = `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
+    // A customer-supplied product image replaces the brand badge on the face-down cards.
+    const productImg = stage.brand.productImg;
+    const back = productImg
+      ? `<div class="card back has-img"><img src="${productImg}" alt=""></div>`
+      : `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
     const front = (p) => `<div class="card front">${ptile(p.icon, 'var(--brand)', null)}<b>${esc(p.title)}</b></div>`;
     return `<div class="r-art" aria-hidden="true">${back}${front(pairs[0]).replace('card front', 'card front hit')}${front(pairs[1])}${back}</div>`;
   },
@@ -2922,7 +2943,8 @@ const App = {
     const name = (this.custom.name || '').trim() || 'Your Brand';
     return {
       ...base, id: 'custom', name, word: name, wordClass: '', wordSuffix: '', mark: null,
-      color: this.custom.color, logoImg: this.custom.logoImg, vertical: 'Custom brand kit',
+      nameSet: !!(this.custom.name || '').trim(),
+      color: this.custom.color, logoImg: this.custom.logoImg, productImg: this.custom.productImg || null, vertical: 'Custom brand kit',
       code: name.replace(/[^A-Za-z]/g, '').slice(0, 3).toUpperCase() || 'A8',
     };
   },
@@ -3168,6 +3190,7 @@ window.Activate8 = { App, BRANDS, GAMES, Leads, Boards };
 <style>
 body.a8-single #app { display: none; }
 body.a8-single .stage [data-act="exit"] { display: none; }
+body.a8-single .stage .topbar .logo img { height: 48px; max-width: 240px; }
 .a8-save-status { position:fixed; left:16px; right:16px; bottom:16px; z-index:10000; padding:12px 16px; border-radius:12px; background:#fff; color:#1a1a1a; box-shadow:0 4px 24px #0003; font:14px system-ui; }
 .a8-save-status button { margin-left:12px; padding:8px 12px; border:1px solid #555; border-radius:8px; background:#fff; color:#111; cursor:pointer; }
 </style>
@@ -3338,7 +3361,7 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
   // brands (Halden etc.) never show.
   App.brandId = 'custom';
   App.customBase = 'halden';
-  App.custom = { name: '', color: '#0A84FF', logoImg: null };
+  App.custom = { name: '', color: '#0A84FF', logoImg: null, productImg: null };
 
   // The kit renders the logo URL straight into an <img src>, so only accept
   // image data URIs, http(s) URLs or same-origin paths, and drop characters
@@ -3373,9 +3396,12 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
         });
       }
     }
-    if (typeof theme.brandName === 'string') c.name = theme.brandName.slice(0, 120);
+    // No brand name: the customizer only offers a logo and a game title.
     if (theme.primaryColor && HEX.test(theme.primaryColor)) c.color = theme.primaryColor;
     if (theme.logoUrl !== undefined) c.logoImg = safeLogo(theme.logoUrl);
+    // The customizer's image upload (bgUrl) is the Recall product image: shown
+    // on the face-down cards of the start screen. Video is not accepted.
+    if (theme.bgUrl !== undefined) c.productImg = /^data:video/i.test(theme.bgUrl || '') ? null : safeLogo(theme.bgUrl);
     if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim().slice(0, 160) : original.title;
     if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim().slice(0, 500) || original.subtitle;
     var size = Number(theme.logoSize);
@@ -3384,7 +3410,7 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
 
   function signature() {
     var c = App.custom;
-    return [c.name, c.color, c.logoImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
+    return [c.name, c.color, c.logoImg, c.productImg, copy.title, copy.subtitle, JSON.stringify(customContent)].join('|');
   }
 
   function setTitle() {
@@ -3476,9 +3502,9 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
 
   // Standalone / live-link load: same fields as query params.
   var initial = {};
-  if (params.has('brandName')) initial.brandName = params.get('brandName');
   if (params.has('primaryColor')) initial.primaryColor = params.get('primaryColor');
   if (params.has('logo')) initial.logoUrl = params.get('logo');
+  if (params.has('bg')) initial.bgUrl = params.get('bg');
   if (params.has('heading')) initial.heading = params.get('heading');
   if (params.has('tagline')) initial.tagline = params.get('tagline');
   if (params.has('logoSize')) initial.logoSize = params.get('logoSize');

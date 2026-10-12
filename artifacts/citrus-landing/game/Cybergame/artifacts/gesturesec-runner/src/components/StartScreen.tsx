@@ -101,21 +101,15 @@ export function StartScreen({ onStart }: StartScreenProps) {
         <div>
           <h1
             className="glitch-strong"
-            data-text={brand.brandName}
+            data-text={brand.heading}
             style={{
               fontFamily: "var(--brand-font, var(--app-font-title))",
-              fontSize: brand.brandNameSize,
-              color: brand.brandNameColor,
+              fontSize: Math.round(brand.headingSize * 2.5),
+              color: brand.headingColor,
             }}
           >
-            <span>{brand.brandName}</span>
+            <span>{brand.heading}</span>
           </h1>
-          <p
-            className="mt-1 tracking-[0.2em] uppercase font-mono"
-            style={{ fontSize: brand.headingSize, color: brand.headingColor, fontFamily: "var(--brand-font, inherit)" }}
-          >
-            {brand.heading}
-          </p>
           <p className="text-sm mt-2 tracking-widest uppercase font-mono flex items-center gap-3 justify-center">
             <span className="text-cyan-400">[</span>
             <span>Defend Your System With Your Hands</span>

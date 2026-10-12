@@ -33,12 +33,12 @@ const DEFAULT_THEME: BrandTheme = {
   secondaryColor: "#2255ff",
   accentColor: "#88ddff",
   logoUrl: null,
-  logoSize: 34,
-  brandName: "Brand Name",
+  logoSize: 56,
+  brandName: "",
   brandNameSize: 40,
   brandNameColor: "#ffffff",
   heading: "Space Survivor",
-  headingSize: 14,
+  headingSize: 28,
   headingColor: "#88aaff",
   tagline: "HAND GESTURE EDITION",
   fontUrl: null,
@@ -85,7 +85,8 @@ function applyTheme(theme: Partial<BrandTheme>) {
   const next = { ...window.__BRAND__, ...theme };
   // An empty/missing brandName or heading (e.g. the customizer's form starts
   // blank) must fall back to the placeholder, not render as blank text.
-  if (!next.brandName) next.brandName = DEFAULT_THEME.brandName;
+  // The customizer no longer offers a brand name: games show the logo and game title only.
+  next.brandName = "";
   if (!next.heading) next.heading = DEFAULT_THEME.heading;
   window.__BRAND__ = next;
 
@@ -112,7 +113,6 @@ window.addEventListener("message", (event: MessageEvent) => {
 function themeFromQueryParams(): Partial<BrandTheme> {
   const params = new URLSearchParams(window.location.search);
   const theme: Partial<BrandTheme> = {};
-  if (params.has("brandName")) theme.brandName = params.get("brandName") || DEFAULT_THEME.brandName;
   if (params.has("heading")) theme.heading = params.get("heading") || DEFAULT_THEME.heading;
   if (params.has("tagline")) theme.tagline = params.get("tagline") || "";
   if (params.has("logo")) theme.logoUrl = params.get("logo");
