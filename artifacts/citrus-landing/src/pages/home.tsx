@@ -501,6 +501,71 @@ export default function Home() {
               <div className="plate">Jeopardy · Playable branding preview</div>
             </div>
           </article>
+
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#C8102E" }}></i>
+                Activate · Quiz activation
+                <span className="coming-tag">Customize now</span>
+              </div>
+              <h3>Energy Quiz</h3>
+              <p className="story">
+                A five-question quiz that matches each visitor's energy and lifestyle to a personal result. It keeps
+                the line moving, makes every answer feel tailored, and captures leads along with the result they
+                care about.
+              </p>
+              <Link className="btn p" href="/customize/lexus-energy-quiz">Customize Energy Quiz</Link>
+            </div>
+            <div className="visual" data-tilt="">
+              <video
+                className="gvid"
+                preload="metadata"
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-label="Energy Quiz gameplay preview"
+              >
+                <source src="/logo/energy.mp4#t=0.1" type="video/mp4" />
+              </video>
+              <div className="glass"></div>
+              <div className="plate">Energy Quiz · Playable branding preview</div>
+            </div>
+          </article>
+
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#EC4899" }}></i>
+                Activate · Memory game
+                <span className="coming-tag">Customize now</span>
+              </div>
+              <h3>Recall</h3>
+              <p className="story">
+                Players flip cards to match six brand features, then answer three questions on what they remember.
+                You get a brand recall score for every player, plus a leaderboard and lead capture.
+              </p>
+              <Link className="btn p" href="/customize/a8-recall">Customize Recall</Link>
+            </div>
+            <div className="visual" data-tilt="">
+              <video
+                className="gvid"
+                preload="metadata"
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster="/recordings/recall-poster.jpg"
+                style={{ objectFit: "contain", background: "#0b0f1a" }}
+                aria-label="Recall gameplay preview"
+              >
+                <source src="/recordings/recall.mp4#t=0.1" type="video/mp4" />
+              </video>
+              <div className="glass"></div>
+              <div className="plate">Recall · Playable branding preview</div>
+            </div>
+          </article>
         </div>
       </section>
 

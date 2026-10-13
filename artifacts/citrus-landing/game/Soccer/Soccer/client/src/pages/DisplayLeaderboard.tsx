@@ -126,7 +126,7 @@ export default function DisplayLeaderboard() {
           <h1
             className="mt-3 text-7xl tracking-tight"
             style={{
-              fontFamily: "'Big Shoulders Display', 'Inter', sans-serif",
+              fontFamily: "'Inter', sans-serif",
               fontWeight: 900,
               color: PEAK.black,
               letterSpacing: "0.02em",
@@ -223,7 +223,7 @@ export default function DisplayLeaderboard() {
                         className="ml-4 shrink-0"
                         style={{
                           color: PEAK.red,
-                          fontFamily: "'Big Shoulders Display', 'Inter', sans-serif",
+                          fontFamily: "'Inter', sans-serif",
                           fontWeight: 900,
                           fontSize: i === 0 ? 56 : isTop3 ? 44 : 36,
                           letterSpacing: "0.02em",

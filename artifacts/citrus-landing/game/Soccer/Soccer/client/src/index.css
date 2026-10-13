@@ -3,18 +3,9 @@
 @import "tw-animate-css";
 
 /* ===== Peak Technologies Brand Fonts =====
- * Druk Wide Super (paid) -> Big Shoulders Display 900 (free, similar wide-blocky look)
- * Video Medium -> kept (locally hosted)
+ * One common default font for the whole game: Inter (Google Fonts).
  * Inter Bold / Medium -> Google Fonts
  */
-@font-face {
-  font-family: 'Video Med';
-  src: url('/fonnts.com-374064/fonts/fonnts.com-Video-Med-.otf') format('opentype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 @custom-variant dark (&:is(.dark *));
 
 * {
@@ -37,8 +28,8 @@ body {
 
 @theme inline {
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Big Shoulders Display', 'Inter', sans-serif;
-  --font-headline: 'Video Med', 'Big Shoulders Display', 'Inter', sans-serif;
+  --font-display: 'Inter', sans-serif;
+  --font-headline: 'Inter', sans-serif;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -132,17 +123,17 @@ body {
 /* Custom Utilities */
 @layer utilities {
   .font-display {
-    font-family: 'Big Shoulders Display', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 900;
     letter-spacing: 0.02em;
   }
 
   .font-headline {
-    font-family: 'Video Med', 'Big Shoulders Display', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
   }
 
   .font-druk {
-    font-family: 'Big Shoulders Display', 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 900;
     letter-spacing: 0.02em;
   }

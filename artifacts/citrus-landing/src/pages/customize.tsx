@@ -190,6 +190,7 @@ function CustomizeGame({ slug }: { slug: string }) {
       primaryColor: theme.primaryColor,
       secondaryColor: theme.secondaryColor,
       accentColor: theme.accentColor,
+      ...(theme.navbarColor ? { navbarColor: theme.navbarColor } : {}),
       logoSize: String(theme.logoSize),
     });
     if (theme.logoUrl) {

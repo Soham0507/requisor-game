@@ -20,6 +20,23 @@ const BACKGROUND_MEDIA_SLUGS = new Set(["basketball-shootout"]);
 // face-down cards. Image only: the cards have no use for video.
 const PRODUCT_IMAGE_SLUGS = new Set(["a8-recall"]);
 
+// Games whose primary/secondary/accent colors don't drive anything visible,
+// so the pickers are hidden rather than offering controls that do nothing.
+const HIDDEN_THEME_COLOR_SLUGS = new Set(["basketball-shootout"]);
+
+// Secondary and accent only appear for games that actually draw with them
+// (checked per game, see the color-effect test): Soccer's Leaderboard button,
+// Space Shooter / Jeopardy panels, and Energy Quiz's animated background.
+const SECONDARY_COLOR_SLUGS = new Set(["soccer-shootout", "space-shooter-1", "jeopardy", "lexus-energy-quiz"]);
+const ACCENT_COLOR_SLUGS = new Set(["lexus-energy-quiz"]);
+
+// Games whose top navigation bar color is editable, with the hex each one
+// shows by default (soccer's default bar is a translucent white).
+const NAVBAR_COLOR_DEFAULTS: Record<string, string> = {
+  "basketball-shootout": "#000000",
+  "soccer-shootout": "#ffffff",
+};
+
 interface BrandingFormProps {
   theme: BrandThemeMessage;
   onChange: (theme: BrandThemeMessage) => void;
@@ -230,24 +247,40 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
       </div>
 
       <div className="space-y-3">
-        <ColorField
-          id="input-primary-color"
-          label="Primary"
-          value={theme.primaryColor}
-          onChange={(hex) => set("primaryColor", hex)}
-        />
-        <ColorField
-          id="input-secondary-color"
-          label="Secondary"
-          value={theme.secondaryColor}
-          onChange={(hex) => set("secondaryColor", hex)}
-        />
-        <ColorField
-          id="input-accent-color"
-          label="Accent"
-          value={theme.accentColor}
-          onChange={(hex) => set("accentColor", hex)}
-        />
+        {!HIDDEN_THEME_COLOR_SLUGS.has(gameSlug) && (
+          <>
+            <ColorField
+              id="input-primary-color"
+              label="Primary"
+              value={theme.primaryColor}
+              onChange={(hex) => set("primaryColor", hex)}
+            />
+            {SECONDARY_COLOR_SLUGS.has(gameSlug) && (
+              <ColorField
+                id="input-secondary-color"
+                label="Secondary"
+                value={theme.secondaryColor}
+                onChange={(hex) => set("secondaryColor", hex)}
+              />
+            )}
+            {ACCENT_COLOR_SLUGS.has(gameSlug) && (
+              <ColorField
+                id="input-accent-color"
+                label="Accent"
+                value={theme.accentColor}
+                onChange={(hex) => set("accentColor", hex)}
+              />
+            )}
+          </>
+        )}
+        {NAVBAR_COLOR_DEFAULTS[gameSlug] && (
+          <ColorField
+            id="input-navbar-color"
+            label="Navigation bar"
+            value={theme.navbarColor ?? NAVBAR_COLOR_DEFAULTS[gameSlug]}
+            onChange={(hex) => set("navbarColor", hex)}
+          />
+        )}
       </div>
 
       <div className="space-y-2">

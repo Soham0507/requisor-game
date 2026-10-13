@@ -10,12 +10,18 @@ import { useSyncExternalStore } from "react";
  */
 export interface BrandTheme {
   primaryColor: string;
+  // Drives the home screen's Leaderboard button.
+  secondaryColor: string;
+  // Top navigation bar color; null keeps the game's default bar.
+  navbarColor: string | null;
   logoUrl: string | null;
   logoSize: number;
   brandName: string;
   brandNameSize: number;
   brandNameColor: string;
   heading: string;
+  // Optional line under the game title; empty shows nothing.
+  tagline: string;
   headingSize: number;
   headingColor: string;
   // Landing screen background — currently the one field unique to this
@@ -29,11 +35,14 @@ export interface BrandTheme {
 
 const DEFAULT_THEME: BrandTheme = {
   primaryColor: "#E42E20",
+  secondaryColor: "#FFBF40",
+  navbarColor: null,
   logoUrl: null,
   logoSize: 56,
   brandName: "",
   brandNameSize: 16,
   brandNameColor: "#ffffff",
+  tagline: "",
   heading: "Soccer Shootout",
   headingSize: 28,
   headingColor: "#FFBF40",
@@ -102,6 +111,7 @@ window.addEventListener("message", (event: MessageEvent) => {
 function themeFromQueryParams(): Partial<BrandTheme> {
   const params = new URLSearchParams(window.location.search);
   const theme: Partial<BrandTheme> = {};
+  if (params.has("tagline")) theme.tagline = params.get("tagline") || "";
   if (params.has("heading")) theme.heading = params.get("heading") || DEFAULT_THEME.heading;
   if (params.has("logo")) theme.logoUrl = params.get("logo");
   if (params.has("bg")) theme.bgUrl = params.get("bg");
@@ -110,6 +120,10 @@ function themeFromQueryParams(): Partial<BrandTheme> {
   const hex = /^#[0-9a-fA-F]{6}$/;
   const primary = params.get("primaryColor");
   if (primary && hex.test(primary)) theme.primaryColor = primary;
+  const secondary = params.get("secondaryColor");
+  if (secondary && hex.test(secondary)) theme.secondaryColor = secondary;
+  const navbar = params.get("navbarColor");
+  if (navbar && hex.test(navbar)) theme.navbarColor = navbar;
 
   const brandNameColor = params.get("brandNameColor");
   const headingColor = params.get("headingColor");

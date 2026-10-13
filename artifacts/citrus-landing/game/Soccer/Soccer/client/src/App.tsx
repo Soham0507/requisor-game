@@ -55,6 +55,15 @@ import { useBrand } from "./brand-bridge";
 import DisplayLeaderboard from "./pages/DisplayLeaderboard";
 
 /** A custom landing-screen background can be an image or a video — the customizer does not track which, so sniff it from the data: URI mime type or file extension. */
+/** Readable text color (dark or white) for a given hex background. */
+function onColor(hex: string): string {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex);
+  if (!m) return "#1C1C1C";
+  const n = parseInt(m[1], 16);
+  const lum = (0.299 * ((n >> 16) & 255) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255;
+  return lum > 0.6 ? "#1C1C1C" : "#FFFFFF";
+}
+
 function isBgVideo(url: string): boolean {
   return url.startsWith("data:video") || /\.(mp4|webm|mov)(\?|$)/i.test(url);
 }
@@ -143,10 +152,71 @@ function Button({
   );
 }
 
+/** Results card: success rate as an animated ring with the made/taken counts underneath. Ring color follows the brand's primary color. */
+function SuccessRate({ made, taken }: { made: number; taken: number }) {
+  const brand = useBrand();
+  const pct = taken > 0 ? Math.round((made / taken) * 100) : 0;
+  const R = 52;
+  const C = 2 * Math.PI * R;
+  return (
+    <div className="flex flex-col items-center gap-4 py-2" data-testid="success-rate">
+      <div
+        className="text-xs uppercase tracking-[0.3em] font-semibold"
+        style={{ color: "#99B3E1", fontFamily: "'Inter', sans-serif" }}
+      >
+        Success rate
+      </div>
+      <div className="relative" style={{ width: 150, height: 150 }}>
+        <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90" aria-hidden="true">
+          <circle cx="60" cy="60" r={R} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
+          <motion.circle
+            cx="60"
+            cy="60"
+            r={R}
+            fill="none"
+            stroke={brand.primaryColor}
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={C}
+            initial={{ strokeDashoffset: C }}
+            animate={{ strokeDashoffset: C * (1 - pct / 100) }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
+        </svg>
+        <div
+          className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white tabular-nums"
+          style={{ fontFamily: "'Inter', sans-serif" }}
+          data-testid="text-success-rate"
+        >
+          {pct}%
+        </div>
+      </div>
+      <div className="text-sm" style={{ color: "#99B3E1", fontFamily: "'Inter', sans-serif" }}>
+        {made} of {taken} kicks
+      </div>
+    </div>
+  );
+}
+
+/** The customer's logo as a 50% opacity watermark covering the whole HUD box (score, shot clock). Renders nothing until a logo is uploaded. */
+function BoxLogo() {
+  const brand = useBrand();
+  if (!brand.logoUrl) return null;
+  return (
+    <img
+      src={brand.logoUrl}
+      alt=""
+      aria-hidden="true"
+      className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      style={{ opacity: 0.5 }}
+    />
+  );
+}
+
 function Logo() {
   const brand = useBrand();
   return (
-    <div className="flex items-center absolute left-[45%]">
+    <div className="flex items-center absolute left-[45%] top-1/2 -translate-y-1/2">
       {brand.logoUrl ? (
         <img
           src={brand.logoUrl}
@@ -210,7 +280,7 @@ const LeaderboardTicker = () => {
         <div className="shrink-0 h-full flex items-center gap-2 px-6 z-10 ">
           <Trophy size={25} className="text-[#FFBF40]" />
           <span className="text-2xl font-semibold uppercase tracking-[0.15em] text-white" style={
-            { fontFamily: "Video Med" }
+            { fontFamily: "'Inter', sans-serif" }
           } >
             Live
           </span>
@@ -223,7 +293,7 @@ const LeaderboardTicker = () => {
             style={{
               animation: `ticker ${Math.max(leaderboard.length * 4, 20)}s linear infinite`,
               willChange: "transform",
-              fontFamily: "Video Med"
+              fontFamily: "'Inter', sans-serif"
             }}
           >
             {items.map((player, i) => {
@@ -236,7 +306,7 @@ const LeaderboardTicker = () => {
                 >
                   <span
                     className={`text-3xl ${isTop3 ? "text-[#FFBF40]" : "text-[#3A6CD0]"}`}
-                    style={{ fontFamily: "Video Med" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {rank}
                   </span>
@@ -251,7 +321,7 @@ const LeaderboardTicker = () => {
                   </span>
                   <span
                     className={`font-bold text-3xl ${isTop3 ? "text-[#FFBF40]/90" : "text-white/30"}`}
-                    style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {player.score}
                   </span>
@@ -326,7 +396,7 @@ const HomeScreen = ({
         <h1
           className="text-5xl md:text-7xl lg:text-8xl [@media(max-height:560px)]:text-4xl [@media(max-height:560px)]:md:text-5xl leading-none"
           style={{
-            fontFamily: "var(--brand-font, 'Big Shoulders Display'), 'Inter', sans-serif",
+            fontFamily: "var(--brand-font, 'Inter'), sans-serif",
             fontWeight: 900,
             color: brand.headingColor,
             letterSpacing: "0.02em",
@@ -335,12 +405,14 @@ const HomeScreen = ({
         >
           {brand.heading.toUpperCase()}
         </h1>
-        <div
-          className="mt-4 text-sm md:text-base tracking-[0.35em] uppercase"
-          style={{ color: "#FFFFFF", fontWeight: 600, opacity: 0.92 }}
-        >
-          Beat the clock. Master the moment. Win like a pro.
-        </div>
+        {brand.tagline && (
+          <div
+            className="mt-4 text-sm md:text-base tracking-[0.35em] uppercase"
+            style={{ color: "#FFFFFF", fontWeight: 600, opacity: 0.92, fontFamily: "var(--brand-font, inherit)" }}
+          >
+            {brand.tagline}
+          </div>
+        )}
       </div>
 
       {/* Center Content */}
@@ -361,7 +433,7 @@ const HomeScreen = ({
         className="absolute bottom-[60px] [@media(max-height:560px)]:bottom-3 flex flex-col md:flex-row [@media(max-height:560px)]:flex-row items-center gap-4 [@media(max-height:560px)]:gap-2 z-1"
         style={{
           letterSpacing: "20px",
-          fontFamily: "inter Bold",
+          fontFamily: "'Inter', sans-serif",
         }}
       >
         <button
@@ -384,8 +456,8 @@ const HomeScreen = ({
           onClick={onLeaderboard}
           className="h-14 w-[280px] [@media(max-height:560px)]:h-10 [@media(max-height:560px)]:w-[190px] [@media(max-height:560px)]:text-base text-xl tracking-widest hover:scale-105 active:scale-90 transition-transform rounded-md"
           style={{
-            backgroundColor: "#FFBF40",
-            color: "#1C1C1C",
+            backgroundColor: brand.secondaryColor,
+            color: onColor(brand.secondaryColor),
             border: "3px solid #1C1C1C",
             fontWeight: 800,
             letterSpacing: "20px",
@@ -1129,23 +1201,6 @@ const GameScreen = ({
               pointerEvents: "auto",
             }}
           >
-            <AnimatePresence>
-              {!showShotVideo && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute inset-0 flex items-center justify-center z-20"
-                >
-                  <div className="text-center animate-bounce-gentle">
-                    <div className="text-white/60 text-sm font-semibold tracking-wide">
-                      Kick to shoot!
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Feedback Text */}
@@ -1173,8 +1228,9 @@ const GameScreen = ({
 
           {/* Score - Fixed Top Left */}
           <div className="fixed top-35 left-24 z-40">
-            <div className="panel-dark flex flex-col items-center justify-center px-7 py-4 rounded-xl min-w-[140px]" data-testid="panel-score">
-              <div className="flex items-center gap-2 mb-1">
+            <div className="panel-dark relative overflow-hidden flex flex-col items-center justify-center px-7 py-4 rounded-xl min-w-[140px]" data-testid="panel-score">
+              <BoxLogo />
+              <div className="relative flex items-center gap-2 mb-1">
                 <PeakArrow size={12} color="#E42E20" />
                 <span
                   className="peak-bracket text-[12px] text-[#FFBF40] uppercase font-black tracking-[0.3em]"
@@ -1189,7 +1245,7 @@ const GameScreen = ({
                 initial={score > 0 ? { scale: 1.3, color: "#FFBF40" } : {}}
                 animate={{ scale: 1, color: "#FFFFFF" }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="font-druk text-6xl tabular-nums leading-none"
+                className="relative font-druk text-6xl tabular-nums leading-none"
                 data-testid="text-score"
               >
                 {score.toString().padStart(3, "0")}
@@ -1200,7 +1256,7 @@ const GameScreen = ({
           {/* Shot Clock - Fixed Top Right */}
           <div className="fixed top-35 right-24 z-40">
             <div
-              className={`panel-dark flex flex-col items-center justify-center px-5 py-4 rounded-xl min-w-[140px] ${timeLeft <= 10 ? "border-[#E42E20]" : ""}`}
+              className={`panel-dark relative overflow-hidden flex flex-col items-center justify-center px-5 py-4 rounded-xl min-w-[140px] ${timeLeft <= 10 ? "border-[#E42E20]" : ""}`}
               style={
                 timeLeft <= 10
                   ? {
@@ -1211,7 +1267,8 @@ const GameScreen = ({
               }
               data-testid="panel-shot-clock"
             >
-              <div className="flex items-center gap-2 mb-1">
+              <BoxLogo />
+              <div className="relative flex items-center gap-2 mb-1">
                 <PeakArrow size={12} color="#E42E20" />
                 <span
                   className="peak-bracket text-[12px] text-[#FFBF40] uppercase font-black tracking-[0.3em]"
@@ -1222,7 +1279,7 @@ const GameScreen = ({
                 <PeakArrow size={12} color="#E42E20" className="rotate-180" />
               </div>
               <div
-                className={`font-druk text-6xl tabular-nums leading-none ${timeLeft <= 10 ? "text-[#E42E20]" : "text-white"}`}
+                className={`relative font-druk text-6xl tabular-nums leading-none ${timeLeft <= 10 ? "text-[#E42E20]" : "text-white"}`}
                 data-testid="text-shot-clock"
               >
                 :{timeLeft.toString().padStart(2, "0")}
@@ -1325,7 +1382,7 @@ const GameScreen = ({
               className="h-12 px-7 rounded-lg text-white font-black text-lg uppercase tracking-[0.2em] flex items-center justify-center gap-3 disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden select-none border-2 border-[#1C1C1C] shadow-[0_4px_15px_rgba(228,46,32,0.45)] transition-transform hover:-translate-y-0.5"
               style={{
                 background: "linear-gradient(135deg, #E42E20 0%, #FF6021 100%)",
-                fontFamily: "'Big Shoulders Display', 'Inter', sans-serif",
+                fontFamily: "'Inter', sans-serif",
               }}
               data-testid="button-shoot"
             >
@@ -1520,13 +1577,13 @@ const ResultsScreen = ({
               exit={{ scale: 0.9, opacity: 0 }}
               className="bg-[#FFBF40] rounded-2xl p-8 max-w-md w-full shadow-2xl"
               style={{
-                fontFamily: "Inter normal",
+                fontFamily: "'Inter', sans-serif",
                 border: "3px solid #1C1C1C",
               }}
             >
               <div
                 className="flex items-center justify-center gap-2 text-[#1C1C1C] text-xs font-bold uppercase tracking-widest mb-3"
-                style={{ fontFamily: "Video Med" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <PeakArrow size={14} color="#E42E20" />
                 <span style={{ color: "#E42E20" }}>[</span>
@@ -1536,7 +1593,7 @@ const ResultsScreen = ({
               </div>
               <h3
                 className="text-3xl font-bold text-[#1C1C1C] mb-2 text-center tracking-tight"
-                style={{ fontFamily: "Video Med" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Join the Leaderboard
               </h3>
@@ -1666,7 +1723,7 @@ const ResultsScreen = ({
         >
           <div
             className="flex items-center justify-center gap-3 text-[#FFBF40] text-xl font-bold uppercase tracking-widest mb-2"
-            style={{ fontFamily: "Video Med" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             <PeakArrow size={20} color="#E42E20" />
             <span style={{ color: "#E42E20" }}>[</span>
@@ -1676,7 +1733,7 @@ const ResultsScreen = ({
           </div>
           <h1
             className="text-5xl md:text-6xl lg:text-8xl font-bold text-[#FFBF40] mb-4 tracking-tighter"
-            style={{ fontFamily: "Video Med" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {stats.score}{" "}
             <span className="text-3xl text-[#FFBF40] align-top">PTS</span>
@@ -1692,41 +1749,9 @@ const ResultsScreen = ({
         {/* Stats Card */}
         <Card
           className="border border-white/5 bg-[#99B3E1]/5 p-8"
-          style={{ fontFamily: "Inter normal" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-            <Activity className="text-[#E42E20]" size={20} />
-            <span style={{ color: "#E42E20", fontWeight: 800, marginRight: 4 }}>[</span>
-            Match Report
-            <span style={{ color: "#E42E20", fontWeight: 800, marginLeft: 4 }}>]</span>
-          </h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-white/5 border border-white/5">
-              <div className="text-[#99B3E1] text-sm uppercase mb-1">
-                Success Rate
-              </div>
-              <div
-                className="text-2xl font-bold text-[#FFBF40]"
-                style={{ fontFamily: "Inter normal" }}
-              >
-                {stats.shotsTaken > 0
-                  ? Math.round((stats.shotsMade / stats.shotsTaken) * 100)
-                  : 0}
-                %
-              </div>
-            </div>
-            <div className="p-4 rounded-xl bg-white/5 border border-white/5">
-              <div className="text-[#1C1C1C] text-sm uppercase mb-1 font-bold">
-                Goals Scored
-              </div>
-              <div
-                className="text-2xl font-bold text-primary"
-                style={{ fontFamily: "inter normal" }}
-              >
-                {stats.outagesPrevented}
-              </div>
-            </div>
-          </div>
+          <SuccessRate made={stats.shotsMade} taken={stats.shotsTaken} />
           <div className="mt-6">
             <Button
               onClick={onRestart}
@@ -1745,7 +1770,7 @@ const ResultsScreen = ({
         <div className="flex items-center justify-between mb-6 px-2">
           <h3
             className="text-xl text-white font-bold flex items-center gap-2"
-            style={{ fontFamily: " Video Med " }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             <Trophy className="text-yellow-400" size={22} />
             Leaderboard
@@ -1767,21 +1792,21 @@ const ResultsScreen = ({
                   border: "border-yellow-500/40",
                   badge: "bg-yellow-500 text-black",
                   text: "text-yellow-300",
-                  fontfamily: "Video Med",
+                  fontFamily: "'Inter', sans-serif",
                 },
                 {
                   bg: "from-[#99B3E1]/15 to-[#99B3E1]/10",
                   border: "border-[#99B3E1]/30",
                   badge: "bg-[#99B3E1] text-black",
                   text: "text-[#99B3E1]",
-                  fontfamily: "Video Med",
+                  fontFamily: "'Inter', sans-serif",
                 },
                 {
                   bg: "from-[#FFBF40]/20 to-[#FFBF40]/10",
                   border: "border-[#FFBF40]/30",
                   badge: "bg-[#FFBF40] text-black",
                   text: "text-[#FFBF40]",
-                  fontfamily: "Video Med",
+                  fontFamily: "'Inter', sans-serif",
                 },
               ];
               const medal = isTop3 ? medalColors[i] : null;
@@ -1821,7 +1846,7 @@ const ResultsScreen = ({
                   </div>
                   <div
                     className={`font-bold text-xl ml-3 ${isTop3 ? "text-white" : "text-[#99B3E1]"}`}
-                    style={{ fontFamily: "Video Med" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                     data-testid={`text-score-${player.id}`}
                   >
                     {player.score}
@@ -1885,21 +1910,21 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
       border: "border-yellow-500/40",
       badge: "bg-yellow-500 text-black",
       text: "text-yellow-300",
-      fontfamily: "Video Med",
+      fontFamily: "'Inter', sans-serif",
     },
     {
       bg: "from-[#99B3E1]/15 to-[#99B3E1]/10",
       border: "border-[#99B3E1]/30",
       badge: "bg-[#99B3E1] text-black",
       text: "text-[#99B3E1]",
-      fontfamily: "Video Med",
+      fontFamily: "'Inter', sans-serif",
     },
     {
       bg: "from-[#FFBF40]/20 to-[#FFBF40]/10",
       border: "border-[#FFBF40]/30",
       badge: "bg-[#FFBF40] text-black",
       text: "text-[#FFBF40]",
-      fontfamily: "Video Med",
+      fontFamily: "'Inter', sans-serif",
     },
   ];
 
@@ -1916,7 +1941,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
         <div className="flex items-center justify-between mb-8 px-2">
           <h2
             className="text-2xl text-white font-bold flex items-center gap-3"
-            style={{ fontFamily: "Inter normal" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             <Trophy className="text-yellow-400" size={28} />
             Leaderboard
@@ -1924,7 +1949,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
           <button
             onClick={onBack}
             className="text-base text-white hover:text-white transition-colors uppercase tracking-wider font-semibold"
-            style={{ fontFamily: "Inter normal" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
             data-testid="button-back-home"
           >
             Back
@@ -1935,7 +1960,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
           {leaderboard.length === 0 ? (
             <div
               className="text-center py-12 text-[#99B3E1] text-base"
-              style={{ fontFamily: "Inter normal" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               <Trophy className="mx-auto mb-3 opacity-50" size={48} />
               <p>No scores yet. Be the first to play!</p>
@@ -1970,7 +1995,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
                   <div className="flex-1 min-w-0">
                     <div
                       className={`font-semibold truncate text-lg ${isTop3 ? medal!.text : "text-[#99B3E1]"}`}
-                      style={{ fontFamily: "Video Med" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {player.playerName}
                     </div>
@@ -1980,7 +2005,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
                   </div>
                   <div
                     className={`font-bold text-2xl ml-3 ${isTop3 ? "text-white" : "text-[#99B3E1]"}`}
-                    style={{ fontFamily: "Video Med" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {player.score}
                   </div>
@@ -2128,8 +2153,8 @@ function GameApp() {
       <div className="relative z-10 w-full h-screen flex flex-col">
         {/* Navigation / Header - Minimal */}
         <header
-          className="px-6 flex justify-between items-center z-50 bg-white/25 backdrop-blur-xl "
-          style={{ height: "40px" }}
+          className={`px-6 flex justify-between items-center z-50 backdrop-blur-xl ${brand.navbarColor ? "" : "bg-white/25"}`}
+          style={{ height: Math.max(40, brand.logoSize + 16), ...(brand.navbarColor ? { backgroundColor: brand.navbarColor } : {}) }}
         >
           <Logo />
 
@@ -2159,7 +2184,7 @@ function GameApp() {
               <button
                 onClick={() => setScreen("home")}
                 className="text-sm text-white hover:text-white transition-colors uppercase tracking-widest "
-                style={{ fontFamily: "Inter normal" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Exit
               </button>
@@ -2167,7 +2192,7 @@ function GameApp() {
             <div className="w-px h-4 bg-white/10 hidden md:block" />
             <div
               className="hidden md:flex items-center gap-2 text-sm font-medium text-white"
-              style={{ fontFamily: "Inter normal" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               <span
                 className={`w-2 h-2 rounded-full ${isOnline ? "bg-green-500 animate-pulse" : "bg-yellow-500"}`}

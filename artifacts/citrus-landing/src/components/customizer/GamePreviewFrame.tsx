@@ -17,6 +17,9 @@ export interface BrandThemeMessage {
   // Currently basketball-shootout only — the landing screen's background
   // image or video. null when the customer hasn't set one.
   bgUrl: string | null;
+  // Basketball and soccer only: the top navigation bar color. null/undefined
+  // keeps each game's own default bar.
+  navbarColor?: string | null;
   // A custom uploaded font (woff2/woff/ttf/otf), applied to the brand name
   // and game title text. null falls back to each game's own default font.
   fontUrl: string | null;

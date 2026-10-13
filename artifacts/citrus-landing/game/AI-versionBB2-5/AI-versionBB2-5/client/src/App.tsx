@@ -187,6 +187,67 @@ function Button({
   );
 }
 
+/** Results card: success rate as an animated ring with the made/taken counts underneath. Ring color follows the brand's primary color. */
+function SuccessRate({ made, taken }: { made: number; taken: number }) {
+  const brand = useBrand();
+  const pct = taken > 0 ? Math.round((made / taken) * 100) : 0;
+  const R = 52;
+  const C = 2 * Math.PI * R;
+  return (
+    <div className="flex flex-col items-center gap-4 py-2" data-testid="success-rate">
+      <div
+        className="text-xs uppercase tracking-[0.3em] font-semibold"
+        style={{ color: "#94a3b8", fontFamily: "'IBM Plex Mono', monospace" }}
+      >
+        Success rate
+      </div>
+      <div className="relative" style={{ width: 150, height: 150 }}>
+        <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90" aria-hidden="true">
+          <circle cx="60" cy="60" r={R} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="10" />
+          <motion.circle
+            cx="60"
+            cy="60"
+            r={R}
+            fill="none"
+            stroke={brand.primaryColor}
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={C}
+            initial={{ strokeDashoffset: C }}
+            animate={{ strokeDashoffset: C * (1 - pct / 100) }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
+        </svg>
+        <div
+          className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white tabular-nums"
+          style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+          data-testid="text-success-rate"
+        >
+          {pct}%
+        </div>
+      </div>
+      <div className="text-sm" style={{ color: "#94a3b8", fontFamily: "'IBM Plex Mono', monospace" }}>
+        {made} of {taken} shots
+      </div>
+    </div>
+  );
+}
+
+/** The customer's logo as a 50% opacity watermark covering the whole HUD box (score, shot clock). Renders nothing until a logo is uploaded. */
+function BoxLogo() {
+  const brand = useBrand();
+  if (!brand.logoUrl) return null;
+  return (
+    <img
+      src={brand.logoUrl}
+      alt=""
+      aria-hidden="true"
+      className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      style={{ opacity: 0.5 }}
+    />
+  );
+}
+
 function Logo() {
   const brand = useBrand();
   return (
@@ -338,6 +399,15 @@ const HomeScreen = ({
           >
             {brand.heading}
           </span>
+          {brand.tagline && (
+            <p
+              className="text-white/80 text-base md:text-lg tracking-wide text-center max-w-xl"
+              style={{ fontFamily: "var(--brand-font, inherit)" }}
+              data-testid="text-tagline"
+            >
+              {brand.tagline}
+            </p>
+          )}
           <Button
             onClick={onStart}
             variant="none"
@@ -1159,23 +1229,6 @@ const GameScreen = ({
               pointerEvents: "auto",
             }}
           >
-            <AnimatePresence>
-              {!showShotVideo && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="absolute inset-0 flex items-center justify-center z-20"
-                >
-                  <div className="text-center animate-bounce-gentle">
-                    <div className="text-white/60 text-sm font-semibold tracking-wide">
-                      {isCharging ? "Release to shoot!" : "Charge your shot"}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Feedback Text */}
@@ -1203,8 +1256,9 @@ const GameScreen = ({
 
           {/* Score - Fixed Top Left */}
           <div className="fixed top-35 left-24 z-40">
-            <div className="flex flex-col items-center justify-center px-7 py-4 rounded-xl bg-slate-900/90 backdrop-blur-sm border  min-w-[130px]">
-              <div className="text-[15px] text-white uppercase font-semibold tracking-wider">
+            <div className="relative overflow-hidden flex flex-col items-center justify-center px-7 py-4 rounded-xl bg-slate-900/90 backdrop-blur-sm border  min-w-[130px]">
+              <BoxLogo />
+              <div className="relative text-[15px] text-white uppercase font-semibold tracking-wider">
                 Score
               </div>
               <motion.div
@@ -1212,7 +1266,7 @@ const GameScreen = ({
                 initial={score > 0 ? { scale: 1.3, color: "#4ADE80" } : {}}
                 animate={{ scale: 1, color: "#FFFFFF" }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="text-5xl font-display text-white tabular-nums"
+                className="relative text-5xl font-display text-white tabular-nums"
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
                 }}
@@ -1225,18 +1279,19 @@ const GameScreen = ({
           {/* Shot Clock - Fixed Top Right */}
           <div className="fixed top-35 right-24 z-40">
             <div
-              className={`flex flex-col items-center justify-center px-5 py-4 rounded-xl bg-slate-900/90 backdrop-blur-sm min-w-[130px] border ${timeLeft <= 10 ? "border-red-500" : ""}`}
+              className={`relative overflow-hidden flex flex-col items-center justify-center px-5 py-4 rounded-xl bg-slate-900/90 backdrop-blur-sm min-w-[130px] border ${timeLeft <= 10 ? "border-red-500" : ""}`}
               style={
                 timeLeft <= 10
                   ? { boxShadow: "0 0 30px rgba(239,68,68,1)" }
                   : {}
               }
             >
-              <div className="text-[15px] text-white uppercase font-bold tracking-wider">
+              <BoxLogo />
+              <div className="relative text-[15px] text-white uppercase font-bold tracking-wider">
                 Shot Clock
               </div>
               <div
-                className={`text-5xl font-semibold tabular-nums ${timeLeft <= 10 ? "text-red-500" : "text-white"}`}
+                className={`relative text-5xl font-semibold tabular-nums ${timeLeft <= 10 ? "text-red-500" : "text-white"}`}
                 style={{ fontFamily: "'IBM Plex Mono', monospace" }}
               >
                 :{timeLeft.toString().padStart(2, "0")}
@@ -1714,36 +1769,7 @@ const ResultsScreen = ({
       <div className="grid grid-cols-1 gap-8 mb-12 max-w-2xl mx-auto w-full">
         {/* Stats Card */}
         <Card className="border border-white/5 bg-slate-900/50">
-          <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-            <Activity className="text-primary" size={20} /> Impact Report
-          </h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl bg-white/5 border border-white/5">
-              <div className="text-slate-400 text-xs uppercase mb-1">
-                Success Rate
-              </div>
-              <div
-                className="text-2xl font-bold text-white"
-                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-              >
-                {stats.shotsTaken > 0
-                  ? Math.round((stats.shotsMade / stats.shotsTaken) * 100)
-                  : 0}
-                %
-              </div>
-            </div>
-            <div className="p-4 rounded-xl bg-white/5 border border-white/5">
-              <div className="text-slate-400 text-xs uppercase mb-1">
-                Outages Prevented
-              </div>
-              <div
-                className="text-2xl font-bold text-primary"
-                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-              >
-                {stats.outagesPrevented}
-              </div>
-            </div>
-          </div>
+          <SuccessRate made={stats.shotsMade} taken={stats.shotsTaken} />
           <div className="mt-6">
             <Button
               onClick={onRestart}
@@ -2115,8 +2141,8 @@ function GameApp() {
       <div className="relative z-10 w-full h-screen flex flex-col">
         {/* Navigation / Header - Minimal */}
         <header
-          className="px-6 flex justify-between items-center z-50 border-b border-[rgba(75,0,255,0.2)] bg-black"
-          style={{ height: "48px" }}
+          className={`px-6 flex justify-between items-center z-50 border-b border-[rgba(75,0,255,0.2)] ${brand.navbarColor ? "" : "bg-black"}`}
+          style={{ height: Math.max(48, brand.logoSize + 16), ...(brand.navbarColor ? { backgroundColor: brand.navbarColor } : {}) }}
         >
           <Logo />
 
