@@ -16,6 +16,7 @@ import { getDraftToken } from "@/lib/draft-token";
 import { GamePreviewFrame, type BrandThemeMessage, type DeviceSize } from "@/components/customizer/GamePreviewFrame";
 import { BrandingForm } from "@/components/customizer/BrandingForm";
 import { QuestionEditor } from "@/components/customizer/QuestionEditor";
+import { EnergyQuizEditor } from "@/components/customizer/EnergyQuizEditor";
 import { QUESTION_GAME_SLUGS } from "@workspace/game-content";
 import { OrderSummaryPanel } from "@/components/customizer/OrderSummaryPanel";
 import { ContactCustomUiDialog } from "@/components/customizer/ContactCustomUiDialog";
@@ -233,6 +234,8 @@ function CustomizeGame({ slug }: { slug: string }) {
       params.set("orderId", order.id);
     }
     if (theme.gameContent && draftId) params.set("contentId", draftId);
+    // Energy Quiz: a custom quiz is referenced by URL (too large for a query string).
+    if (theme.quiz && draftId) params.set("quiz", `${window.location.origin}/api/branding-drafts/${draftId}/quiz`);
     return `${window.location.origin}${basePath}?${params.toString()}`;
   }, [game, theme, draftId, order]);
 
@@ -347,6 +350,13 @@ function CustomizeGame({ slug }: { slug: string }) {
               onApply={(content) => handleThemeChange({ ...theme, gameContent: content })}
               onDirtyChange={setQuestionsDirty}
             />
+            {game.slug === "lexus-energy-quiz" && (
+              <EnergyQuizEditor
+                quiz={theme.quiz ?? null}
+                onApply={(quiz) => handleThemeChange({ ...theme, quiz })}
+                onDirtyChange={setQuestionsDirty}
+              />
+            )}
             </fieldset>
             <p role="status" className="text-xs text-muted-foreground">
               {questionsDirty ? "Apply your question edits before getting a live link." : isSaving ? "Saving changes…" : draftId ? "Changes saved." : "Changes will be saved when you edit or finalize."}

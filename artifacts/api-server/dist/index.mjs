@@ -67766,6 +67766,25 @@ router3.get("/branding-drafts/:id/content", async (req, res) => {
     res.status(500).json({ error: "Questions could not be loaded. Please try again." });
   }
 });
+router3.get("/branding-drafts/:id/quiz", async (req, res) => {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
+    res.status(400).json({ error: "Invalid quiz identifier." });
+    return;
+  }
+  try {
+    const [draft] = await db.select({ quiz: brandingDraftsTable.quiz }).from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
+    if (!draft || !Array.isArray(draft.quiz) || draft.quiz.length === 0) {
+      res.status(404).json({ error: "Quiz not found." });
+      return;
+    }
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.json(draft.quiz);
+  } catch (error40) {
+    req.log.error({ errorType: error40 instanceof Error ? error40.name : "UnknownError" }, "Could not load quiz");
+    res.status(500).json({ error: "The quiz could not be loaded. Please try again." });
+  }
+});
 router3.get("/branding-drafts/:id", async (req, res) => {
   const [draft] = await db.select().from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
   if (!draft) {

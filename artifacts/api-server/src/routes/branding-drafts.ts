@@ -130,6 +130,32 @@ router.get("/branding-drafts/:id/content", async (req, res) => {
   }
 });
 
+// Energy Quiz only: the draft's custom question set as plain JSON, so a live
+// link can reference it by URL (a full quiz is too large for a query string).
+router.get("/branding-drafts/:id/quiz", async (req, res) => {
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
+    res.status(400).json({ error: "Invalid quiz identifier." });
+    return;
+  }
+  try {
+    const [draft] = await db
+      .select({ quiz: brandingDraftsTable.quiz })
+      .from(brandingDraftsTable)
+      .where(eq(brandingDraftsTable.id, req.params.id))
+      .limit(1);
+    if (!draft || !Array.isArray(draft.quiz) || draft.quiz.length === 0) {
+      res.status(404).json({ error: "Quiz not found." });
+      return;
+    }
+    res.setHeader("Cache-Control", "no-store");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.json(draft.quiz);
+  } catch (error) {
+    req.log.error({ errorType: error instanceof Error ? error.name : "UnknownError" }, "Could not load quiz");
+    res.status(500).json({ error: "The quiz could not be loaded. Please try again." });
+  }
+});
+
 router.get("/branding-drafts/:id", async (req, res) => {
   const [draft] = await db
     .select()
