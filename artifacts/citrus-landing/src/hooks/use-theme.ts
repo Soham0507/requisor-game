@@ -9,9 +9,10 @@ const STORAGE_KEY = "immerse-theme";
 
 function readStoredTheme(): Theme {
   try {
-    return localStorage.getItem(STORAGE_KEY) === "light" ? "light" : "dark";
+    // Light is the default; dark only when the visitor has chosen it.
+    return localStorage.getItem(STORAGE_KEY) === "dark" ? "dark" : "light";
   } catch {
-    return "dark";
+    return "light";
   }
 }
 

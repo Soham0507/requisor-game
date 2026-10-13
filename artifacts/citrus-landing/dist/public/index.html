@@ -8,12 +8,13 @@
       // localStorage key the landing page's own toggle uses) before first
       // paint, on every route — otherwise a page that loads with "dark"
       // missing from <html> would flash light until React hydrates.
+      // Light is the default; dark only when the visitor has chosen it.
       try {
-        if (localStorage.getItem("immerse-theme") !== "light") {
+        if (localStorage.getItem("immerse-theme") === "dark") {
           document.documentElement.classList.add("dark");
         }
       } catch (e) {
-        document.documentElement.classList.add("dark");
+        /* no storage: stay on the light default */
       }
     </script>
     <title>Activate — Branded booth games, quizzes & AI photo booths for events</title>
@@ -63,7 +64,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/assets/index-lZdau1bT.js"></script>
+    <script type="module" crossorigin src="/assets/index-DUG_QEve.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-Vpbp3tSY.css">
   </head>
   <body>
