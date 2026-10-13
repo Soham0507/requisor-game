@@ -39,7 +39,7 @@ const DEFAULT_THEME: BrandTheme = {
   brandNameColor: "#ffffff",
   heading: "Space Shooter",
   headingSize: 28,
-  headingColor: "#94a3b8",
+  headingColor: "#ffffff",
   tagline: "",
   fontUrl: null,
 };

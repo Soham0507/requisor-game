@@ -20,6 +20,7 @@ const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; post
   "cyber-adventure": { type: "video", src: "/logo/cyber.mp4" },
   "basketball-shootout": { type: "video", src: "/logo/app1.mp4" },
   "lexus-energy-quiz": { type: "video", src: "/logo/energy.mp4" },
+  "boat-booth": { type: "video", src: "/logo/boat.mp4" },
   "soccer-shootout": { type: "video", src: "/logo/soccer1.mp4", poster: "/logo/soccer.jpg" },
   "gesture-space-war": { type: "video", src: "/logo/90.mp4" },
   "golf-challenge": {
@@ -145,7 +146,7 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
               (game.thumbnailUrl
                 ? { type: "image" as const, src: game.thumbnailUrl }
                 : undefined);
-            const customizationAvailable = game.brandSupport === "full" && game.slug !== "boat-booth";
+            const customizationAvailable = game.brandSupport === "full";
             return (
               <Card key={game.id} className="flex flex-col bg-card border-border overflow-hidden">
                 {preview && (
@@ -177,8 +178,6 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
                     <h3 className="text-xl font-bold text-foreground">{game.name}</h3>
                     {customizationAvailable ? (
                       <Badge className="bg-primary/20 text-primary border-primary/40">Live re-skin</Badge>
-                    ) : game.slug === "boat-booth" ? (
-                      <Badge variant="secondary">Preview only</Badge>
                     ) : (
                       <Badge variant="secondary">Coming soon</Badge>
                     )}
@@ -195,7 +194,7 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
                       <Link href={`/customize/${game.slug}`}>
                         <Button data-testid={`button-customize-${game.slug}`}>Customize</Button>
                       </Link>
-                    ) : game.slug === "boat-booth" ? null : (
+                    ) : (
                       <Button disabled data-testid={`button-customize-${game.slug}`}>Customize</Button>
                     )}
                   </div>

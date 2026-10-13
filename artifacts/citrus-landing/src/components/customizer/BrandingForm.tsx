@@ -27,7 +27,7 @@ const HIDDEN_THEME_COLOR_SLUGS = new Set(["basketball-shootout"]);
 // Secondary and accent only appear for games that actually draw with them
 // (checked per game, see the color-effect test): Soccer's Leaderboard button,
 // Space Shooter / Jeopardy panels, and Energy Quiz's animated background.
-const SECONDARY_COLOR_SLUGS = new Set(["soccer-shootout", "space-shooter-1", "jeopardy", "lexus-energy-quiz"]);
+const SECONDARY_COLOR_SLUGS = new Set(["soccer-shootout", "space-shooter-1", "gesture-space-war", "jeopardy", "lexus-energy-quiz"]);
 const ACCENT_COLOR_SLUGS = new Set(["lexus-energy-quiz"]);
 
 // Games whose top navigation bar color is editable, with the hex each one

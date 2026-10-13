@@ -43,50 +43,50 @@ interface QuestionOption {
 // Event type first, then the vibe — every path is exactly two questions.
 const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] }> = {
   q1: {
-    prompt: "Where will it run?",
+    prompt: "Welcome. Where will this activation take place?",
     options: [
-      { label: "Trade show booth", icon: Store, next: "booth" },
-      { label: "Training / classroom", icon: GraduationCap, next: "training" },
-      { label: "Retail / kiosk", icon: Tv, next: "retail" },
-      { label: "Online / desktop", icon: Monitor, next: "online" },
+      { label: "Trade show or conference booth", icon: Store, next: "booth" },
+      { label: "Training or workshop", icon: GraduationCap, next: "training" },
+      { label: "Retail or in-store kiosk", icon: Tv, next: "retail" },
+      { label: "Web or desktop", icon: Monitor, next: "online" },
     ],
   },
   booth: {
-    prompt: "What vibe?",
+    prompt: "What type of experience are you looking for?",
     options: [
-      { label: "Active & competitive", icon: CircleDot, next: { result: "basketball-shootout" } },
-      { label: "Immersive sci-fi", icon: Rocket, next: { result: "gesture-space-war" } },
-      { label: "Quiz / lead capture", icon: HelpCircle, next: "quiz" },
+      { label: "High-energy and competitive", icon: CircleDot, next: { result: "basketball-shootout" } },
+      { label: "Immersive and futuristic", icon: Rocket, next: { result: "gesture-space-war" } },
+      { label: "Quizzes and lead capture", icon: HelpCircle, next: "quiz" },
     ],
   },
   training: {
-    prompt: "What for?",
+    prompt: "What is the primary objective?",
     options: [
-      { label: "Security awareness", icon: ShieldCheck, next: { result: "cyber-adventure" } },
-      { label: "Knowledge check", icon: HelpCircle, next: "quiz" },
+      { label: "Security awareness training", icon: ShieldCheck, next: { result: "cyber-adventure" } },
+      { label: "Knowledge assessment", icon: HelpCircle, next: "quiz" },
     ],
   },
   retail: {
-    prompt: "What vibe?",
+    prompt: "What kind of experience would suit your audience?",
     options: [
-      { label: "Photo / video keepsake", icon: Camera, next: { result: "boat-booth" } },
+      { label: "Photo and video keepsake", icon: Camera, next: { result: "boat-booth" } },
       { label: "Quick quiz", icon: HelpCircle, next: "quiz" },
     ],
   },
   quiz: {
-    prompt: "Which style?",
+    prompt: "Which format fits your event best?",
     options: [
-      { label: "Jeopardy", icon: HelpCircle, next: { result: "jeopardy" } },
-      { label: "Match visitors to a product", icon: Sparkles, next: { result: "a8-match" } },
-      { label: "Fast trivia race", icon: Timer, next: { result: "a8-trivia-rush" } },
-      { label: "Guess the stat", icon: Gauge, next: { result: "a8-the-number" } },
-      { label: "Spin to win a prize", icon: Gift, next: { result: "a8-spin-to-win" } },
-      { label: "Test brand recall", icon: Brain, next: { result: "a8-recall" } },
+      { label: "Jeopardy-style trivia", icon: HelpCircle, next: { result: "jeopardy" } },
+      { label: "Match attendees to a product", icon: Sparkles, next: { result: "a8-match" } },
+      { label: "Fast-paced trivia", icon: Timer, next: { result: "a8-trivia-rush" } },
+      { label: "Guess the statistic", icon: Gauge, next: { result: "a8-the-number" } },
+      { label: "Prize wheel", icon: Gift, next: { result: "a8-spin-to-win" } },
+      { label: "Brand recall challenge", icon: Brain, next: { result: "a8-recall" } },
       { label: "Lifestyle personality quiz", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
     ],
   },
   online: {
-    prompt: "What style?",
+    prompt: "Which format do you prefer?",
     options: [
       { label: "Arcade shooter", icon: Rocket, next: { result: "space-shooter-1" } },
       { label: "Endless runner", icon: Zap, next: { result: "cyber-adventure" } },
@@ -163,16 +163,16 @@ function GameRecommendation({ slug }: { slug: string }) {
       <div className="rounded-2xl rounded-tl-sm border border-primary/30 bg-gradient-to-br from-primary/10 to-pink-500/5 p-3 max-w-[90%] space-y-1.5">
         <p className="flex items-center gap-1.5 text-xs font-medium text-primary">
           <Sparkles size={13} />
-          Best match
+          Recommended for you
         </p>
-        {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
+        {isLoading && <p className="text-sm text-muted-foreground">Loading your recommendation…</p>}
         {missing && (
           <div>
-            <p className="text-sm text-foreground">That game isn't available right now.</p>
+            <p className="text-sm text-foreground">This experience is not available at the moment.</p>
             <div className="mt-2">
               <Link href="/games">
                 <Button size="sm" className="rounded-full">
-                  Browse all games
+                  View all experiences
                   <ChevronRight size={14} />
                 </Button>
               </Link>
@@ -187,7 +187,7 @@ function GameRecommendation({ slug }: { slug: string }) {
               {game.brandSupport === "full" ? (
                 <Link href={`/customize/${game.slug}`}>
                   <Button size="sm" className="rounded-full" data-testid="button-chat-customize">
-                    Customize it
+                    Customize this experience
                     <ChevronRight size={14} />
                   </Button>
                 </Link>
@@ -236,7 +236,7 @@ export function GameFinderChat() {
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-pink-500 grid place-items-center">
                 <Sparkles size={13} className="text-primary-foreground" />
               </div>
-              <p className="text-sm font-semibold text-foreground">Game Finder</p>
+              <p className="text-sm font-semibold text-foreground">Activation Finder</p>
             </div>
             <button
               type="button"
@@ -286,13 +286,13 @@ export function GameFinderChat() {
           <div className="shrink-0 border-t border-border p-3">
             <a
               href="tel:+16314152581"
-              aria-label="Call live support at +1 (631) 415-2581"
+              aria-label="Speak with our team at +1 (631) 415-2581"
               data-testid="button-chat-live-support"
               className="flex min-h-11 w-full items-center justify-center gap-2.5 rounded-xl border border-primary/40 bg-primary/10 px-3 py-2 text-foreground transition-colors hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <Phone size={18} aria-hidden="true" className="shrink-0 text-primary" />
               <span>
-                <span className="block text-sm font-semibold">Live support</span>
+                <span className="block text-sm font-semibold">Speak with our team</span>
                 <span className="block text-xs text-muted-foreground">Call +1 (631) 415-2581</span>
               </span>
             </a>
@@ -303,7 +303,7 @@ export function GameFinderChat() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Close game finder" : "Open game finder"}
+        aria-label={open ? "Close activation finder" : "Open activation finder"}
         className="w-12 h-12 rounded-full grid place-items-center bg-gradient-to-br from-primary to-pink-500 text-primary-foreground shadow-lg shadow-primary/30 hover:scale-105 active:scale-95 transition-transform"
         data-testid="button-chat-toggle"
       >

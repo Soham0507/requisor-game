@@ -39,7 +39,7 @@ const DEFAULT_THEME: BrandTheme = {
   brandNameColor: "#ffffff",
   heading: "Space Survivor",
   headingSize: 28,
-  headingColor: "#88aaff",
+  headingColor: "#ffffff",
   tagline: "HAND GESTURE EDITION",
   fontUrl: null,
 };

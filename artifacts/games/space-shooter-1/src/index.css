@@ -38,8 +38,8 @@ body {
   font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(1200px 700px at 80% -10%, rgba(138, 91, 255, 0.18), transparent 60%),
-    radial-gradient(1000px 600px at -10% 110%, rgba(0, 240, 255, 0.14), transparent 60%),
+    radial-gradient(1200px 700px at 80% -10%, color-mix(in srgb, var(--brand-secondary, #8a5bff) 22%, transparent), transparent 60%),
+    radial-gradient(1000px 600px at -10% 110%, color-mix(in srgb, var(--brand-primary, #00f0ff) 18%, transparent), transparent 60%),
     linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 60%, var(--bg-0) 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
@@ -233,13 +233,11 @@ body::before {
 }
 
 .stat-pill.cyan .value {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  color: var(--brand-primary, var(--neon-cyan));
 }
 
 .stat-pill.violet .value {
-  color: var(--neon-violet);
-  text-shadow: 0 0 12px rgba(138, 91, 255, 0.6);
+  color: var(--brand-secondary, var(--neon-violet));
 }
 
 .stat-pill.danger .value {
@@ -279,16 +277,23 @@ body::before {
   position: relative;
   border-radius: 18px;
   padding: 2px;
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.5), rgba(255, 43, 214, 0.4), rgba(138, 91, 255, 0.5));
-  box-shadow: 0 0 60px rgba(0, 240, 255, 0.18), 0 0 80px rgba(255, 43, 214, 0.08);
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--brand-primary, #00f0ff) 70%, transparent),
+    color-mix(in srgb, var(--brand-secondary, #ff2bd6) 60%, transparent));
+  box-shadow: 0 0 60px color-mix(in srgb, var(--brand-primary, #00f0ff) 22%, transparent);
 }
 
+/* Absolutely positioned so the canvas never contributes to its container's
+   size: otherwise every resize (canvas px size = container size + padding)
+   grows the container, which triggers another resize, and the canvas keeps
+   being reset mid-game. */
 .canvas-frame canvas {
+  position: absolute;
+  top: 2px;
+  left: 2px;
   display: block;
   border-radius: 16px;
   background: radial-gradient(ellipse at center, #0a0f2a 0%, #04060f 100%);
-  width: 100%;
-  height: 100%;
   cursor: crosshair;
 }
 
@@ -413,25 +418,393 @@ input[type="range"].neon-range::-moz-range-thumb {
   transform: translateX(20px);
 }
 
-/* ----- Layout helpers (mobile) ----- */
-@media (max-width: 900px) {
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-    position: fixed !important;
-    z-index: 50;
-  }
-  .sidebar.open {
-    transform: translateX(0);
-  }
-  .main-area {
-    padding-left: 16px !important;
-  }
-  .header-stats {
-    flex-wrap: wrap;
-    gap: 8px !important;
-  }
-  .stat-pill {
-    min-width: 110px;
-  }
+/* ============================================================
+   Branding-first layout
+   ============================================================ */
+.app-shell {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px 16px;
+  box-sizing: border-box;
+}
+
+.app-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-main > * {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Header: the customer's logo and game title lead */
+.brand-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(120deg, color-mix(in srgb, var(--brand-primary, #00f0ff) 16%, transparent), transparent 55%),
+    var(--glass-bg-strong);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 30px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.brand-bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-primary, #00f0ff), var(--brand-secondary, #ff2bd6));
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.brand-copy {
+  min-width: 0;
+}
+
+.brand-copy h1 {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.brand-copy p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 6px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* An uploaded logo gets no tile, border or padding. */
+.brand-mark.logo-only {
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+}
+
+.brand-mark.placeholder {
+  padding: 0;
+  color: #05060d;
+  border: none;
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--brand-primary, #00f0ff) 35%, transparent);
+}
+
+.brand-mark img {
+  object-fit: contain;
+  display: block;
+}
+
+/* Tabs */
+.brand-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+}
+
+.brand-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-dim);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.brand-tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.brand-tab.active {
+  color: #05060d;
+  background: linear-gradient(135deg, var(--brand-primary, #00f0ff), var(--brand-secondary, #ff2bd6));
+}
+
+/* HUD strip */
+.hud-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.hud-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.hud-status .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-mute);
+}
+
+.hud-status[data-status="running"] { color: var(--neon-lime); }
+.hud-status[data-status="running"] .dot { background: var(--neon-lime); box-shadow: 0 0 8px var(--neon-lime); }
+.hud-status[data-status="paused"] { color: var(--neon-amber); }
+.hud-status[data-status="paused"] .dot { background: var(--neon-amber); }
+.hud-status[data-status="over"] { color: var(--danger); }
+.hud-status[data-status="over"] .dot { background: var(--danger); }
+
+.hud-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: auto;
+}
+
+.hud-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+}
+
+.hud-chip .label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.hud-chip .value {
+  font-size: 17px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.hud-chip .value.primary { color: var(--brand-primary, var(--neon-cyan)); }
+.hud-chip .value.secondary { color: var(--brand-secondary, var(--neon-violet)); }
+
+.hud-health-track {
+  width: 64px;
+}
+
+.hud-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.hud-btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.hud-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--brand-primary, var(--neon-cyan));
+}
+
+/* Branded start / game-over overlays */
+.overlay-title {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  max-width: 90%;
+  overflow-wrap: anywhere;
+}
+
+.overlay-tagline {
+  margin: -6px 0 0;
+  font-size: 16px;
+  color: var(--text-dim);
+  max-width: 560px;
+}
+
+.overlay-hint {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-mute);
+}
+
+.overlay-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.overlay-score {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.overlay-score span {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.brand-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 34px;
+  border: none;
+  border-radius: 14px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #05060d;
+  background: linear-gradient(135deg, var(--brand-primary, #00f0ff), var(--brand-secondary, #ff2bd6));
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--brand-primary, #00f0ff) 40%, transparent);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.25s ease;
+}
+
+.brand-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 34px color-mix(in srgb, var(--brand-primary, #00f0ff) 55%, transparent);
+}
+
+.brand-cta.secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--brand-primary, #00f0ff) 60%, transparent);
+  box-shadow: none;
+}
+
+@media (max-width: 760px) {
+  .app-shell { padding: 8px; }
+  .brand-bar { padding: 12px; gap: 12px; }
+  .brand-tabs { width: 100%; justify-content: space-between; }
+  .brand-tab { flex: 1; justify-content: center; padding: 9px 8px; }
+  .hud-stats { margin-left: 0; }
+  .overlay-score { font-size: 48px; }
+}
+
+/* Thin, unobtrusive scrollbars so nothing competes with the branding */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+/* ----- More logo placements (marketing) ----- */
+.logo-watermark {
+  position: absolute;
+  inset: 2px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.logo-watermark img {
+  max-width: 36%;
+  max-height: 36%;
+  object-fit: contain;
+  opacity: 0.07;
+}
+
+.logo-corner {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.logo-corner img {
+  display: block;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+}
+
+.overlay-footer-logo {
+  height: 36px;
+  width: auto;
+  max-width: 60%;
+  object-fit: contain;
+  opacity: 0.85;
+  margin-top: 4px;
 }

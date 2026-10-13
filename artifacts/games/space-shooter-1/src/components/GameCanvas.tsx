@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Play, RotateCcw, Zap, Shield, Crosshair } from "lucide-react";
 import { useGame } from "@/state/GameContext";
-import { hexToRgba } from "@/brand-bridge";
+import { hexToRgba, useBrand } from "@/brand-bridge";
+import BrandMark from "@/components/BrandMark";
 
 /** Reads the live brand theme so canvas draw calls re-skin instantly — see `brand-bridge.ts`. */
 const brand = () => window.__BRAND__;
@@ -65,6 +66,7 @@ const POWERUP_META: Record<PowerUpKind, { color: string; label: string }> = {
 };
 
 export default function GameCanvas() {
+  const brandTheme    = useBrand();
   const containerRef  = useRef<HTMLDivElement>(null);
   const canvasRef     = useRef<HTMLCanvasElement>(null);
   const shipImgRef    = useRef<HTMLImageElement | null>(null);
@@ -124,8 +126,9 @@ export default function GameCanvas() {
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rect = container.getBoundingClientRect();
-      const w = Math.max(320, rect.width);
-      const h = Math.max(240, rect.height);
+      // The frame has 2px of padding on every side; the canvas fills the inside.
+      const w = Math.max(320, rect.width - 4);
+      const h = Math.max(240, rect.height - 4);
       canvas.width  = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width  = `${w}px`;
@@ -665,18 +668,45 @@ export default function GameCanvas() {
       <div ref={containerRef} className="canvas-frame" style={{ flex: 1, minHeight: 320, position: "relative" }}>
         <canvas ref={canvasRef} data-testid="game-canvas" />
 
+        {/* Playfield watermark: the customer's logo, large and faint, behind the action */}
+        {brandTheme.logoUrl && (
+          <div className="logo-watermark" aria-hidden="true" data-testid="logo-watermark">
+            <img src={brandTheme.logoUrl} alt="" />
+          </div>
+        )}
+
+        {/* Bottom-left corner logo, visible through the whole run */}
+        {brandTheme.logoUrl && (
+          <div className="logo-corner" data-testid="logo-corner" aria-hidden="true">
+            <img src={brandTheme.logoUrl} alt="" style={{ height: Math.max(48, brandTheme.logoSize) }} />
+          </div>
+        )}
+
         {status === "idle" && (
-          <div className="overlay fade-in">
-            <div style={{ fontSize: 12, letterSpacing: "0.3em", color: "var(--text-mute)", textTransform: "uppercase" }}>Sector Astro-{String(level).padStart(2, "0")}</div>
-            <div className="brand-glow" style={{ fontSize: 32 }}>Launch Mission</div>
-            <div style={{ color: "var(--text-dim)", fontSize: 13, lineHeight: 1.6 }}>
-              Aim with mouse · Click to fire · Space to pause
-              <br />
-              Pick up power-ups dropped by asteroids!
-            </div>
-            <button className="neon-btn lime" onClick={handleStart} style={{ marginTop: 4 }} data-testid="btn-start">
-              <Play size={13} /> Start
+          <div className="overlay fade-in" data-testid="start-overlay">
+            <BrandMark size={Math.min(160, Math.max(96, brandTheme.logoSize * 2))} />
+            <h2
+              className="overlay-title"
+              style={{
+                fontSize: Math.min(64, Math.max(30, brandTheme.headingSize * 1.6)),
+                color: brandTheme.headingColor,
+                fontFamily: "var(--brand-font, inherit)",
+              }}
+            >
+              {brandTheme.heading}
+            </h2>
+            {brandTheme.tagline && (
+              <p className="overlay-tagline" style={{ fontFamily: "var(--brand-font, inherit)" }}>
+                {brandTheme.tagline}
+              </p>
+            )}
+            <button className="brand-cta" onClick={handleStart} data-testid="btn-start">
+              <Play size={16} /> Start
             </button>
+            <p className="overlay-hint">Aim with your mouse · Click to fire · Space to pause</p>
+            {brandTheme.logoUrl && (
+              <img className="overlay-footer-logo" src={brandTheme.logoUrl} alt="" data-testid="logo-start-footer" />
+            )}
           </div>
         )}
 
@@ -739,17 +769,20 @@ export default function GameCanvas() {
         )}
 
         {status === "over" && (
-          <div className="overlay fade-in">
-            <div style={{ fontSize: 12, letterSpacing: "0.3em", color: "var(--danger)", textTransform: "uppercase" }}>Mission Failed</div>
-            <div className="brand-glow" style={{ fontSize: 44 }}>GAME OVER</div>
-            <div style={{ display: "flex", gap: 24, color: "var(--text-dim)", fontSize: 14 }}>
-              <div>Final Score: <span style={{ color: "var(--neon-cyan)", fontWeight: 700 }}>{score.toLocaleString()}</span></div>
-              <div>Level: <span style={{ color: "var(--neon-violet)", fontWeight: 700 }}>{level}</span></div>
+          <div className="overlay fade-in" data-testid="gameover-overlay">
+            <BrandMark size={Math.min(96, Math.max(64, brandTheme.logoSize * 1.4))} />
+            <div className="overlay-kicker">Game over</div>
+            <div className="overlay-score" style={{ color: "var(--brand-primary, var(--neon-cyan))" }}>
+              {score.toLocaleString()}
+              <span>points</span>
+            </div>
+            <div className="overlay-hint" style={{ marginTop: -6 }}>
+              You reached level <b style={{ color: "var(--brand-secondary, var(--neon-violet))" }}>{level}</b>
             </div>
             {!scoreSubmitted ? (
               <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 6, width: 260 }}>
                 <input
-                  type="text" placeholder="Callsign (for the leaderboard)"
+                  type="text" placeholder="Your name (shown on the leaderboard)"
                   value={submittedName}
                   onChange={(e) => setSubmittedName(e.target.value.toUpperCase())}
                   maxLength={8}
@@ -774,21 +807,24 @@ export default function GameCanvas() {
                   onKeyDown={(e) => e.key === "Enter" && canSubmit && handleSubmit()}
                 />
                 <button
-                  className="neon-btn magenta"
+                  className="brand-cta secondary"
                   onClick={handleSubmit}
                   disabled={!canSubmit}
                   data-testid="btn-submit-score"
                   style={{ opacity: canSubmit ? 1 : 0.5, cursor: canSubmit ? "pointer" : "not-allowed" }}
                 >
-                  Save Score
+                  Save score
                 </button>
               </div>
             ) : (
-              <div style={{ color: "var(--neon-lime)", fontWeight: 600 }}>Score saved to leaderboard.</div>
+              <div style={{ color: "var(--neon-lime)", fontWeight: 600 }}>Your score has been saved.</div>
             )}
-            <button className="neon-btn lime" onClick={handleStart} style={{ marginTop: 4 }} data-testid="btn-gameover-restart">
-              <RotateCcw size={13} /> Restart Mission
+            <button className="brand-cta" onClick={handleStart} data-testid="btn-gameover-restart">
+              <RotateCcw size={16} /> Play again
             </button>
+            {brandTheme.logoUrl && (
+              <img className="overlay-footer-logo" src={brandTheme.logoUrl} alt="" data-testid="logo-gameover-footer" />
+            )}
           </div>
         )}
       </div>

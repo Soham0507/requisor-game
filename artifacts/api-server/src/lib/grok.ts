@@ -4,10 +4,15 @@ const XAI_BASE_URL = "https://api.x.ai/v1";
 const IMAGE_MODEL = process.env.XAI_IMAGE_MODEL ?? "grok-imagine-image-quality";
 const VIDEO_MODEL = process.env.XAI_VIDEO_MODEL ?? "grok-imagine-video";
 
-function apiKey(): string {
-  const key = process.env.XAI_API_KEY;
+/**
+ * The server's own key (XAI_API_KEY) wins when set; otherwise the key the
+ * visitor typed into the booth is used for that one request. It is never
+ * stored or logged.
+ */
+function apiKey(override?: string): string {
+  const key = process.env.XAI_API_KEY || override;
   if (!key) {
-    throw new Error("XAI_API_KEY is not set");
+    throw new Error("An xAI API key is required. Enter your key to generate photos and videos.");
   }
   return key;
 }
@@ -52,11 +57,12 @@ function decodeImagePayload(payload: {
 export async function editImage(
   photoDataUri: string,
   prompt: string,
+  userKey?: string,
 ): Promise<GeneratedImage> {
   const res = await fetch(`${XAI_BASE_URL}/images/edits`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey()}`,
+      Authorization: `Bearer ${apiKey(userKey)}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -99,11 +105,12 @@ export async function editImage(
 export async function startVideoJob(
   image: string,
   prompt: string,
+  userKey?: string,
 ): Promise<string> {
   const res = await fetch(`${XAI_BASE_URL}/videos/generations`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey()}`,
+      Authorization: `Bearer ${apiKey(userKey)}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -144,10 +151,10 @@ export type VideoJobStatus =
 /**
  * Polls a video job once. When done, downloads the video bytes.
  */
-export async function pollVideoJob(requestId: string): Promise<VideoJobStatus> {
+export async function pollVideoJob(requestId: string, userKey?: string): Promise<VideoJobStatus> {
   const res = await fetch(`${XAI_BASE_URL}/videos/${requestId}`, {
     headers: {
-      Authorization: `Bearer ${apiKey()}`,
+      Authorization: `Bearer ${apiKey(userKey)}`,
     },
   });
 

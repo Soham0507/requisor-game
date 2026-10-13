@@ -1,5 +1,6 @@
 import { Trophy, Medal } from "lucide-react";
 import { useGame } from "@/state/GameContext";
+import { useBrand } from "@/brand-bridge";
 
 const RANK_COLORS = ["#FFD24A", "#C7CDE0", "#E08A53"];
 
@@ -8,6 +9,7 @@ const RANK_COLORS = ["#FFD24A", "#C7CDE0", "#E08A53"];
  */
 export default function Leaderboard() {
   const { leaderboard } = useGame();
+  const brand = useBrand();
 
   return (
     <section className="glass" style={{ padding: 28, height: "100%", display: "flex", flexDirection: "column" }}>
@@ -29,16 +31,24 @@ export default function Leaderboard() {
         <div>
           <h2 style={{ fontSize: 22, fontWeight: 700, margin: 0 }}>Leaderboard</h2>
           <p style={{ fontSize: 13, color: "var(--text-dim)", margin: "4px 0 0" }}>
-            Top pilots in the Astro Sector
+            Top scores
           </p>
         </div>
+        {brand.logoUrl && (
+          <img
+            src={brand.logoUrl}
+            alt=""
+            data-testid="logo-leaderboard"
+            style={{ marginLeft: "auto", height: Math.max(48, brand.logoSize), width: "auto", maxWidth: 220, objectFit: "contain" }}
+          />
+        )}
       </div>
 
       <div style={{ overflow: "auto", flex: 1 }}>
         <table style={{ width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
           <thead>
             <tr>
-              {["Rank", "Pilot", "Score", "Level", "Date"].map((h) => (
+              {["Rank", "Player", "Score", "Level", "Date"].map((h) => (
                 <th
                   key={h}
                   style={{

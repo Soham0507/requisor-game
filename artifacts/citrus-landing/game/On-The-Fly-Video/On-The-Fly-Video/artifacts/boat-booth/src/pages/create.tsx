@@ -10,7 +10,8 @@ import {
   Scene,
 } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
-import { Camera, ChevronLeft, RefreshCcw, Video, Download, ArrowRight, Loader2, Play } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Camera, ChevronLeft, RefreshCcw, Video, Download, ArrowRight, Loader2, Play, KeyRound } from "lucide-react";
 import pontoonImg from "@assets/pontoon_wi.jpg_1780096222900.jpeg";
 import wakeImg from "@assets/wakesurfing.jpg_1780096222900.jpeg";
 import bassImg from "@assets/bass_fishing.jpg_1780096222901.jpeg";
@@ -23,6 +24,16 @@ const SCENE_IMAGES: Record<string, string> = {
 
 type Step = "scene" | "capture" | "processing" | "result" | "video";
 
+const KEY_STORAGE = "boat-booth-xai-key";
+
+function readStoredKey(): string {
+  try {
+    return window.sessionStorage.getItem(KEY_STORAGE) ?? "";
+  } catch {
+    return "";
+  }
+}
+
 export default function Create() {
   const [, setLocation] = useLocation();
   const [step, setStep] = useState<Step>("scene");
@@ -30,10 +41,32 @@ export default function Create() {
   const [photoBase64, setPhotoBase64] = useState<string | null>(null);
   const [generationId, setGenerationId] = useState<string | null>(null);
 
+  // The server uses its own xAI key when it has one. Otherwise the visitor is
+  // asked for theirs; it stays in this tab's sessionStorage and is only sent to
+  // this app's server, per request.
+  const [serverHasKey, setServerHasKey] = useState(true);
+  const [apiKey, setApiKey] = useState<string>(readStoredKey);
+  const [keyDraft, setKeyDraft] = useState("");
+  useEffect(() => {
+    fetch("/api/booth/config")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((c) => { if (c && typeof c.serverKey === "boolean") setServerHasKey(c.serverKey); })
+      .catch(() => {});
+  }, []);
+  const needsKey = !serverHasKey && !apiKey;
+  const keyRequest = apiKey ? { headers: { "x-xai-api-key": apiKey } } : undefined;
+  const saveKey = () => {
+    const v = keyDraft.trim();
+    if (!v) return;
+    try { window.sessionStorage.setItem(KEY_STORAGE, v); } catch { /* optional */ }
+    setApiKey(v);
+    setKeyDraft("");
+  };
+
   const queryClient = useQueryClient();
   const { data: scenes, isLoading: loadingScenes } = useListScenes();
-  const createGeneration = useCreateGeneration();
-  const startVideo = useStartVideo();
+  const createGeneration = useCreateGeneration({ request: keyRequest });
+  const startVideo = useStartVideo({ request: keyRequest });
 
   const { data: generation, refetch: refetchGeneration } = useGetGeneration(generationId || "", {
     query: {
@@ -138,6 +171,32 @@ export default function Create() {
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center p-8 max-w-7xl mx-auto w-full z-10 relative mt-16">
+        {needsKey && (
+          <div className="w-full max-w-2xl mb-8 rounded-3xl border border-primary/30 bg-card p-6 shadow-lg" data-testid="panel-api-key">
+            <div className="flex items-center gap-3 mb-2">
+              <KeyRound className="w-6 h-6 text-primary" />
+              <h3 className="text-xl font-bold text-foreground">Add your xAI API key</h3>
+            </div>
+            <p className="text-sm text-muted-foreground mb-4">
+              Photo and video generation uses your own xAI API key. It is kept only in this browser tab and sent
+              only to this app to make your requests.
+            </p>
+            <form
+              className="flex gap-3"
+              onSubmit={(e) => { e.preventDefault(); saveKey(); }}
+            >
+              <Input
+                type="password"
+                autoComplete="off"
+                placeholder="xai-..."
+                value={keyDraft}
+                onChange={(e) => setKeyDraft(e.target.value)}
+                data-testid="input-api-key"
+              />
+              <Button type="submit" disabled={!keyDraft.trim()} data-testid="button-save-api-key">Save key</Button>
+            </form>
+          </div>
+        )}
         {step === "scene" && (
           <div className="w-full animate-in fade-in slide-in-from-bottom-8">
             <div className="text-center mb-12">

@@ -6,6 +6,12 @@ import { SCENES } from "../lib/scenes";
 
 const router: IRouter = Router();
 
+// Tells the booth whether the server already has its own xAI key; when it does
+// not, the booth asks the visitor for theirs.
+router.get("/booth/config", (_req, res): void => {
+  res.json({ serverKey: Boolean(process.env.XAI_API_KEY) });
+});
+
 router.get("/booth/stats", async (_req, res): Promise<void> => {
   const [totals] = await db
     .select({

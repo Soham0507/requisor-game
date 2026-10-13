@@ -499,6 +499,54 @@
         background: rgba(255, 255, 255, 0.96);
         transition: width 0.7s ease;
       }
+      /* Extra logo placements: the customer's logo, bare (no box), on every screen. */
+      .brand-watermark {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+      }
+      .brand-watermark img {
+        max-width: 62%;
+        max-height: 34%;
+        object-fit: contain;
+        opacity: 0.12;
+      }
+      .brand-corner {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        z-index: 3;
+        display: none;
+        pointer-events: none;
+      }
+      .brand-corner img {
+        display: block;
+        height: clamp(36px, 6vmin, 60px);
+        width: auto;
+        max-width: 42vw;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+      }
+      /* With a logo on the card, pull the card up so its text still fits. */
+      .device.has-brand-logo #s-start .text-scrim {
+        margin-top: clamp(58px, 10vh, 100px);
+      }
+      .device.has-brand-logo #s-reveal .text-scrim {
+        margin-top: clamp(40px, 7vh, 70px);
+      }
+      .brand-hero-logo {
+        display: none;
+        margin: 0 auto 12px;
+        height: clamp(48px, 9vmin, 84px);
+        width: auto;
+        max-width: 70%;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.45));
+      }
       .lexus-mark {
         display: block;
         width: 34px;
@@ -1448,6 +1496,7 @@
     <div class="device start-state">
       <canvas id="c"></canvas>
       <img id="vehicleCar" class="vehicle-car" src="" alt="" />
+      <div class="brand-watermark" id="brandWatermark"><img id="brandWatermarkImg" alt="" /></div>
       <div class="ui">
         <div class="top-bar">
           <div class="logo-row">
@@ -1465,6 +1514,7 @@
         <div class="content">
           <div class="screen active" id="s-start">
             <div class="text-scrim">
+              <img id="startLogo" class="brand-hero-logo" alt="" />
               <div class="start-title" id="startTitle">
                 YOUR&nbsp;ENERGY<br />YOUR&nbsp;<span id="startBrandName">MATCH</span>
               </div>
@@ -1481,6 +1531,7 @@
           <div id="question-screens-slot"></div>
           <div class="screen" id="s-reveal">
             <div class="text-scrim">
+              <img id="revealLogo" class="brand-hero-logo" alt="" />
               <div class="reveal-label">THANK YOU</div>
               <div class="reveal-subheading" id="rSubheading">Thanks for taking the Energy Quiz.</div>
             </div>
@@ -1488,6 +1539,7 @@
           </div>
         </div>
       </div>
+      <div class="brand-corner" id="brandCorner"><img id="brandCornerImg" alt="" /></div>
     </div>
 
     <script>
@@ -2598,6 +2650,20 @@
           if (theme.logoUrl && brandLogoImg) {
             brandLogoImg.src = theme.logoUrl;
             brandLogoImg.style.display = "";
+          }
+          if (theme.logoUrl) {
+            var deviceEl = document.querySelector(".device");
+            if (deviceEl) deviceEl.classList.add("has-brand-logo");
+            var setLogo = function (id, display, imgId) {
+              var el = document.getElementById(id);
+              var img = document.getElementById(imgId || id);
+              if (img) img.src = theme.logoUrl;
+              if (el) el.style.display = display;
+            };
+            setLogo("brandWatermark", "flex", "brandWatermarkImg");
+            setLogo("brandCorner", "block", "brandCornerImg");
+            setLogo("startLogo", "block");
+            setLogo("revealLogo", "block");
           }
           if (theme.logoSize && brandLogoImg) {
             brandLogoImg.style.width = theme.logoSize + "px";

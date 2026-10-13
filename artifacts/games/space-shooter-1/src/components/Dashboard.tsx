@@ -1,7 +1,7 @@
 import GameCanvas from "@/components/GameCanvas";
 import Leaderboard from "@/components/Leaderboard";
 import Settings from "@/components/Settings";
-import type { View } from "@/components/Sidebar";
+import type { View } from "@/components/BrandHeader";
 
 interface DashboardProps {
   view: View;
@@ -13,7 +13,7 @@ interface DashboardProps {
  */
 export default function Dashboard({ view }: DashboardProps) {
   return (
-    <div className="fade-in" key={view} style={{ height: "100%" }}>
+    <div className="fade-in" key={view} style={{ height: "100%", minHeight: 0, display: "flex", flexDirection: "column" }}>
       {view === "play" && <GameCanvas />}
       {view === "leaderboard" && <Leaderboard />}
       {view === "settings" && <Settings />}

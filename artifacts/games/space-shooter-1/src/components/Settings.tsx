@@ -3,7 +3,7 @@ import { useGame } from "@/state/GameContext";
 
 const DIFFICULTIES: { id: "easy" | "normal" | "hard"; label: string; desc: string }[] = [
   { id: "easy", label: "Easy", desc: "Slower asteroids, smaller waves" },
-  { id: "normal", label: "Normal", desc: "Balanced challenge for most pilots" },
+  { id: "normal", label: "Normal", desc: "Balanced challenge for most players" },
   { id: "hard", label: "Hard", desc: "Relentless waves, no mercy" },
 ];
 
@@ -39,7 +39,7 @@ export default function Settings() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 18, overflow: "auto" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 18, overflow: "auto", flex: 1, minHeight: 0, alignContent: "start" }}>
         {/* Difficulty */}
         <div className="glass-strong" style={{ padding: 18, borderRadius: 14, gridColumn: "1 / -1" }}>
           <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--text-mute)", marginBottom: 12 }}>

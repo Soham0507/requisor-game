@@ -15,6 +15,12 @@ import { toApiGeneration, pollVideoInBackground } from "../lib/generations";
 
 const router: IRouter = Router();
 
+/** A visitor-supplied xAI key, sent per request; the server's own key takes priority. */
+function userApiKey(req: { header(name: string): string | undefined }): string | undefined {
+  const raw = req.header("x-xai-api-key")?.trim();
+  return raw && raw.length <= 200 ? raw : undefined;
+}
+
 function normalizeDataUri(input: string): string {
   return input.startsWith("data:") ? input : `data:image/jpeg;base64,${input}`;
 }
@@ -61,7 +67,7 @@ router.post("/generations", async (req, res): Promise<void> => {
     .returning();
 
   try {
-    const image = await editImage(normalizeDataUri(parsed.data.photoBase64), scene.imagePrompt);
+    const image = await editImage(normalizeDataUri(parsed.data.photoBase64), scene.imagePrompt, userApiKey(req));
 
     const [updated] = await db
       .update(generationsTable)
@@ -160,7 +166,7 @@ router.post("/generations/:id/video", async (req, res): Promise<void> => {
     // Pass the generated photo as a base64 data URI so xAI animates the actual
     // visitor's image as the first frame (no dependency on public reachability).
     const photoDataUri = `data:${row.photoMime ?? "image/png"};base64,${row.photoData}`;
-    const requestId = await startVideoJob(photoDataUri, scene.videoPrompt);
+    const requestId = await startVideoJob(photoDataUri, scene.videoPrompt, userApiKey(req));
 
     const [updated] = await db
       .update(generationsTable)
@@ -168,7 +174,7 @@ router.post("/generations/:id/video", async (req, res): Promise<void> => {
       .where(eq(generationsTable.id, row.id))
       .returning();
 
-    pollVideoInBackground(row.id, requestId);
+    pollVideoInBackground(row.id, requestId, userApiKey(req));
 
     res.status(202).json(GetGenerationResponse.parse(toApiGeneration(updated)));
   } catch (err) {

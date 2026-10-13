@@ -25,9 +25,8 @@ function segsSVG(prizes, weights, logo) {
     if (logo) {
       const chord = 2 * 128 * Math.sin((g.w * Math.PI) / 360);
       const box = Math.max(14, Math.min(44, chord * 0.82));
-      const pad = box * 0.12, inner = box - pad * 2;
       return `<path d="${wedgePath(200, 200, 184, g.s, g.e)}" fill="${fill}" stroke="#fff" stroke-width="2.5"/>` +
-        `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)})"><rect x="${-box / 2}" y="${-box / 2}" width="${box}" height="${box}" rx="${(box * 0.22).toFixed(1)}" fill="#fff" stroke="rgba(0,0,0,.08)"/><image href="${logo}" x="${-inner / 2}" y="${-inner / 2}" width="${inner}" height="${inner}" preserveAspectRatio="xMidYMid meet"/></g>`;
+        `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)})"><image href="${logo}" x="${-box / 2}" y="${-box / 2}" width="${box}" height="${box}" preserveAspectRatio="xMidYMid meet"/></g>`;
     }
     return `<path d="${wedgePath(200, 200, 184, g.s, g.e)}" fill="${fill}" stroke="#fff" stroke-width="2.5"/>` +
       `<g transform="translate(${ix.toFixed(2)} ${iy.toFixed(2)}) rotate(${g.m.toFixed(2)}) translate(${-sz / 2} ${-sz / 2}) scale(${sz / 24})" stroke="${ink}" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[prizes[i].icon] || ''}</g>`;
