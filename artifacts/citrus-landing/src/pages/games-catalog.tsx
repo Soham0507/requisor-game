@@ -18,7 +18,7 @@ import { EMPTY_FILTERS, FACETS, searchAndFilter, type Filters } from "@/lib/game
 const GAME_PREVIEWS: Record<string, { type: "video" | "image"; src: string; poster?: string; fit?: "contain" }> = {
   "space-shooter-1": { type: "video", src: "/logo/spaceshooter.mp4" },
   "cyber-adventure": { type: "video", src: "/logo/cyber.mp4" },
-  "basketball-shootout": { type: "video", src: "/logo/app1.mp4" },
+  "basketball-shootout": { type: "video", src: "/logo/basketball.mp4" },
   "lexus-energy-quiz": { type: "video", src: "/logo/energy.mp4" },
   "boat-booth": { type: "video", src: "/logo/boat.mp4" },
   "soccer-shootout": { type: "video", src: "/logo/soccer1.mp4", poster: "/logo/soccer.jpg" },

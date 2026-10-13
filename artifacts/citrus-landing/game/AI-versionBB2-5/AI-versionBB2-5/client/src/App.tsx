@@ -2114,19 +2114,15 @@ function GameApp() {
     >
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         {screen === "home" && (
-          brand.bgUrl && !isBgVideo(brand.bgUrl) ? (
+          !brand.bgUrl || !isBgVideo(brand.bgUrl) ? (
             <img
-              src={brand.bgUrl}
+              src={brand.bgUrl ?? `${import.meta.env.BASE_URL}newbb/home.jpg`}
               alt=""
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
             <video
-              src={
-                brand.bgUrl && isBgVideo(brand.bgUrl)
-                  ? brand.bgUrl
-                  : `${import.meta.env.BASE_URL}newbb/home.mp4`
-              }
+              src={brand.bgUrl}
               autoPlay
               muted
               loop

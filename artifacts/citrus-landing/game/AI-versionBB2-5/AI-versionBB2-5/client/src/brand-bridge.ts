@@ -24,7 +24,7 @@ export interface BrandTheme {
   headingColor: string;
   // Landing screen background — currently the one field unique to this
   // game's brand-bridge, since no other game exposes this yet. null falls
-  // back to the built-in /newbb/home.mp4 clip.
+  // back to the built-in /newbb/home.jpg image.
   bgUrl: string | null;
   // Custom uploaded font (woff2/woff/ttf/otf) applied to the brand name and
   // heading text. null falls back to the game's own default font.
