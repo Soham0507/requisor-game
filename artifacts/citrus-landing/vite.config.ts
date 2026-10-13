@@ -72,6 +72,11 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+    // Replit's path router sends these to the API server; mirror that locally.
+    proxy: {
+      '/api': process.env.API_PROXY_TARGET ?? 'http://localhost:8080',
+      '/game-previews': process.env.API_PROXY_TARGET ?? 'http://localhost:8080',
+    },
   },
   preview: {
     port,

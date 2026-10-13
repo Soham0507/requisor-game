@@ -312,7 +312,7 @@ export default function Home() {
             <div className="dev dev-tv">
               <div className="screen">
                 <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                  <source src="/logo/app1.mp4#t=0.1" type="video/mp4" />
+                  <source src="/logo/basketball.mp4#t=0.1" type="video/mp4" />
                 </video>
                 <span className="tag2">Basketball</span>
               </div>
@@ -373,7 +373,7 @@ export default function Home() {
             </div>
             <div className="visual" data-tilt="">
               <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                <source src="/logo/app1.mp4#t=0.1" type="video/mp4" />
+                <source src="/logo/basketball.mp4#t=0.1" type="video/mp4" />
               </video>
               <div className="glass"></div>
               <div className="plate">Basketball Game</div>
