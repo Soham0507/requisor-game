@@ -21,7 +21,7 @@ export function CTA() {
             Want a game like this for your brand?
           </h2>
           <a
-            href="mailto:naveen@requisor.io?subject=Game Inquiry&body=Hi, I’m interested in your booth games."
+            href="mailto:support@requisor.io?subject=Game%20Inquiry&body=Hi%2C%20I%E2%80%99m%20interested%20in%20your%20booth%20games."
             className="inline-block px-10 py-5 bg-primary text-primary-foreground font-bold text-lg rounded-xl
             hover:opacity-90 transition-all
             shadow-lg

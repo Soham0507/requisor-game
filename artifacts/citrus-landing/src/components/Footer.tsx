@@ -27,8 +27,8 @@ export function Footer() {
         <div className="flex items-center gap-4">
           {[
             { icon: <SiX size={18} />, link: "https://x.com/Requisor_AI", label: "RequisorAI on X" },
-            { icon: <SiInstagram size={18} />, link: "#", label: "RequisorAI on Instagram" },
-            { icon: <SiGmail size={18} />, link: "mailto:naveen@requisor.io", label: "Email RequisorAI" },
+            { icon: <SiInstagram size={18} />, link: "https://www.instagram.com/requisor.io/", label: "RequisorAI on Instagram" },
+            { icon: <SiGmail size={18} />, link: "mailto:support@requisor.io", label: "Email RequisorAI" },
             {
               icon: <FaLinkedinIn size={18} />,
               link: "https://www.linkedin.com/company/requisor/",
@@ -38,8 +38,9 @@ export function Footer() {
             <a
               key={i}
               href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              // A mailto link must open in this tab: with target="_blank" the
+              // browser leaves a blank tab behind, which looked like a broken link.
+              {...(item.link.startsWith("mailto:") ? {} : { target: "_blank", rel: "noopener noreferrer" })}
               aria-label={item.label}
               className="group relative w-11 h-11 rounded-xl bg-card border border-border
               flex items-center justify-center text-muted-foreground

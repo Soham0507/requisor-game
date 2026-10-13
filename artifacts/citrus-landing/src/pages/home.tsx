@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/hooks/use-theme";
+import { Footer } from "@/components/Footer";
 import "./landing.css";
 
 // Transcribed from a static design mockup ("Immerse by RequisorAI"). Markup
@@ -239,6 +240,7 @@ export default function Home() {
   }
 
   return (
+    <>
     <div className="lp" ref={rootRef} data-theme={theme === "light" ? "light" : undefined} id="top">
       <nav>
         <div className="nav-in">
@@ -302,7 +304,6 @@ export default function Home() {
               <span className="tag">Basketball</span>
               <span className="tag">Soccer</span>
               <span className="tag">Cyber Runner</span>
-              <span className="tag">Lazer Shooter</span>
               <span className="tag">Retro Space Shooter</span>
               <span className="tag">Gamification</span>
             </div>
@@ -313,7 +314,7 @@ export default function Home() {
                 <video className="gvid" preload="auto" autoPlay loop muted playsInline>
                   <source src="/logo/app1.mp4#t=0.1" type="video/mp4" />
                 </video>
-                <span className="tag2">AppViewX · Basketball</span>
+                <span className="tag2">Basketball</span>
               </div>
             </div>
             <div className="dev dev-tab">
@@ -362,27 +363,26 @@ export default function Home() {
 
           <article className="xp rv">
             <div>
-              <div className="cat"><i style={{ background: "#FD3629" }}></i>AppViewX · Cybersecurity</div>
+              <div className="cat"><i style={{ background: "#FD3629" }}></i>Gesture sports · Trade shows</div>
               <h3>Basketball Game</h3>
               <p className="story">
                 Fast, gesture-controlled hoops that attendees keep coming back to beat their score. A floor-visible
                 leaderboard drives repeat plays, every player registers so you capture the lead, and play metrics
                 show your results.
               </p>
-              <div className="links"><a className="go" href="https://appviewx6.requisor.io/" target="_blank" rel="noopener">Play the demo →</a></div>
             </div>
             <div className="visual" data-tilt="">
               <video className="gvid" preload="auto" autoPlay loop muted playsInline>
                 <source src="/logo/app1.mp4#t=0.1" type="video/mp4" />
               </video>
               <div className="glass"></div>
-              <div className="plate">Deployed · AppViewX Basketball</div>
+              <div className="plate">Basketball Game</div>
             </div>
           </article>
 
           <article className="xp rv">
             <div>
-              <div className="cat"><i style={{ background: "#FEC553" }}></i>Peak Technology · Endless runner</div>
+              <div className="cat"><i style={{ background: "#FEC553" }}></i>Endless runner</div>
               <h3>Cyber Runner</h3>
               <p className="story">
                 A cyber-themed endless runner: dodge phishing attacks, block malware, stay ahead of the breach. It
@@ -396,13 +396,13 @@ export default function Home() {
                 <source src="/logo/cyber.mp4#t=0.1" type="video/mp4" />
               </video>
               <div className="glass"></div>
-              <div className="plate">Deployed · Peak Technology Cyber Runner</div>
+              <div className="plate">Cyber Runner</div>
             </div>
           </article>
 
           <article className="xp rv">
             <div>
-              <div className="cat"><i style={{ background: "#FEC553" }}></i>Peak Technology · Reused engine</div>
+              <div className="cat"><i style={{ background: "#FEC553" }}></i>Gesture sports · Reused engine</div>
               <h3>Soccer Game</h3>
               <p className="story">
                 The same proven engine as our basketball game, reskinned as a fast-paced soccer match. Get a second
@@ -414,27 +414,7 @@ export default function Home() {
                 <source src="/logo/soccer1.mp4#t=0.1" type="video/mp4" />
               </video>
               <div className="glass"></div>
-              <div className="plate">Deployed · Peak Technology Soccer</div>
-            </div>
-          </article>
-
-          <article className="xp rv">
-            <div>
-              <div className="cat"><i style={{ background: "#FEC553" }}></i>Peak Technology · Reflex arcade</div>
-              <h3>Lazer Shooter</h3>
-              <p className="story">
-                An instant-engagement arcade shooter that pulls a crowd from across the hall. Short rounds keep the
-                line moving, so more visitors play, more leads get captured, and score data shows the traffic it
-                drove to your booth.
-              </p>
-              <div className="links"><a className="go" href="https://ai.studio/apps/7168d6f7-e6cb-45a2-bd22-e6d113ceb891?fullscreenApplet=true" target="_blank" rel="noopener">Play the demo →</a></div>
-            </div>
-            <div className="visual" data-tilt="">
-              <video className="gvid" preload="auto" autoPlay loop muted playsInline>
-                <source src="/logo/lazer.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">Deployed · Peak Technology Lazer Shooter</div>
+              <div className="plate">Soccer Game</div>
             </div>
           </article>
 
@@ -830,12 +810,8 @@ export default function Home() {
         </div>
       </section>
 
-      <footer>
-        <div className="wrap">
-          <span>Activate is a RequisorAI product · Milwaukee, WI</span>
-          <a href="https://requisor.io" target="_blank" rel="noopener">requisor.io</a>
-        </div>
-      </footer>
     </div>
+    <Footer />
+    </>
   );
 }
