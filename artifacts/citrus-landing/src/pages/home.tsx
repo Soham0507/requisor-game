@@ -239,6 +239,36 @@ export default function Home() {
     setNote({ text: "Opening your email client — send it through and we’ll be in touch.", ok: true });
   }
 
+  // Showcase video: plays itself (muted, looping) while it is on screen and
+  // pauses off screen; the frame animates in the first time it is revealed.
+  const showcaseFrameRef = useRef<HTMLDivElement>(null);
+  const showcaseVideoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const frame = showcaseFrameRef.current;
+    const video = showcaseVideoRef.current;
+    if (!frame || !video) return;
+    if (typeof IntersectionObserver === "undefined") {
+      frame.classList.add("is-in");
+      void video.play().catch(() => {});
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            frame.classList.add("is-in");
+            void video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(frame);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <>
     <div className="lp" ref={rootRef} data-theme={theme === "light" ? "light" : undefined} id="top">
@@ -347,6 +377,29 @@ export default function Home() {
             Custom interactive experiences used to mean long timelines and bloated budgets. Activate skips both.
             Attendees get something worth stopping for, and you get the lead data and engagement metrics to prove it
             worked — at a fraction of the cost of a custom build.
+          </div>
+        </div>
+      </section>
+
+      <section className="showcase" id="showcase">
+        <div className="wrap">
+          <div className="sec-head rv">
+            <h2>See Activate in action.</h2>
+            <p>A short look at how a ready-made game becomes your branded event experience.</p>
+          </div>
+          <div className="showcase-frame" ref={showcaseFrameRef}>
+            <video
+              ref={showcaseVideoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster="/logo/showcase-poster.jpg"
+              aria-label="Activate product overview video"
+            >
+              <source src="/logo/showcase.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </section>
