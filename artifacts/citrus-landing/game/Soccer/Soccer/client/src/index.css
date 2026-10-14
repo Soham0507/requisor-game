@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* ===== Peak Technologies Brand Fonts =====
+/* ===== Fonts =====
  * One common default font for the whole game: Inter (Google Fonts).
  * Inter Bold / Medium -> Google Fonts
  */
@@ -58,7 +58,7 @@ body {
 }
 
 :root {
-  /* ===== Peak Technologies Palette =====
+  /* ===== Palette =====
    * Yellow (background primary)  #FFBF40
    * Rich Black (copy / accent)   #1C1C1C
    * Red (secondary)              #E42E20
@@ -78,18 +78,18 @@ body {
   --popover: 41 100% 63%;
   --popover-foreground: 0 0% 11%;
 
-  /* Peak Red */
+  /* Red */
   --primary: 4 78% 51%;
   --primary-foreground: 0 0% 100%;
 
-  /* Peak Yellow used as secondary surface */
+  /* Yellow used as secondary surface */
   --secondary: 41 100% 63%;
   --secondary-foreground: 0 0% 11%;
 
   --muted: 0 0% 91%;
   --muted-foreground: 0 0% 38%;
 
-  /* Peak Blue 01 */
+  /* Blue 01 */
   --accent: 218 56% 52%;
   --accent-foreground: 0 0% 100%;
 
@@ -102,22 +102,22 @@ body {
 
   --radius: 0.5rem;
 
-  /* Peak palette tokens for inline use */
-  --peak-yellow: #FFBF40;
-  --peak-yellow-soft: #FFD473;
-  --peak-black: #1C1C1C;
-  --peak-red: #E42E20;
-  --peak-orange: #FF6021;
-  --peak-grey: #A1A1A1;
-  --peak-blue-01: #3A6CD0;
-  --peak-blue-02: #6286C9;
-  --peak-blue-03: #99B3E1;
+  /* Palette tokens for inline use */
+  --sc-yellow: #FFBF40;
+  --sc-yellow-soft: #FFD473;
+  --sc-black: #1C1C1C;
+  --sc-red: #E42E20;
+  --sc-orange: #FF6021;
+  --sc-grey: #A1A1A1;
+  --sc-blue-01: #3A6CD0;
+  --sc-blue-02: #6286C9;
+  --sc-blue-03: #99B3E1;
 }
 
 body {
   @apply bg-background text-foreground font-sans antialiased;
-  background-color: var(--peak-yellow);
-  color: var(--peak-black);
+  background-color: var(--sc-yellow);
+  color: var(--sc-black);
 }
 
 /* Custom Utilities */
@@ -142,22 +142,22 @@ body {
     text-shadow: 0 0 10px hsla(var(--primary), 0.5);
   }
 
-  /* Peak gradient text (red -> orange) */
+  /* Gradient text (red -> orange) */
   .text-gradient-brand {
-    background: linear-gradient(135deg, var(--peak-red) 0%, var(--peak-orange) 100%);
+    background: linear-gradient(135deg, var(--sc-red) 0%, var(--sc-orange) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .bg-gradient-brand {
-    background: linear-gradient(135deg, var(--peak-red) 0%, var(--peak-orange) 100%);
+    background: linear-gradient(135deg, var(--sc-red) 0%, var(--sc-orange) 100%);
   }
 
   /* Yellow surface panel */
   .glass-panel {
     background: linear-gradient(135deg, rgba(255,191,64,0.95), rgba(255,212,115,0.92));
     backdrop-filter: blur(12px);
-    border: 2px solid var(--peak-black);
+    border: 2px solid var(--sc-black);
   }
 
   /* Rich black panel for over-video HUD */
@@ -167,33 +167,21 @@ body {
     border: 1px solid rgba(255, 191, 64, 0.35);
   }
 
-  /* Peak tech-grid background motif */
-  .bg-peak-grid {
-    background-color: var(--peak-yellow);
+  /* Grid background motif */
+  .bg-grid-yellow {
+    background-color: var(--sc-yellow);
     background-image:
       linear-gradient(rgba(28,28,28,0.08) 1px, transparent 1px),
       linear-gradient(90deg, rgba(28,28,28,0.08) 1px, transparent 1px);
     background-size: 32px 32px;
   }
 
-  .bg-peak-grid-dark {
-    background-color: var(--peak-black);
+  .bg-grid-dark {
+    background-color: var(--sc-black);
     background-image:
       linear-gradient(rgba(255,191,64,0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,191,64,0.06) 1px, transparent 1px);
     background-size: 32px 32px;
-  }
-
-  /* Bracketed brand label (e.g. [ LIVE ]) — Peak signature motif */
-  .peak-bracket::before {
-    content: "[ ";
-    color: var(--peak-red);
-    font-weight: 900;
-  }
-  .peak-bracket::after {
-    content: " ]";
-    color: var(--peak-red);
-    font-weight: 900;
   }
 }
 

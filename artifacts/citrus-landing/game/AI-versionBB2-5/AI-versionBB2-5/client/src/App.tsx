@@ -233,18 +233,19 @@ function SuccessRate({ made, taken }: { made: number; taken: number }) {
   );
 }
 
-/** The customer's logo as a 50% opacity watermark covering the whole HUD box (score, shot clock). Renders nothing until a logo is uploaded. */
+/**
+ * The customer's logo as the top half of a HUD box (score, shot clock): the
+ * image fills the area edge to edge and is cropped to fit, on its own, with the
+ * number below it. Renders nothing until a logo is uploaded, so the box keeps
+ * its original single-row height. Shorter on phones so the boxes stay compact.
+ */
 function BoxLogo() {
   const brand = useBrand();
   if (!brand.logoUrl) return null;
   return (
-    <img
-      src={brand.logoUrl}
-      alt=""
-      aria-hidden="true"
-      className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-      style={{ opacity: 0.5 }}
-    />
+    <div className="w-full h-[56px] sm:h-[96px] shrink-0 overflow-hidden bg-white/5" aria-hidden="true" data-testid="box-logo">
+      <img src={brand.logoUrl} alt="" className="block w-full h-full object-cover" />
+    </div>
   );
 }
 
@@ -253,12 +254,21 @@ function Logo() {
   return (
     <div className="flex items-center gap-2">
       {brand.logoUrl ? (
-        <img
-          src={brand.logoUrl}
-          alt={brand.brandName}
-          className="mr-2 object-contain"
-          style={{ width: brand.logoSize, height: brand.logoSize }}
-        />
+        <>
+          <img
+            src={brand.logoUrl}
+            alt=""
+            className="mr-2 object-contain"
+            style={{ height: brand.logoSize, width: "auto", maxWidth: brand.logoSize * 3 }}
+          />
+          <img
+            src={brand.logoUrl}
+            alt=""
+            data-testid="nav-logo-left-2"
+            className="mr-2 object-contain hidden md:block"
+            style={{ height: brand.logoSize, width: "auto", maxWidth: brand.logoSize * 3 }}
+          />
+        </>
       ) : (
         <div
           className="mr-2 rounded-md flex items-center justify-center flex-shrink-0"
@@ -393,21 +403,6 @@ const HomeScreen = ({
           transition={{ delay: 0.2 }}
           className="flex flex-col w-full items-center justify-center gap-4"
         >
-          <span
-            className="uppercase tracking-[0.2em] font-semibold mb-2"
-            style={{ fontSize: brand.headingSize, color: brand.headingColor, fontFamily: "var(--brand-font, inherit)" }}
-          >
-            {brand.heading}
-          </span>
-          {brand.tagline && (
-            <p
-              className="text-white/80 text-base md:text-lg tracking-wide text-center max-w-xl"
-              style={{ fontFamily: "var(--brand-font, inherit)" }}
-              data-testid="text-tagline"
-            >
-              {brand.tagline}
-            </p>
-          )}
           <Button
             onClick={onStart}
             variant="none"
@@ -1255,31 +1250,33 @@ const GameScreen = ({
           </AnimatePresence>
 
           {/* Score - Fixed Top Left */}
-          <div className="fixed top-35 left-24 z-40">
-            <div className="relative overflow-hidden flex flex-col items-center justify-center px-7 py-4 rounded-xl bg-slate-900/90 backdrop-blur-sm border  min-w-[130px]">
+          <div className="fixed top-[88px] sm:top-35 left-3 sm:left-24 z-40">
+            <div className="overflow-hidden flex flex-col items-stretch rounded-xl bg-slate-900/90 backdrop-blur-sm border w-[116px] sm:w-[170px]">
               <BoxLogo />
-              <div className="relative text-[15px] text-white uppercase font-semibold tracking-wider">
-                Score
+              <div className="flex flex-col items-center justify-center px-3 sm:px-7 py-2.5 sm:py-4">
+                <div className="text-[11px] sm:text-[15px] text-white uppercase font-semibold tracking-wider">
+                  Score
+                </div>
+                <motion.div
+                  key={score}
+                  initial={score > 0 ? { scale: 1.3, color: "#4ADE80" } : {}}
+                  animate={{ scale: 1, color: "#FFFFFF" }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="text-3xl sm:text-5xl font-display text-white tabular-nums"
+                  style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                  }}
+                >
+                  {score.toString().padStart(3, "0")}
+                </motion.div>
               </div>
-              <motion.div
-                key={score}
-                initial={score > 0 ? { scale: 1.3, color: "#4ADE80" } : {}}
-                animate={{ scale: 1, color: "#FFFFFF" }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative text-5xl font-display text-white tabular-nums"
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                }}
-              >
-                {score.toString().padStart(3, "0")}
-              </motion.div>
             </div>
           </div>
 
           {/* Shot Clock - Fixed Top Right */}
-          <div className="fixed top-35 right-24 z-40">
+          <div className="fixed top-[88px] sm:top-35 right-3 sm:right-24 z-40">
             <div
-              className={`relative overflow-hidden flex flex-col items-center justify-center px-5 py-4 rounded-xl bg-slate-900/90 backdrop-blur-sm min-w-[130px] border ${timeLeft <= 10 ? "border-red-500" : ""}`}
+              className={`overflow-hidden flex flex-col items-stretch rounded-xl bg-slate-900/90 backdrop-blur-sm w-[116px] sm:w-[170px] border ${timeLeft <= 10 ? "border-red-500" : ""}`}
               style={
                 timeLeft <= 10
                   ? { boxShadow: "0 0 30px rgba(239,68,68,1)" }
@@ -1287,14 +1284,16 @@ const GameScreen = ({
               }
             >
               <BoxLogo />
-              <div className="relative text-[15px] text-white uppercase font-bold tracking-wider">
-                Shot Clock
-              </div>
-              <div
-                className={`relative text-5xl font-semibold tabular-nums ${timeLeft <= 10 ? "text-red-500" : "text-white"}`}
-                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-              >
-                :{timeLeft.toString().padStart(2, "0")}
+              <div className="flex flex-col items-center justify-center px-3 sm:px-5 py-2.5 sm:py-4">
+                <div className="text-[11px] sm:text-[15px] text-white uppercase font-bold tracking-wider">
+                  Shot Clock
+                </div>
+                <div
+                  className={`text-3xl sm:text-5xl font-semibold tabular-nums ${timeLeft <= 10 ? "text-red-500" : "text-white"}`}
+                  style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+                >
+                  :{timeLeft.toString().padStart(2, "0")}
+                </div>
               </div>
             </div>
           </div>
@@ -2083,7 +2082,7 @@ function GameApp() {
     shotsMade: 0,
     outagesPrevented: 0,
   });
-  const isOnline = useOnlineStatus();
+  useOnlineStatus();
 
   const handleStartGame = () => {
     initAudio();
@@ -2137,10 +2136,23 @@ function GameApp() {
       <div className="relative z-10 w-full h-screen flex flex-col">
         {/* Navigation / Header - Minimal */}
         <header
-          className={`px-6 flex justify-between items-center z-50 border-b border-[rgba(75,0,255,0.2)] ${brand.navbarColor ? "" : "bg-black"}`}
+          className={`relative px-6 flex justify-between items-center z-50 border-b border-[rgba(75,0,255,0.2)] ${brand.navbarColor ? "" : "bg-black"}`}
           style={{ height: Math.max(48, brand.logoSize + 16), ...(brand.navbarColor ? { backgroundColor: brand.navbarColor } : {}) }}
         >
           <Logo />
+
+          {/* Game title, centered in the navigation bar */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 max-w-[58%] truncate text-center pointer-events-none uppercase font-extrabold tracking-[0.06em]"
+            data-testid="nav-title"
+            style={{
+              fontSize: Math.min(Math.max(brand.headingSize, 16), 30),
+              color: brand.headingColor,
+              fontFamily: "var(--brand-font, 'Inter'), sans-serif",
+            }}
+          >
+            {brand.heading}
+          </div>
 
           {/* <div className="flex-1 overflow-hidden " style={{ height: "48px" }}>
             <div
@@ -2172,13 +2184,35 @@ function GameApp() {
                 Exit
               </button>
             )}
-            <div className="w-px h-4 bg-white/10 hidden md:block" />
-            <div className="hidden md:flex items-center gap-2 text-xs font-medium text-slate-400">
-              <span
-                className={`w-2 h-2 rounded-full ${isOnline ? "bg-green-500 animate-pulse" : "bg-yellow-500"}`}
-              />
-              {isOnline ? "System Operational" : "Offline Mode"}
-            </div>
+            {/* The customer's logo sits where the connection status used to be */}
+            {brand.logoUrl && (
+              <>
+                <img
+                  src={brand.logoUrl}
+                  alt=""
+                  data-testid="nav-logo-right"
+                  className="hidden sm:block"
+                  style={{
+                    height: Math.max(32, brand.logoSize),
+                    width: "auto",
+                    maxWidth: Math.max(32, brand.logoSize) * 3,
+                    objectFit: "contain",
+                  }}
+                />
+                <img
+                  src={brand.logoUrl}
+                  alt=""
+                  data-testid="nav-logo-right-2"
+                  className="hidden md:block"
+                  style={{
+                    height: Math.max(32, brand.logoSize),
+                    width: "auto",
+                    maxWidth: Math.max(32, brand.logoSize) * 3,
+                    objectFit: "contain",
+                  }}
+                />
+              </>
+            )}
           </div>
         </header>
 

@@ -1,27 +1,19 @@
-const CACHE_VERSION = 'avx-v11';
+const CACHE_VERSION = 'soccer-v1';
 
 const PRECACHE_URLS = [
   '/',
-  '/favicon.png',
-  '/avx-icon-overlay.png',
-  '/avx-logo-ticker.png',
-  '/ribbon-banner.png',
-  '/fonts/digital-7.ttf',
-  '/ball/step2.jpg',
-  '/ball/step3.jpg',
-  '/ball/sport-ball-isolated.png',
+  '/favicon.svg',
   '/ball/ball.png',
-  '/bb3/img1_opt.jpeg',
+  '/ball/step1.png',
+  '/ball/step2.png',
+  '/ball/step3.png',
   '/hand/hand.png',
 ];
 
 const VIDEO_URLS = [
-  '/newbb/position.mp4',
-  '/newbb/hit1.mp4',
-  '/newbb/hit2.mp4',
-  '/newbb/hit3.mp4',
-  '/newbb/miss.mp4',
-  '/newbb/last.mp4',
+  '/soccer/position.mp4',
+  '/soccer/hit2.mp4',
+  '/soccer/miss1.mp4',
 ];
 
 self.addEventListener('install', (event) => {

@@ -198,32 +198,42 @@ function SuccessRate({ made, taken }: { made: number; taken: number }) {
   );
 }
 
-/** The customer's logo as a 50% opacity watermark covering the whole HUD box (score, shot clock). Renders nothing until a logo is uploaded. */
+/**
+ * The customer's logo as the top half of a HUD box (score, shot clock): the
+ * image fills the area edge to edge and is cropped to fit, on its own, with the
+ * number below it. Renders nothing until a logo is uploaded, so the box keeps
+ * its original single-row height. Shorter on phones so the boxes stay compact.
+ */
 function BoxLogo() {
   const brand = useBrand();
   if (!brand.logoUrl) return null;
   return (
-    <img
-      src={brand.logoUrl}
-      alt=""
-      aria-hidden="true"
-      className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-      style={{ opacity: 0.5 }}
-    />
+    <div className="w-full h-[64px] sm:h-[128px] shrink-0 overflow-hidden bg-white/5" aria-hidden="true" data-testid="box-logo">
+      <img src={brand.logoUrl} alt="" className="block w-full h-full object-cover" />
+    </div>
   );
 }
 
 function Logo() {
   const brand = useBrand();
   return (
-    <div className="flex items-center absolute left-[45%] top-1/2 -translate-y-1/2">
+    <div className="flex items-center">
       {brand.logoUrl ? (
-        <img
-          src={brand.logoUrl}
-          alt={brand.brandName}
-          className="mr-2 object-contain"
-          style={{ width: brand.logoSize, height: brand.logoSize }}
-        />
+        <>
+          <img
+            src={brand.logoUrl}
+            alt=""
+            className="mr-2 object-contain"
+            style={{ height: brand.logoSize, width: "auto", maxWidth: brand.logoSize * 3 }}
+          />
+          <img
+            src={brand.logoUrl}
+            alt=""
+            data-testid="nav-logo-left-2"
+            className="mr-2 object-contain hidden md:block"
+            style={{ height: brand.logoSize, width: "auto", maxWidth: brand.logoSize * 3 }}
+          />
+        </>
       ) : (
         <div
           className="mr-2 rounded-md flex items-center justify-center flex-shrink-0"
@@ -246,7 +256,7 @@ const LeaderboardTicker = () => {
     queryKey: ["/api/scores", { limit: 20 }],
     queryFn: async () => {
       if (!navigator.onLine) {
-        const cached = localStorage.getItem("avx-leaderboard");
+        const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) return JSON.parse(cached);
         return [];
       }
@@ -254,10 +264,10 @@ const LeaderboardTicker = () => {
         const res = await fetch("/api/scores?limit=20");
         if (!res.ok) throw new Error("Failed to fetch scores");
         const data = await res.json();
-        localStorage.setItem("avx-leaderboard", JSON.stringify(data));
+        localStorage.setItem("soccer-leaderboard", JSON.stringify(data));
         return data;
       } catch {
-        const cached = localStorage.getItem("avx-leaderboard");
+        const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) return JSON.parse(cached);
         return [];
       }
@@ -336,32 +346,6 @@ const LeaderboardTicker = () => {
   );
 };
 
-// --- Peak brand motif: directional arrow extracted from the "A" in PEAK ---
-const PeakArrow = ({
-  size = 24,
-  color = "#E42E20",
-  className = "",
-}: {
-  size?: number;
-  color?: string;
-  className?: string;
-}) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    className={className}
-    aria-hidden="true"
-    data-testid="peak-arrow"
-  >
-    <path
-      d="M2 20 L12 4 L22 20 L17 20 L12 12 L7 20 Z"
-      fill={color}
-    />
-  </svg>
-);
-
 // --- Screens ---
 
 const HomeScreen = ({
@@ -379,7 +363,7 @@ const HomeScreen = ({
       exit={{ opacity: 0 }}
       className="h-screen w-screen overflow-hidden relative z-10 flex flex-col items-center justify-center"
     >
-      {/* Peak yellow brand tint over background */}
+      {/* Warm tint over the background */}
       <div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -387,33 +371,6 @@ const HomeScreen = ({
             "linear-gradient(180deg, rgba(255,191,64,0.55) 0%, rgba(255,191,64,0.18) 38%, rgba(28,28,28,0.35) 75%, rgba(28,28,28,0.55) 100%)",
         }}
       />
-
-      {/* Brand Label */}
-      <div
-        className="absolute top-[12vh] [@media(max-height:560px)]:top-[3vh] left-1/2 -translate-x-1/2 text-center z-10"
-        data-testid="brand-label-home"
-      >
-        <h1
-          className="text-5xl md:text-7xl lg:text-8xl [@media(max-height:560px)]:text-4xl [@media(max-height:560px)]:md:text-5xl leading-none"
-          style={{
-            fontFamily: "var(--brand-font, 'Inter'), sans-serif",
-            fontWeight: 900,
-            color: brand.headingColor,
-            letterSpacing: "0.02em",
-            textShadow: "0 4px 24px rgba(0,0,0,0.45)",
-          }}
-        >
-          {brand.heading.toUpperCase()}
-        </h1>
-        {brand.tagline && (
-          <div
-            className="mt-4 text-sm md:text-base tracking-[0.35em] uppercase"
-            style={{ color: "#FFFFFF", fontWeight: 600, opacity: 0.92, fontFamily: "var(--brand-font, inherit)" }}
-          >
-            {brand.tagline}
-          </div>
-        )}
-      </div>
 
       {/* Center Content */}
       <div className="relative flex items-center justify-center">
@@ -1087,7 +1044,7 @@ const GameScreen = ({
               {/* Vertical Power Bar */}
               <div className="flex flex-col items-center gap-2">
                 <div
-                  className="peak-bracket text-[10px] font-black text-[#FFBF40] uppercase tracking-[0.25em]"
+                  className="text-[10px] font-black text-[#FFBF40] uppercase tracking-[0.25em]"
                   style={{ textShadow: "0 0 8px rgba(0,0,0,0.8)" }}
                 >
                   Power
@@ -1100,7 +1057,7 @@ const GameScreen = ({
                   }}
                   data-testid="power-bar"
                 >
-                  {/* Goal zone band (150-170°) — Peak yellow */}
+                  {/* Goal zone band (150-170°) */}
                   <div
                     className="absolute left-0 right-0 pointer-events-none"
                     style={{
@@ -1120,7 +1077,7 @@ const GameScreen = ({
                       style={{ bottom: `${pct}%` }}
                     />
                   ))}
-                  {/* Fill — Peak red (extend) → orange (almost) → yellow (goal) */}
+                  {/* Fill — red (extend) → orange (almost) → yellow (goal) */}
                   <div
                     className="absolute bottom-0 left-[3px] right-[3px] rounded-b-md transition-[height] duration-100 ease-out"
                     style={{
@@ -1153,7 +1110,7 @@ const GameScreen = ({
 
               {/* Knee Angle Panel */}
               <div className="panel-dark flex flex-col items-center gap-2 px-4 py-3 rounded-xl">
-                <div className="peak-bracket text-[10px] font-black text-[#FFBF40] uppercase tracking-[0.25em]">
+                <div className="text-[10px] font-black text-[#FFBF40] uppercase tracking-[0.25em]">
                   Knee Angle
                 </div>
                 <div
@@ -1227,36 +1184,36 @@ const GameScreen = ({
           </AnimatePresence>
 
           {/* Score - Fixed Top Left */}
-          <div className="fixed top-35 left-24 z-40">
-            <div className="panel-dark relative overflow-hidden flex flex-col items-center justify-center px-7 py-4 rounded-xl min-w-[140px]" data-testid="panel-score">
+          <div className="fixed top-[88px] sm:top-35 left-3 sm:left-24 z-40">
+            <div className="panel-dark overflow-hidden flex flex-col items-stretch rounded-xl w-[120px] sm:w-[180px]" data-testid="panel-score">
               <BoxLogo />
-              <div className="relative flex items-center gap-2 mb-1">
-                <PeakArrow size={12} color="#E42E20" />
-                <span
-                  className="peak-bracket text-[12px] text-[#FFBF40] uppercase font-black tracking-[0.3em]"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+              <div className="flex flex-col items-center justify-center px-3 sm:px-7 py-2.5 sm:py-4">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
+                  <span
+                    className="text-[10px] sm:text-[12px] text-[#FFBF40] uppercase font-black tracking-[0.2em] sm:tracking-[0.3em]"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Score
+                  </span>
+                </div>
+                <motion.div
+                  key={score}
+                  initial={score > 0 ? { scale: 1.3, color: "#FFBF40" } : {}}
+                  animate={{ scale: 1, color: "#FFFFFF" }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="font-druk text-4xl sm:text-6xl tabular-nums leading-none"
+                  data-testid="text-score"
                 >
-                  Score
-                </span>
-                <PeakArrow size={12} color="#E42E20" className="rotate-180" />
+                  {score.toString().padStart(3, "0")}
+                </motion.div>
               </div>
-              <motion.div
-                key={score}
-                initial={score > 0 ? { scale: 1.3, color: "#FFBF40" } : {}}
-                animate={{ scale: 1, color: "#FFFFFF" }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative font-druk text-6xl tabular-nums leading-none"
-                data-testid="text-score"
-              >
-                {score.toString().padStart(3, "0")}
-              </motion.div>
             </div>
           </div>
 
           {/* Shot Clock - Fixed Top Right */}
-          <div className="fixed top-35 right-24 z-40">
+          <div className="fixed top-[88px] sm:top-35 right-3 sm:right-24 z-40">
             <div
-              className={`panel-dark relative overflow-hidden flex flex-col items-center justify-center px-5 py-4 rounded-xl min-w-[140px] ${timeLeft <= 10 ? "border-[#E42E20]" : ""}`}
+              className={`panel-dark overflow-hidden flex flex-col items-stretch rounded-xl w-[120px] sm:w-[180px] ${timeLeft <= 10 ? "border-[#E42E20]" : ""}`}
               style={
                 timeLeft <= 10
                   ? {
@@ -1268,21 +1225,21 @@ const GameScreen = ({
               data-testid="panel-shot-clock"
             >
               <BoxLogo />
-              <div className="relative flex items-center gap-2 mb-1">
-                <PeakArrow size={12} color="#E42E20" />
-                <span
-                  className="peak-bracket text-[12px] text-[#FFBF40] uppercase font-black tracking-[0.3em]"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+              <div className="flex flex-col items-center justify-center px-3 sm:px-5 py-2.5 sm:py-4">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
+                  <span
+                    className="text-[10px] sm:text-[12px] text-[#FFBF40] uppercase font-black tracking-[0.2em] sm:tracking-[0.3em]"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
+                  >
+                    Shot Clock
+                  </span>
+                </div>
+                <div
+                  className={`font-druk text-4xl sm:text-6xl tabular-nums leading-none ${timeLeft <= 10 ? "text-[#E42E20]" : "text-white"}`}
+                  data-testid="text-shot-clock"
                 >
-                  Shot Clock
-                </span>
-                <PeakArrow size={12} color="#E42E20" className="rotate-180" />
-              </div>
-              <div
-                className={`relative font-druk text-6xl tabular-nums leading-none ${timeLeft <= 10 ? "text-[#E42E20]" : "text-white"}`}
-                data-testid="text-shot-clock"
-              >
-                :{timeLeft.toString().padStart(2, "0")}
+                  :{timeLeft.toString().padStart(2, "0")}
+                </div>
               </div>
             </div>
           </div>
@@ -1386,11 +1343,9 @@ const GameScreen = ({
               }}
               data-testid="button-shoot"
             >
-              <PeakArrow size={18} color="#FFFFFF" />
               <span className="relative z-10">
                 {isShooting ? "Shooting..." : "Kick"}
               </span>
-              <PeakArrow size={18} color="#FFFFFF" className="rotate-180" />
             </button>
           </div>
         </div>
@@ -1415,8 +1370,8 @@ const ResultsScreen = ({
     stats.score > 50
       ? "Champion"
       : stats.score > 20
-        ? "Production Pro"
-        : "Stagehand";
+        ? "Pro"
+        : "Rookie";
   const [showNameModal, setShowNameModal] = useState(true);
   const [playerInfo, setPlayerInfo] = useState({
     name: "",
@@ -1432,7 +1387,7 @@ const ResultsScreen = ({
     queryKey: ["/api/scores", { limit: 50 }],
     queryFn: async () => {
       if (!navigator.onLine) {
-        const cached = localStorage.getItem("avx-leaderboard");
+        const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) {
           const data = JSON.parse(cached);
           if (data.length > 0) return data;
@@ -1445,21 +1400,21 @@ const ResultsScreen = ({
         const serverData = await response.json();
 
         const pending = JSON.parse(
-          localStorage.getItem("avx-pending-sync") || "[]",
+          localStorage.getItem("soccer-pending-sync") || "[]",
         );
         const localUnsyncedIds = pending.map((p: any) => p.localId);
         const localScores = JSON.parse(
-          localStorage.getItem("avx-leaderboard") || "[]",
+          localStorage.getItem("soccer-leaderboard") || "[]",
         ).filter((s: any) => localUnsyncedIds.includes(s.id));
 
         const merged = [...serverData, ...localScores];
         merged.sort((a: any, b: any) => b.score - a.score);
         const deduped = merged.slice(0, 100);
 
-        localStorage.setItem("avx-leaderboard", JSON.stringify(deduped));
+        localStorage.setItem("soccer-leaderboard", JSON.stringify(deduped));
         return deduped;
       } catch {
-        const cached = localStorage.getItem("avx-leaderboard");
+        const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) return JSON.parse(cached);
         return [];
       }
@@ -1478,25 +1433,25 @@ const ResultsScreen = ({
 
       const addToPending = () => {
         const pending = JSON.parse(
-          localStorage.getItem("avx-pending-sync") || "[]",
+          localStorage.getItem("soccer-pending-sync") || "[]",
         );
         pending.push({
           data: scoreData,
           localId: localScore.id,
           timestamp: Date.now(),
         });
-        localStorage.setItem("avx-pending-sync", JSON.stringify(pending));
+        localStorage.setItem("soccer-pending-sync", JSON.stringify(pending));
       };
       const addToLocalLeaderboard = () => {
         const cached = JSON.parse(
-          localStorage.getItem("avx-leaderboard") || "[]",
+          localStorage.getItem("soccer-leaderboard") || "[]",
         );
         const exists = cached.some((s: any) => s.id === localScore.id);
         if (!exists) {
           cached.push(localScore);
           cached.sort((a: any, b: any) => b.score - a.score);
           localStorage.setItem(
-            "avx-leaderboard",
+            "soccer-leaderboard",
             JSON.stringify(cached.slice(0, 100)),
           );
         }
@@ -1585,11 +1540,9 @@ const ResultsScreen = ({
                 className="flex items-center justify-center gap-2 text-[#1C1C1C] text-xs font-bold uppercase tracking-widest mb-3"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
-                <PeakArrow size={14} color="#E42E20" />
                 <span style={{ color: "#E42E20" }}>[</span>
                 <span>Submit Your Score</span>
                 <span style={{ color: "#E42E20" }}>]</span>
-                <PeakArrow size={14} color="#E42E20" className="rotate-180" />
               </div>
               <h3
                 className="text-3xl font-bold text-[#1C1C1C] mb-2 text-center tracking-tight"
@@ -1725,11 +1678,9 @@ const ResultsScreen = ({
             className="flex items-center justify-center gap-3 text-[#FFBF40] text-xl font-bold uppercase tracking-widest mb-2"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            <PeakArrow size={20} color="#E42E20" />
             <span style={{ color: "#E42E20" }}>[</span>
             <span>Match Complete</span>
             <span style={{ color: "#E42E20" }}>]</span>
-            <PeakArrow size={20} color="#E42E20" className="rotate-180" />
           </div>
           <h1
             className="text-5xl md:text-6xl lg:text-8xl font-bold text-[#FFBF40] mb-4 tracking-tighter"
@@ -1868,7 +1819,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
     queryKey: ["/api/scores", { limit: 100 }],
     queryFn: async () => {
       if (!navigator.onLine) {
-        const cached = localStorage.getItem("avx-leaderboard");
+        const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) {
           const data = JSON.parse(cached);
           if (data.length > 0) return data;
@@ -1881,21 +1832,21 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
         const serverData = await res.json();
 
         const pending = JSON.parse(
-          localStorage.getItem("avx-pending-sync") || "[]",
+          localStorage.getItem("soccer-pending-sync") || "[]",
         );
         const localUnsyncedIds = pending.map((p: any) => p.localId);
         const localScores = JSON.parse(
-          localStorage.getItem("avx-leaderboard") || "[]",
+          localStorage.getItem("soccer-leaderboard") || "[]",
         ).filter((s: any) => localUnsyncedIds.includes(s.id));
 
         const merged = [...serverData, ...localScores];
         merged.sort((a: any, b: any) => b.score - a.score);
         const deduped = merged.slice(0, 100);
 
-        localStorage.setItem("avx-leaderboard", JSON.stringify(deduped));
+        localStorage.setItem("soccer-leaderboard", JSON.stringify(deduped));
         return deduped;
       } catch {
-        const cached = localStorage.getItem("avx-leaderboard");
+        const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) return JSON.parse(cached);
         return [];
       }
@@ -2022,7 +1973,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
 // --- Main App ---
 
 async function syncPendingScores() {
-  const pending = JSON.parse(localStorage.getItem("avx-pending-sync") || "[]");
+  const pending = JSON.parse(localStorage.getItem("soccer-pending-sync") || "[]");
   if (pending.length === 0) return;
 
   const syncedLocalIds: number[] = [];
@@ -2045,12 +1996,12 @@ async function syncPendingScores() {
     }
   }
 
-  localStorage.setItem("avx-pending-sync", JSON.stringify(remaining));
+  localStorage.setItem("soccer-pending-sync", JSON.stringify(remaining));
 
   if (syncedLocalIds.length > 0) {
-    const cached = JSON.parse(localStorage.getItem("avx-leaderboard") || "[]");
+    const cached = JSON.parse(localStorage.getItem("soccer-leaderboard") || "[]");
     const cleaned = cached.filter((s: any) => !syncedLocalIds.includes(s.id));
-    localStorage.setItem("avx-leaderboard", JSON.stringify(cleaned));
+    localStorage.setItem("soccer-leaderboard", JSON.stringify(cleaned));
   }
 }
 
@@ -2082,7 +2033,7 @@ function GameApp() {
     shotsMade: 0,
     outagesPrevented: 0,
   });
-  const isOnline = useOnlineStatus();
+  useOnlineStatus();
 
   const handleStartGame = () => {
     initAudio();
@@ -2115,7 +2066,7 @@ function GameApp() {
         backgroundColor: "#1C1C1C",
       }}
     >
-      {/* Peak tech-grid background — applies to game/results/leaderboard screens */}
+      {/* Grid background — applies to game/results/leaderboard screens */}
       {screen !== "home" && (
         <div
           className="fixed inset-0 z-0 pointer-events-none"
@@ -2125,7 +2076,7 @@ function GameApp() {
               "linear-gradient(rgba(255,191,64,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,191,64,0.07) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
-          data-testid="peak-grid-bg"
+          data-testid="grid-bg"
         />
       )}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
@@ -2153,31 +2104,23 @@ function GameApp() {
       <div className="relative z-10 w-full h-screen flex flex-col">
         {/* Navigation / Header - Minimal */}
         <header
-          className={`px-6 flex justify-between items-center z-50 backdrop-blur-xl ${brand.navbarColor ? "" : "bg-white/25"}`}
+          className={`relative px-6 flex justify-between items-center z-50 backdrop-blur-xl ${brand.navbarColor ? "" : "bg-white/25"}`}
           style={{ height: Math.max(40, brand.logoSize + 16), ...(brand.navbarColor ? { backgroundColor: brand.navbarColor } : {}) }}
         >
           <Logo />
 
-          {/* <div className="flex-1 overflow-hidden " style={{ height: "48px" }}>
-            <div
-              className="inline-flex"
-              style={{
-                animation: "ribbonScroll 10s linear infinite",
-                height: "48px",
-              }}
-              data-testid="ribbon-banner"
-            >
-              {[0, 1].map((i) => (
-                <img
-                  key={i}
-                  src={`${import.meta.env.BASE_URL}ribbon-banner.png`}
-                  alt=""
-                  style={{ height: "48px" }}
-                  className="object-cover pointer-events-none"
-                />
-              ))}
-            </div>
-          </div> */}
+          {/* Game title, centered in the navigation bar */}
+          <div
+            className="absolute left-1/2 -translate-x-1/2 max-w-[58%] truncate text-center pointer-events-none uppercase font-extrabold tracking-[0.06em]"
+            data-testid="nav-title"
+            style={{
+              fontSize: Math.min(Math.max(brand.headingSize, 16), 30),
+              color: brand.headingColor,
+              fontFamily: "var(--brand-font, 'Inter'), sans-serif",
+            }}
+          >
+            {brand.heading}
+          </div>
 
           <div className="flex items-center gap-4">
             {screen !== "home" && (
@@ -2189,16 +2132,35 @@ function GameApp() {
                 Exit
               </button>
             )}
-            <div className="w-px h-4 bg-white/10 hidden md:block" />
-            <div
-              className="hidden md:flex items-center gap-2 text-sm font-medium text-white"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              <span
-                className={`w-2 h-2 rounded-full ${isOnline ? "bg-green-500 animate-pulse" : "bg-yellow-500"}`}
-              />
-              {isOnline ? "System Operational" : "Offline Mode"}
-            </div>
+            {/* The customer's logo sits where the connection status used to be */}
+            {brand.logoUrl && (
+              <>
+                <img
+                  src={brand.logoUrl}
+                  alt=""
+                  data-testid="nav-logo-right"
+                  className="hidden sm:block"
+                  style={{
+                    height: Math.max(32, brand.logoSize),
+                    width: "auto",
+                    maxWidth: Math.max(32, brand.logoSize) * 3,
+                    objectFit: "contain",
+                  }}
+                />
+                <img
+                  src={brand.logoUrl}
+                  alt=""
+                  data-testid="nav-logo-right-2"
+                  className="hidden md:block"
+                  style={{
+                    height: Math.max(32, brand.logoSize),
+                    width: "auto",
+                    maxWidth: Math.max(32, brand.logoSize) * 3,
+                    objectFit: "contain",
+                  }}
+                />
+              </>
+            )}
           </div>
         </header>
 

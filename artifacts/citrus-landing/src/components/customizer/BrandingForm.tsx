@@ -20,6 +20,9 @@ const BACKGROUND_MEDIA_SLUGS = new Set(["basketball-shootout"]);
 // face-down cards. Image only: the cards have no use for video.
 const PRODUCT_IMAGE_SLUGS = new Set(["a8-recall"]);
 
+// These games show the game title in the navigation bar and have no tagline.
+const TAGLINE_HIDDEN_SLUGS = new Set(["basketball-shootout", "soccer-shootout"]);
+
 // Games whose primary/secondary/accent colors don't drive anything visible,
 // so the pickers are hidden rather than offering controls that do nothing.
 const HIDDEN_THEME_COLOR_SLUGS = new Set(["basketball-shootout"]);
@@ -234,17 +237,19 @@ export function BrandingForm({ theme, onChange, canvasReskinSupported, gameSlug 
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="input-tagline">Tagline <span className="text-xs font-normal text-muted-foreground">(optional)</span></Label>
-        <Input
-          id="input-tagline"
-          data-testid="input-tagline"
-          value={theme.tagline}
-          onChange={(e) => set("tagline", e.target.value)}
-          placeholder="Leave empty to show no tagline"
-          maxLength={60}
-        />
-      </div>
+      {!TAGLINE_HIDDEN_SLUGS.has(gameSlug) && (
+        <div className="space-y-2">
+          <Label htmlFor="input-tagline">Tagline <span className="text-xs font-normal text-muted-foreground">(optional)</span></Label>
+          <Input
+            id="input-tagline"
+            data-testid="input-tagline"
+            value={theme.tagline}
+            onChange={(e) => set("tagline", e.target.value)}
+            placeholder="Leave empty to show no tagline"
+            maxLength={60}
+          />
+        </div>
+      )}
 
       <div className="space-y-3">
         {!HIDDEN_THEME_COLOR_SLUGS.has(gameSlug) && (

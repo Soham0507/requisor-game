@@ -5,7 +5,7 @@ import { Trophy } from "lucide-react";
 import type { Score } from "@shared/schema";
 import { useBrand } from "../brand-bridge";
 
-const PEAK = {
+const PALETTE = {
   yellow: "#FFBF40",
   yellowSoft: "#FFD473",
   black: "#1C1C1C",
@@ -34,20 +34,20 @@ function useLeaderboardData() {
     queryKey: ["/api/scores", { limit: 100, display: true }],
     queryFn: async () => {
       if (!navigator.onLine) {
-        const cached = safeParse("avx-leaderboard");
+        const cached = safeParse("soccer-leaderboard");
         if (cached.length > 0) return cached;
-        return safeParse("avx-offline-scores");
+        return safeParse("soccer-offline-scores");
       }
       try {
         const res = await fetch("/api/scores?limit=100");
         if (!res.ok) throw new Error("Failed to fetch scores");
         const data = await res.json();
-        localStorage.setItem("avx-leaderboard", JSON.stringify(data));
+        localStorage.setItem("soccer-leaderboard", JSON.stringify(data));
         return data;
       } catch {
-        const cached = safeParse("avx-leaderboard");
+        const cached = safeParse("soccer-leaderboard");
         if (cached.length > 0) return cached;
-        return safeParse("avx-offline-scores");
+        return safeParse("soccer-offline-scores");
       }
     },
     refetchInterval: 5000,
@@ -56,9 +56,9 @@ function useLeaderboardData() {
 }
 
 const medalStyles = [
-  { badge: PEAK.red, text: PEAK.black, bg: "rgba(255,255,255,0.95)" },
-  { badge: PEAK.black, text: PEAK.black, bg: "rgba(255,255,255,0.85)" },
-  { badge: PEAK.orange, text: PEAK.black, bg: "rgba(255,255,255,0.78)" },
+  { badge: PALETTE.red, text: PALETTE.black, bg: "rgba(255,255,255,0.95)" },
+  { badge: PALETTE.black, text: PALETTE.black, bg: "rgba(255,255,255,0.85)" },
+  { badge: PALETTE.orange, text: PALETTE.black, bg: "rgba(255,255,255,0.78)" },
 ];
 
 export default function DisplayLeaderboard() {
@@ -85,8 +85,8 @@ export default function DisplayLeaderboard() {
 
   return (
     <div
-      className="w-screen h-screen flex items-center justify-center overflow-hidden bg-peak-grid"
-      style={{ backgroundColor: PEAK.yellow }}
+      className="w-screen h-screen flex items-center justify-center overflow-hidden bg-grid-yellow"
+      style={{ backgroundColor: PALETTE.yellow }}
       data-testid="display-leaderboard-wrapper"
     >
       <div
@@ -98,7 +98,7 @@ export default function DisplayLeaderboard() {
           transform: "scale(var(--display-scale, 1))",
           transformOrigin: "center center",
           fontFamily: "'Inter', sans-serif",
-          backgroundColor: PEAK.yellow,
+          backgroundColor: PALETTE.yellow,
           backgroundImage:
             "linear-gradient(rgba(28,28,28,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(28,28,28,0.07) 1px, transparent 1px)",
           backgroundSize: "40px 40px",
@@ -107,7 +107,7 @@ export default function DisplayLeaderboard() {
       >
         <header
           className="relative z-10 flex flex-col items-center pt-12 pb-8"
-          style={{ borderBottom: `4px solid ${PEAK.black}` }}
+          style={{ borderBottom: `4px solid ${PALETTE.black}` }}
         >
           {brand.logoUrl && (
             <img
@@ -119,7 +119,7 @@ export default function DisplayLeaderboard() {
           )}
           <div
             className="text-base tracking-[0.4em]"
-            style={{ color: PEAK.red, fontWeight: 800 }}
+            style={{ color: PALETTE.red, fontWeight: 800 }}
           >
             [ LIVE LEADERBOARD ]
           </div>
@@ -128,7 +128,7 @@ export default function DisplayLeaderboard() {
             style={{
               fontFamily: "'Inter', sans-serif",
               fontWeight: 900,
-              color: PEAK.black,
+              color: PALETTE.black,
               letterSpacing: "0.02em",
             }}
           >
@@ -136,7 +136,7 @@ export default function DisplayLeaderboard() {
           </h1>
           <div
             className="mt-3 text-xl tracking-[0.35em] uppercase"
-            style={{ color: PEAK.black, fontWeight: 600 }}
+            style={{ color: PALETTE.black, fontWeight: 600 }}
           >
             Live Leaderboard Challenge
           </div>
@@ -146,9 +146,9 @@ export default function DisplayLeaderboard() {
           {visibleScores.length === 0 ? (
             <div
               className="flex-1 flex flex-col items-center justify-center"
-              style={{ color: PEAK.black }}
+              style={{ color: PALETTE.black }}
             >
-              <Trophy className="mb-4 opacity-60" size={88} color={PEAK.red} />
+              <Trophy className="mb-4 opacity-60" size={88} color={PALETTE.red} />
               <p className="text-3xl font-semibold">
                 No scores yet. Be the first to play!
               </p>
@@ -181,7 +181,7 @@ export default function DisplayLeaderboard() {
                         backgroundColor: isTop3
                           ? medal!.bg
                           : "rgba(255,255,255,0.55)",
-                        border: `3px solid ${PEAK.black}`,
+                        border: `3px solid ${PALETTE.black}`,
                         padding: i === 0 ? "20px 24px" : isTop3 ? "16px 22px" : "12px 20px",
                       }}
                       data-testid={`display-rank-${i + 1}`}
@@ -191,8 +191,8 @@ export default function DisplayLeaderboard() {
                         style={{
                           width: i === 0 ? 64 : isTop3 ? 56 : 48,
                           height: i === 0 ? 64 : isTop3 ? 56 : 48,
-                          backgroundColor: isTop3 ? medal!.badge : PEAK.black,
-                          color: isTop3 ? "#fff" : PEAK.yellow,
+                          backgroundColor: isTop3 ? medal!.badge : PALETTE.black,
+                          color: isTop3 ? "#fff" : PALETTE.yellow,
                           fontSize: i === 0 ? 26 : isTop3 ? 22 : 18,
                         }}
                       >
@@ -209,7 +209,7 @@ export default function DisplayLeaderboard() {
                         <div
                           className="font-semibold truncate"
                           style={{
-                            color: PEAK.black,
+                            color: PALETTE.black,
                             fontSize: i === 0 ? 30 : isTop3 ? 24 : 20,
                             fontFamily: "'Inter', sans-serif",
                             fontWeight: 700,
@@ -222,7 +222,7 @@ export default function DisplayLeaderboard() {
                       <div
                         className="ml-4 shrink-0"
                         style={{
-                          color: PEAK.red,
+                          color: PALETTE.red,
                           fontFamily: "'Inter', sans-serif",
                           fontWeight: 900,
                           fontSize: i === 0 ? 56 : isTop3 ? 44 : 36,

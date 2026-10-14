@@ -6,7 +6,7 @@ import { useSyncExternalStore } from "react";
  * from a host page (the branding customizer), applies the theme to
  * `window.__BRAND__`, and notifies React via `useBrand()`. Falls back to a
  * generic "Brand Name" placeholder and no logo when no host ever sends a
- * theme, so the game never leaks the original AppViewX demo branding.
+ * theme, so the game never leaks any customer branding.
  */
 export interface BrandTheme {
   primaryColor: string;

@@ -1,7 +1,7 @@
 {
   "name": "Soccer Shootout",
   "short_name": "Soccer Shootout",
-  "description": "Beat the clock. Master the moment. Win like a pro.",
+  "description": "Beat the clock in a gesture-controlled soccer shootout.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFBF40",
@@ -9,14 +9,9 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/favicon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/favicon.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
     }
   ]
 }
