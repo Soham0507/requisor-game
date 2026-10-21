@@ -27,13 +27,13 @@ const MAX_POLL_MS = 5 * 60 * 1000;
  */
 const MAX_CONSECUTIVE_ERRORS = 5;
 
-export function pollVideoInBackground(id: string, requestId: string, userKey?: string): void {
+export function pollVideoInBackground(id: string, requestId: string): void {
   const startedAt = Date.now();
   let consecutiveErrors = 0;
 
   const tick = async (): Promise<void> => {
     try {
-      const result = await pollVideoJob(requestId, userKey);
+      const result = await pollVideoJob(requestId);
       consecutiveErrors = 0;
 
       if (result.status === "pending") {

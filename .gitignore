@@ -1,3 +1,5 @@
 node_modules/
 .claude/
 .config/
+.env
+.env.local

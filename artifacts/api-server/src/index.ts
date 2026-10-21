@@ -1,3 +1,23 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+
+// Local runs: load XAI_API_KEY (and any other settings) from a git-ignored
+// .env at the repo root. Real environment variables (e.g. Replit Secrets or a
+// deployment's settings) always take precedence, so this is a no-op there.
+for (const candidate of [
+  path.resolve(process.cwd(), ".env"),
+  path.resolve(import.meta.dirname, "../../../.env"),
+]) {
+  if (existsSync(candidate)) {
+    try {
+      process.loadEnvFile(candidate);
+    } catch {
+      /* unreadable .env: fall back to the real environment */
+    }
+    break;
+  }
+}
+
 import app from "./app";
 import { ensureDefaultGames } from "./lib/catalog-bootstrap";
 import { logger } from "./lib/logger";

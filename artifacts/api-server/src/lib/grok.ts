@@ -5,14 +5,15 @@ const IMAGE_MODEL = process.env.XAI_IMAGE_MODEL ?? "grok-imagine-image-quality";
 const VIDEO_MODEL = process.env.XAI_VIDEO_MODEL ?? "grok-imagine-video";
 
 /**
- * The server's own key (XAI_API_KEY) wins when set; otherwise the key the
- * visitor typed into the booth is used for that one request. It is never
- * stored or logged.
+ * The booth runs on the operator's own xAI key, read from the server's
+ * environment (XAI_API_KEY). Visitors are never asked for a key.
  */
-function apiKey(override?: string): string {
-  const key = process.env.XAI_API_KEY || override;
+function apiKey(): string {
+  const key = process.env.XAI_API_KEY;
   if (!key) {
-    throw new Error("An xAI API key is required. Enter your key to generate photos and videos.");
+    // Logged for the operator; visitors only see a generic message.
+    logger.error("XAI_API_KEY is not set: photo and video generation is unavailable");
+    throw new Error("Photo generation is not available right now. Please try again later.");
   }
   return key;
 }
@@ -57,12 +58,11 @@ function decodeImagePayload(payload: {
 export async function editImage(
   photoDataUri: string,
   prompt: string,
-  userKey?: string,
 ): Promise<GeneratedImage> {
   const res = await fetch(`${XAI_BASE_URL}/images/edits`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey(userKey)}`,
+      Authorization: `Bearer ${apiKey()}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -105,12 +105,11 @@ export async function editImage(
 export async function startVideoJob(
   image: string,
   prompt: string,
-  userKey?: string,
 ): Promise<string> {
   const res = await fetch(`${XAI_BASE_URL}/videos/generations`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${apiKey(userKey)}`,
+      Authorization: `Bearer ${apiKey()}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -151,10 +150,10 @@ export type VideoJobStatus =
 /**
  * Polls a video job once. When done, downloads the video bytes.
  */
-export async function pollVideoJob(requestId: string, userKey?: string): Promise<VideoJobStatus> {
+export async function pollVideoJob(requestId: string): Promise<VideoJobStatus> {
   const res = await fetch(`${XAI_BASE_URL}/videos/${requestId}`, {
     headers: {
-      Authorization: `Bearer ${apiKey(userKey)}`,
+      Authorization: `Bearer ${apiKey()}`,
     },
   });
 
