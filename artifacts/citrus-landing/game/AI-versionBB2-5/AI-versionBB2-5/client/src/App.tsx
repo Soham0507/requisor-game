@@ -26,7 +26,6 @@ import {
 import {
   QueryClient,
   QueryClientProvider,
-  useQuery,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -55,8 +54,8 @@ import { useBrand } from "./brand-bridge";
 function isBgVideo(url: string): boolean {
   return url.startsWith("data:video") || /\.(mp4|webm|mov)(\?|$)/i.test(url);
 }
-import type { Score, InsertScore } from "@shared/schema";
-import { Route, Switch } from "wouter";
+import { basketballScoresUrl, useBasketballLeaderboard, submitBasketballScore } from "./lib/basketball-scores";
+import { Route, Switch, Router } from "wouter";
 import DisplayLeaderboard from "./pages/DisplayLeaderboard";
 
 const queryClient = new QueryClient({
@@ -287,30 +286,9 @@ function Logo() {
 
 // --- Leaderboard Ticker ---
 const LeaderboardTicker = () => {
-  const { data: leaderboard = [] } = useQuery<Score[]>({
-    queryKey: ["/api/scores", { limit: 20 }],
-    queryFn: async () => {
-      if (!navigator.onLine) {
-        const cached = localStorage.getItem("avx-leaderboard");
-        if (cached) return JSON.parse(cached);
-        return [];
-      }
-      try {
-        const res = await fetch("/api/scores?limit=20");
-        if (!res.ok) throw new Error("Failed to fetch scores");
-        const data = await res.json();
-        localStorage.setItem("avx-leaderboard", JSON.stringify(data));
-        return data;
-      } catch {
-        const cached = localStorage.getItem("avx-leaderboard");
-        if (cached) return JSON.parse(cached);
-        return [];
-      }
-    },
-    refetchInterval: 15000,
-    retry: false,
-  });
+  const { data: leaderboard = [], isError } = useBasketballLeaderboard(20);
 
+  if (isError) return <p role="alert" className="text-slate-400 text-center">Rankings unavailable.</p>;
   if (leaderboard.length === 0) return null;
 
   const items = [...leaderboard, ...leaderboard];
@@ -1455,107 +1433,14 @@ const ResultsScreen = ({
   const queryClient = useQueryClient();
 
   // Fetch leaderboard
-  const { data: leaderboard = [] } = useQuery<Score[]>({
-    queryKey: ["/api/scores", { limit: 50 }],
-    queryFn: async () => {
-      if (!navigator.onLine) {
-        const cached = localStorage.getItem("avx-leaderboard");
-        if (cached) {
-          const data = JSON.parse(cached);
-          if (data.length > 0) return data;
-        }
-        return [];
-      }
-      try {
-        const response = await fetch("/api/scores?limit=50");
-        if (!response.ok) throw new Error("Failed to fetch scores");
-        const serverData = await response.json();
+  const { data: leaderboard = [], isLoading, isError, refetch } = useBasketballLeaderboard(50);
 
-        const pending = JSON.parse(
-          localStorage.getItem("avx-pending-sync") || "[]",
-        );
-        const localUnsyncedIds = pending.map((p: any) => p.localId);
-        const localScores = JSON.parse(
-          localStorage.getItem("avx-leaderboard") || "[]",
-        ).filter((s: any) => localUnsyncedIds.includes(s.id));
-
-        const merged = [...serverData, ...localScores];
-        merged.sort((a: any, b: any) => b.score - a.score);
-        const deduped = merged.slice(0, 100);
-
-        localStorage.setItem("avx-leaderboard", JSON.stringify(deduped));
-        return deduped;
-      } catch {
-        const cached = localStorage.getItem("avx-leaderboard");
-        if (cached) return JSON.parse(cached);
-        return [];
-      }
-    },
-    retry: false,
-  });
-
-  // Submit score mutation
+  // One id per results screen: an uncertain response can be retried safely.
+  const [submissionId] = useState(() => crypto.randomUUID());
   const submitScoreMutation = useMutation({
-    mutationFn: async (scoreData: InsertScore) => {
-      const localScore = {
-        ...scoreData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-      };
-
-      const addToPending = () => {
-        const pending = JSON.parse(
-          localStorage.getItem("avx-pending-sync") || "[]",
-        );
-        pending.push({
-          data: scoreData,
-          localId: localScore.id,
-          timestamp: Date.now(),
-        });
-        localStorage.setItem("avx-pending-sync", JSON.stringify(pending));
-      };
-      const addToLocalLeaderboard = () => {
-        const cached = JSON.parse(
-          localStorage.getItem("avx-leaderboard") || "[]",
-        );
-        const exists = cached.some((s: any) => s.id === localScore.id);
-        if (!exists) {
-          cached.push(localScore);
-          cached.sort((a: any, b: any) => b.score - a.score);
-          localStorage.setItem(
-            "avx-leaderboard",
-            JSON.stringify(cached.slice(0, 100)),
-          );
-        }
-      };
-
-      if (!navigator.onLine) {
-        addToPending();
-        addToLocalLeaderboard();
-        return localScore;
-      }
-
-      try {
-        const response = await fetch("/api/scores", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(scoreData),
-        });
-        if (!response.ok) throw new Error("Failed to submit score");
-        return response.json();
-      } catch {
-        addToPending();
-        addToLocalLeaderboard();
-        return localScore;
-      }
-    },
+    mutationFn: submitBasketballScore,
     onSuccess: () => {
-      if (navigator.onLine) {
-        queryClient.invalidateQueries({ queryKey: ["/api/scores"] });
-      }
-      setShowNameModal(false);
-    },
-    onError: () => {
+      queryClient.invalidateQueries({ queryKey: [basketballScoresUrl] });
       setShowNameModal(false);
     },
   });
@@ -1571,6 +1456,7 @@ const ResultsScreen = ({
       return;
 
     submitScoreMutation.mutate({
+      submissionId,
       playerName: playerInfo.name,
       playerTitle: playerInfo.title,
       playerCompany: playerInfo.company,
@@ -1581,34 +1467,6 @@ const ResultsScreen = ({
       outagesPrevented: stats.outagesPrevented,
     });
 
-    // Also send it to the shared player_submissions table (citrus-landing's
-    // api-server) so it's a real lead an operator can see across every
-    // game, not just this game's own /api/scores leaderboard. `orderId` is
-    // only present when this build was opened through a finalized live
-    // link (see citrus-landing's customize.tsx) — absent on a raw/dev
-    // preview, which is fine, the row just isn't tied to a specific brand
-    // order.
-    const orderId = new URLSearchParams(window.location.search).get("orderId");
-    fetch("/api/player-submissions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        gameSlug: "basketball-shootout",
-        orderId,
-        name: playerInfo.name,
-        email: playerInfo.email,
-        extra: {
-          title: playerInfo.title,
-          company: playerInfo.company,
-          score: stats.score,
-          shotsTaken: stats.shotsTaken,
-          shotsMade: stats.shotsMade,
-          outagesPrevented: stats.outagesPrevented,
-        },
-      }),
-    }).catch(() => {
-      /* best-effort — the mutation above already handles its own local fallback */
-    });
   };
 
   return (
@@ -1618,6 +1476,9 @@ const ResultsScreen = ({
       exit={{ opacity: 0 }}
       className="flex flex-col h-full relative z-10 w-full max-w-6xl mx-auto p-6 overflow-y-auto"
     >
+      {submitScoreMutation.isSuccess && (
+        <p role="status" className="text-green-300 text-center" data-testid="score-saved">Score saved.</p>
+      )}
       {/* Name Entry Modal */}
       <AnimatePresence>
         {showNameModal && (
@@ -1637,7 +1498,7 @@ const ResultsScreen = ({
                 Submit Your Score!
               </h3>
               <p className="text-slate-400 text-sm mb-6">
-                Enter your details to join the leaderboard
+                Your name, job title, company and score are public. Your email stays private.
               </p>
 
               <form onSubmit={handleSubmitScore} className="space-y-4">
@@ -1649,6 +1510,8 @@ const ResultsScreen = ({
                     type="text"
                     required
                     value={playerInfo.name}
+                    maxLength={80}
+                    disabled={submitScoreMutation.isPending}
                     onChange={(e) =>
                       setPlayerInfo({ ...playerInfo, name: e.target.value })
                     }
@@ -1665,6 +1528,8 @@ const ResultsScreen = ({
                     type="text"
                     required
                     value={playerInfo.title}
+                    maxLength={100}
+                    disabled={submitScoreMutation.isPending}
                     onChange={(e) =>
                       setPlayerInfo({ ...playerInfo, title: e.target.value })
                     }
@@ -1681,6 +1546,8 @@ const ResultsScreen = ({
                     type="text"
                     required
                     value={playerInfo.company}
+                    maxLength={100}
+                    disabled={submitScoreMutation.isPending}
                     onChange={(e) =>
                       setPlayerInfo({ ...playerInfo, company: e.target.value })
                     }
@@ -1697,6 +1564,8 @@ const ResultsScreen = ({
                   <input
                     type={showEmail ? "text" : "password"}
                     required
+                    maxLength={254}
+                    disabled={submitScoreMutation.isPending}
                     autoComplete="off"
                     value={playerInfo.email}
                     onChange={(e) =>
@@ -1717,8 +1586,14 @@ const ResultsScreen = ({
                   </button>
                 </div>
 
+                {submitScoreMutation.isError && (
+                  <p role="alert" className="text-red-300 text-sm" data-testid="score-save-error">
+                    {submitScoreMutation.error.message}
+                  </p>
+                )}
                 <div className="flex gap-3 pt-4">
                   <Button
+                    disabled={submitScoreMutation.isPending}
                     onClick={() => setShowNameModal(false)}
                     type="button"
                     variant="outline"
@@ -1734,7 +1609,7 @@ const ResultsScreen = ({
                   >
                     {submitScoreMutation.isPending
                       ? "Submitting..."
-                      : "Submit Score"}
+                      : submitScoreMutation.isError ? "Retry Save" : "Submit Score"}
                   </Button>
                 </div>
               </form>
@@ -1792,7 +1667,8 @@ const ResultsScreen = ({
         </div>
 
         <div className="space-y-2">
-          {leaderboard.length === 0 ? (
+          {isError && <p role="alert" className="text-red-300 text-center">Rankings are unavailable. <button onClick={() => refetch()}>Retry</button></p>}
+          {isLoading ? <p role="status" className="text-slate-400 text-center">Loading rankings...</p> : isError && leaderboard.length === 0 ? null : leaderboard.length === 0 ? (
             <div className="text-center py-12 text-slate-500">
               <Trophy className="mx-auto mb-3 opacity-50" size={48} />
               <p>Be the first to join the leaderboard!</p>
@@ -1875,45 +1751,7 @@ const ResultsScreen = ({
 // --- Leaderboard Screen ---
 
 const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
-  const { data: leaderboard = [] } = useQuery<Score[]>({
-    queryKey: ["/api/scores", { limit: 100 }],
-    queryFn: async () => {
-      if (!navigator.onLine) {
-        const cached = localStorage.getItem("avx-leaderboard");
-        if (cached) {
-          const data = JSON.parse(cached);
-          if (data.length > 0) return data;
-        }
-        return [];
-      }
-      try {
-        const res = await fetch("/api/scores?limit=100");
-        if (!res.ok) throw new Error("Failed to fetch scores");
-        const serverData = await res.json();
-
-        const pending = JSON.parse(
-          localStorage.getItem("avx-pending-sync") || "[]",
-        );
-        const localUnsyncedIds = pending.map((p: any) => p.localId);
-        const localScores = JSON.parse(
-          localStorage.getItem("avx-leaderboard") || "[]",
-        ).filter((s: any) => localUnsyncedIds.includes(s.id));
-
-        const merged = [...serverData, ...localScores];
-        merged.sort((a: any, b: any) => b.score - a.score);
-        const deduped = merged.slice(0, 100);
-
-        localStorage.setItem("avx-leaderboard", JSON.stringify(deduped));
-        return deduped;
-      } catch {
-        const cached = localStorage.getItem("avx-leaderboard");
-        if (cached) return JSON.parse(cached);
-        return [];
-      }
-    },
-    refetchInterval: 10000,
-    retry: false,
-  });
+  const { data: leaderboard = [], isLoading, isError, refetch } = useBasketballLeaderboard(100);
 
   const medalColors = [
     {
@@ -1961,7 +1799,8 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
         </div>
 
         <div className="space-y-2">
-          {leaderboard.length === 0 ? (
+          {isError && <p role="alert" className="text-red-300 text-center">Rankings are unavailable. <button onClick={() => refetch()}>Retry</button></p>}
+          {isLoading ? <p role="status" className="text-slate-400 text-center">Loading rankings...</p> : isError && leaderboard.length === 0 ? null : leaderboard.length === 0 ? (
             <div className="text-center py-12 text-slate-500">
               <Trophy className="mx-auto mb-3 opacity-50" size={48} />
               <p>No scores yet. Be the first to play!</p>
@@ -2021,46 +1860,12 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
 
 // --- Main App ---
 
-async function syncPendingScores() {
-  const pending = JSON.parse(localStorage.getItem("avx-pending-sync") || "[]");
-  if (pending.length === 0) return;
-
-  const syncedLocalIds: number[] = [];
-  const remaining = [];
-
-  for (const item of pending) {
-    try {
-      const res = await fetch("/api/scores", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(item.data),
-      });
-      if (res.ok) {
-        syncedLocalIds.push(item.localId);
-      } else {
-        remaining.push(item);
-      }
-    } catch {
-      remaining.push(item);
-    }
-  }
-
-  localStorage.setItem("avx-pending-sync", JSON.stringify(remaining));
-
-  if (syncedLocalIds.length > 0) {
-    const cached = JSON.parse(localStorage.getItem("avx-leaderboard") || "[]");
-    const cleaned = cached.filter((s: any) => !syncedLocalIds.includes(s.id));
-    localStorage.setItem("avx-leaderboard", JSON.stringify(cleaned));
-  }
-}
-
 function useOnlineStatus() {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   React.useEffect(() => {
-    const goOnline = async () => {
+    const goOnline = () => {
       setIsOnline(true);
-      await syncPendingScores();
-      queryClient.invalidateQueries({ queryKey: ["/api/scores"] });
+      queryClient.invalidateQueries({ queryKey: [basketballScoresUrl] });
     };
     const goOffline = () => setIsOnline(false);
     window.addEventListener("online", goOnline);
@@ -2291,10 +2096,12 @@ function GameApp() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Router base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
       <Switch>
         <Route path="/display" component={DisplayLeaderboard} />
         <Route component={GameApp} />
       </Switch>
+      </Router>
     </QueryClientProvider>
   );
 }

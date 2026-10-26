@@ -6,3 +6,8 @@
 - [Imported game preview boundaries](imported-game-preview-boundaries.md) — full branding support does not imply a live campaign backend; keep guest demos explicit.
 - [Dependency remediation boundaries](dependency-remediation-boundaries.md) — audit retained imported lockfiles; verify reused package identities and preserve safe bundler behavior.
 - [Spreadsheet API compatibility](spreadsheet-api-compatibility.md) — old browser import/export examples use obsolete return shapes; inspect installed APIs and round-trip an actual workbook.
+- [Git import history](git-import-history.md) — copied repositories can share identical trees despite unrelated commits; verify the shared snapshot before reconciling histories.
+- [Leaderboard boundaries](game-leaderboard-boundaries.md) — imported games need scoped rankings, private contacts, and idempotent confirmed saves in the shared portal.
+- [Game exclusions](game-exclusions.md) — preserve the user's removal of Lazer Shooter when importing future repository updates.
+- [Overview video presentation](overview-video-presentation.md) — retain rounded corners, shadow, and entrance glow, without the thin border.
+- [Active8 product name](active8-branding.md) — use Active8 as the website product name and preserve it across repository pulls.

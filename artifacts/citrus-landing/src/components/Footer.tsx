@@ -15,12 +15,12 @@ export function Footer() {
           bg-gradient-to-r from-[#f97316] via-[#ec4899] to-[#a855f7]
           text-transparent bg-clip-text"
         >
-          Activate
+          Active8
         </div>
 
         {/* Copyright */}
         <div className="text-muted-foreground text-sm font-mono tracking-wide">
-          Activate is a RequisorAI product · Milwaukee, WI
+          Active8 is a RequisorAI product · Milwaukee, WI
         </div>
 
         {/* Social Icons */}

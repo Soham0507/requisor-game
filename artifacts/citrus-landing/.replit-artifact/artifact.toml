@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Requisor.AI"
+title = "Active8"
 description = "An interactive gaming showcase and customization platform for exploring branded games, previewing experiences, and configuring game visuals."
 version = "1.0.0"
 id = "artifacts/citrus-landing"

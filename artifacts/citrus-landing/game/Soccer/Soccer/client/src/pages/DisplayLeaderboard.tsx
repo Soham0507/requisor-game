@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy } from "lucide-react";
-import type { Score } from "@shared/schema";
+import { soccerScoresUrl, soccerStorage as localStorage, type Score } from "../lib/soccer-scores";
 import { useBrand } from "../brand-bridge";
 
 const PALETTE = {
@@ -39,12 +39,13 @@ function useLeaderboardData() {
         return safeParse("soccer-offline-scores");
       }
       try {
-        const res = await fetch("/api/scores?limit=100");
+        const res = await fetch(`${soccerScoresUrl}?limit=100`);
         if (!res.ok) throw new Error("Failed to fetch scores");
         const data = await res.json();
         localStorage.setItem("soccer-leaderboard", JSON.stringify(data));
         return data;
-      } catch {
+      } catch (error) {
+        if (navigator.onLine) throw error;
         const cached = safeParse("soccer-leaderboard");
         if (cached.length > 0) return cached;
         return safeParse("soccer-offline-scores");
@@ -63,7 +64,7 @@ const medalStyles = [
 
 export default function DisplayLeaderboard() {
   const brand = useBrand();
-  const { data: leaderboard = [] } = useLeaderboardData();
+  const { data: leaderboard = [], isPending, isError } = useLeaderboardData();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -143,7 +144,13 @@ export default function DisplayLeaderboard() {
         </header>
 
         <div className="relative z-10 flex-1 flex flex-col px-12 py-8 overflow-hidden">
-          {visibleScores.length === 0 ? (
+          {isPending ? (
+            <p role="status" className="text-center text-2xl font-semibold">Loading leaderboard…</p>
+          ) : isError ? (
+            <p role="alert" className="text-center text-2xl font-semibold">
+              The leaderboard is temporarily unavailable. Retrying…
+            </p>
+          ) : visibleScores.length === 0 ? (
             <div
               className="flex-1 flex flex-col items-center justify-center"
               style={{ color: PALETTE.black }}

@@ -1,10 +1,102 @@
 import type { QueryKey, UseMutationOptions, UseMutationResult, UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
-import type { ApiError, BoothStats, BrandingDraft, CreateCustomUiRequestRequest, CreatePlayerSubmissionRequest, CustomUiRequest, FinalizeBrandingDraftRequest, Game, Generation, GenerationInput, HealthStatus, ListGenerationsParams, Order, PlayerSubmission, SavedGameContent, Scene, UpsertBrandingDraftRequest } from './api.schemas';
+import type { ApiError, BoothStats, BrandingDraft, CreateCustomUiRequestRequest, CreatePlayerSubmissionRequest, CustomUiRequest, FinalizeBrandingDraftRequest, Game, Generation, GenerationInput, HealthStatus, ListBasketballScoresParams, ListGenerationsParams, ListSoccerScoresParams, Order, PlayerSubmission, SavedGameContent, Scene, SoccerScore, SoccerScoreInput, UpsertBrandingDraftRequest } from './api.schemas';
 import { customFetch } from '../custom-fetch';
 import type { ErrorType, BodyType } from '../custom-fetch';
 type AwaitedInput<T> = PromiseLike<T> | T;
 type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+export declare const getListBasketballScoresUrl: (params?: ListBasketballScoresParams) => string;
+/**
+ * @summary Public Basketball Shootout leaderboard (no email addresses)
+ */
+export declare const listBasketballScores: (params?: ListBasketballScoresParams, options?: Parameters<typeof customFetch>[1]) => Promise<SoccerScore[]>;
+export declare const getListBasketballScoresQueryKey: (params?: ListBasketballScoresParams) => readonly ["/api/games/basketball-shootout/scores", ...ListBasketballScoresParams[]];
+export declare const getListBasketballScoresQueryOptions: <TData = Awaited<ReturnType<typeof listBasketballScores>>, TError = ErrorType<void>>(params?: ListBasketballScoresParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof listBasketballScores>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseQueryOptions<Awaited<ReturnType<typeof listBasketballScores>>, TError, TData> & {
+    queryKey: QueryKey;
+};
+export type ListBasketballScoresQueryResult = NonNullable<Awaited<ReturnType<typeof listBasketballScores>>>;
+export type ListBasketballScoresQueryError = ErrorType<void>;
+/**
+ * @summary Public Basketball Shootout leaderboard (no email addresses)
+ */
+export declare function useListBasketballScores<TData = Awaited<ReturnType<typeof listBasketballScores>>, TError = ErrorType<void>>(params?: ListBasketballScoresParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof listBasketballScores>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+};
+export declare const getSubmitBasketballScoreUrl: () => string;
+/**
+ * @summary Save a basketball result; repeated submission IDs are idempotent
+ */
+export declare const submitBasketballScore: (soccerScoreInput: SoccerScoreInput, options?: Parameters<typeof customFetch>[1]) => Promise<SoccerScore>;
+export declare const getSubmitBasketballScoreMutationKey: () => readonly ["submitBasketballScore"];
+export declare const getSubmitBasketballScoreMutationOptions: <TError = ErrorType<void>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof submitBasketballScore>>, TError, SubmitBasketballScoreMutationVariables, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof submitBasketballScore>>, TError, SubmitBasketballScoreMutationVariables, TContext>;
+export type SubmitBasketballScoreMutationResult = NonNullable<Awaited<ReturnType<typeof submitBasketballScore>>>;
+export type SubmitBasketballScoreMutationBody = BodyType<SoccerScoreInput>;
+export type SubmitBasketballScoreMutationError = ErrorType<void>;
+export type SubmitBasketballScoreMutationVariables = {
+    data: BodyType<SoccerScoreInput>;
+};
+/**
+* @summary Save a basketball result; repeated submission IDs are idempotent
+*/
+export declare const useSubmitBasketballScore: <TError = ErrorType<void>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof submitBasketballScore>>, TError, SubmitBasketballScoreMutationVariables, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof submitBasketballScore>>, TError, SubmitBasketballScoreMutationVariables, TContext>;
+export declare const getListSoccerScoresUrl: (params?: ListSoccerScoresParams) => string;
+/**
+ * @summary Public Soccer Shootout leaderboard (no email addresses)
+ */
+export declare const listSoccerScores: (params?: ListSoccerScoresParams, options?: Parameters<typeof customFetch>[1]) => Promise<SoccerScore[]>;
+export declare const getListSoccerScoresQueryKey: (params?: ListSoccerScoresParams) => readonly ["/api/games/soccer-shootout/scores", ...ListSoccerScoresParams[]];
+export declare const getListSoccerScoresQueryOptions: <TData = Awaited<ReturnType<typeof listSoccerScores>>, TError = ErrorType<void>>(params?: ListSoccerScoresParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof listSoccerScores>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseQueryOptions<Awaited<ReturnType<typeof listSoccerScores>>, TError, TData> & {
+    queryKey: QueryKey;
+};
+export type ListSoccerScoresQueryResult = NonNullable<Awaited<ReturnType<typeof listSoccerScores>>>;
+export type ListSoccerScoresQueryError = ErrorType<void>;
+/**
+ * @summary Public Soccer Shootout leaderboard (no email addresses)
+ */
+export declare function useListSoccerScores<TData = Awaited<ReturnType<typeof listSoccerScores>>, TError = ErrorType<void>>(params?: ListSoccerScoresParams, options?: {
+    query?: UseQueryOptions<Awaited<ReturnType<typeof listSoccerScores>>, TError, TData>;
+    request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+};
+export declare const getSubmitSoccerScoreUrl: () => string;
+/**
+ * @summary Save a soccer result; repeated submission IDs are idempotent
+ */
+export declare const submitSoccerScore: (soccerScoreInput: SoccerScoreInput, options?: Parameters<typeof customFetch>[1]) => Promise<SoccerScore>;
+export declare const getSubmitSoccerScoreMutationKey: () => readonly ["submitSoccerScore"];
+export declare const getSubmitSoccerScoreMutationOptions: <TError = ErrorType<void>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof submitSoccerScore>>, TError, SubmitSoccerScoreMutationVariables, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationOptions<Awaited<ReturnType<typeof submitSoccerScore>>, TError, SubmitSoccerScoreMutationVariables, TContext>;
+export type SubmitSoccerScoreMutationResult = NonNullable<Awaited<ReturnType<typeof submitSoccerScore>>>;
+export type SubmitSoccerScoreMutationBody = BodyType<SoccerScoreInput>;
+export type SubmitSoccerScoreMutationError = ErrorType<void>;
+export type SubmitSoccerScoreMutationVariables = {
+    data: BodyType<SoccerScoreInput>;
+};
+/**
+* @summary Save a soccer result; repeated submission IDs are idempotent
+*/
+export declare const useSubmitSoccerScore: <TError = ErrorType<void>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<Awaited<ReturnType<typeof submitSoccerScore>>, TError, SubmitSoccerScoreMutationVariables, TContext>;
+    request?: SecondParameter<typeof customFetch>;
+}) => UseMutationResult<Awaited<ReturnType<typeof submitSoccerScore>>, TError, SubmitSoccerScoreMutationVariables, TContext>;
 export declare const getHealthCheckUrl: () => string;
 /**
  * Returns server health status

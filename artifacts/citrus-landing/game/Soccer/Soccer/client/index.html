@@ -26,7 +26,8 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script>
-      if ('serviceWorker' in navigator) {
+      // Nested portal previews must not register a service worker for the portal root.
+      if ('serviceWorker' in navigator && !window.location.pathname.startsWith('/game-previews/')) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then((reg) => {

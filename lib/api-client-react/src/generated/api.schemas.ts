@@ -320,6 +320,79 @@ export interface ApiError {
   error: string;
 }
 
+export interface SoccerScoreInput {
+  submissionId: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  playerName: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  playerTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  playerCompany: string;
+  /** @maxLength 254 */
+  playerEmail: string;
+  /**
+     * @minimum 0
+     * @maximum 900
+     */
+  score: number;
+  /**
+     * @minimum 0
+     * @maximum 300
+     */
+  shotsTaken: number;
+  /**
+     * @minimum 0
+     * @maximum 300
+     */
+  shotsMade: number;
+  /**
+     * @minimum 0
+     * @maximum 300
+     */
+  outagesPrevented: number;
+}
+
+export type BasketballScoreInput = SoccerScoreInput;
+
+export interface SoccerScore {
+  id: string;
+  playerName: string;
+  playerTitle: string;
+  playerCompany: string;
+  score: number;
+  shotsTaken: number;
+  shotsMade: number;
+  outagesPrevented: number;
+  createdAt: string;
+}
+
+export type BasketballScore = SoccerScore;
+
+export type ListBasketballScoresParams = {
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+};
+
+export type ListSoccerScoresParams = {
+/**
+ * @minimum 1
+ * @maximum 100
+ */
+limit?: number;
+};
+
 export type ListGenerationsParams = {
 /**
  * @minimum 1

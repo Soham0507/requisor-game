@@ -25,6 +25,112 @@ tags:
   - name: booth
     description: Boat Booth dashboard data
 paths:
+  /games/basketball-shootout/scores:
+    get:
+      operationId: listBasketballScores
+      tags: [games]
+      summary: Public Basketball Shootout leaderboard (no email addresses)
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        "200":
+          description: Highest scores first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BasketballScore"
+        "400":
+          description: Invalid limit
+        "500":
+          description: Leaderboard unavailable
+    post:
+      operationId: submitBasketballScore
+      tags: [games]
+      summary: Save a basketball result; repeated submission IDs are idempotent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BasketballScoreInput"
+      responses:
+        "201":
+          description: Saved public score
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BasketballScore"
+        "400":
+          description: Invalid player details or inconsistent score
+        "409":
+          description: Submission ID already used for a different result
+        "429":
+          description: Too many score submissions; retry later
+        "503":
+          description: Basketball catalog entry unavailable
+        "500":
+          description: Score could not be saved
+  /games/soccer-shootout/scores:
+    get:
+      operationId: listSoccerScores
+      tags: [games]
+      summary: Public Soccer Shootout leaderboard (no email addresses)
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        "200":
+          description: Highest scores first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SoccerScore"
+        "400":
+          description: Invalid limit
+        "500":
+          description: Leaderboard unavailable
+    post:
+      operationId: submitSoccerScore
+      tags: [games]
+      summary: Save a soccer result; repeated submission IDs are idempotent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoccerScoreInput"
+      responses:
+        "201":
+          description: Saved public score
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoccerScore"
+        "400":
+          description: Invalid player details or inconsistent score
+        "409":
+          description: Submission ID already used for a different result
+        "429":
+          description: Too many score submissions; retry later
+        "503":
+          description: Soccer catalog entry unavailable
+        "500":
+          description: Score could not be saved
   /healthz:
     get:
       operationId: healthCheck
@@ -807,4 +913,73 @@ components:
       properties:
         error:
           type: string
+    # Both sports award three points per successful shot and share round fields.
+    BasketballScoreInput:
+      $ref: "#/components/schemas/SoccerScoreInput"
+    BasketballScore:
+      $ref: "#/components/schemas/SoccerScore"
+    SoccerScoreInput:
+      type: object
+      additionalProperties: false
+      required: [submissionId, playerName, playerTitle, playerCompany, playerEmail, score, shotsTaken, shotsMade, outagesPrevented]
+      properties:
+        submissionId:
+          type: string
+          format: uuid
+        playerName:
+          type: string
+          minLength: 1
+          maxLength: 80
+        playerTitle:
+          type: string
+          minLength: 1
+          maxLength: 100
+        playerCompany:
+          type: string
+          minLength: 1
+          maxLength: 100
+        playerEmail:
+          type: string
+          format: email
+          maxLength: 254
+        score:
+          type: integer
+          minimum: 0
+          maximum: 900
+        shotsTaken:
+          type: integer
+          minimum: 0
+          maximum: 300
+        shotsMade:
+          type: integer
+          minimum: 0
+          maximum: 300
+        outagesPrevented:
+          type: integer
+          minimum: 0
+          maximum: 300
+    SoccerScore:
+      type: object
+      required: [id, playerName, playerTitle, playerCompany, score, shotsTaken, shotsMade, outagesPrevented, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        playerName:
+          type: string
+        playerTitle:
+          type: string
+        playerCompany:
+          type: string
+        score:
+          type: integer
+        shotsTaken:
+          type: integer
+        shotsMade:
+          type: integer
+        outagesPrevented:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
 

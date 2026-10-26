@@ -8,6 +8,14 @@ const router: IRouter = Router();
 router.post("/player-submissions", async (req, res) => {
   const body = CreatePlayerSubmissionBody.parse(req.body);
 
+  // Public sports rankings must only contain results validated by their
+  // dedicated score endpoint, not arbitrary generic lead-capture metadata.
+  if ((body.gameSlug === "soccer-shootout" && body.extra?.kind === "soccer-score")
+      || (body.gameSlug === "basketball-shootout" && body.extra?.kind === "basketball-score")) {
+    res.status(400).json({ error: "Use the game's score submission endpoint." });
+    return;
+  }
+
   // The embedded game only knows its own slug (hardcoded in its bundle),
   // not this row's database id, so it's resolved here rather than trusted
   // from the client.

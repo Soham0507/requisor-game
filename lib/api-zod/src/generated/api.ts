@@ -9,6 +9,158 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Public Basketball Shootout leaderboard (no email addresses)
+ */
+export const listBasketballScoresQueryLimitDefault = 20;
+export const listBasketballScoresQueryLimitMax = 100;
+
+
+
+export const ListBasketballScoresQueryParams = zod.object({
+  "limit": zod.coerce.number().int().min(1).max(listBasketballScoresQueryLimitMax).default(listBasketballScoresQueryLimitDefault)
+})
+
+export const ListBasketballScoresResponseItem = zod.object({
+  "id": zod.string().uuid(),
+  "playerName": zod.string(),
+  "playerTitle": zod.string(),
+  "playerCompany": zod.string(),
+  "score": zod.number().int(),
+  "shotsTaken": zod.number().int(),
+  "shotsMade": zod.number().int(),
+  "outagesPrevented": zod.number().int(),
+  "createdAt": zod.coerce.date()
+})
+export const ListBasketballScoresResponse = zod.array(ListBasketballScoresResponseItem)
+
+
+/**
+ * @summary Save a basketball result; repeated submission IDs are idempotent
+ */
+export const submitBasketballScoreBodyPlayerNameMax = 80;
+
+export const submitBasketballScoreBodyPlayerTitleMax = 100;
+
+export const submitBasketballScoreBodyPlayerCompanyMax = 100;
+
+export const submitBasketballScoreBodyPlayerEmailMax = 254;
+
+export const submitBasketballScoreBodyScoreMin = 0;
+export const submitBasketballScoreBodyScoreMax = 900;
+
+export const submitBasketballScoreBodyShotsTakenMin = 0;
+export const submitBasketballScoreBodyShotsTakenMax = 300;
+
+export const submitBasketballScoreBodyShotsMadeMin = 0;
+export const submitBasketballScoreBodyShotsMadeMax = 300;
+
+export const submitBasketballScoreBodyOutagesPreventedMin = 0;
+export const submitBasketballScoreBodyOutagesPreventedMax = 300;
+
+
+
+export const SubmitBasketballScoreBody = zod.object({
+  "submissionId": zod.string().uuid(),
+  "playerName": zod.string().min(1).max(submitBasketballScoreBodyPlayerNameMax),
+  "playerTitle": zod.string().min(1).max(submitBasketballScoreBodyPlayerTitleMax),
+  "playerCompany": zod.string().min(1).max(submitBasketballScoreBodyPlayerCompanyMax),
+  "playerEmail": zod.string().email().max(submitBasketballScoreBodyPlayerEmailMax),
+  "score": zod.number().int().min(submitBasketballScoreBodyScoreMin).max(submitBasketballScoreBodyScoreMax),
+  "shotsTaken": zod.number().int().min(submitBasketballScoreBodyShotsTakenMin).max(submitBasketballScoreBodyShotsTakenMax),
+  "shotsMade": zod.number().int().min(submitBasketballScoreBodyShotsMadeMin).max(submitBasketballScoreBodyShotsMadeMax),
+  "outagesPrevented": zod.number().int().min(submitBasketballScoreBodyOutagesPreventedMin).max(submitBasketballScoreBodyOutagesPreventedMax)
+})
+
+export const SubmitBasketballScoreResponse = zod.object({
+  "id": zod.string().uuid(),
+  "playerName": zod.string(),
+  "playerTitle": zod.string(),
+  "playerCompany": zod.string(),
+  "score": zod.number().int(),
+  "shotsTaken": zod.number().int(),
+  "shotsMade": zod.number().int(),
+  "outagesPrevented": zod.number().int(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Public Soccer Shootout leaderboard (no email addresses)
+ */
+export const listSoccerScoresQueryLimitDefault = 20;
+export const listSoccerScoresQueryLimitMax = 100;
+
+
+
+export const ListSoccerScoresQueryParams = zod.object({
+  "limit": zod.coerce.number().int().min(1).max(listSoccerScoresQueryLimitMax).default(listSoccerScoresQueryLimitDefault)
+})
+
+export const ListSoccerScoresResponseItem = zod.object({
+  "id": zod.string().uuid(),
+  "playerName": zod.string(),
+  "playerTitle": zod.string(),
+  "playerCompany": zod.string(),
+  "score": zod.number().int(),
+  "shotsTaken": zod.number().int(),
+  "shotsMade": zod.number().int(),
+  "outagesPrevented": zod.number().int(),
+  "createdAt": zod.coerce.date()
+})
+export const ListSoccerScoresResponse = zod.array(ListSoccerScoresResponseItem)
+
+
+/**
+ * @summary Save a soccer result; repeated submission IDs are idempotent
+ */
+export const submitSoccerScoreBodyPlayerNameMax = 80;
+
+export const submitSoccerScoreBodyPlayerTitleMax = 100;
+
+export const submitSoccerScoreBodyPlayerCompanyMax = 100;
+
+export const submitSoccerScoreBodyPlayerEmailMax = 254;
+
+export const submitSoccerScoreBodyScoreMin = 0;
+export const submitSoccerScoreBodyScoreMax = 900;
+
+export const submitSoccerScoreBodyShotsTakenMin = 0;
+export const submitSoccerScoreBodyShotsTakenMax = 300;
+
+export const submitSoccerScoreBodyShotsMadeMin = 0;
+export const submitSoccerScoreBodyShotsMadeMax = 300;
+
+export const submitSoccerScoreBodyOutagesPreventedMin = 0;
+export const submitSoccerScoreBodyOutagesPreventedMax = 300;
+
+
+
+export const SubmitSoccerScoreBody = zod.object({
+  "submissionId": zod.string().uuid(),
+  "playerName": zod.string().min(1).max(submitSoccerScoreBodyPlayerNameMax),
+  "playerTitle": zod.string().min(1).max(submitSoccerScoreBodyPlayerTitleMax),
+  "playerCompany": zod.string().min(1).max(submitSoccerScoreBodyPlayerCompanyMax),
+  "playerEmail": zod.string().email().max(submitSoccerScoreBodyPlayerEmailMax),
+  "score": zod.number().int().min(submitSoccerScoreBodyScoreMin).max(submitSoccerScoreBodyScoreMax),
+  "shotsTaken": zod.number().int().min(submitSoccerScoreBodyShotsTakenMin).max(submitSoccerScoreBodyShotsTakenMax),
+  "shotsMade": zod.number().int().min(submitSoccerScoreBodyShotsMadeMin).max(submitSoccerScoreBodyShotsMadeMax),
+  "outagesPrevented": zod.number().int().min(submitSoccerScoreBodyOutagesPreventedMin).max(submitSoccerScoreBodyOutagesPreventedMax)
+})
+
+export const SubmitSoccerScoreResponse = zod.object({
+  "id": zod.string().uuid(),
+  "playerName": zod.string(),
+  "playerTitle": zod.string(),
+  "playerCompany": zod.string(),
+  "score": zod.number().int(),
+  "shotsTaken": zod.number().int(),
+  "shotsMade": zod.number().int(),
+  "outagesPrevented": zod.number().int(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
  * Returns server health status
  * @summary Health check
  */

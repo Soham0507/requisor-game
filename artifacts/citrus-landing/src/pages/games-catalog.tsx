@@ -1,4 +1,4 @@
-import { useMemo, type Dispatch, type SetStateAction } from "react";
+import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { Link, useLocation, useSearch } from "wouter";
 import { AlertTriangle } from "lucide-react";
 import { useListGames } from "@workspace/api-client-react";
@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MOBILE_UNSUPPORTED, MOBILE_UNSUPPORTED_MESSAGE } from "@/lib/mobile-support";
 import { GameSearchBar } from "@/components/GameSearchBar";
+import { CustomizableAreaDialog } from "@/components/customizer/CustomizableAreaDialog";
+import { PREVIEW_BASE_PATHS } from "@/lib/preview-paths";
 import { EMPTY_FILTERS, FACETS, searchAndFilter, type Filters } from "@/lib/game-search";
 
 // Reuses the same demo footage already shown per-project in the "Our Work"
@@ -46,6 +48,9 @@ const VERTICALS = [
 ] as const;
 type Vertical = (typeof VERTICALS)[number]["id"];
 
+// Shown first on the catalog page, in this order.
+const FEATURED_ORDER = ["basketball-shootout", "jeopardy", "a8-recall"];
+
 export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical }) {
   const { data: games, isLoading, isError } = useListGames();
   const [location, navigate] = useLocation();
@@ -61,7 +66,13 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
   }, [params]);
   const isQuizVertical = vertical === "quiz-questionnaire-survey";
   const verticalGames = useMemo(() => (games ?? []).filter((game) =>
-    vertical === "all" || QUIZ_SURVEY_GAMES.has(game.slug) === isQuizVertical), [games, vertical, isQuizVertical]);
+    vertical === "all" || QUIZ_SURVEY_GAMES.has(game.slug) === isQuizVertical)
+    // Featured games first, in this order; everything else keeps its API order.
+    .map((game, index) => ({ game, index, rank: FEATURED_ORDER.indexOf(game.slug) }))
+    .sort((a, b) => (a.rank < 0 ? FEATURED_ORDER.length : a.rank) - (b.rank < 0 ? FEATURED_ORDER.length : b.rank) || a.index - b.index)
+    .map(({ game }) => game), [games, vertical, isQuizVertical]);
+  const [areaGameSlug, setAreaGameSlug] = useState<string | null>(null);
+  const areaGame = (games ?? []).find((g) => g.slug === areaGameSlug) ?? null;
   const visibleGames = useMemo(() => searchAndFilter(verticalGames, query, filters), [verticalGames, query, filters]);
 
   const updateSearch = (nextQuery: string, nextFilters: Filters) => {
@@ -189,13 +200,22 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
                       {MOBILE_UNSUPPORTED_MESSAGE}
                     </p>
                   )}
-                  <div className="flex justify-end">
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant="outline"
+                      className="h-auto min-h-9 w-full whitespace-normal px-3 py-2 text-sm leading-tight"
+                      disabled={!customizationAvailable || !PREVIEW_BASE_PATHS[game.slug]}
+                      onClick={() => setAreaGameSlug(game.slug)}
+                      data-testid={`button-customizable-area-${game.slug}`}
+                    >
+                      View customizable
+                    </Button>
                     {customizationAvailable ? (
-                      <Link href={`/customize/${game.slug}`}>
-                        <Button data-testid={`button-customize-${game.slug}`}>Customize</Button>
+                      <Link href={`/customize/${game.slug}`} className="block">
+                        <Button className="w-full" data-testid={`button-customize-${game.slug}`}>Customize</Button>
                       </Link>
                     ) : (
-                      <Button disabled data-testid={`button-customize-${game.slug}`}>Customize</Button>
+                      <Button disabled className="w-full" data-testid={`button-customize-${game.slug}`}>Customize</Button>
                     )}
                   </div>
                 </div>
@@ -204,6 +224,13 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
           })}
         </div>
       </main>
+      {areaGame && (
+        <CustomizableAreaDialog
+          game={areaGame}
+          open
+          onOpenChange={(open) => { if (!open) setAreaGameSlug(null); }}
+        />
+      )}
       <Footer />
     </div>
   );

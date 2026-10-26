@@ -229,7 +229,7 @@ export default function Home() {
       setNote({ text: "Tell us a bit about the idea first.", ok: false });
       return;
     }
-    const subject = "New activation idea for Activate";
+    const subject = "New activation idea for Active8";
     const bodyLines = [idea, "", "—", name ? "From: " + name : null, email ? "Reply to: " + email : null].filter(
       Boolean,
     );
@@ -275,7 +275,7 @@ export default function Home() {
       <nav>
         <div className="nav-in">
           <a className="mark" href="#top">
-            Activate <i></i> <small>by RequisorAI — experiential games &amp; brand activations</small>
+            Active8 <i></i> <small>by RequisorAI — experiential games &amp; brand activations</small>
           </a>
           <div className="nav-r">
             <button
@@ -295,7 +295,7 @@ export default function Home() {
               </svg>
             </button>
             <Link className="btn" href="/games">
-              Activate now
+              Try Active8
             </Link>
           </div>
         </div>
@@ -327,7 +327,7 @@ export default function Home() {
             </p>
             
             <div className="row rise d4">
-              <Link className="btn" href="/games">Activate now</Link>
+              <Link className="btn" href="/games">Try Active8</Link>
               <a className="btn line" href="#work">See the games</a>
             </div>
             <div className="tags rise d4">
@@ -374,7 +374,7 @@ export default function Home() {
             <span className="hot">Go</span> <span className="hot">live.</span>
           </p>
           <div className="foot rv">
-            Custom interactive experiences used to mean long timelines and bloated budgets. Activate skips both.
+            Custom interactive experiences used to mean long timelines and bloated budgets. Active8 skips both.
             Attendees get something worth stopping for, and you get the lead data and engagement metrics to prove it
             worked — at a fraction of the cost of a custom build.
           </div>
@@ -384,7 +384,7 @@ export default function Home() {
       <section className="showcase" id="showcase">
         <div className="wrap">
           <div className="sec-head rv">
-            <h2>See Activate in action.</h2>
+            <h2>See Active8 in action.</h2>
             <p>A short look at how a ready-made game becomes your branded event experience.</p>
           </div>
           <div className="showcase-frame" ref={showcaseFrameRef}>
@@ -396,7 +396,7 @@ export default function Home() {
               playsInline
               preload="auto"
               poster="/logo/showcase-poster.jpg"
-              aria-label="Activate product overview video"
+              aria-label="Active8 product overview video"
             >
               <source src="/logo/showcase.mp4" type="video/mp4" />
             </video>
@@ -486,7 +486,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#D6B15A" }}></i>
-                Immerse · Golf challenge
+                Active8 · Golf challenge
                 <span className="coming-tag">Coming soon</span>
               </div>
               <h3>Golf Challenge</h3>
@@ -517,7 +517,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#4AA7BD" }}></i>
-                Activate · Trivia activation
+                Active8 · Trivia activation
                 <span className="coming-tag">Customize now</span>
               </div>
               <h3>Jeopardy</h3>
@@ -539,7 +539,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#C8102E" }}></i>
-                Activate · Quiz activation
+                Active8 · Quiz activation
                 <span className="coming-tag">Customize now</span>
               </div>
               <h3>Energy Quiz</h3>
@@ -571,7 +571,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#EC4899" }}></i>
-                Activate · Memory game
+                Active8 · Memory game
                 <span className="coming-tag">Customize now</span>
               </div>
               <h3>Recall</h3>
@@ -686,21 +686,21 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head rv">
             <h2>Who it’s for.</h2>
-            <p>Activate gives agencies and brands a faster way to put meaningful interactivity at the center of an event.</p>
+            <p>Active8 gives agencies and brands a faster way to put meaningful interactivity at the center of an event.</p>
           </div>
           <div className="split audience-grid rv">
             <div className="side">
               <h3>Exhibit &amp; Experiential Agencies</h3>
               <p>
                 Give your clients an interactive centerpiece without adding a dev project to your build schedule.
-                Activate drops into your booth designs, deploys on your timeline, and makes you look like the team
+                Active8 drops into your booth designs, deploys on your timeline, and makes you look like the team
                 that thought of everything. Add interactivity to any proposal without adding risk or overhead.
               </p>
             </div>
             <div className="side">
               <h3>Marketing Agencies</h3>
               <p>
-                Stop telling clients an interactive activation is out of budget. Activate lets you pitch, brand, and
+                Stop telling clients an interactive activation is out of budget. Active8 lets you pitch, brand, and
                 launch engaging experiences quickly, with lead capture and reporting built in, so you can show
                 clients real numbers after the event.
               </p>
@@ -708,7 +708,7 @@ export default function Home() {
             <div className="side">
               <h3>Brands</h3>
               <p>
-                Your booth competes with hundreds of others. Activate gives attendees a reason to walk up, experience
+                Your booth competes with hundreds of others. Active8 gives attendees a reason to walk up, experience
                 your brand in an interactive way, and share their details willingly. Your team gets qualified leads
                 and clear engagement data without waiting on long development cycles.
               </p>
@@ -721,7 +721,7 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head rv">
             <h2>How it works.</h2>
-            <p>From choosing a game to measuring the results, Activate keeps every step direct and fast.</p>
+            <p>From choosing a game to measuring the results, Active8 keeps every step direct and fast.</p>
           </div>
           <ol className="process-list rv">
             {[
@@ -743,7 +743,7 @@ export default function Home() {
       <section className="demos" id="demos">
         <div className="wrap">
           <div className="sec-head rv">
-            <h2>Why Activate.</h2>
+            <h2>Why Active8.</h2>
             <p>No long lead times, no generic branding, and no guessing whether the experience worked.</p>
           </div>
           <div className="why-grid rv">
@@ -775,7 +775,7 @@ export default function Home() {
               <h3>Pay per game</h3>
               <p className="pricing-amount">$13,000 <span>per game / activation</span></p>
               <p>Branded, deployed, with lead capture and interaction metrics included.</p>
-              <Link className="btn" href="/games">Activate now</Link>
+              <Link className="btn" href="/games">Try Active8</Link>
             </article>
             <article className="pricing-option pricing-option-featured">
               <span className="pricing-eyebrow">02 / More ways to save</span>
@@ -791,7 +791,7 @@ export default function Home() {
                 <li>Multi-seat discounts</li>
                 <li>Credit for past purchases: $500 per game bought before subscribing, applied across your next two game purchases</li>
               </ul>
-              <a className="btn" href="mailto:support@requisor.io?subject=Activate%20subscription%20inquiry">Subscribe now</a>
+              <a className="btn" href="mailto:support@requisor.io?subject=Active8%20subscription%20inquiry">Subscribe now</a>
             </article>
           </div>
           <div className="pricing-math rv">
@@ -859,7 +859,7 @@ export default function Home() {
             Choose a game, apply your brand, and launch an experience that captures attention, leads, and measurable
             engagement.
           </p>
-          <Link className="btn rv" href="/games">Activate now</Link>
+          <Link className="btn rv" href="/games">Try Active8</Link>
         </div>
       </section>
 

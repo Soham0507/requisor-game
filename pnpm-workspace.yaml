@@ -13,10 +13,10 @@ packages:
   - artifacts/citrus-landing/game/Lexus
 
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  bufferutil: set this to true or false
-  core-js: set this to true or false
-  esbuild: set this to true or false
+  '@parcel/watcher': false
+  bufferutil: false
+  core-js: false
+  esbuild: true
 
 autoInstallPeers: false
 

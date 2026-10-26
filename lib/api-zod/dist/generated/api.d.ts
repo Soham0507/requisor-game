@@ -7,6 +7,308 @@
  */
 import * as zod from 'zod';
 /**
+ * @summary Public Basketball Shootout leaderboard (no email addresses)
+ */
+export declare const listBasketballScoresQueryLimitDefault = 20;
+export declare const listBasketballScoresQueryLimitMax = 100;
+export declare const ListBasketballScoresQueryParams: zod.ZodObject<{
+    limit: zod.ZodDefault<zod.ZodNumber>;
+}, "strip", zod.ZodTypeAny, {
+    limit: number;
+}, {
+    limit?: number | undefined;
+}>;
+export declare const ListBasketballScoresResponseItem: zod.ZodObject<{
+    id: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+    createdAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}>;
+export declare const ListBasketballScoresResponse: zod.ZodArray<zod.ZodObject<{
+    id: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+    createdAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}>, "many">;
+/**
+ * @summary Save a basketball result; repeated submission IDs are idempotent
+ */
+export declare const submitBasketballScoreBodyPlayerNameMax = 80;
+export declare const submitBasketballScoreBodyPlayerTitleMax = 100;
+export declare const submitBasketballScoreBodyPlayerCompanyMax = 100;
+export declare const submitBasketballScoreBodyPlayerEmailMax = 254;
+export declare const submitBasketballScoreBodyScoreMin = 0;
+export declare const submitBasketballScoreBodyScoreMax = 900;
+export declare const submitBasketballScoreBodyShotsTakenMin = 0;
+export declare const submitBasketballScoreBodyShotsTakenMax = 300;
+export declare const submitBasketballScoreBodyShotsMadeMin = 0;
+export declare const submitBasketballScoreBodyShotsMadeMax = 300;
+export declare const submitBasketballScoreBodyOutagesPreventedMin = 0;
+export declare const submitBasketballScoreBodyOutagesPreventedMax = 300;
+export declare const SubmitBasketballScoreBody: zod.ZodObject<{
+    submissionId: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    playerEmail: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+}, "strip", zod.ZodTypeAny, {
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    submissionId: string;
+    playerEmail: string;
+}, {
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    submissionId: string;
+    playerEmail: string;
+}>;
+export declare const SubmitBasketballScoreResponse: zod.ZodObject<{
+    id: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+    createdAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}>;
+/**
+ * @summary Public Soccer Shootout leaderboard (no email addresses)
+ */
+export declare const listSoccerScoresQueryLimitDefault = 20;
+export declare const listSoccerScoresQueryLimitMax = 100;
+export declare const ListSoccerScoresQueryParams: zod.ZodObject<{
+    limit: zod.ZodDefault<zod.ZodNumber>;
+}, "strip", zod.ZodTypeAny, {
+    limit: number;
+}, {
+    limit?: number | undefined;
+}>;
+export declare const ListSoccerScoresResponseItem: zod.ZodObject<{
+    id: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+    createdAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}>;
+export declare const ListSoccerScoresResponse: zod.ZodArray<zod.ZodObject<{
+    id: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+    createdAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}>, "many">;
+/**
+ * @summary Save a soccer result; repeated submission IDs are idempotent
+ */
+export declare const submitSoccerScoreBodyPlayerNameMax = 80;
+export declare const submitSoccerScoreBodyPlayerTitleMax = 100;
+export declare const submitSoccerScoreBodyPlayerCompanyMax = 100;
+export declare const submitSoccerScoreBodyPlayerEmailMax = 254;
+export declare const submitSoccerScoreBodyScoreMin = 0;
+export declare const submitSoccerScoreBodyScoreMax = 900;
+export declare const submitSoccerScoreBodyShotsTakenMin = 0;
+export declare const submitSoccerScoreBodyShotsTakenMax = 300;
+export declare const submitSoccerScoreBodyShotsMadeMin = 0;
+export declare const submitSoccerScoreBodyShotsMadeMax = 300;
+export declare const submitSoccerScoreBodyOutagesPreventedMin = 0;
+export declare const submitSoccerScoreBodyOutagesPreventedMax = 300;
+export declare const SubmitSoccerScoreBody: zod.ZodObject<{
+    submissionId: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    playerEmail: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+}, "strip", zod.ZodTypeAny, {
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    submissionId: string;
+    playerEmail: string;
+}, {
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    submissionId: string;
+    playerEmail: string;
+}>;
+export declare const SubmitSoccerScoreResponse: zod.ZodObject<{
+    id: zod.ZodString;
+    playerName: zod.ZodString;
+    playerTitle: zod.ZodString;
+    playerCompany: zod.ZodString;
+    score: zod.ZodNumber;
+    shotsTaken: zod.ZodNumber;
+    shotsMade: zod.ZodNumber;
+    outagesPrevented: zod.ZodNumber;
+    createdAt: zod.ZodDate;
+}, "strip", zod.ZodTypeAny, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}, {
+    id: string;
+    playerName: string;
+    playerTitle: string;
+    playerCompany: string;
+    score: number;
+    shotsTaken: number;
+    shotsMade: number;
+    outagesPrevented: number;
+    createdAt: Date;
+}>;
+/**
  * Returns server health status
  * @summary Health check
  */
@@ -1406,22 +1708,22 @@ export declare const ListGenerationsResponseItem: zod.ZodObject<{
     createdAt: zod.ZodString;
 }, "strip", zod.ZodTypeAny, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
     error?: string | null | undefined;
 }, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
@@ -1440,22 +1742,22 @@ export declare const ListGenerationsResponse: zod.ZodArray<zod.ZodObject<{
     createdAt: zod.ZodString;
 }, "strip", zod.ZodTypeAny, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
     error?: string | null | undefined;
 }, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
@@ -1491,22 +1793,22 @@ export declare const CreateGenerationResponse: zod.ZodObject<{
     createdAt: zod.ZodString;
 }, "strip", zod.ZodTypeAny, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
     error?: string | null | undefined;
 }, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
@@ -1536,22 +1838,22 @@ export declare const GetGenerationResponse: zod.ZodObject<{
     createdAt: zod.ZodString;
 }, "strip", zod.ZodTypeAny, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
     error?: string | null | undefined;
 }, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
@@ -1581,22 +1883,22 @@ export declare const StartVideoResponse: zod.ZodObject<{
     createdAt: zod.ZodString;
 }, "strip", zod.ZodTypeAny, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;
     error?: string | null | undefined;
 }, {
     id: string;
+    createdAt: string;
     sceneId: string;
     sceneName: string;
     photoStatus: string;
     videoStatus: string;
-    createdAt: string;
     visitorName?: string | null | undefined;
     photoUrl?: string | null | undefined;
     videoUrl?: string | null | undefined;

@@ -1,47 +1,8 @@
 import React, { useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Image as ImageIcon } from "lucide-react";
-import type { Score } from "@shared/schema";
+import { useBasketballLeaderboard } from "../lib/basketball-scores";
 import { useBrand } from "../brand-bridge";
-
-function safeParse(key: string): Score[] {
-  try {
-    const raw = localStorage.getItem(key);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed)) return parsed;
-    return [];
-  } catch {
-    return [];
-  }
-}
-
-function useLeaderboardData() {
-  return useQuery<Score[]>({
-    queryKey: ["/api/scores", { limit: 100, display: true }],
-    queryFn: async () => {
-      if (!navigator.onLine) {
-        const cached = safeParse("avx-leaderboard");
-        if (cached.length > 0) return cached;
-        return safeParse("avx-offline-scores");
-      }
-      try {
-        const res = await fetch("/api/scores?limit=100");
-        if (!res.ok) throw new Error("Failed to fetch scores");
-        const data = await res.json();
-        localStorage.setItem("avx-leaderboard", JSON.stringify(data));
-        return data;
-      } catch {
-        const cached = safeParse("avx-leaderboard");
-        if (cached.length > 0) return cached;
-        return safeParse("avx-offline-scores");
-      }
-    },
-    refetchInterval: 5000,
-    retry: false,
-  });
-}
 
 const medalColors = [
   {
@@ -69,7 +30,7 @@ const medalColors = [
 
 export default function DisplayLeaderboard() {
   const brand = useBrand();
-  const { data: leaderboard = [] } = useLeaderboardData();
+  const { data: leaderboard = [], isLoading, isError, refetch } = useBasketballLeaderboard(100);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -136,7 +97,8 @@ export default function DisplayLeaderboard() {
         </header>
 
         <div className="relative z-10 flex-1 flex flex-col px-10 py-6 overflow-hidden">
-          {visibleScores.length === 0 ? (
+          {isError && <p role="alert" className="text-red-300 text-center">Rankings are unavailable. <button onClick={() => refetch()}>Retry</button></p>}
+          {isLoading ? <p role="status" className="text-slate-400 text-center">Loading rankings...</p> : isError && visibleScores.length === 0 ? null : visibleScores.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-slate-500">
               <Trophy className="mb-4 opacity-40" size={80} />
               <p className="text-2xl">No scores yet. Be the first to play!</p>

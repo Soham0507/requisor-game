@@ -6,6 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 export * from './apiError';
+export * from './basketballScore';
+export * from './basketballScoreInput';
 export * from './boothStats';
 export * from './brandingDraft';
 export * from './brandingDraftStatus';
@@ -22,7 +24,9 @@ export * from './gameContentQuestion';
 export * from './generation';
 export * from './generationInput';
 export * from './healthStatus';
+export * from './listBasketballScoresParams';
 export * from './listGenerationsParams';
+export * from './listSoccerScoresParams';
 export * from './memoryCard';
 export * from './order';
 export * from './orderStatus';
@@ -34,5 +38,7 @@ export * from './quizQuestion';
 export * from './savedGameContent';
 export * from './scene';
 export * from './sceneCount';
+export * from './soccerScore';
+export * from './soccerScoreInput';
 export * from './upsertBrandingDraftRequest';
 //# sourceMappingURL=index.d.ts.map

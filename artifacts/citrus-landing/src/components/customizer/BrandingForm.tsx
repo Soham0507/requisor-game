@@ -14,28 +14,28 @@ const FONT_EXTENSIONS = /\.(woff2?|ttf|otf)$/i;
 
 // Landing-screen background upload is a per-game opt-in, not a generic
 // capability every game's brand-bridge understands yet.
-const BACKGROUND_MEDIA_SLUGS = new Set(["basketball-shootout"]);
+export const BACKGROUND_MEDIA_SLUGS = new Set(["basketball-shootout"]);
 
 // Recall reuses the same upload (theme.bgUrl) as a product image shown on its
 // face-down cards. Image only: the cards have no use for video.
-const PRODUCT_IMAGE_SLUGS = new Set(["a8-recall"]);
+export const PRODUCT_IMAGE_SLUGS = new Set(["a8-recall"]);
 
 // These games show the game title in the navigation bar and have no tagline.
-const TAGLINE_HIDDEN_SLUGS = new Set(["basketball-shootout", "soccer-shootout"]);
+export const TAGLINE_HIDDEN_SLUGS = new Set(["basketball-shootout", "soccer-shootout"]);
 
 // Games whose primary/secondary/accent colors don't drive anything visible,
 // so the pickers are hidden rather than offering controls that do nothing.
-const HIDDEN_THEME_COLOR_SLUGS = new Set(["basketball-shootout"]);
+export const HIDDEN_THEME_COLOR_SLUGS = new Set(["basketball-shootout"]);
 
 // Secondary and accent only appear for games that actually draw with them
 // (checked per game, see the color-effect test): Soccer's Leaderboard button,
 // Space Shooter / Jeopardy panels, and Energy Quiz's animated background.
-const SECONDARY_COLOR_SLUGS = new Set(["soccer-shootout", "space-shooter-1", "gesture-space-war", "jeopardy", "lexus-energy-quiz"]);
-const ACCENT_COLOR_SLUGS = new Set(["lexus-energy-quiz"]);
+export const SECONDARY_COLOR_SLUGS = new Set(["soccer-shootout", "space-shooter-1", "gesture-space-war", "jeopardy", "lexus-energy-quiz"]);
+export const ACCENT_COLOR_SLUGS = new Set(["lexus-energy-quiz"]);
 
 // Games whose top navigation bar color is editable, with the hex each one
 // shows by default (soccer's default bar is a translucent white).
-const NAVBAR_COLOR_DEFAULTS: Record<string, string> = {
+export const NAVBAR_COLOR_DEFAULTS: Record<string, string> = {
   "basketball-shootout": "#000000",
   "soccer-shootout": "#ffffff",
 };

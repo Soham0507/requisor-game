@@ -48,8 +48,9 @@ import {
 } from "lucide-react";
 import { useGestureRecognizer } from "./hooks/useGestureRecognizer";
 
-import type { Score, InsertScore } from "@shared/schema";
-import { Route, Switch } from "wouter";
+import type { InsertScore } from "@shared/schema";
+import { soccerScoresUrl, soccerStorage as localStorage, type Score } from "./lib/soccer-scores";
+import { Route, Router as WouterRouter, Switch } from "wouter";
 import { useBrand } from "./brand-bridge";
 
 import DisplayLeaderboard from "./pages/DisplayLeaderboard";
@@ -261,7 +262,7 @@ const LeaderboardTicker = () => {
         return [];
       }
       try {
-        const res = await fetch("/api/scores?limit=20");
+        const res = await fetch(`${soccerScoresUrl}?limit=20`);
         if (!res.ok) throw new Error("Failed to fetch scores");
         const data = await res.json();
         localStorage.setItem("soccer-leaderboard", JSON.stringify(data));
@@ -1373,6 +1374,8 @@ const ResultsScreen = ({
         ? "Pro"
         : "Rookie";
   const [showNameModal, setShowNameModal] = useState(true);
+  const [submissionId] = useState(() => crypto.randomUUID());
+  const [scoreSaved, setScoreSaved] = useState(false);
   const [playerInfo, setPlayerInfo] = useState({
     name: "",
     title: "",
@@ -1383,7 +1386,7 @@ const ResultsScreen = ({
   const queryClient = useQueryClient();
 
   // Fetch leaderboard
-  const { data: leaderboard = [] } = useQuery<Score[]>({
+  const { data: leaderboard = [], isPending: leaderboardPending, isError: leaderboardError, refetch: refetchLeaderboard } = useQuery<Score[]>({
     queryKey: ["/api/scores", { limit: 50 }],
     queryFn: async () => {
       if (!navigator.onLine) {
@@ -1395,7 +1398,7 @@ const ResultsScreen = ({
         return [];
       }
       try {
-        const response = await fetch("/api/scores?limit=50");
+        const response = await fetch(`${soccerScoresUrl}?limit=50`);
         if (!response.ok) throw new Error("Failed to fetch scores");
         const serverData = await response.json();
 
@@ -1413,7 +1416,8 @@ const ResultsScreen = ({
 
         localStorage.setItem("soccer-leaderboard", JSON.stringify(deduped));
         return deduped;
-      } catch {
+      } catch (error) {
+        if (navigator.onLine) throw error;
         const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) return JSON.parse(cached);
         return [];
@@ -1424,66 +1428,33 @@ const ResultsScreen = ({
 
   // Submit score mutation
   const submitScoreMutation = useMutation({
+    networkMode: "always",
     mutationFn: async (scoreData: InsertScore) => {
-      const localScore = {
-        ...scoreData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-      };
-
-      const addToPending = () => {
-        const pending = JSON.parse(
-          localStorage.getItem("soccer-pending-sync") || "[]",
-        );
-        pending.push({
-          data: scoreData,
-          localId: localScore.id,
-          timestamp: Date.now(),
-        });
-        localStorage.setItem("soccer-pending-sync", JSON.stringify(pending));
-      };
-      const addToLocalLeaderboard = () => {
-        const cached = JSON.parse(
-          localStorage.getItem("soccer-leaderboard") || "[]",
-        );
-        const exists = cached.some((s: any) => s.id === localScore.id);
-        if (!exists) {
-          cached.push(localScore);
-          cached.sort((a: any, b: any) => b.score - a.score);
-          localStorage.setItem(
-            "soccer-leaderboard",
-            JSON.stringify(cached.slice(0, 100)),
-          );
-        }
-      };
-
       if (!navigator.onLine) {
-        addToPending();
-        addToLocalLeaderboard();
-        return localScore;
+        throw new Error("Reconnect to the internet, then retry. Your score has not been saved.");
       }
-
       try {
-        const response = await fetch("/api/scores", {
+        const response = await fetch(soccerScoresUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(scoreData),
+          body: JSON.stringify({ ...scoreData, submissionId }),
         });
-        if (!response.ok) throw new Error("Failed to submit score");
+        if (!response.ok) {
+          throw new Error(response.status === 400
+            ? "Please check your player details and email address, then retry."
+            : "Your score could not be saved. Please retry.");
+        }
         return response.json();
-      } catch {
-        addToPending();
-        addToLocalLeaderboard();
-        return localScore;
+      } catch (error) {
+        if (error instanceof TypeError) {
+          throw new Error("Could not reach the server. Your score has not been confirmed; please retry.");
+        }
+        throw error;
       }
     },
     onSuccess: () => {
-      if (navigator.onLine) {
-        queryClient.invalidateQueries({ queryKey: ["/api/scores"] });
-      }
-      setShowNameModal(false);
-    },
-    onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/scores"] });
+      setScoreSaved(true);
       setShowNameModal(false);
     },
   });
@@ -1491,18 +1462,18 @@ const ResultsScreen = ({
   const handleSubmitScore = (e: React.FormEvent) => {
     e.preventDefault();
     if (
-      !playerInfo.name ||
-      !playerInfo.title ||
-      !playerInfo.company ||
-      !playerInfo.email
+      !playerInfo.name.trim() ||
+      !playerInfo.title.trim() ||
+      !playerInfo.company.trim() ||
+      !playerInfo.email.trim()
     )
       return;
 
     submitScoreMutation.mutate({
-      playerName: playerInfo.name,
-      playerTitle: playerInfo.title,
-      playerCompany: playerInfo.company,
-      playerEmail: playerInfo.email,
+      playerName: playerInfo.name.trim(),
+      playerTitle: playerInfo.title.trim(),
+      playerCompany: playerInfo.company.trim(),
+      playerEmail: playerInfo.email.trim(),
       score: stats.score,
       shotsTaken: stats.shotsTaken,
       shotsMade: stats.shotsMade,
@@ -1530,7 +1501,7 @@ const ResultsScreen = ({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-[#FFBF40] rounded-2xl p-8 max-w-md w-full shadow-2xl"
+              className="bg-[#FFBF40] rounded-2xl p-6 sm:p-8 max-w-md w-full shadow-2xl max-h-[90dvh] overflow-y-auto"
               style={{
                 fontFamily: "'Inter', sans-serif",
                 border: "3px solid #1C1C1C",
@@ -1551,17 +1522,20 @@ const ResultsScreen = ({
                 Join the Leaderboard
               </h3>
               <p className="text-[#1C1C1C]/80 text-sm mb-6 text-center">
-                Enter your details to lock in your score.
+                Your name, job title, company and score will appear on the public
+                leaderboard. Your email stays private.
               </p>
 
               <form onSubmit={handleSubmitScore} className="space-y-4">
                 <div>
                   <label className="block text-xs font-bold text-[#1C1C1C] uppercase mb-2 tracking-wider">
-                    Your Name
+                    <span id="player-name-label">Your Name</span>
                   </label>
                   <input
                     type="text"
                     required
+                    aria-labelledby="player-name-label"
+                    maxLength={80}
                     value={playerInfo.name}
                     onChange={(e) =>
                       setPlayerInfo({ ...playerInfo, name: e.target.value })
@@ -1573,11 +1547,13 @@ const ResultsScreen = ({
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-[#1C1C1C] uppercase mb-2 tracking-wider">
-                    Job Title
+                    <span id="player-title-label">Job Title</span>
                   </label>
                   <input
                     type="text"
                     required
+                    aria-labelledby="player-title-label"
+                    maxLength={100}
                     value={playerInfo.title}
                     onChange={(e) =>
                       setPlayerInfo({ ...playerInfo, title: e.target.value })
@@ -1589,11 +1565,13 @@ const ResultsScreen = ({
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-[#1C1C1C] uppercase mb-2 tracking-wider">
-                    Company
+                    <span id="player-company-label">Company</span>
                   </label>
                   <input
                     type="text"
                     required
+                    aria-labelledby="player-company-label"
+                    maxLength={100}
                     value={playerInfo.company}
                     onChange={(e) =>
                       setPlayerInfo({ ...playerInfo, company: e.target.value })
@@ -1605,12 +1583,14 @@ const ResultsScreen = ({
                 </div>
                 <div className="relative">
                   <label className="block text-xs font-bold text-[#1C1C1C] uppercase mb-2 tracking-wider">
-                    Email
+                    <span id="player-email-label">Email</span>
                   </label>
 
                   <input
                     type={showEmail ? "text" : "password"}
                     required
+                    aria-labelledby="player-email-label"
+                    maxLength={254}
                     autoComplete="off"
                     value={playerInfo.email}
                     onChange={(e) =>
@@ -1624,6 +1604,7 @@ const ResultsScreen = ({
                   {/* Eye Button */}
                   <button
                     type="button"
+                    aria-label={showEmail ? "Hide email" : "Show email"}
                     onClick={() => setShowEmail(!showEmail)}
                     className="absolute right-3 top-[38px] text-[#1C1C1C]/70 hover:text-[#E42E20] transition"
                   >
@@ -1631,6 +1612,11 @@ const ResultsScreen = ({
                   </button>
                 </div>
 
+                {submitScoreMutation.isError && (
+                  <p role="alert" className="text-sm font-semibold text-[#1C1C1C]">
+                    {submitScoreMutation.error.message}
+                  </p>
+                )}
                 <div className="flex gap-3 pt-4">
                   <button
                     onClick={() => setShowNameModal(false)}
@@ -1668,6 +1654,12 @@ const ResultsScreen = ({
           </motion.div>
         )}
       </AnimatePresence>
+      {scoreSaved && (
+        <p role="status" className="text-center text-white">Your score is saved to the leaderboard.</p>
+      )}
+      {leaderboardError && (
+        <p role="alert" className="text-center text-white">The leaderboard is temporarily unavailable. Please retry.</p>
+      )}
 
       <div className="text-center mb-10 mt-4 z-10">
         <motion.div
@@ -1729,7 +1721,16 @@ const ResultsScreen = ({
         </div>
 
         <div className="space-y-2">
-          {leaderboard.length === 0 ? (
+          {leaderboardPending ? (
+            <p role="status" className="text-center text-white py-8">Loading leaderboard…</p>
+          ) : leaderboardError ? (
+            <div role="alert" className="text-center text-white py-8">
+              <p>The leaderboard is temporarily unavailable.</p>
+              <button type="button" className="underline mt-3" onClick={() => void refetchLeaderboard()}>
+                Retry
+              </button>
+            </div>
+          ) : leaderboard.length === 0 ? (
             <div className="text-center py-12 text-[#99B3E1]">
               <Trophy className="mx-auto mb-3 opacity-50" size={50} />
               <p>Be the first to join the leaderboard!</p>
@@ -1815,7 +1816,7 @@ const ResultsScreen = ({
 // --- Leaderboard Screen ---
 
 const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
-  const { data: leaderboard = [] } = useQuery<Score[]>({
+  const { data: leaderboard = [], isPending, isError, refetch } = useQuery<Score[]>({
     queryKey: ["/api/scores", { limit: 100 }],
     queryFn: async () => {
       if (!navigator.onLine) {
@@ -1827,7 +1828,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
         return [];
       }
       try {
-        const res = await fetch("/api/scores?limit=100");
+        const res = await fetch(`${soccerScoresUrl}?limit=100`);
         if (!res.ok) throw new Error("Failed to fetch scores");
         const serverData = await res.json();
 
@@ -1845,7 +1846,8 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
 
         localStorage.setItem("soccer-leaderboard", JSON.stringify(deduped));
         return deduped;
-      } catch {
+      } catch (error) {
+        if (navigator.onLine) throw error;
         const cached = localStorage.getItem("soccer-leaderboard");
         if (cached) return JSON.parse(cached);
         return [];
@@ -1908,7 +1910,16 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
         </div>
 
         <div className="space-y-2">
-          {leaderboard.length === 0 ? (
+          {isPending ? (
+            <p role="status" className="text-center text-white py-8">Loading leaderboard…</p>
+          ) : isError ? (
+            <div role="alert" className="text-center text-white py-8">
+              <p>The leaderboard is temporarily unavailable.</p>
+              <button type="button" className="underline mt-3" onClick={() => void refetch()}>
+                Retry
+              </button>
+            </div>
+          ) : leaderboard.length === 0 ? (
             <div
               className="text-center py-12 text-[#99B3E1] text-base"
               style={{ fontFamily: "'Inter', sans-serif" }}
@@ -1981,7 +1992,11 @@ async function syncPendingScores() {
 
   for (const item of pending) {
     try {
-      const res = await fetch("/api/scores", {
+      // Give legacy queued rounds a stable ID before sending so a lost
+      // response cannot create a duplicate on the next reconnect.
+      item.data.submissionId ??= crypto.randomUUID();
+      localStorage.setItem("soccer-pending-sync", JSON.stringify(pending));
+      const res = await fetch(soccerScoresUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(item.data),
@@ -2210,10 +2225,12 @@ function GameApp() {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Switch>
-        <Route path="/display" component={DisplayLeaderboard} />
-        <Route component={GameApp} />
-      </Switch>
+      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+        <Switch>
+          <Route path="/display" component={DisplayLeaderboard} />
+          <Route component={GameApp} />
+        </Switch>
+      </WouterRouter>
     </QueryClientProvider>
   );
 }

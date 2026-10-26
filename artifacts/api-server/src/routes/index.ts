@@ -7,6 +7,8 @@ import playerSubmissionsRouter from "./player-submissions";
 import scenesRouter from "./scenes";
 import generationsRouter from "./generations";
 import boothRouter from "./booth";
+import soccerScoresRouter from "./soccer-scores";
+import basketballScoresRouter from "./basketball-scores";
 
 const router: IRouter = Router();
 
@@ -18,5 +20,7 @@ router.use(playerSubmissionsRouter);
 router.use(scenesRouter);
 router.use(generationsRouter);
 router.use(boothRouter);
+router.use(soccerScoresRouter);
+router.use(basketballScoresRouter);
 
 export default router;

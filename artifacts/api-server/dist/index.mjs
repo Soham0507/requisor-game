@@ -15252,11 +15252,11 @@ var require_mime_types = __commonJS({
       }
       return exts[0];
     }
-    function lookup(path3) {
-      if (!path3 || typeof path3 !== "string") {
+    function lookup(path5) {
+      if (!path5 || typeof path5 !== "string") {
         return false;
       }
-      var extension2 = extname("x." + path3).toLowerCase().slice(1);
+      var extension2 = extname("x." + path5).toLowerCase().slice(1);
       if (!extension2) {
         return false;
       }
@@ -18804,13 +18804,13 @@ var require_view = __commonJS({
   "../../node_modules/.pnpm/express@5.2.1/node_modules/express/lib/view.js"(exports, module2) {
     "use strict";
     var debug = require_src()("express:view");
-    var path3 = __require("node:path");
+    var path5 = __require("node:path");
     var fs3 = __require("node:fs");
-    var dirname = path3.dirname;
-    var basename = path3.basename;
-    var extname = path3.extname;
-    var join2 = path3.join;
-    var resolve2 = path3.resolve;
+    var dirname = path5.dirname;
+    var basename = path5.basename;
+    var extname = path5.extname;
+    var join2 = path5.join;
+    var resolve2 = path5.resolve;
     module2.exports = View2;
     function View2(name2, options) {
       var opts = options || {};
@@ -18839,17 +18839,17 @@ var require_view = __commonJS({
       this.path = this.lookup(fileName);
     }
     View2.prototype.lookup = function lookup(name2) {
-      var path4;
+      var path6;
       var roots = [].concat(this.root);
       debug('lookup "%s"', name2);
-      for (var i3 = 0; i3 < roots.length && !path4; i3++) {
+      for (var i3 = 0; i3 < roots.length && !path6; i3++) {
         var root = roots[i3];
         var loc = resolve2(root, name2);
         var dir = dirname(loc);
         var file2 = basename(loc);
-        path4 = this.resolve(dir, file2);
+        path6 = this.resolve(dir, file2);
       }
-      return path4;
+      return path6;
     };
     View2.prototype.render = function render(options, callback) {
       var sync = true;
@@ -18871,21 +18871,21 @@ var require_view = __commonJS({
     };
     View2.prototype.resolve = function resolve3(dir, file2) {
       var ext = this.ext;
-      var path4 = join2(dir, file2);
-      var stat = tryStat(path4);
+      var path6 = join2(dir, file2);
+      var stat = tryStat(path6);
       if (stat && stat.isFile()) {
-        return path4;
+        return path6;
       }
-      path4 = join2(dir, basename(file2, ext), "index" + ext);
-      stat = tryStat(path4);
+      path6 = join2(dir, basename(file2, ext), "index" + ext);
+      stat = tryStat(path6);
       if (stat && stat.isFile()) {
-        return path4;
+        return path6;
       }
     };
-    function tryStat(path4) {
-      debug('stat "%s"', path4);
+    function tryStat(path6) {
+      debug('stat "%s"', path6);
       try {
-        return fs3.statSync(path4);
+        return fs3.statSync(path6);
       } catch (e) {
         return void 0;
       }
@@ -20141,15 +20141,15 @@ var require_dist2 = __commonJS({
       let index = 0;
       function consumeUntil(end) {
         const output = [];
-        let path3 = "";
+        let path5 = "";
         function writePath() {
-          if (!path3)
+          if (!path5)
             return;
           output.push({
             type: "text",
-            value: encodePath(path3)
+            value: encodePath(path5)
           });
-          path3 = "";
+          path5 = "";
         }
         while (index < chars.length) {
           const value = chars[index++];
@@ -20161,7 +20161,7 @@ var require_dist2 = __commonJS({
             if (index === chars.length) {
               throw new PathError(`Unexpected end after \\ at index ${index}`, str);
             }
-            path3 += chars[index++];
+            path5 += chars[index++];
             continue;
           }
           if (value === ":" || value === "*") {
@@ -20205,7 +20205,7 @@ var require_dist2 = __commonJS({
           if (value === "}" || value === "(" || value === ")" || value === "[" || value === "]" || value === "+" || value === "?" || value === "!") {
             throw new PathError(`Unexpected ${value} at index ${index - 1}`, str);
           }
-          path3 += value;
+          path5 += value;
         }
         if (end) {
           throw new PathError(`Unexpected end at index ${index}, expected ${end}`, str);
@@ -20215,17 +20215,17 @@ var require_dist2 = __commonJS({
       }
       return new TokenData(consumeUntil(""), str);
     }
-    function compile(path3, options = {}) {
+    function compile(path5, options = {}) {
       const { encode = encodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
-      const data = typeof path3 === "object" ? path3 : parse3(path3, options);
+      const data = typeof path5 === "object" ? path5 : parse3(path5, options);
       const fn2 = tokensToFunction(data.tokens, delimiter, encode);
-      return function path4(params = {}) {
+      return function path6(params = {}) {
         const missing = [];
-        const path5 = fn2(params, missing);
+        const path7 = fn2(params, missing);
         if (missing.length) {
           throw new TypeError(`Missing parameters: ${missing.join(", ")}`);
         }
-        return path5;
+        return path7;
       };
     }
     function tokensToFunction(tokens, delimiter, encode) {
@@ -20287,9 +20287,9 @@ var require_dist2 = __commonJS({
         return encodeValue(value);
       };
     }
-    function match(path3, options = {}) {
+    function match(path5, options = {}) {
       const { decode = decodeURIComponent, delimiter = DEFAULT_DELIMITER } = options;
-      const { regexp, keys } = pathToRegexp(path3, options);
+      const { regexp, keys } = pathToRegexp(path5, options);
       const decoders = keys.map((key) => {
         if (decode === false)
           return NOOP_VALUE;
@@ -20301,7 +20301,7 @@ var require_dist2 = __commonJS({
         const m5 = regexp.exec(input);
         if (!m5)
           return false;
-        const path4 = m5[0];
+        const path6 = m5[0];
         const params = /* @__PURE__ */ Object.create(null);
         for (let i3 = 1; i3 < m5.length; i3++) {
           if (m5[i3] === void 0)
@@ -20310,21 +20310,21 @@ var require_dist2 = __commonJS({
           const decoder = decoders[i3 - 1];
           params[key.name] = decoder(m5[i3]);
         }
-        return { path: path4, params };
+        return { path: path6, params };
       };
     }
-    function pathToRegexp(path3, options = {}) {
+    function pathToRegexp(path5, options = {}) {
       const { delimiter = DEFAULT_DELIMITER, end = true, sensitive = false, trailing = true } = options;
       const keys = [];
       let source = "";
       let combinations = 0;
-      function process2(path4) {
-        if (Array.isArray(path4)) {
-          for (const p5 of path4)
+      function process2(path6) {
+        if (Array.isArray(path6)) {
+          for (const p5 of path6)
             process2(p5);
           return;
         }
-        const data = typeof path4 === "object" ? path4 : parse3(path4, options);
+        const data = typeof path6 === "object" ? path6 : parse3(path6, options);
         flatten(data.tokens, 0, [], (tokens) => {
           if (combinations >= 256) {
             throw new PathError("Too many path combinations", data.originalPath);
@@ -20335,7 +20335,7 @@ var require_dist2 = __commonJS({
           combinations++;
         });
       }
-      process2(path3);
+      process2(path5);
       let pattern = `^(?:${source})`;
       if (trailing)
         pattern += "(?:" + escape2(delimiter) + "$)?";
@@ -20475,18 +20475,18 @@ var require_layer = __commonJS({
     var TRAILING_SLASH_REGEXP = /\/+$/;
     var MATCHING_GROUP_REGEXP = /\((?:\?<(.*?)>)?(?!\?)/g;
     module2.exports = Layer;
-    function Layer(path3, options, fn2) {
+    function Layer(path5, options, fn2) {
       if (!(this instanceof Layer)) {
-        return new Layer(path3, options, fn2);
+        return new Layer(path5, options, fn2);
       }
-      debug("new %o", path3);
+      debug("new %o", path5);
       const opts = options || {};
       this.handle = fn2;
       this.keys = [];
       this.name = fn2.name || "<anonymous>";
       this.params = void 0;
       this.path = void 0;
-      this.slash = path3 === "/" && opts.end === false;
+      this.slash = path5 === "/" && opts.end === false;
       function matcher(_path) {
         if (_path instanceof RegExp) {
           const keys = [];
@@ -20525,7 +20525,7 @@ var require_layer = __commonJS({
           decode: decodeParam
         });
       }
-      this.matchers = Array.isArray(path3) ? path3.map(matcher) : [matcher(path3)];
+      this.matchers = Array.isArray(path5) ? path5.map(matcher) : [matcher(path5)];
     }
     Layer.prototype.handleError = function handleError(error40, req, res, next) {
       const fn2 = this.handle;
@@ -20565,9 +20565,9 @@ var require_layer = __commonJS({
         next(err2);
       }
     };
-    Layer.prototype.match = function match(path3) {
+    Layer.prototype.match = function match(path5) {
       let match2;
-      if (path3 != null) {
+      if (path5 != null) {
         if (this.slash) {
           this.params = {};
           this.path = "";
@@ -20575,7 +20575,7 @@ var require_layer = __commonJS({
         }
         let i3 = 0;
         while (!match2 && i3 < this.matchers.length) {
-          match2 = this.matchers[i3](path3);
+          match2 = this.matchers[i3](path5);
           i3++;
         }
       }
@@ -20603,13 +20603,13 @@ var require_layer = __commonJS({
         throw err2;
       }
     }
-    function loosen(path3) {
-      if (path3 instanceof RegExp || path3 === "/") {
-        return path3;
+    function loosen(path5) {
+      if (path5 instanceof RegExp || path5 === "/") {
+        return path5;
       }
-      return Array.isArray(path3) ? path3.map(function(p5) {
+      return Array.isArray(path5) ? path5.map(function(p5) {
         return loosen(p5);
-      }) : String(path3).replace(TRAILING_SLASH_REGEXP, "");
+      }) : String(path5).replace(TRAILING_SLASH_REGEXP, "");
     }
   }
 });
@@ -20625,9 +20625,9 @@ var require_route = __commonJS({
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
     module2.exports = Route;
-    function Route(path3) {
-      debug("new %o", path3);
-      this.path = path3;
+    function Route(path5) {
+      debug("new %o", path5);
+      this.path = path5;
       this.stack = [];
       this.methods = /* @__PURE__ */ Object.create(null);
     }
@@ -20748,27 +20748,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module2.exports = Router11;
+    module2.exports = Router13;
     module2.exports.Route = Route;
-    function Router11(options) {
-      if (!(this instanceof Router11)) {
-        return new Router11(options);
+    function Router13(options) {
+      if (!(this instanceof Router13)) {
+        return new Router13(options);
       }
       const opts = options || {};
-      function router11(req, res, next) {
-        router11.handle(req, res, next);
+      function router13(req, res, next) {
+        router13.handle(req, res, next);
       }
-      Object.setPrototypeOf(router11, this);
-      router11.caseSensitive = opts.caseSensitive;
-      router11.mergeParams = opts.mergeParams;
-      router11.params = {};
-      router11.strict = opts.strict;
-      router11.stack = [];
-      return router11;
+      Object.setPrototypeOf(router13, this);
+      router13.caseSensitive = opts.caseSensitive;
+      router13.mergeParams = opts.mergeParams;
+      router13.params = {};
+      router13.strict = opts.strict;
+      router13.stack = [];
+      return router13;
     }
-    Router11.prototype = function() {
+    Router13.prototype = function() {
     };
-    Router11.prototype.param = function param(name2, fn2) {
+    Router13.prototype.param = function param(name2, fn2) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20788,7 +20788,7 @@ var require_router = __commonJS({
       params.push(fn2);
       return this;
     };
-    Router11.prototype.handle = function handle2(req, res, callback) {
+    Router13.prototype.handle = function handle2(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20835,8 +20835,8 @@ var require_router = __commonJS({
         if (++sync > 100) {
           return setImmediate(next, err2);
         }
-        const path3 = getPathname(req);
-        if (path3 == null) {
+        const path5 = getPathname(req);
+        if (path5 == null) {
           return done(layerError);
         }
         let layer;
@@ -20844,7 +20844,7 @@ var require_router = __commonJS({
         let route;
         while (match !== true && idx < stack.length) {
           layer = stack[idx++];
-          match = matchLayer(layer, path3);
+          match = matchLayer(layer, path5);
           route = layer.route;
           if (typeof match !== "boolean") {
             layerError = layerError || match;
@@ -20882,18 +20882,18 @@ var require_router = __commonJS({
           } else if (route) {
             layer.handleRequest(req, res, next);
           } else {
-            trimPrefix(layer, layerError, layerPath, path3);
+            trimPrefix(layer, layerError, layerPath, path5);
           }
           sync = 0;
         });
       }
-      function trimPrefix(layer, layerError, layerPath, path3) {
+      function trimPrefix(layer, layerError, layerPath, path5) {
         if (layerPath.length !== 0) {
-          if (layerPath !== path3.substring(0, layerPath.length)) {
+          if (layerPath !== path5.substring(0, layerPath.length)) {
             next(layerError);
             return;
           }
-          const c4 = path3[layerPath.length];
+          const c4 = path5[layerPath.length];
           if (c4 && c4 !== "/") {
             next(layerError);
             return;
@@ -20915,9 +20915,9 @@ var require_router = __commonJS({
         }
       }
     };
-    Router11.prototype.use = function use(handler) {
+    Router13.prototype.use = function use(handler) {
       let offset = 0;
-      let path3 = "/";
+      let path5 = "/";
       if (typeof handler !== "function") {
         let arg = handler;
         while (Array.isArray(arg) && arg.length !== 0) {
@@ -20925,7 +20925,7 @@ var require_router = __commonJS({
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path3 = handler;
+          path5 = handler;
         }
       }
       const callbacks = flatten.call(slice.call(arguments, offset), Infinity);
@@ -20937,8 +20937,8 @@ var require_router = __commonJS({
         if (typeof fn2 !== "function") {
           throw new TypeError("argument handler must be a function");
         }
-        debug("use %o %s", path3, fn2.name || "<anonymous>");
-        const layer = new Layer(path3, {
+        debug("use %o %s", path5, fn2.name || "<anonymous>");
+        const layer = new Layer(path5, {
           sensitive: this.caseSensitive,
           strict: false,
           end: false
@@ -20948,9 +20948,9 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router11.prototype.route = function route(path3) {
-      const route2 = new Route(path3);
-      const layer = new Layer(path3, {
+    Router13.prototype.route = function route(path5) {
+      const route2 = new Route(path5);
+      const layer = new Layer(path5, {
         sensitive: this.caseSensitive,
         strict: this.strict,
         end: true
@@ -20963,8 +20963,8 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router11.prototype[method] = function(path3) {
-        const route = this.route(path3);
+      Router13.prototype[method] = function(path5) {
+        const route = this.route(path5);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
       };
@@ -20993,9 +20993,9 @@ var require_router = __commonJS({
       const fqdnIndex = url2.substring(0, pathLength).indexOf("://");
       return fqdnIndex !== -1 ? url2.substring(0, url2.indexOf("/", 3 + fqdnIndex)) : void 0;
     }
-    function matchLayer(layer, path3) {
+    function matchLayer(layer, path5) {
       try {
-        return layer.match(path3);
+        return layer.match(path5);
       } catch (err2) {
         return err2;
       }
@@ -21146,13 +21146,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve2 = __require("node:path").resolve;
     var once = require_once();
-    var Router11 = require_router();
+    var Router13 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module2.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init2() {
-      var router11 = null;
+      var router13 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21161,13 +21161,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router11 === null) {
-            router11 = new Router11({
+          if (router13 === null) {
+            router13 = new Router13({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router11;
+          return router13;
         }
       });
     };
@@ -21223,7 +21223,7 @@ var require_application = __commonJS({
     };
     app2.use = function use(fn2) {
       var offset = 0;
-      var path3 = "/";
+      var path5 = "/";
       if (typeof fn2 !== "function") {
         var arg = fn2;
         while (Array.isArray(arg) && arg.length !== 0) {
@@ -21231,22 +21231,22 @@ var require_application = __commonJS({
         }
         if (typeof arg !== "function") {
           offset = 1;
-          path3 = fn2;
+          path5 = fn2;
         }
       }
       var fns = flatten.call(slice.call(arguments, offset), Infinity);
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router11 = this.router;
+      var router13 = this.router;
       fns.forEach(function(fn3) {
         if (!fn3 || !fn3.handle || !fn3.set) {
-          return router11.use(path3, fn3);
+          return router13.use(path5, fn3);
         }
-        debug(".use app under %s", path3);
-        fn3.mountpath = path3;
+        debug(".use app under %s", path5);
+        fn3.mountpath = path5;
         fn3.parent = this;
-        router11.use(path3, function mounted_app(req, res, next) {
+        router13.use(path5, function mounted_app(req, res, next) {
           var orig = req.app;
           fn3.handle(req, res, function(err2) {
             Object.setPrototypeOf(req, orig.request);
@@ -21258,8 +21258,8 @@ var require_application = __commonJS({
       }, this);
       return this;
     };
-    app2.route = function route(path3) {
-      return this.router.route(path3);
+    app2.route = function route(path5) {
+      return this.router.route(path5);
     };
     app2.engine = function engine(ext, fn2) {
       if (typeof fn2 !== "function") {
@@ -21302,7 +21302,7 @@ var require_application = __commonJS({
       }
       return this;
     };
-    app2.path = function path3() {
+    app2.path = function path5() {
       return this.parent ? this.parent.path() + this.mountpath : "";
     };
     app2.enabled = function enabled(setting) {
@@ -21318,17 +21318,17 @@ var require_application = __commonJS({
       return this.set(setting, false);
     };
     methods.forEach(function(method) {
-      app2[method] = function(path3) {
+      app2[method] = function(path5) {
         if (method === "get" && arguments.length === 1) {
-          return this.set(path3);
+          return this.set(path5);
         }
-        var route = this.route(path3);
+        var route = this.route(path5);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
       };
     });
-    app2.all = function all(path3) {
-      var route = this.route(path3);
+    app2.all = function all(path5) {
+      var route = this.route(path5);
       var args2 = slice.call(arguments, 1);
       for (var i3 = 0; i3 < methods.length; i3++) {
         route[methods[i3]].apply(route, args2);
@@ -22174,7 +22174,7 @@ var require_request = __commonJS({
       var subdomains2 = !isIP(hostname2) ? hostname2.split(".").reverse() : [hostname2];
       return subdomains2.slice(offset);
     });
-    defineGetter(req, "path", function path3() {
+    defineGetter(req, "path", function path5() {
       return parse3(this).pathname;
     });
     defineGetter(req, "host", function host() {
@@ -22385,8 +22385,8 @@ var require_content_disposition = __commonJS({
       this.type = type;
       this.parameters = parameters;
     }
-    function basename(path3) {
-      const normalized = path3.replaceAll("\\", "/");
+    function basename(path5) {
+      const normalized = path5.replaceAll("\\", "/");
       let end = normalized.length;
       while (end > 0 && normalized[end - 1] === "/") {
         end--;
@@ -22632,27 +22632,27 @@ var require_send = __commonJS({
     var ms = require_ms();
     var onFinished = require_on_finished();
     var parseRange = require_range_parser();
-    var path3 = __require("path");
+    var path5 = __require("path");
     var statuses = require_statuses();
     var Stream = __require("stream");
     var util2 = __require("util");
-    var extname = path3.extname;
-    var join2 = path3.join;
-    var normalize = path3.normalize;
-    var resolve2 = path3.resolve;
-    var sep = path3.sep;
+    var extname = path5.extname;
+    var join2 = path5.join;
+    var normalize = path5.normalize;
+    var resolve2 = path5.resolve;
+    var sep = path5.sep;
     var BYTES_RANGE_REGEXP = /^ *bytes=/;
     var MAX_MAXAGE = 60 * 60 * 24 * 365 * 1e3;
     var UP_PATH_REGEXP = /(?:^|[\\/])\.\.(?:[\\/]|$)/;
     module2.exports = send;
-    function send(req, path4, options) {
-      return new SendStream(req, path4, options);
+    function send(req, path6, options) {
+      return new SendStream(req, path6, options);
     }
-    function SendStream(req, path4, options) {
+    function SendStream(req, path6, options) {
       Stream.call(this);
       var opts = options || {};
       this.options = opts;
-      this.path = path4;
+      this.path = path6;
       this.req = req;
       this._acceptRanges = opts.acceptRanges !== void 0 ? Boolean(opts.acceptRanges) : true;
       this._cacheControl = opts.cacheControl !== void 0 ? Boolean(opts.cacheControl) : true;
@@ -22766,10 +22766,10 @@ var require_send = __commonJS({
       var lastModified = this.res.getHeader("Last-Modified");
       return parseHttpDate(lastModified) <= parseHttpDate(ifRange);
     };
-    SendStream.prototype.redirect = function redirect(path4) {
+    SendStream.prototype.redirect = function redirect(path6) {
       var res = this.res;
       if (hasListeners(this, "directory")) {
-        this.emit("directory", res, path4);
+        this.emit("directory", res, path6);
         return;
       }
       if (this.hasTrailingSlash()) {
@@ -22789,38 +22789,38 @@ var require_send = __commonJS({
     SendStream.prototype.pipe = function pipe2(res) {
       var root = this._root;
       this.res = res;
-      var path4 = decode(this.path);
-      if (path4 === -1) {
+      var path6 = decode(this.path);
+      if (path6 === -1) {
         this.error(400);
         return res;
       }
-      if (~path4.indexOf("\0")) {
+      if (~path6.indexOf("\0")) {
         this.error(400);
         return res;
       }
       var parts2;
       if (root !== null) {
-        if (path4) {
-          path4 = normalize("." + sep + path4);
+        if (path6) {
+          path6 = normalize("." + sep + path6);
         }
-        if (UP_PATH_REGEXP.test(path4)) {
-          debug('malicious path "%s"', path4);
+        if (UP_PATH_REGEXP.test(path6)) {
+          debug('malicious path "%s"', path6);
           this.error(403);
           return res;
         }
-        parts2 = path4.split(sep);
-        path4 = normalize(join2(root, path4));
+        parts2 = path6.split(sep);
+        path6 = normalize(join2(root, path6));
       } else {
-        if (UP_PATH_REGEXP.test(path4)) {
-          debug('malicious path "%s"', path4);
+        if (UP_PATH_REGEXP.test(path6)) {
+          debug('malicious path "%s"', path6);
           this.error(403);
           return res;
         }
-        parts2 = normalize(path4).split(sep);
-        path4 = resolve2(path4);
+        parts2 = normalize(path6).split(sep);
+        path6 = resolve2(path6);
       }
       if (containsDotFile(parts2)) {
-        debug('%s dotfile "%s"', this._dotfiles, path4);
+        debug('%s dotfile "%s"', this._dotfiles, path6);
         switch (this._dotfiles) {
           case "allow":
             break;
@@ -22834,13 +22834,13 @@ var require_send = __commonJS({
         }
       }
       if (this._index.length && this.hasTrailingSlash()) {
-        this.sendIndex(path4);
+        this.sendIndex(path6);
         return res;
       }
-      this.sendFile(path4);
+      this.sendFile(path6);
       return res;
     };
-    SendStream.prototype.send = function send2(path4, stat) {
+    SendStream.prototype.send = function send2(path6, stat) {
       var len = stat.size;
       var options = this.options;
       var opts = {};
@@ -22852,9 +22852,9 @@ var require_send = __commonJS({
         this.headersAlreadySent();
         return;
       }
-      debug('pipe "%s"', path4);
-      this.setHeader(path4, stat);
-      this.type(path4);
+      debug('pipe "%s"', path6);
+      this.setHeader(path6, stat);
+      this.type(path6);
       if (this.isConditionalGET()) {
         if (this.isPreconditionFailure()) {
           this.error(412);
@@ -22903,28 +22903,28 @@ var require_send = __commonJS({
         res.end();
         return;
       }
-      this.stream(path4, opts);
+      this.stream(path6, opts);
     };
-    SendStream.prototype.sendFile = function sendFile(path4) {
+    SendStream.prototype.sendFile = function sendFile(path6) {
       var i3 = 0;
       var self2 = this;
-      debug('stat "%s"', path4);
-      fs3.stat(path4, function onstat(err2, stat) {
-        var pathEndsWithSep = path4[path4.length - 1] === sep;
-        if (err2 && err2.code === "ENOENT" && !extname(path4) && !pathEndsWithSep) {
+      debug('stat "%s"', path6);
+      fs3.stat(path6, function onstat(err2, stat) {
+        var pathEndsWithSep = path6[path6.length - 1] === sep;
+        if (err2 && err2.code === "ENOENT" && !extname(path6) && !pathEndsWithSep) {
           return next(err2);
         }
         if (err2) return self2.onStatError(err2);
-        if (stat.isDirectory()) return self2.redirect(path4);
+        if (stat.isDirectory()) return self2.redirect(path6);
         if (pathEndsWithSep) return self2.error(404);
-        self2.emit("file", path4, stat);
-        self2.send(path4, stat);
+        self2.emit("file", path6, stat);
+        self2.send(path6, stat);
       });
       function next(err2) {
         if (self2._extensions.length <= i3) {
           return err2 ? self2.onStatError(err2) : self2.error(404);
         }
-        var p5 = path4 + "." + self2._extensions[i3++];
+        var p5 = path6 + "." + self2._extensions[i3++];
         debug('stat "%s"', p5);
         fs3.stat(p5, function(err3, stat) {
           if (err3) return next(err3);
@@ -22934,7 +22934,7 @@ var require_send = __commonJS({
         });
       }
     };
-    SendStream.prototype.sendIndex = function sendIndex(path4) {
+    SendStream.prototype.sendIndex = function sendIndex(path6) {
       var i3 = -1;
       var self2 = this;
       function next(err2) {
@@ -22942,7 +22942,7 @@ var require_send = __commonJS({
           if (err2) return self2.onStatError(err2);
           return self2.error(404);
         }
-        var p5 = join2(path4, self2._index[i3]);
+        var p5 = join2(path6, self2._index[i3]);
         debug('stat "%s"', p5);
         fs3.stat(p5, function(err3, stat) {
           if (err3) return next(err3);
@@ -22953,10 +22953,10 @@ var require_send = __commonJS({
       }
       next();
     };
-    SendStream.prototype.stream = function stream(path4, options) {
+    SendStream.prototype.stream = function stream(path6, options) {
       var self2 = this;
       var res = this.res;
-      var stream2 = fs3.createReadStream(path4, options);
+      var stream2 = fs3.createReadStream(path6, options);
       this.emit("stream", stream2);
       stream2.pipe(res);
       function cleanup() {
@@ -22971,17 +22971,17 @@ var require_send = __commonJS({
         self2.emit("end");
       });
     };
-    SendStream.prototype.type = function type(path4) {
+    SendStream.prototype.type = function type(path6) {
       var res = this.res;
       if (res.getHeader("Content-Type")) return;
-      var ext = extname(path4);
+      var ext = extname(path6);
       var type2 = mime.contentType(ext) || "application/octet-stream";
       debug("content-type %s", type2);
       res.setHeader("Content-Type", type2);
     };
-    SendStream.prototype.setHeader = function setHeader(path4, stat) {
+    SendStream.prototype.setHeader = function setHeader(path6, stat) {
       var res = this.res;
-      this.emit("headers", res, path4, stat);
+      this.emit("headers", res, path6, stat);
       if (this._acceptRanges && !res.getHeader("Accept-Ranges")) {
         debug("accept ranges");
         res.setHeader("Accept-Ranges", "bytes");
@@ -23039,9 +23039,9 @@ var require_send = __commonJS({
       }
       return err2 instanceof Error ? createError(status, err2, { expose: false }) : createError(status, err2);
     }
-    function decode(path4) {
+    function decode(path6) {
       try {
-        return decodeURIComponent(path4);
+        return decodeURIComponent(path6);
       } catch (err2) {
         return -1;
       }
@@ -23185,7 +23185,7 @@ var require_response = __commonJS({
     var http = __require("node:http");
     var onFinished = require_on_finished();
     var mime = require_mime_types();
-    var path3 = __require("node:path");
+    var path5 = __require("node:path");
     var pathIsAbsolute = __require("node:path").isAbsolute;
     var statuses = require_statuses();
     var sign = require_cookie_signature().sign;
@@ -23194,8 +23194,8 @@ var require_response = __commonJS({
     var setCharset = require_utils3().setCharset;
     var cookie = require_cookie();
     var send = require_send();
-    var extname = path3.extname;
-    var resolve2 = path3.resolve;
+    var extname = path5.extname;
+    var resolve2 = path5.resolve;
     var vary = require_vary();
     var { Buffer: Buffer2 } = __require("node:buffer");
     var res = Object.create(http.ServerResponse.prototype);
@@ -23341,26 +23341,26 @@ var require_response = __commonJS({
       this.type("txt");
       return this.send(body2);
     };
-    res.sendFile = function sendFile(path4, options, callback) {
+    res.sendFile = function sendFile(path6, options, callback) {
       var done = callback;
       var req = this.req;
       var res2 = this;
       var next = req.next;
       var opts = options || {};
-      if (!path4) {
+      if (!path6) {
         throw new TypeError("path argument is required to res.sendFile");
       }
-      if (typeof path4 !== "string") {
+      if (typeof path6 !== "string") {
         throw new TypeError("path must be a string to res.sendFile");
       }
       if (typeof options === "function") {
         done = options;
         opts = {};
       }
-      if (!opts.root && !pathIsAbsolute(path4)) {
+      if (!opts.root && !pathIsAbsolute(path6)) {
         throw new TypeError("path must be absolute or specify root to res.sendFile");
       }
-      var pathname = encodeURI(path4);
+      var pathname = encodeURI(path6);
       opts.etag = this.app.enabled("etag");
       var file2 = send(req, pathname, opts);
       sendfile(res2, file2, opts, function(err2) {
@@ -23371,7 +23371,7 @@ var require_response = __commonJS({
         }
       });
     };
-    res.download = function download(path4, filename, options, callback) {
+    res.download = function download(path6, filename, options, callback) {
       var done = callback;
       var name2 = filename;
       var opts = options || null;
@@ -23388,7 +23388,7 @@ var require_response = __commonJS({
         opts = filename;
       }
       var headers = {
-        "Content-Disposition": contentDisposition(name2 || path4)
+        "Content-Disposition": contentDisposition(name2 || path6)
       };
       if (opts && opts.headers) {
         var keys = Object.keys(opts.headers);
@@ -23401,7 +23401,7 @@ var require_response = __commonJS({
       }
       opts = Object.create(opts);
       opts.headers = headers;
-      var fullPath = !opts.root ? resolve2(path4) : path4;
+      var fullPath = !opts.root ? resolve2(path6) : path6;
       return this.sendFile(fullPath, opts, done);
     };
     res.contentType = res.type = function contentType(type) {
@@ -23684,11 +23684,11 @@ var require_serve_static = __commonJS({
         }
         var forwardError = !fallthrough;
         var originalUrl = parseUrl.original(req);
-        var path3 = parseUrl(req).pathname;
-        if (path3 === "/" && originalUrl.pathname.substr(-1) !== "/") {
-          path3 = "";
+        var path5 = parseUrl(req).pathname;
+        if (path5 === "/" && originalUrl.pathname.substr(-1) !== "/") {
+          path5 = "";
         }
-        var stream = send(req, path3, opts);
+        var stream = send(req, path5, opts);
         stream.on("directory", onDirectory);
         if (setHeaders) {
           stream.on("headers", setHeaders);
@@ -23755,7 +23755,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router11 = require_router();
+    var Router13 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module2.exports = createApplication;
@@ -23777,8 +23777,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router11.Route;
-    exports.Router = Router11;
+    exports.Route = Router13.Route;
+    exports.Router = Router13;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -24336,8 +24336,8 @@ var require_req = __commonJS({
       if (req.originalUrl) {
         _req.url = req.originalUrl;
       } else {
-        const path3 = req.path;
-        _req.url = typeof path3 === "string" ? path3 : req.url ? req.url.path || req.url : void 0;
+        const path5 = req.path;
+        _req.url = typeof path5 === "string" ? path5 : req.url ? req.url.path || req.url : void 0;
       }
       if (req.query) {
         _req.query = req.query;
@@ -24502,14 +24502,14 @@ var require_redact = __commonJS({
       }
       return obj;
     }
-    function parsePath(path3) {
+    function parsePath(path5) {
       const parts2 = [];
       let current = "";
       let inBrackets = false;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i3 = 0; i3 < path3.length; i3++) {
-        const char2 = path3[i3];
+      for (let i3 = 0; i3 < path5.length; i3++) {
+        const char2 = path5[i3];
         if (!inBrackets && char2 === ".") {
           if (current) {
             parts2.push(current);
@@ -24640,10 +24640,10 @@ var require_redact = __commonJS({
       return current;
     }
     function redactPaths(obj, paths, censor, remove = false) {
-      for (const path3 of paths) {
-        const parts2 = parsePath(path3);
+      for (const path5 of paths) {
+        const parts2 = parsePath(path5);
         if (parts2.includes("*")) {
-          redactWildcardPath(obj, parts2, censor, path3, remove);
+          redactWildcardPath(obj, parts2, censor, path5, remove);
         } else {
           if (remove) {
             removeKey(obj, parts2);
@@ -24728,8 +24728,8 @@ var require_redact = __commonJS({
           }
         } else {
           if (afterWildcard.includes("*")) {
-            const wrappedCensor = typeof censor === "function" ? (value, path3) => {
-              const fullPath = [...pathArray.slice(0, pathLength), ...path3];
+            const wrappedCensor = typeof censor === "function" ? (value, path5) => {
+              const fullPath = [...pathArray.slice(0, pathLength), ...path5];
               return censor(value, fullPath);
             } : censor;
             redactWildcardPath(current, afterWildcard, wrappedCensor, originalPath, remove);
@@ -24764,8 +24764,8 @@ var require_redact = __commonJS({
         return null;
       }
       const pathStructure = /* @__PURE__ */ new Map();
-      for (const path3 of pathsToClone) {
-        const parts2 = parsePath(path3);
+      for (const path5 of pathsToClone) {
+        const parts2 = parsePath(path5);
         let current = pathStructure;
         for (let i3 = 0; i3 < parts2.length; i3++) {
           const part = parts2[i3];
@@ -24817,24 +24817,24 @@ var require_redact = __commonJS({
       }
       return cloneSelectively(obj, pathStructure);
     }
-    function validatePath(path3) {
-      if (typeof path3 !== "string") {
+    function validatePath(path5) {
+      if (typeof path5 !== "string") {
         throw new Error("Paths must be (non-empty) strings");
       }
-      if (path3 === "") {
+      if (path5 === "") {
         throw new Error("Invalid redaction path ()");
       }
-      if (path3.includes("..")) {
-        throw new Error(`Invalid redaction path (${path3})`);
+      if (path5.includes("..")) {
+        throw new Error(`Invalid redaction path (${path5})`);
       }
-      if (path3.includes(",")) {
-        throw new Error(`Invalid redaction path (${path3})`);
+      if (path5.includes(",")) {
+        throw new Error(`Invalid redaction path (${path5})`);
       }
       let bracketCount = 0;
       let inQuotes = false;
       let quoteChar = "";
-      for (let i3 = 0; i3 < path3.length; i3++) {
-        const char2 = path3[i3];
+      for (let i3 = 0; i3 < path5.length; i3++) {
+        const char2 = path5[i3];
         if ((char2 === '"' || char2 === "'") && bracketCount > 0) {
           if (!inQuotes) {
             inQuotes = true;
@@ -24848,20 +24848,20 @@ var require_redact = __commonJS({
         } else if (char2 === "]" && !inQuotes) {
           bracketCount--;
           if (bracketCount < 0) {
-            throw new Error(`Invalid redaction path (${path3})`);
+            throw new Error(`Invalid redaction path (${path5})`);
           }
         }
       }
       if (bracketCount !== 0) {
-        throw new Error(`Invalid redaction path (${path3})`);
+        throw new Error(`Invalid redaction path (${path5})`);
       }
     }
     function validatePaths(paths) {
       if (!Array.isArray(paths)) {
         throw new TypeError("paths must be an array");
       }
-      for (const path3 of paths) {
-        validatePath(path3);
+      for (const path5 of paths) {
+        validatePath(path5);
       }
     }
     function slowRedact(options = {}) {
@@ -25029,8 +25029,8 @@ var require_redaction = __commonJS({
         if (shape[k3] === null) {
           o5[k3] = (value) => topCensor(value, [k3]);
         } else {
-          const wrappedCensor = typeof censor === "function" ? (value, path3) => {
-            return censor(value, [k3, ...path3]);
+          const wrappedCensor = typeof censor === "function" ? (value, path5) => {
+            return censor(value, [k3, ...path5]);
           } : censor;
           o5[k3] = Redact({
             paths: shape[k3],
@@ -25251,7 +25251,7 @@ var require_sonic_boom = __commonJS({
     var fs3 = __require("fs");
     var EventEmitter = __require("events");
     var inherits = __require("util").inherits;
-    var path3 = __require("path");
+    var path5 = __require("path");
     var sleep = require_atomic_sleep();
     var assert3 = __require("assert");
     var BUSY_WRITE_TIMEOUT = 100;
@@ -25305,7 +25305,7 @@ var require_sonic_boom = __commonJS({
       const mode = sonic.mode;
       if (sonic.sync) {
         try {
-          if (sonic.mkdir) fs3.mkdirSync(path3.dirname(file2), { recursive: true });
+          if (sonic.mkdir) fs3.mkdirSync(path5.dirname(file2), { recursive: true });
           const fd = fs3.openSync(file2, flags2, mode);
           fileOpened(null, fd);
         } catch (err2) {
@@ -25313,7 +25313,7 @@ var require_sonic_boom = __commonJS({
           throw err2;
         }
       } else if (sonic.mkdir) {
-        fs3.mkdir(path3.dirname(file2), { recursive: true }, (err2) => {
+        fs3.mkdir(path5.dirname(file2), { recursive: true }, (err2) => {
           if (err2) return fileOpened(err2);
           fs3.open(file2, flags2, mode, fileOpened);
         });
@@ -28173,9 +28173,9 @@ var require_pino = __commonJS({
   "../../node_modules/.pnpm/pino@9.14.0/node_modules/pino/pino.js"(exports, module2) {
     function pinoBundlerAbsolutePath(p5) {
       try {
-        const path3 = __require("path");
+        const path5 = __require("path");
         const outputDir = "/home/runner/workspace/artifacts/api-server/dist";
-        return path3.resolve(outputDir, p5.replace(/^\.\//, ""));
+        return path5.resolve(outputDir, p5.replace(/^\.\//, ""));
       } catch (e) {
         const f5 = new Function("p", "return new URL(p, import.meta.url).pathname");
         return f5(p5);
@@ -28636,7 +28636,7 @@ var require_logger = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/entity.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/entity.js
 function is(value, type) {
   if (!value || typeof value !== "object") {
     return false;
@@ -28662,15 +28662,15 @@ function is(value, type) {
 }
 var entityKind;
 var init_entity = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/entity.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/entity.js"() {
     entityKind = /* @__PURE__ */ Symbol.for("drizzle:entityKind");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column.js
 var Column;
 var init_column = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column.js"() {
     init_entity();
     Column = class {
       constructor(table, config2) {
@@ -28724,10 +28724,10 @@ var init_column = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column-builder.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column-builder.js
 var ColumnBuilder;
 var init_column_builder = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column-builder.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column-builder.js"() {
     init_entity();
     ColumnBuilder = class {
       static [entityKind] = "ColumnBuilder";
@@ -28833,18 +28833,18 @@ var init_column_builder = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.utils.js
 var TableName;
 var init_table_utils = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.utils.js"() {
     TableName = /* @__PURE__ */ Symbol.for("drizzle:Name");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/foreign-keys.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/foreign-keys.js
 var ForeignKeyBuilder, ForeignKey;
 var init_foreign_keys = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/foreign-keys.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/foreign-keys.js"() {
     init_entity();
     init_table_utils();
     ForeignKeyBuilder = class {
@@ -28905,22 +28905,22 @@ var init_foreign_keys = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing-utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing-utils.js
 function iife(fn2, ...args2) {
   return fn2(...args2);
 }
 var init_tracing_utils = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing-utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing-utils.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/unique-constraint.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/unique-constraint.js
 function uniqueKeyName(table, columns) {
   return `${table[TableName]}_${columns.join("_")}_unique`;
 }
 var UniqueConstraintBuilder, UniqueOnConstraintBuilder, UniqueConstraint;
 var init_unique_constraint = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/unique-constraint.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/unique-constraint.js"() {
     init_entity();
     init_table_utils();
     UniqueConstraintBuilder = class {
@@ -28971,7 +28971,7 @@ var init_unique_constraint = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/array.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/array.js
 function parsePgArrayValue(arrayString, startFrom, inQuotes) {
   for (let i3 = startFrom; i3 < arrayString.length; i3++) {
     const char2 = arrayString[i3];
@@ -29047,14 +29047,14 @@ function makePgArray(array2) {
   }).join(",")}}`;
 }
 var init_array = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/array.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/array.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/common.js
 var PgColumnBuilder, PgColumn, ExtraConfigColumn, IndexedColumn, PgArrayBuilder, PgArray;
 var init_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/common.js"() {
     init_column_builder();
     init_column();
     init_entity();
@@ -29247,7 +29247,7 @@ var init_common = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/enum.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/enum.js
 function isPgEnum(obj) {
   return !!obj && typeof obj === "function" && isPgEnumSym in obj && obj[isPgEnumSym] === true;
 }
@@ -29280,7 +29280,7 @@ function pgEnumObjectWithSchema(enumName, values, schema) {
 }
 var PgEnumObjectColumnBuilder, PgEnumObjectColumn, isPgEnumSym, PgEnumColumnBuilder, PgEnumColumn;
 var init_enum = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/enum.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/enum.js"() {
     init_entity();
     init_common();
     PgEnumObjectColumnBuilder = class extends PgColumnBuilder {
@@ -29339,10 +29339,10 @@ var init_enum = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/subquery.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/subquery.js
 var Subquery, WithSubquery;
 var init_subquery = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/subquery.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/subquery.js"() {
     init_entity();
     Subquery = class {
       static [entityKind] = "Subquery";
@@ -29366,18 +29366,18 @@ var init_subquery = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/version.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/version.js
 var version;
 var init_version = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/version.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/version.js"() {
     version = "0.45.3";
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing.js
 var otel, rawTracer, tracer;
 var init_tracing = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing.js"() {
     init_tracing_utils();
     init_version();
     tracer = {
@@ -29414,15 +29414,15 @@ var init_tracing = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/view-common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/view-common.js
 var ViewBaseConfig;
 var init_view_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/view-common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/view-common.js"() {
     ViewBaseConfig = /* @__PURE__ */ Symbol.for("drizzle:ViewBaseConfig");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.js
 function isTable(table) {
   return typeof table === "object" && table !== null && IsDrizzleTable in table;
 }
@@ -29434,7 +29434,7 @@ function getTableUniqueName(table) {
 }
 var Schema, Columns, ExtraConfigColumns, OriginalName, BaseName, IsAlias, ExtraConfigBuilder, IsDrizzleTable, Table;
 var init_table = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.js"() {
     init_entity();
     init_table_utils();
     Schema = /* @__PURE__ */ Symbol.for("drizzle:Schema");
@@ -29494,7 +29494,7 @@ var init_table = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/sql.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/sql.js
 function isSQLWrapper(value) {
   return value !== null && value !== void 0 && typeof value.getSQL === "function";
 }
@@ -29547,7 +29547,7 @@ function isView(view) {
 }
 var FakePrimitiveParam, StringChunk, SQL, Name, noopDecoder, noopEncoder, noopMapper, Param, Placeholder, IsDrizzleView, View;
 var init_sql = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/sql.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/sql.js"() {
     init_entity();
     init_enum();
     init_subquery();
@@ -29903,7 +29903,7 @@ var init_sql = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/alias.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/alias.js
 function aliasedTable(table, tableAlias) {
   return new Proxy(table, new TableAliasProxyHandler(tableAlias, false));
 }
@@ -29932,7 +29932,7 @@ function mapColumnsInSQLToAlias(query, alias) {
 }
 var ColumnAliasProxyHandler, TableAliasProxyHandler, RelationTableAliasProxyHandler;
 var init_alias = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/alias.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/alias.js"() {
     init_column();
     init_entity();
     init_sql();
@@ -30009,10 +30009,10 @@ var init_alias = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/errors.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/errors.js
 var DrizzleError, DrizzleQueryError, TransactionRollbackError;
 var init_errors = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/errors.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/errors.js"() {
     init_entity();
     DrizzleError = class extends Error {
       static [entityKind] = "DrizzleError";
@@ -30042,10 +30042,10 @@ params: ${params}`);
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/logger.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/logger.js
 var ConsoleLogWriter, DefaultLogger, NoopLogger;
 var init_logger = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/logger.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/logger.js"() {
     init_entity();
     ConsoleLogWriter = class {
       static [entityKind] = "ConsoleLogWriter";
@@ -30079,10 +30079,10 @@ var init_logger = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-promise.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-promise.js
 var QueryPromise;
 var init_query_promise = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-promise.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-promise.js"() {
     init_entity();
     QueryPromise = class {
       static [entityKind] = "QueryPromise";
@@ -30109,11 +30109,11 @@ var init_query_promise = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/utils.js
 function mapResultRow(columns, row, joinsNotNullableMap) {
   const nullifyMap = {};
   const result = columns.reduce(
-    (result2, { path: path3, field }, columnIndex) => {
+    (result2, { path: path5, field }, columnIndex) => {
       let decoder;
       if (is(field, Column)) {
         decoder = field;
@@ -30125,8 +30125,8 @@ function mapResultRow(columns, row, joinsNotNullableMap) {
         decoder = field.sql.decoder;
       }
       let node = result2;
-      for (const [pathChunkIndex, pathChunk] of path3.entries()) {
-        if (pathChunkIndex < path3.length - 1) {
+      for (const [pathChunkIndex, pathChunk] of path5.entries()) {
+        if (pathChunkIndex < path5.length - 1) {
           if (!(pathChunk in node)) {
             node[pathChunk] = {};
           }
@@ -30134,8 +30134,8 @@ function mapResultRow(columns, row, joinsNotNullableMap) {
         } else {
           const rawValue = row[columnIndex];
           const value = node[pathChunk] = rawValue === null ? null : decoder.mapFromDriverValue(rawValue);
-          if (joinsNotNullableMap && is(field, Column) && path3.length === 2) {
-            const objectName = path3[0];
+          if (joinsNotNullableMap && is(field, Column) && path5.length === 2) {
+            const objectName = path5[0];
             if (!(objectName in nullifyMap)) {
               nullifyMap[objectName] = value === null ? getTableName(field.table) : false;
             } else if (typeof nullifyMap[objectName] === "string" && nullifyMap[objectName] !== getTableName(field.table)) {
@@ -30263,7 +30263,7 @@ function isConfig(data) {
 }
 var textDecoder;
 var init_utils = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/utils.js"() {
     init_column();
     init_entity();
     init_sql();
@@ -30274,10 +30274,10 @@ var init_utils = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/int.common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/int.common.js
 var PgIntColumnBaseBuilder;
 var init_int_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/int.common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/int.common.js"() {
     init_entity();
     init_common();
     PgIntColumnBaseBuilder = class extends PgColumnBuilder {
@@ -30320,7 +30320,7 @@ var init_int_common = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigint.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigint.js
 function bigint(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2.mode === "number") {
@@ -30330,7 +30330,7 @@ function bigint(a3, b4) {
 }
 var PgBigInt53Builder, PgBigInt53, PgBigInt64Builder, PgBigInt64;
 var init_bigint = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigint.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigint.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30383,7 +30383,7 @@ var init_bigint = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigserial.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigserial.js
 function bigserial(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2.mode === "number") {
@@ -30393,7 +30393,7 @@ function bigserial(a3, b4) {
 }
 var PgBigSerial53Builder, PgBigSerial53, PgBigSerial64Builder, PgBigSerial64;
 var init_bigserial = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigserial.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigserial.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30451,13 +30451,13 @@ var init_bigserial = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/boolean.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/boolean.js
 function boolean(name2) {
   return new PgBooleanBuilder(name2 ?? "");
 }
 var PgBooleanBuilder, PgBoolean;
 var init_boolean = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/boolean.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/boolean.js"() {
     init_entity();
     init_common();
     PgBooleanBuilder = class extends PgColumnBuilder {
@@ -30479,14 +30479,14 @@ var init_boolean = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/char.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/char.js
 function char(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgCharBuilder(name2, config2);
 }
 var PgCharBuilder, PgChar;
 var init_char = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/char.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/char.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30516,13 +30516,13 @@ var init_char = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/cidr.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/cidr.js
 function cidr(name2) {
   return new PgCidrBuilder(name2 ?? "");
 }
 var PgCidrBuilder, PgCidr;
 var init_cidr = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/cidr.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/cidr.js"() {
     init_entity();
     init_common();
     PgCidrBuilder = class extends PgColumnBuilder {
@@ -30544,7 +30544,7 @@ var init_cidr = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/custom.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/custom.js
 function customType(customTypeParams) {
   return (a3, b4) => {
     const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
@@ -30553,7 +30553,7 @@ function customType(customTypeParams) {
 }
 var PgCustomColumnBuilder, PgCustomColumn;
 var init_custom = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/custom.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/custom.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30596,10 +30596,10 @@ var init_custom = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.common.js
 var PgDateColumnBaseBuilder;
 var init_date_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.common.js"() {
     init_entity();
     init_sql();
     init_common();
@@ -30612,7 +30612,7 @@ var init_date_common = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.js
 function date(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2?.mode === "date") {
@@ -30622,7 +30622,7 @@ function date(a3, b4) {
 }
 var PgDateBuilder, PgDate, PgDateStringBuilder, PgDateString;
 var init_date = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30676,13 +30676,13 @@ var init_date = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/double-precision.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/double-precision.js
 function doublePrecision(name2) {
   return new PgDoublePrecisionBuilder(name2 ?? "");
 }
 var PgDoublePrecisionBuilder, PgDoublePrecision;
 var init_double_precision = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/double-precision.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/double-precision.js"() {
     init_entity();
     init_common();
     PgDoublePrecisionBuilder = class extends PgColumnBuilder {
@@ -30713,13 +30713,13 @@ var init_double_precision = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/inet.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/inet.js
 function inet(name2) {
   return new PgInetBuilder(name2 ?? "");
 }
 var PgInetBuilder, PgInet;
 var init_inet = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/inet.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/inet.js"() {
     init_entity();
     init_common();
     PgInetBuilder = class extends PgColumnBuilder {
@@ -30741,13 +30741,13 @@ var init_inet = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/integer.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/integer.js
 function integer(name2) {
   return new PgIntegerBuilder(name2 ?? "");
 }
 var PgIntegerBuilder, PgInteger;
 var init_integer = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/integer.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/integer.js"() {
     init_entity();
     init_common();
     init_int_common();
@@ -30776,14 +30776,14 @@ var init_integer = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/interval.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/interval.js
 function interval(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgIntervalBuilder(name2, config2);
 }
 var PgIntervalBuilder, PgInterval;
 var init_interval = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/interval.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/interval.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30811,13 +30811,13 @@ var init_interval = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/json.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/json.js
 function json(name2) {
   return new PgJsonBuilder(name2 ?? "");
 }
 var PgJsonBuilder, PgJson;
 var init_json = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/json.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/json.js"() {
     init_entity();
     init_common();
     PgJsonBuilder = class extends PgColumnBuilder {
@@ -30855,13 +30855,13 @@ var init_json = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/jsonb.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/jsonb.js
 function jsonb(name2) {
   return new PgJsonbBuilder(name2 ?? "");
 }
 var PgJsonbBuilder, PgJsonb;
 var init_jsonb = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/jsonb.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/jsonb.js"() {
     init_entity();
     init_common();
     PgJsonbBuilder = class extends PgColumnBuilder {
@@ -30899,7 +30899,7 @@ var init_jsonb = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/line.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/line.js
 function line(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (!config2?.mode || config2.mode === "tuple") {
@@ -30909,7 +30909,7 @@ function line(a3, b4) {
 }
 var PgLineBuilder, PgLineTuple, PgLineABCBuilder, PgLineABC;
 var init_line = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/line.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/line.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30968,13 +30968,13 @@ var init_line = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr.js
 function macaddr(name2) {
   return new PgMacaddrBuilder(name2 ?? "");
 }
 var PgMacaddrBuilder, PgMacaddr;
 var init_macaddr = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr.js"() {
     init_entity();
     init_common();
     PgMacaddrBuilder = class extends PgColumnBuilder {
@@ -30996,13 +30996,13 @@ var init_macaddr = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js
 function macaddr8(name2) {
   return new PgMacaddr8Builder(name2 ?? "");
 }
 var PgMacaddr8Builder, PgMacaddr8;
 var init_macaddr8 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js"() {
     init_entity();
     init_common();
     PgMacaddr8Builder = class extends PgColumnBuilder {
@@ -31024,7 +31024,7 @@ var init_macaddr8 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/numeric.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/numeric.js
 function numeric(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   const mode = config2?.mode;
@@ -31032,7 +31032,7 @@ function numeric(a3, b4) {
 }
 var PgNumericBuilder, PgNumeric, PgNumericNumberBuilder, PgNumericNumber, PgNumericBigIntBuilder, PgNumericBigInt;
 var init_numeric = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/numeric.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/numeric.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31149,7 +31149,7 @@ var init_numeric = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/point.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/point.js
 function point(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (!config2?.mode || config2.mode === "tuple") {
@@ -31159,7 +31159,7 @@ function point(a3, b4) {
 }
 var PgPointTupleBuilder, PgPointTuple, PgPointObjectBuilder, PgPointObject;
 var init_point = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/point.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/point.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31224,7 +31224,7 @@ var init_point = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js
 function hexToBytes(hex) {
   const bytes = [];
   for (let c4 = 0; c4 < hex.length; c4 += 2) {
@@ -31263,11 +31263,11 @@ function parseEWKB(hex) {
   throw new Error("Unsupported geometry type");
 }
 var init_utils2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js
 function geometry(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (!config2?.mode || config2.mode === "tuple") {
@@ -31277,7 +31277,7 @@ function geometry(a3, b4) {
 }
 var PgGeometryBuilder, PgGeometry, PgGeometryObjectBuilder, PgGeometryObject;
 var init_geometry = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31336,13 +31336,13 @@ var init_geometry = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/real.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/real.js
 function real(name2) {
   return new PgRealBuilder(name2 ?? "");
 }
 var PgRealBuilder, PgReal;
 var init_real = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/real.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/real.js"() {
     init_entity();
     init_common();
     PgRealBuilder = class extends PgColumnBuilder {
@@ -31374,13 +31374,13 @@ var init_real = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/serial.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/serial.js
 function serial(name2) {
   return new PgSerialBuilder(name2 ?? "");
 }
 var PgSerialBuilder, PgSerial;
 var init_serial = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/serial.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/serial.js"() {
     init_entity();
     init_common();
     PgSerialBuilder = class extends PgColumnBuilder {
@@ -31404,13 +31404,13 @@ var init_serial = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallint.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallint.js
 function smallint(name2) {
   return new PgSmallIntBuilder(name2 ?? "");
 }
 var PgSmallIntBuilder, PgSmallInt;
 var init_smallint = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallint.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallint.js"() {
     init_entity();
     init_common();
     init_int_common();
@@ -31439,13 +31439,13 @@ var init_smallint = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallserial.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallserial.js
 function smallserial(name2) {
   return new PgSmallSerialBuilder(name2 ?? "");
 }
 var PgSmallSerialBuilder, PgSmallSerial;
 var init_smallserial = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallserial.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallserial.js"() {
     init_entity();
     init_common();
     PgSmallSerialBuilder = class extends PgColumnBuilder {
@@ -31472,14 +31472,14 @@ var init_smallserial = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/text.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/text.js
 function text(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgTextBuilder(name2, config2);
 }
 var PgTextBuilder, PgText;
 var init_text = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/text.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/text.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31504,14 +31504,14 @@ var init_text = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/time.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/time.js
 function time(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgTimeBuilder(name2, config2.withTimezone ?? false, config2.precision);
 }
 var PgTimeBuilder, PgTime;
 var init_time = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/time.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/time.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31547,7 +31547,7 @@ var init_time = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/timestamp.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/timestamp.js
 function timestamp(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2?.mode === "string") {
@@ -31557,7 +31557,7 @@ function timestamp(a3, b4 = {}) {
 }
 var PgTimestampBuilder, PgTimestamp, PgTimestampStringBuilder, PgTimestampString;
 var init_timestamp = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/timestamp.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/timestamp.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31637,13 +31637,13 @@ var init_timestamp = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/uuid.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/uuid.js
 function uuid(name2) {
   return new PgUUIDBuilder(name2 ?? "");
 }
 var PgUUIDBuilder, PgUUID;
 var init_uuid = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/uuid.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/uuid.js"() {
     init_entity();
     init_sql();
     init_common();
@@ -31672,14 +31672,14 @@ var init_uuid = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/varchar.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/varchar.js
 function varchar(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgVarcharBuilder(name2, config2);
 }
 var PgVarcharBuilder, PgVarchar;
 var init_varchar = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/varchar.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/varchar.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31709,14 +31709,14 @@ var init_varchar = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js
 function bit(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgBinaryVectorBuilder(name2, config2);
 }
 var PgBinaryVectorBuilder, PgBinaryVector;
 var init_bit = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31744,14 +31744,14 @@ var init_bit = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js
 function halfvec(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgHalfVectorBuilder(name2, config2);
 }
 var PgHalfVectorBuilder, PgHalfVector;
 var init_halfvec = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31785,14 +31785,14 @@ var init_halfvec = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js
 function sparsevec(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgSparseVectorBuilder(name2, config2);
 }
 var PgSparseVectorBuilder, PgSparseVector;
 var init_sparsevec = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31820,14 +31820,14 @@ var init_sparsevec = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js
 function vector(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgVectorBuilder(name2, config2);
 }
 var PgVectorBuilder, PgVector;
 var init_vector = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31861,7 +31861,7 @@ var init_vector = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/all.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/all.js
 function getPgColumnBuilders() {
   return {
     bigint,
@@ -31899,7 +31899,7 @@ function getPgColumnBuilders() {
   };
 }
 var init_all = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/all.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/all.js"() {
     init_bigint();
     init_bigserial();
     init_boolean();
@@ -31935,7 +31935,7 @@ var init_all = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/table.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/table.js
 function pgTableWithSchema(name2, columns, extraConfig, schema, baseName = name2) {
   const rawTable = new PgTable(name2, schema, baseName);
   const parsedColumns = typeof columns === "function" ? columns(getPgColumnBuilders()) : columns;
@@ -31971,7 +31971,7 @@ function pgTableWithSchema(name2, columns, extraConfig, schema, baseName = name2
 }
 var InlineForeignKeys, EnableRLS, PgTable, pgTable;
 var init_table2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/table.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/table.js"() {
     init_entity();
     init_table();
     init_all();
@@ -31999,10 +31999,10 @@ var init_table2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/primary-keys.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/primary-keys.js
 var PrimaryKeyBuilder, PrimaryKey;
 var init_primary_keys = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/primary-keys.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/primary-keys.js"() {
     init_entity();
     init_table2();
     PrimaryKeyBuilder = class {
@@ -32036,7 +32036,7 @@ var init_primary_keys = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/conditions.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/conditions.js
 function bindIfParam(value, column) {
   if (isDriverValueEncoder(column) && !isSQLWrapper(value) && !is(value, Param) && !is(value, Placeholder) && !is(value, Column) && !is(value, Table) && !is(value, View)) {
     return new Param(value, column);
@@ -32134,7 +32134,7 @@ function notIlike(column, value) {
 }
 var eq, ne, gt, gte, lt, lte;
 var init_conditions = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/conditions.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/conditions.js"() {
     init_column();
     init_entity();
     init_table();
@@ -32160,7 +32160,7 @@ var init_conditions = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/select.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/select.js
 function asc(column) {
   return sql`${column} asc`;
 }
@@ -32168,20 +32168,20 @@ function desc(column) {
   return sql`${column} desc`;
 }
 var init_select = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/select.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/select.js"() {
     init_sql();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/index.js
 var init_expressions = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/index.js"() {
     init_conditions();
     init_select();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/relations.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/relations.js
 function getOperators() {
   return {
     and,
@@ -32391,7 +32391,7 @@ function mapRelationalRow(tablesConfig, tableConfig, row, buildQueryResultSelect
 }
 var Relation, Relations, One, Many;
 var init_relations = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/relations.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/relations.js"() {
     init_table();
     init_column();
     init_entity();
@@ -32453,45 +32453,45 @@ var init_relations = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/aggregate.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/aggregate.js
 var init_aggregate = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/aggregate.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/aggregate.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/vector.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/vector.js
 var init_vector2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/vector.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/vector.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/index.js
 var init_functions = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/index.js"() {
     init_aggregate();
     init_vector2();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/index.js
 var init_sql2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/index.js"() {
     init_expressions();
     init_functions();
     init_sql();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/alias.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/alias.js
 var init_alias2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/alias.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/alias.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/checks.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/checks.js
 var CheckBuilder, Check;
 var init_checks = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/checks.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/checks.js"() {
     init_entity();
     CheckBuilder = class {
       constructor(name2, value) {
@@ -32518,9 +32518,9 @@ var init_checks = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/index.js
 var init_columns = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/index.js"() {
     init_bigint();
     init_bigserial();
     init_boolean();
@@ -32559,10 +32559,10 @@ var init_columns = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/selection-proxy.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/selection-proxy.js
 var SelectionProxyHandler;
 var init_selection_proxy = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/selection-proxy.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/selection-proxy.js"() {
     init_alias();
     init_column();
     init_entity();
@@ -32638,10 +32638,10 @@ var init_selection_proxy = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/indexes.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/indexes.js
 var IndexBuilderOn, IndexBuilder, Index;
 var init_indexes = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/indexes.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/indexes.js"() {
     init_sql();
     init_entity();
     init_columns();
@@ -32752,10 +32752,10 @@ var init_indexes = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/policies.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/policies.js
 var PgPolicy;
 var init_policies = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/policies.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/policies.js"() {
     init_entity();
     PgPolicy = class {
       constructor(name2, config2) {
@@ -32784,15 +32784,15 @@ var init_policies = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-common.js
 var PgViewConfig;
 var init_view_common2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-common.js"() {
     PgViewConfig = /* @__PURE__ */ Symbol.for("drizzle:PgViewConfig");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/casing.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/casing.js
 function toSnakeCase(input) {
   const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
   return words.map((word) => word.toLowerCase()).join("_");
@@ -32809,7 +32809,7 @@ function noopCase(input) {
 }
 var CasingCache;
 var init_casing = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/casing.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/casing.js"() {
     init_entity();
     init_table();
     CasingCache = class {
@@ -32851,10 +32851,10 @@ var init_casing = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-base.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-base.js
 var PgViewBase;
 var init_view_base = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-base.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-base.js"() {
     init_entity();
     init_sql();
     PgViewBase = class extends View {
@@ -32863,10 +32863,10 @@ var init_view_base = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/dialect.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/dialect.js
 var PgDialect;
 var init_dialect = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/dialect.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/dialect.js"() {
     init_alias();
     init_casing();
     init_column();
@@ -33988,10 +33988,10 @@ var init_dialect = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-builders/query-builder.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-builders/query-builder.js
 var TypedQueryBuilder;
 var init_query_builder = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-builders/query-builder.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-builders/query-builder.js"() {
     init_entity();
     TypedQueryBuilder = class {
       static [entityKind] = "TypedQueryBuilder";
@@ -34003,7 +34003,7 @@ var init_query_builder = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.js
 function createSetOperator(type, isAll) {
   return (leftSelect, rightSelect, ...restSelects) => {
     const setOperators = [rightSelect, ...restSelects].map((select) => ({
@@ -34023,7 +34023,7 @@ function createSetOperator(type, isAll) {
 }
 var PgSelectBuilder, PgSelectQueryBuilderBase, PgSelectBase, getPgSetOperators, union, unionAll, intersect, intersectAll, except, exceptAll;
 var init_select2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.js"() {
     init_entity();
     init_view_base();
     init_query_builder();
@@ -34837,10 +34837,10 @@ var init_select2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js
 var QueryBuilder;
 var init_query_builder2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js"() {
     init_entity();
     init_dialect();
     init_selection_proxy();
@@ -34934,7 +34934,7 @@ var init_query_builder2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view.js
 function pgViewWithSchema(name2, selection, schema) {
   if (selection) {
     return new ManualViewBuilder(name2, selection, schema);
@@ -34949,7 +34949,7 @@ function pgMaterializedViewWithSchema(name2, selection, schema) {
 }
 var DefaultViewBuilderCore, ViewBuilder, ManualViewBuilder, MaterializedViewBuilderCore, MaterializedViewBuilder, ManualMaterializedViewBuilder, PgView, PgMaterializedViewConfig, PgMaterializedView;
 var init_view = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view.js"() {
     init_entity();
     init_selection_proxy();
     init_utils();
@@ -35183,7 +35183,7 @@ var init_view = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils.js
 function extractUsedTable(table) {
   if (is(table, PgTable)) {
     return [table[Schema] ? `${table[Schema]}.${table[Table.Symbol.BaseName]}` : table[Table.Symbol.BaseName]];
@@ -35197,7 +35197,7 @@ function extractUsedTable(table) {
   return [];
 }
 var init_utils3 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils.js"() {
     init_entity();
     init_table2();
     init_sql();
@@ -35206,10 +35206,10 @@ var init_utils3 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/delete.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/delete.js
 var PgDeleteBase;
 var init_delete = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/delete.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/delete.js"() {
     init_entity();
     init_query_promise();
     init_selection_proxy();
@@ -35314,10 +35314,10 @@ var init_delete = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/insert.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/insert.js
 var PgInsertBuilder, PgInsertBase;
 var init_insert = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/insert.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/insert.js"() {
     init_entity();
     init_query_promise();
     init_selection_proxy();
@@ -35521,10 +35521,10 @@ var init_insert = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js
 var PgRefreshMaterializedView;
 var init_refresh_materialized_view = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js"() {
     init_entity();
     init_query_promise();
     init_tracing();
@@ -35583,16 +35583,16 @@ var init_refresh_materialized_view = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js
 var init_select_types = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/update.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/update.js
 var PgUpdateBuilder, PgUpdateBase;
 var init_update = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/update.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/update.js"() {
     init_entity();
     init_table2();
     init_query_promise();
@@ -35816,9 +35816,9 @@ var init_update = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/index.js
 var init_query_builders = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/index.js"() {
     init_delete();
     init_insert();
     init_query_builder2();
@@ -35829,10 +35829,10 @@ var init_query_builders = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/count.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/count.js
 var PgCountBuilder;
 var init_count = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/count.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/count.js"() {
     init_entity();
     init_sql();
     PgCountBuilder = class _PgCountBuilder extends SQL {
@@ -35887,10 +35887,10 @@ var init_count = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query.js
 var RelationalQueryBuilder, PgRelationalQuery;
 var init_query = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query.js"() {
     init_entity();
     init_query_promise();
     init_relations();
@@ -36009,10 +36009,10 @@ var init_query = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/raw.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/raw.js
 var PgRaw;
 var init_raw = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/raw.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/raw.js"() {
     init_entity();
     init_query_promise();
     PgRaw = class extends QueryPromise {
@@ -36045,10 +36045,10 @@ var init_raw = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/db.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/db.js
 var PgDatabase;
 var init_db = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/db.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/db.js"() {
     init_entity();
     init_query_builders();
     init_selection_proxy();
@@ -36338,10 +36338,10 @@ var init_db = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/roles.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/roles.js
 var PgRole;
 var init_roles = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/roles.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/roles.js"() {
     init_entity();
     PgRole = class {
       constructor(name2, config2) {
@@ -36369,13 +36369,13 @@ var init_roles = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/sequence.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/sequence.js
 function pgSequenceWithSchema(name2, options, schema) {
   return new PgSequence(name2, options, schema);
 }
 var PgSequence;
 var init_sequence = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/sequence.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/sequence.js"() {
     init_entity();
     PgSequence = class {
       constructor(seqName, seqOptions, schema) {
@@ -36388,10 +36388,10 @@ var init_sequence = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/schema.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/schema.js
 var PgSchema;
 var init_schema = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/schema.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/schema.js"() {
     init_entity();
     init_sql();
     init_enum();
@@ -36432,7 +36432,7 @@ var init_schema = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/cache.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/cache.js
 async function hashQuery(sql2, params) {
   const dataToHash = `${sql2}-${JSON.stringify(params)}`;
   const encoder = new TextEncoder();
@@ -36444,7 +36444,7 @@ async function hashQuery(sql2, params) {
 }
 var Cache, NoopCache;
 var init_cache = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/cache.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/cache.js"() {
     init_entity();
     Cache = class {
       static [entityKind] = "Cache";
@@ -36465,10 +36465,10 @@ var init_cache = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/session.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/session.js
 var PgPreparedQuery, PgSession, PgTransaction;
 var init_session = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/session.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/session.js"() {
     init_cache();
     init_entity();
     init_errors();
@@ -36636,22 +36636,22 @@ var init_session = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/subquery.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/subquery.js
 var init_subquery2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/subquery.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/subquery.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/index.js
 var init_utils4 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/index.js"() {
     init_array();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/index.js
 var init_pg_core = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/index.js"() {
     init_alias2();
     init_checks();
     init_columns();
@@ -40121,7 +40121,7 @@ var require_split2 = __commonJS({
 var require_helper = __commonJS({
   "../../node_modules/.pnpm/pgpass@1.0.5/node_modules/pgpass/lib/helper.js"(exports, module2) {
     "use strict";
-    var path3 = __require("path");
+    var path5 = __require("path");
     var Stream = __require("stream").Stream;
     var split = require_split2();
     var util2 = __require("util");
@@ -40160,7 +40160,7 @@ var require_helper = __commonJS({
     };
     module2.exports.getFileName = function(rawEnv) {
       var env = rawEnv || process.env;
-      var file2 = env.PGPASSFILE || (isWin ? path3.join(env.APPDATA || "./", "postgresql", "pgpass.conf") : path3.join(env.HOME || "./", ".pgpass"));
+      var file2 = env.PGPASSFILE || (isWin ? path5.join(env.APPDATA || "./", "postgresql", "pgpass.conf") : path5.join(env.HOME || "./", ".pgpass"));
       return file2;
     };
     module2.exports.usePgPass = function(stats, fname) {
@@ -40292,7 +40292,7 @@ var require_helper = __commonJS({
 var require_lib4 = __commonJS({
   "../../node_modules/.pnpm/pgpass@1.0.5/node_modules/pgpass/lib/index.js"(exports, module2) {
     "use strict";
-    var path3 = __require("path");
+    var path5 = __require("path");
     var fs3 = __require("fs");
     var helper = require_helper();
     module2.exports = function(connInfo, cb) {
@@ -42022,17 +42022,17 @@ var init_esm = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/index.js
 var init_core = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/index.js"() {
     init_cache();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/session.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/session.js
 var Pool2, types2, NodePgPreparedQuery, NodePgSession, NodePgTransaction;
 var init_session2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/session.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/session.js"() {
     init_esm();
     init_core();
     init_entity();
@@ -42259,7 +42259,7 @@ var init_session2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/driver.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/driver.js
 function construct(client, config2 = {}) {
   const dialect = new PgDialect({ casing: config2.casing });
   let logger2;
@@ -42309,7 +42309,7 @@ function drizzle(...params) {
 }
 var NodePgDriver, NodePgDatabase;
 var init_driver = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/driver.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/driver.js"() {
     init_esm();
     init_entity();
     init_logger();
@@ -42344,7 +42344,7 @@ var init_driver = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/index.js
 var node_postgres_exports = {};
 __export(node_postgres_exports, {
   NodePgDatabase: () => NodePgDatabase,
@@ -42355,7 +42355,7 @@ __export(node_postgres_exports, {
   drizzle: () => drizzle
 });
 var init_node_postgres = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/index.js"() {
     init_driver();
     init_session2();
   }
@@ -51269,10 +51269,10 @@ shared_preload_libraries=${r.join(",")}`;
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/session.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/session.js
 var PglitePreparedQuery, PgliteSession, PgliteTransaction;
 var init_session3 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/session.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/session.js"() {
     init_entity();
     init_logger();
     init_pg_core();
@@ -51432,7 +51432,7 @@ var init_session3 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/driver.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/driver.js
 function construct2(client, config2 = {}) {
   const dialect = new PgDialect({ casing: config2.casing });
   let logger2;
@@ -51483,7 +51483,7 @@ function drizzle2(...params) {
 }
 var PgliteDriver, PgliteDatabase;
 var init_driver2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/driver.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/driver.js"() {
     init_dist();
     init_entity();
     init_logger();
@@ -51518,7 +51518,7 @@ var init_driver2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/index.js
 var pglite_exports = {};
 __export(pglite_exports, {
   PgliteDatabase: () => PgliteDatabase,
@@ -51529,7 +51529,7 @@ __export(pglite_exports, {
   drizzle: () => drizzle2
 });
 var init_pglite = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/index.js"() {
     init_driver2();
     init_session3();
   }
@@ -51655,15 +51655,15 @@ CREATE TABLE IF NOT EXISTS player_submissions (
 
 // src/index.ts
 import { existsSync as existsSync2 } from "node:fs";
-import path2 from "node:path";
+import path4 from "node:path";
 
 // src/app.ts
-var import_express11 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express9 = __toESM(require_express2(), 1);
+var import_express11 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -52027,8 +52027,8 @@ function getErrorMap() {
 
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/helpers/parseUtil.js
 var makeIssue = (params) => {
-  const { data, path: path3, errorMaps, issueData } = params;
-  const fullPath = [...path3, ...issueData.path || []];
+  const { data, path: path5, errorMaps, issueData } = params;
+  const fullPath = [...path5, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -52143,11 +52143,11 @@ var errorUtil;
 
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v3/types.js
 var ParseInputLazyPath = class {
-  constructor(parent, value, path3, key) {
+  constructor(parent, value, path5, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path3;
+    this._path = path5;
     this._key = key;
   }
   get path() {
@@ -55555,6 +55555,108 @@ var coerce = {
 };
 
 // ../../lib/api-zod/src/generated/api.ts
+var listBasketballScoresQueryLimitDefault = 20;
+var listBasketballScoresQueryLimitMax = 100;
+var ListBasketballScoresQueryParams = objectType({
+  "limit": coerce.number().int().min(1).max(listBasketballScoresQueryLimitMax).default(listBasketballScoresQueryLimitDefault)
+});
+var ListBasketballScoresResponseItem = objectType({
+  "id": stringType().uuid(),
+  "playerName": stringType(),
+  "playerTitle": stringType(),
+  "playerCompany": stringType(),
+  "score": numberType().int(),
+  "shotsTaken": numberType().int(),
+  "shotsMade": numberType().int(),
+  "outagesPrevented": numberType().int(),
+  "createdAt": coerce.date()
+});
+var ListBasketballScoresResponse = arrayType(ListBasketballScoresResponseItem);
+var submitBasketballScoreBodyPlayerNameMax = 80;
+var submitBasketballScoreBodyPlayerTitleMax = 100;
+var submitBasketballScoreBodyPlayerCompanyMax = 100;
+var submitBasketballScoreBodyPlayerEmailMax = 254;
+var submitBasketballScoreBodyScoreMin = 0;
+var submitBasketballScoreBodyScoreMax = 900;
+var submitBasketballScoreBodyShotsTakenMin = 0;
+var submitBasketballScoreBodyShotsTakenMax = 300;
+var submitBasketballScoreBodyShotsMadeMin = 0;
+var submitBasketballScoreBodyShotsMadeMax = 300;
+var submitBasketballScoreBodyOutagesPreventedMin = 0;
+var submitBasketballScoreBodyOutagesPreventedMax = 300;
+var SubmitBasketballScoreBody = objectType({
+  "submissionId": stringType().uuid(),
+  "playerName": stringType().min(1).max(submitBasketballScoreBodyPlayerNameMax),
+  "playerTitle": stringType().min(1).max(submitBasketballScoreBodyPlayerTitleMax),
+  "playerCompany": stringType().min(1).max(submitBasketballScoreBodyPlayerCompanyMax),
+  "playerEmail": stringType().email().max(submitBasketballScoreBodyPlayerEmailMax),
+  "score": numberType().int().min(submitBasketballScoreBodyScoreMin).max(submitBasketballScoreBodyScoreMax),
+  "shotsTaken": numberType().int().min(submitBasketballScoreBodyShotsTakenMin).max(submitBasketballScoreBodyShotsTakenMax),
+  "shotsMade": numberType().int().min(submitBasketballScoreBodyShotsMadeMin).max(submitBasketballScoreBodyShotsMadeMax),
+  "outagesPrevented": numberType().int().min(submitBasketballScoreBodyOutagesPreventedMin).max(submitBasketballScoreBodyOutagesPreventedMax)
+});
+var SubmitBasketballScoreResponse = objectType({
+  "id": stringType().uuid(),
+  "playerName": stringType(),
+  "playerTitle": stringType(),
+  "playerCompany": stringType(),
+  "score": numberType().int(),
+  "shotsTaken": numberType().int(),
+  "shotsMade": numberType().int(),
+  "outagesPrevented": numberType().int(),
+  "createdAt": coerce.date()
+});
+var listSoccerScoresQueryLimitDefault = 20;
+var listSoccerScoresQueryLimitMax = 100;
+var ListSoccerScoresQueryParams = objectType({
+  "limit": coerce.number().int().min(1).max(listSoccerScoresQueryLimitMax).default(listSoccerScoresQueryLimitDefault)
+});
+var ListSoccerScoresResponseItem = objectType({
+  "id": stringType().uuid(),
+  "playerName": stringType(),
+  "playerTitle": stringType(),
+  "playerCompany": stringType(),
+  "score": numberType().int(),
+  "shotsTaken": numberType().int(),
+  "shotsMade": numberType().int(),
+  "outagesPrevented": numberType().int(),
+  "createdAt": coerce.date()
+});
+var ListSoccerScoresResponse = arrayType(ListSoccerScoresResponseItem);
+var submitSoccerScoreBodyPlayerNameMax = 80;
+var submitSoccerScoreBodyPlayerTitleMax = 100;
+var submitSoccerScoreBodyPlayerCompanyMax = 100;
+var submitSoccerScoreBodyPlayerEmailMax = 254;
+var submitSoccerScoreBodyScoreMin = 0;
+var submitSoccerScoreBodyScoreMax = 900;
+var submitSoccerScoreBodyShotsTakenMin = 0;
+var submitSoccerScoreBodyShotsTakenMax = 300;
+var submitSoccerScoreBodyShotsMadeMin = 0;
+var submitSoccerScoreBodyShotsMadeMax = 300;
+var submitSoccerScoreBodyOutagesPreventedMin = 0;
+var submitSoccerScoreBodyOutagesPreventedMax = 300;
+var SubmitSoccerScoreBody = objectType({
+  "submissionId": stringType().uuid(),
+  "playerName": stringType().min(1).max(submitSoccerScoreBodyPlayerNameMax),
+  "playerTitle": stringType().min(1).max(submitSoccerScoreBodyPlayerTitleMax),
+  "playerCompany": stringType().min(1).max(submitSoccerScoreBodyPlayerCompanyMax),
+  "playerEmail": stringType().email().max(submitSoccerScoreBodyPlayerEmailMax),
+  "score": numberType().int().min(submitSoccerScoreBodyScoreMin).max(submitSoccerScoreBodyScoreMax),
+  "shotsTaken": numberType().int().min(submitSoccerScoreBodyShotsTakenMin).max(submitSoccerScoreBodyShotsTakenMax),
+  "shotsMade": numberType().int().min(submitSoccerScoreBodyShotsMadeMin).max(submitSoccerScoreBodyShotsMadeMax),
+  "outagesPrevented": numberType().int().min(submitSoccerScoreBodyOutagesPreventedMin).max(submitSoccerScoreBodyOutagesPreventedMax)
+});
+var SubmitSoccerScoreResponse = objectType({
+  "id": stringType().uuid(),
+  "playerName": stringType(),
+  "playerTitle": stringType(),
+  "playerCompany": stringType(),
+  "score": numberType().int(),
+  "shotsTaken": numberType().int(),
+  "shotsMade": numberType().int(),
+  "outagesPrevented": numberType().int(),
+  "createdAt": coerce.date()
+});
 var HealthCheckResponse = objectType({
   "status": stringType()
 });
@@ -56652,10 +56754,10 @@ function assignProp(target, prop, value) {
     configurable: true
   });
 }
-function getElementAtPath(obj, path3) {
-  if (!path3)
+function getElementAtPath(obj, path5) {
+  if (!path5)
     return obj;
-  return path3.reduce((acc, key) => acc?.[key], obj);
+  return path5.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
   const keys = Object.keys(promisesObj);
@@ -56975,11 +57077,11 @@ function aborted(x5, startIndex = 0) {
   }
   return false;
 }
-function prefixIssues(path3, issues) {
+function prefixIssues(path5, issues) {
   return issues.map((iss) => {
     var _a;
     (_a = iss).path ?? (_a.path = []);
-    iss.path.unshift(path3);
+    iss.path.unshift(path5);
     return iss;
   });
 }
@@ -57116,7 +57218,7 @@ function treeifyError(error40, _mapper) {
     return issue2.message;
   };
   const result = { errors: [] };
-  const processError = (error41, path3 = []) => {
+  const processError = (error41, path5 = []) => {
     var _a, _b;
     for (const issue2 of error41.issues) {
       if (issue2.code === "invalid_union" && issue2.errors.length) {
@@ -57126,7 +57228,7 @@ function treeifyError(error40, _mapper) {
       } else if (issue2.code === "invalid_element") {
         processError({ issues: issue2.issues }, issue2.path);
       } else {
-        const fullpath = [...path3, ...issue2.path];
+        const fullpath = [...path5, ...issue2.path];
         if (fullpath.length === 0) {
           result.errors.push(mapper(issue2));
           continue;
@@ -57156,9 +57258,9 @@ function treeifyError(error40, _mapper) {
   processError(error40);
   return result;
 }
-function toDotPath(path3) {
+function toDotPath(path5) {
   const segs = [];
-  for (const seg of path3) {
+  for (const seg of path5) {
     if (typeof seg === "number")
       segs.push(`[${seg}]`);
     else if (typeof seg === "symbol")
@@ -67139,7 +67241,7 @@ function date5(params) {
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v4/classic/external.js
 config(en_default2());
 
-// ../../node_modules/.pnpm/drizzle-zod@0.8.3_drizzle-o_45e0f3561799cfcc5b68f80d7420bf20/node_modules/drizzle-zod/index.mjs
+// ../../node_modules/.pnpm/drizzle-zod@0.8.3_drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1__zod@3.25.76/node_modules/drizzle-zod/index.mjs
 var CONSTANTS = {
   INT8_MIN: -128,
   INT8_MAX: 127,
@@ -67556,10 +67658,10 @@ async function createNodePostgresDb(connectionString) {
 async function createPgliteDb() {
   const { drizzle: drizzle3 } = await Promise.resolve().then(() => (init_pglite(), pglite_exports));
   const { PGlite } = await Promise.resolve().then(() => (init_dist(), dist_exports));
-  const path3 = await import("path");
+  const path5 = await import("path");
   const os = await import("os");
   const { pgliteBootstrapSql: pgliteBootstrapSql2 } = await Promise.resolve().then(() => (init_pglite_bootstrap_sql(), pglite_bootstrap_sql_exports));
-  const dataDir = process.env.PGLITE_DATA_DIR ?? path3.join(os.homedir(), ".game-dev-hub", "pglite-data");
+  const dataDir = process.env.PGLITE_DATA_DIR ?? path5.join(os.homedir(), ".game-dev-hub", "pglite-data");
   const fs3 = await import("fs");
   fs3.mkdirSync(dataDir, { recursive: true });
   const client = new PGlite(dataDir);
@@ -67896,6 +67998,10 @@ var import_express5 = __toESM(require_express2(), 1);
 var router5 = (0, import_express5.Router)();
 router5.post("/player-submissions", async (req, res) => {
   const body2 = CreatePlayerSubmissionBody.parse(req.body);
+  if (body2.gameSlug === "soccer-shootout" && body2.extra?.kind === "soccer-score" || body2.gameSlug === "basketball-shootout" && body2.extra?.kind === "basketball-score") {
+    res.status(400).json({ error: "Use the game's score submission endpoint." });
+    return;
+  }
   const [game] = await db.select({ id: gamesTable.id }).from(gamesTable).where(eq(gamesTable.slug, body2.gameSlug)).limit(1);
   if (!game) {
     res.status(404).json({ error: "Game not found" });
@@ -68388,64 +68494,267 @@ router8.get("/booth/stats", async (_req, res) => {
 });
 var booth_default = router8;
 
-// src/routes/index.ts
+// src/routes/soccer-scores.ts
+var import_express9 = __toESM(require_express2(), 1);
 var router9 = (0, import_express9.Router)();
-router9.use(health_default);
-router9.use(games_default);
-router9.use(branding_drafts_default);
-router9.use(custom_ui_requests_default);
-router9.use(player_submissions_default);
-router9.use(scenes_default);
-router9.use(generations_default);
-router9.use(booth_default);
-var routes_default = router9;
+var path = "/games/soccer-shootout/scores";
+var submissionWindows = /* @__PURE__ */ new Map();
+router9.post(path, (req, res, next) => {
+  const now = Date.now();
+  for (const [key2, value] of submissionWindows) {
+    if (value.resetAt <= now) submissionWindows.delete(key2);
+  }
+  const key = req.ip ?? "unknown";
+  const window2 = submissionWindows.get(key) ?? { count: 0, resetAt: now + 6e4 };
+  if (window2.count >= 20 || !submissionWindows.has(key) && submissionWindows.size >= 1e4) {
+    res.setHeader("Retry-After", "60");
+    res.status(429).json({ error: "Too many submissions. Please retry in a minute." });
+    return;
+  }
+  window2.count++;
+  submissionWindows.set(key, window2);
+  next();
+});
+var publicFields = {
+  id: playerSubmissionsTable.id,
+  playerName: playerSubmissionsTable.name,
+  playerTitle: sql`${playerSubmissionsTable.extra}->>'playerTitle'`,
+  playerCompany: sql`${playerSubmissionsTable.extra}->>'playerCompany'`,
+  score: sql`(${playerSubmissionsTable.extra}->>'score')::integer`,
+  shotsTaken: sql`(${playerSubmissionsTable.extra}->>'shotsTaken')::integer`,
+  shotsMade: sql`(${playerSubmissionsTable.extra}->>'shotsMade')::integer`,
+  outagesPrevented: sql`(${playerSubmissionsTable.extra}->>'outagesPrevented')::integer`,
+  createdAt: playerSubmissionsTable.createdAt
+};
+var soccerOnly = and(
+  eq(gamesTable.slug, "soccer-shootout"),
+  sql`${playerSubmissionsTable.extra}->>'kind' = 'soccer-score'`
+);
+router9.get(path, async (req, res) => {
+  const parsed = ListSoccerScoresQueryParams.safeParse(req.query);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Limit must be an integer between 1 and 100." });
+    return;
+  }
+  try {
+    const rows = await db.select(publicFields).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(soccerOnly).orderBy(desc(publicFields.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id).limit(parsed.data.limit ?? 20);
+    res.setHeader("Cache-Control", "no-store");
+    res.json(ListSoccerScoresResponse.parse(rows));
+  } catch {
+    req.log.error({ operation: "soccer.leaderboard" }, "Leaderboard unavailable");
+    res.status(500).json({ error: "The leaderboard is temporarily unavailable. Please retry." });
+  }
+});
+router9.post(path, async (req, res) => {
+  const parsed = SubmitSoccerScoreBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Please enter valid player details and round statistics." });
+    return;
+  }
+  const body2 = parsed.data;
+  const name2 = body2.playerName.trim();
+  const title = body2.playerTitle.trim();
+  const company = body2.playerCompany.trim();
+  if (!name2 || !title || !company || body2.shotsMade > body2.shotsTaken || body2.score !== body2.shotsMade * 3 || body2.outagesPrevented !== body2.shotsMade) {
+    res.status(400).json({ error: "Player details or round statistics are inconsistent." });
+    return;
+  }
+  try {
+    const [game] = await db.select({ id: gamesTable.id }).from(gamesTable).where(eq(gamesTable.slug, "soccer-shootout")).limit(1);
+    if (!game) {
+      res.status(503).json({ error: "Soccer Shootout is not available yet." });
+      return;
+    }
+    await db.insert(playerSubmissionsTable).values({
+      id: body2.submissionId,
+      gameId: game.id,
+      name: name2,
+      email: body2.playerEmail.trim(),
+      extra: {
+        kind: "soccer-score",
+        playerTitle: title,
+        playerCompany: company,
+        score: body2.score,
+        shotsTaken: body2.shotsTaken,
+        shotsMade: body2.shotsMade,
+        outagesPrevented: body2.outagesPrevented
+      }
+    }).onConflictDoNothing({ target: playerSubmissionsTable.id });
+    const [saved] = await db.select(publicFields).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(soccerOnly, eq(playerSubmissionsTable.id, body2.submissionId))).limit(1);
+    if (!saved || saved.playerName !== name2 || saved.playerTitle !== title || saved.playerCompany !== company || saved.score !== body2.score || saved.shotsTaken !== body2.shotsTaken || saved.shotsMade !== body2.shotsMade) {
+      res.status(409).json({ error: "This round was already saved with different details." });
+      return;
+    }
+    res.status(201).json(SubmitSoccerScoreResponse.parse(saved));
+  } catch {
+    req.log.error({ operation: "soccer.submit" }, "Score submission failed");
+    res.status(500).json({ error: "Your score could not be saved. Please retry." });
+  }
+});
+var soccer_scores_default = router9;
+
+// src/routes/basketball-scores.ts
+var import_express10 = __toESM(require_express2(), 1);
+var router10 = (0, import_express10.Router)();
+var path2 = "/games/basketball-shootout/scores";
+var submissionWindows2 = /* @__PURE__ */ new Map();
+router10.post(path2, (req, res, next) => {
+  const now = Date.now();
+  for (const [key2, value] of submissionWindows2) {
+    if (value.resetAt <= now) submissionWindows2.delete(key2);
+  }
+  const key = req.ip ?? "unknown";
+  const window2 = submissionWindows2.get(key) ?? { count: 0, resetAt: now + 6e4 };
+  if (window2.count >= 20 || !submissionWindows2.has(key) && submissionWindows2.size >= 1e4) {
+    res.setHeader("Retry-After", "60");
+    res.status(429).json({ error: "Too many submissions. Please retry in a minute." });
+    return;
+  }
+  window2.count++;
+  submissionWindows2.set(key, window2);
+  next();
+});
+var publicFields2 = {
+  id: playerSubmissionsTable.id,
+  playerName: playerSubmissionsTable.name,
+  playerTitle: sql`${playerSubmissionsTable.extra}->>'playerTitle'`,
+  playerCompany: sql`${playerSubmissionsTable.extra}->>'playerCompany'`,
+  score: sql`(${playerSubmissionsTable.extra}->>'score')::integer`,
+  shotsTaken: sql`(${playerSubmissionsTable.extra}->>'shotsTaken')::integer`,
+  shotsMade: sql`(${playerSubmissionsTable.extra}->>'shotsMade')::integer`,
+  outagesPrevented: sql`(${playerSubmissionsTable.extra}->>'outagesPrevented')::integer`,
+  createdAt: playerSubmissionsTable.createdAt
+};
+var basketballOnly = and(
+  eq(gamesTable.slug, "basketball-shootout"),
+  sql`${playerSubmissionsTable.extra}->>'kind' = 'basketball-score'`
+);
+router10.get(path2, async (req, res) => {
+  const parsed = ListBasketballScoresQueryParams.safeParse(req.query);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Limit must be an integer between 1 and 100." });
+    return;
+  }
+  try {
+    const rows = await db.select(publicFields2).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(basketballOnly).orderBy(desc(publicFields2.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id).limit(parsed.data.limit ?? 20);
+    res.setHeader("Cache-Control", "no-store");
+    res.json(ListBasketballScoresResponse.parse(rows));
+  } catch {
+    req.log.error({ operation: "basketball.leaderboard" }, "Leaderboard unavailable");
+    res.status(500).json({ error: "The leaderboard is temporarily unavailable. Please retry." });
+  }
+});
+router10.post(path2, async (req, res) => {
+  const parsed = SubmitBasketballScoreBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Please enter valid player details and round statistics." });
+    return;
+  }
+  const body2 = parsed.data;
+  const name2 = body2.playerName.trim();
+  const title = body2.playerTitle.trim();
+  const company = body2.playerCompany.trim();
+  if (!name2 || !title || !company || body2.shotsMade > body2.shotsTaken || body2.score !== body2.shotsMade * 3 || body2.outagesPrevented !== body2.shotsMade) {
+    res.status(400).json({ error: "Player details or round statistics are inconsistent." });
+    return;
+  }
+  try {
+    const [game] = await db.select({ id: gamesTable.id }).from(gamesTable).where(eq(gamesTable.slug, "basketball-shootout")).limit(1);
+    if (!game) {
+      res.status(503).json({ error: "Basketball Shootout is not available yet." });
+      return;
+    }
+    const email3 = body2.playerEmail.trim();
+    await db.insert(playerSubmissionsTable).values({
+      id: body2.submissionId,
+      gameId: game.id,
+      name: name2,
+      email: email3,
+      extra: {
+        kind: "basketball-score",
+        playerTitle: title,
+        playerCompany: company,
+        score: body2.score,
+        shotsTaken: body2.shotsTaken,
+        shotsMade: body2.shotsMade,
+        outagesPrevented: body2.outagesPrevented
+      }
+    }).onConflictDoNothing({ target: playerSubmissionsTable.id });
+    const [saved] = await db.select({ ...publicFields2, privateEmail: playerSubmissionsTable.email }).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(basketballOnly, eq(playerSubmissionsTable.id, body2.submissionId))).limit(1);
+    if (!saved || saved.playerName !== name2 || saved.playerTitle !== title || saved.playerCompany !== company || saved.privateEmail !== email3 || saved.score !== body2.score || saved.shotsTaken !== body2.shotsTaken || saved.shotsMade !== body2.shotsMade || saved.outagesPrevented !== body2.outagesPrevented) {
+      res.status(409).json({ error: "This round was already saved with different details." });
+      return;
+    }
+    const { privateEmail: _privateEmail, ...publicScore } = saved;
+    req.log.info({ operation: "basketball.submit", submissionId: body2.submissionId }, "Score saved");
+    res.status(201).json(SubmitBasketballScoreResponse.parse(publicScore));
+  } catch {
+    req.log.error({ operation: "basketball.submit" }, "Score submission failed");
+    res.status(500).json({ error: "Your score could not be saved. Please retry." });
+  }
+});
+var basketball_scores_default = router10;
+
+// src/routes/index.ts
+var router11 = (0, import_express11.Router)();
+router11.use(health_default);
+router11.use(games_default);
+router11.use(branding_drafts_default);
+router11.use(custom_ui_requests_default);
+router11.use(player_submissions_default);
+router11.use(scenes_default);
+router11.use(generations_default);
+router11.use(booth_default);
+router11.use(soccer_scores_default);
+router11.use(basketball_scores_default);
+var routes_default = router11;
 
 // src/lib/game-previews.ts
-var import_express10 = __toESM(require_express2(), 1);
+var import_express12 = __toESM(require_express2(), 1);
 import fs2 from "fs";
-import path from "path";
-var repoRoot = path.resolve(import.meta.dirname, "../../..");
+import path3 from "path";
+var repoRoot = path3.resolve(import.meta.dirname, "../../..");
 var GAME_PREVIEWS = [
   {
     slug: "jeopardy",
-    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/jeoparady/frontend/dist/catalog")
+    distDir: path3.join(repoRoot, "artifacts/citrus-landing/game/jeoparady/frontend/dist/catalog")
   },
   ...["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall"].map((slug) => ({
     slug,
-    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/fivegames/dist/previews", slug)
+    distDir: path3.join(repoRoot, "artifacts/citrus-landing/game/fivegames/dist/previews", slug)
   })),
   {
     slug: "space-shooter-1",
-    distDir: path.join(repoRoot, "artifacts/games/space-shooter-1/dist/public")
+    distDir: path3.join(repoRoot, "artifacts/games/space-shooter-1/dist/public")
   },
   {
     slug: "cyber-adventure",
-    distDir: path.join(
+    distDir: path3.join(
       repoRoot,
       "artifacts/citrus-landing/game/Cybergame/artifacts/gesturesec-runner/dist/public"
     )
   },
   {
     slug: "basketball-shootout",
-    distDir: path.join(
+    distDir: path3.join(
       repoRoot,
       "artifacts/citrus-landing/game/AI-versionBB2-5/AI-versionBB2-5/dist/public"
     )
   },
   {
     slug: "soccer-shootout",
-    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/Soccer/Soccer/dist/public")
+    distDir: path3.join(repoRoot, "artifacts/citrus-landing/game/Soccer/Soccer/dist/public")
   },
   {
     slug: "gesture-space-war",
-    distDir: path.join(
+    distDir: path3.join(
       repoRoot,
       "artifacts/citrus-landing/game/Gesture-Space-War/Gesture-Space-War/artifacts/space-game/dist/public"
     )
   },
   {
     slug: "boat-booth",
-    distDir: path.join(
+    distDir: path3.join(
       repoRoot,
       "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video/artifacts/boat-booth/dist/public"
     )
@@ -68455,22 +68764,22 @@ var GAME_PREVIEWS = [
     // scripts/stage-lexus-preview.mjs (run that after editing the source
     // HTML/manifest/service-worker). Not yet in build-games.mjs.
     slug: "lexus-energy-quiz",
-    distDir: path.join(repoRoot, "artifacts/citrus-landing/game/Lexus/public")
+    distDir: path3.join(repoRoot, "artifacts/citrus-landing/game/Lexus/public")
   }
 ];
-var router10 = (0, import_express10.Router)();
+var router12 = (0, import_express12.Router)();
 for (const { slug, distDir } of GAME_PREVIEWS) {
-  router10.use(`/game-previews/${slug}`, import_express10.default.static(distDir));
-  const indexHtml = path.join(distDir, "index.html");
-  router10.get(`/game-previews/${slug}/*splat`, (_req, res, next) => {
+  router12.use(`/game-previews/${slug}`, import_express12.default.static(distDir));
+  const indexHtml = path3.join(distDir, "index.html");
+  router12.get(`/game-previews/${slug}/*splat`, (_req, res, next) => {
     if (!fs2.existsSync(indexHtml)) return next();
     res.sendFile(indexHtml);
   });
 }
-var game_previews_default = router10;
+var game_previews_default = router12;
 
 // src/app.ts
-var app = (0, import_express11.default)();
+var app = (0, import_express13.default)();
 app.use(
   (0, import_pino_http.pinoHttp)({
     logger,
@@ -68491,8 +68800,8 @@ app.use(
   })
 );
 app.use((0, import_cors.default)());
-app.use(import_express11.default.json({ limit: "50mb" }));
-app.use(import_express11.default.urlencoded({ extended: true, limit: "50mb" }));
+app.use(import_express13.default.json({ limit: "50mb" }));
+app.use(import_express13.default.urlencoded({ extended: true, limit: "50mb" }));
 app.use(game_previews_default);
 app.use("/api", routes_default);
 var app_default = app;
@@ -68632,8 +68941,8 @@ async function ensureDefaultGames() {
 
 // src/index.ts
 for (const candidate of [
-  path2.resolve(process.cwd(), ".env"),
-  path2.resolve(import.meta.dirname, "../../../.env")
+  path4.resolve(process.cwd(), ".env"),
+  path4.resolve(import.meta.dirname, "../../../.env")
 ]) {
   if (existsSync2(candidate)) {
     try {
