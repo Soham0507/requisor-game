@@ -83,7 +83,7 @@ const DEFAULT_GAMES: InsertGame[] = [
   },
   {
     slug: "boat-booth",
-    name: "Boat Booth",
+    name: "AI Photo Experience",
     tagline:
       "AI photo booth kiosk — snap a webcam selfie and get transported onto the water in a photoreal video.",
     thumbnailUrl: null,
@@ -95,7 +95,7 @@ const DEFAULT_GAMES: InsertGame[] = [
     defaultSecondaryColor: "#0369a1",
     defaultAccentColor: "#0ea5e9",
     defaultLogoUrl: null,
-    defaultHeading: "Boat Booth",
+    defaultHeading: "AI Photo Experience",
     priceCents: 5900,
   },
   {

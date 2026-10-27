@@ -73,7 +73,11 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
     .map(({ game }) => game), [games, vertical, isQuizVertical]);
   const [areaGameSlug, setAreaGameSlug] = useState<string | null>(null);
   const areaGame = (games ?? []).find((g) => g.slug === areaGameSlug) ?? null;
-  const visibleGames = useMemo(() => searchAndFilter(verticalGames, query, filters), [verticalGames, query, filters]);
+  // Coming-soon games always go last, even when a search reorders the results.
+  const visibleGames = useMemo(() => {
+    const found = searchAndFilter(verticalGames, query, filters);
+    return [...found.filter((g) => g.brandSupport === "full"), ...found.filter((g) => g.brandSupport !== "full")];
+  }, [verticalGames, query, filters]);
 
   const updateSearch = (nextQuery: string, nextFilters: Filters) => {
     const next = new URLSearchParams(search);

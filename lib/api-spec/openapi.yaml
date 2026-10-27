@@ -669,6 +669,10 @@ components:
           type: string
           minLength: 1
           maxLength: 200
+        image:
+          type: string
+          maxLength: 700000
+          description: Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.
     SavedGameContent:
       type: object
       required: [gameSlug, gameContent]

@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ChevronDown, FileUp, Loader2, Plus, Trash2, RotateCcw, CheckCircle2, AlertTriangle } from "lucide-react";
+import { ChevronDown, FileUp, ImagePlus, Loader2, Plus, Trash2, RotateCcw, CheckCircle2, AlertTriangle } from "lucide-react";
 import type { GameContent, GameContentQuestion } from "@workspace/api-client-react";
 import { MATCH_RESULTS, sampleContent, validateGameContent } from "@workspace/game-content";
 import { parseQuestionFile, downloadQuestionTemplate } from "@/lib/question-files";
+import { shrinkCardImage } from "@/lib/card-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 const SUPPORTED = ["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"];
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
-const FILE_EXT = /\.(xlsx|csv|json)$/i;
+const FILE_EXT = /\.(xlsx|xls|csv|json)$/i;
 
 interface DQ {
   id: number;
@@ -28,7 +29,7 @@ interface DQ {
 }
 interface Draft {
   questions: DQ[];
-  cards: { title: string; detail: string }[];
+  cards: { title: string; detail: string; image?: string }[];
 }
 type Status = { kind: "idle" | "loading" | "error" | "ok" | "info"; message: string };
 
@@ -55,7 +56,7 @@ function fromContent(c: GameContent | null, slug: string): Draft {
     })),
     cards:
       slug === "a8-recall"
-        ? ((src.cards ?? (sampleContent(slug) as GameContent).cards ?? []) as { title: string; detail: string }[]).map((x) => ({ ...x }))
+        ? ((src.cards ?? (sampleContent(slug) as GameContent).cards ?? []) as { title: string; detail: string; image?: string }[]).map((x) => ({ ...x }))
         : [],
   };
 }
@@ -206,6 +207,20 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
     }
   };
 
+  // Each memory card can carry its own picture, shown on the card face with its name.
+  const setCardImage = async (i: number, file: File | undefined) => {
+    if (!file) return;
+    try {
+      const image = await shrinkCardImage(file);
+      edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { ...x, image } : x)) }));
+      setStatus({ kind: "idle", message: "" });
+    } catch (err) {
+      setStatus({ kind: "error", message: err instanceof Error ? err.message : "Could not use that image." });
+    }
+  };
+  const clearCardImage = (i: number) =>
+    edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { title: x.title, detail: x.detail } : x)) }));
+
   const template = async (format: "csv" | "json" | "xlsx") => {
     try {
       await downloadQuestionTemplate(gameSlug, format);
@@ -246,7 +261,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
         <input
           ref={fileRef}
           type="file"
-          accept=".xlsx,.csv,.json"
+          accept=".xlsx,.xls,.csv,.json"
           className="hidden"
           aria-label="Import question file"
           onChange={onFile}
@@ -258,7 +273,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
         <div className="mt-2 space-y-1">
           <p>Files are read in your browser and are not kept. Applied questions are shown to players, so do not enter private data.</p>
           <p>
-            Use the template headers unchanged. Excel imports the first worksheet.
+            Excel (.xlsx), CSV and JSON all work. Column names are flexible, such as Question, Option A to D, Correct Answer (1-4, A-D or the answer text) and Points. Excel uses the first sheet that has a Question column.
             {!isNumber && (isMatch
               ? " In Excel/CSV, result_1–result_4 use 1 = Aura, 2 = Terra, 3 = Vela, 4 = Nomad. JSON outcomes start at 0."
               : " In Excel/CSV, correct_option starts at 1. JSON answerIndex starts at 0.")}
@@ -305,14 +320,44 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
                 Memory cards (6)
               </summary>
               <div className="space-y-3 border-t border-border p-3">
+                <p className="text-xs text-muted-foreground">
+                  Give each card its own image and name. Images are fitted inside a square on white; without one, the card shows an icon.
+                </p>
                 {draft.cards.map((c, i) => (
-                  <div key={i} className="grid gap-2">
+                  <div key={i} className="flex gap-3 rounded-md border border-border p-2.5">
+                    <div className="flex w-20 shrink-0 flex-col items-center gap-1.5">
+                      <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border border-dashed border-border bg-muted">
+                        {c.image ? (
+                          <img src={c.image} alt={`Card ${i + 1} image`} className="h-full w-full object-cover" data-testid={`img-card-${i}`} />
+                        ) : (
+                          <ImagePlus size={22} className="text-muted-foreground" aria-hidden="true" />
+                        )}
+                      </div>
+                      <label className="cursor-pointer text-xs font-medium text-primary hover:underline focus-within:underline">
+                        {c.image ? "Replace" : "Add image"}
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/webp,image/gif"
+                          className="sr-only"
+                          aria-label={`Card ${i + 1} image`}
+                          data-testid={`input-card-image-${i}`}
+                          onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ""; void setCardImage(i, f); }}
+                        />
+                      </label>
+                      {c.image && (
+                        <button type="button" className="text-xs text-muted-foreground hover:underline" onClick={() => clearCardImage(i)} data-testid={`button-remove-card-image-${i}`}>
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                    <div className="grid min-w-0 flex-1 gap-2">
                     <Input id={`card-title-${i}`} data-testid={`input-card-title-${i}`} maxLength={100} value={c.title}
                       placeholder={`Card ${i + 1} title`} aria-label={`Card ${i + 1} title`}
                       onChange={(e) => edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)) }))} />
                     <Input id={`card-detail-${i}`} data-testid={`input-card-detail-${i}`} maxLength={200} value={c.detail}
                       placeholder={`Card ${i + 1} detail`} aria-label={`Card ${i + 1} detail`}
                       onChange={(e) => edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { ...x, detail: e.target.value } : x)) }))} />
+                    </div>
                   </div>
                 ))}
               </div>

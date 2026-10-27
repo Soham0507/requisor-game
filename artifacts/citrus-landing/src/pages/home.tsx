@@ -763,57 +763,56 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="pricing" id="pricing">
+      <section className="pilot" id="pricing">
         <div className="wrap">
-          <div className="sec-head rv">
-            <h2>Simple pricing. Bigger savings the more you activate.</h2>
-            <p>Buy games one at a time, or subscribe and pay less for every game you deploy.</p>
+          <div className="rv">
+            <span className="pilot-badge"><i aria-hidden="true" />Limited pilot program</span>
+            <h2>
+              Limited pilot pricing,
+              <br />
+              <span className="pilot-grad">starting at $2,500.</span>
+            </h2>
+            <p className="pilot-lead">
+              A limited-time pilot lets you bring Activate to your next event at a fraction of our standard price — fully turnkey,
+              fully supported, and built to prove out the engagement before you scale.
+            </p>
           </div>
-          <div className="pricing-options rv">
-            <article className="pricing-option">
-              <span className="pricing-eyebrow">01 / Flexible</span>
-              <h3>Pay per game</h3>
-              <p className="pricing-amount">$13,000 <span>per game / activation</span></p>
-              <p>Branded, deployed, with lead capture and interaction metrics included.</p>
-              <Link className="btn" href="/games">Try Active8</Link>
-            </article>
-            <article className="pricing-option pricing-option-featured">
-              <span className="pricing-eyebrow">02 / More ways to save</span>
-              <h3>Annual Subscription</h3>
-              <p className="pricing-amount">$7,500 <span>per year, per seat</span></p>
-              <p>Every game drops to $10,000, saving $3,000 per game, plus:</p>
-              <ul>
-                <li>Branded gameplay videos for pitches and proposals</li>
-                <li>Real-time dashboards for every deployed game</li>
-                <li>UX optimization driven by usage data across the whole platform</li>
-                <li>Extended game deployments</li>
-                <li>Multi-deployment discounts</li>
-                <li>Multi-seat discounts</li>
-                <li>Credit for past purchases: $500 per game bought before subscribing, applied across your next two game purchases</li>
-              </ul>
-              <a className="btn" href="mailto:support@requisor.io?subject=Active8%20subscription%20inquiry">Subscribe now</a>
-            </article>
-          </div>
-          <div className="pricing-math rv">
+
+          <div className="pilot-hero rv">
             <div>
-              <span className="pricing-eyebrow">The math</span>
-              <h3>The subscription pays for itself by your third game.</h3>
-              <p>Five games with a subscription saves $7,500, before multi-deployment discounts and past-purchase credits.</p>
+              <span className="pilot-hero-eyebrow">Introducing limited pilot pricing</span>
+              <p className="pilot-amount">Starting at $2,500</p>
+              <p className="pilot-per">Per activation · turnkey hardware and live support included</p>
             </div>
-            <div className="pricing-table-wrap">
-              <table className="pricing-table">
-                <thead>
-                  <tr><th scope="col">Games</th><th scope="col">Without subscription</th><th scope="col">With subscription</th></tr>
-                </thead>
-                <tbody>
-                  <tr><th scope="row">1 game</th><td>$13,000</td><td>$17,500</td></tr>
-                  <tr><th scope="row">3 games</th><td>$39,000</td><td>$37,500</td></tr>
-                  <tr><th scope="row">5 games</th><td>$65,000</td><td className="pricing-best">$57,500</td></tr>
-                </tbody>
-              </table>
-            </div>
+            <a className="pilot-cta" href="mailto:support@requisor.io?subject=Activate%20pilot%20program">Activate now →</a>
           </div>
-          <p className="pricing-note rv">The $7,500 subscription cost is included in the “with subscription” totals. A $500 credit is applied for each game purchased before subscribing, across your next two game purchases.</p>
+
+          <h3 className="pilot-subhead rv">What the pilot includes</h3>
+          <div className="pilot-grid rv">
+            {[
+              ["blue", "Elevate your brand", "Engaging interactives that put your brand front and center at every event."],
+              ["purple", "Cost effective & scalable", "Pilot pricing makes it easy to start small and scale up once you see the results."],
+              ["pink", "Real-time branding", "Your branding applied live across multiple elements throughout the interactive."],
+              ["orange", "Leaderboard-driven engagement", "Competitive leaderboards keep attendees playing and pull a crowd to your booth."],
+              ["blue", "Integrated lead capture", "Built-in registration and data analytics turn every play into a usable lead."],
+              ["purple", "Risk-free, fully supported", "Live remote tech support throughout your event, so you’re never on your own."],
+              ["pink", "Turnkey hardware available", "Bundled iPads or larger touchscreens are available."],
+              ["orange", "Room to go bigger", "More customized elements and LED wall integrations available as you scale."],
+            ].map(([tone, title, text]) => (
+              <article className="pilot-card" key={title}>
+                <i className={`pilot-dot ${tone}`} aria-hidden="true" />
+                <div>
+                  <h4>{title}</h4>
+                  <p>{text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="pilot-banner rv">
+            <strong>Pilot pricing is limited — reserve your activation.</strong>
+            <a href="https://activate.requisor.io" target="_blank" rel="noopener noreferrer">activate.requisor.io →</a>
+          </div>
         </div>
       </section>
 

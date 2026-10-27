@@ -36,6 +36,8 @@ router.get("/generations", async (req, res): Promise<void> => {
   res.json(ListGenerationsResponse.parse(rows.map(toApiGeneration)));
 });
 
+const PHOTO_STALE_MS = 4 * 60 * 1000;
+
 router.post("/generations", async (req, res): Promise<void> => {
   const parsed = CreateGenerationBody.safeParse(req.body);
   if (!parsed.success) {
@@ -60,30 +62,35 @@ router.post("/generations", async (req, res): Promise<void> => {
     })
     .returning();
 
-  try {
-    const image = await editImage(normalizeDataUri(parsed.data.photoBase64), scene.imagePrompt);
+  // Answer right away and make the photo in the background. The booth polls
+  // the generation, so a slow image service never holds a request open long
+  // enough for the host or browser to cut it off.
+  const photo = normalizeDataUri(parsed.data.photoBase64);
+  const log = req.log;
+  void (async () => {
+    try {
+      const image = await editImage(photo, scene.imagePrompt);
+      await db
+        .update(generationsTable)
+        .set({
+          photoStatus: "ready",
+          photoData: image.data.toString("base64"),
+          photoMime: image.mime,
+          error: null,
+        })
+        .where(eq(generationsTable.id, row.id));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Generation failed";
+      log.error({ err: message, id: row.id }, "Photo generation failed");
+      await db
+        .update(generationsTable)
+        .set({ photoStatus: "failed", error: message })
+        .where(eq(generationsTable.id, row.id))
+        .catch(() => undefined);
+    }
+  })();
 
-    const [updated] = await db
-      .update(generationsTable)
-      .set({
-        photoStatus: "ready",
-        photoData: image.data.toString("base64"),
-        photoMime: image.mime,
-        error: null,
-      })
-      .where(eq(generationsTable.id, row.id))
-      .returning();
-
-    res.status(201).json(GetGenerationResponse.parse(toApiGeneration(updated)));
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Generation failed";
-    req.log.error({ err: message, id: row.id }, "Photo generation failed");
-    await db
-      .update(generationsTable)
-      .set({ photoStatus: "failed", error: message })
-      .where(eq(generationsTable.id, row.id));
-    res.status(502).json({ error: message });
-  }
+  res.status(201).json(GetGenerationResponse.parse(toApiGeneration(row)));
 });
 
 router.get("/generations/:id", async (req, res): Promise<void> => {
@@ -100,6 +107,18 @@ router.get("/generations/:id", async (req, res): Promise<void> => {
 
   if (!row) {
     res.status(404).json({ error: "Generation not found" });
+    return;
+  }
+
+  // A photo still "pending" long after it started will never finish (the
+  // server restarted mid-way, for example): fail it so the booth can retry.
+  if (row.photoStatus === "pending" && Date.now() - new Date(row.createdAt).getTime() > PHOTO_STALE_MS) {
+    const [stale] = await db
+      .update(generationsTable)
+      .set({ photoStatus: "failed", error: "Photo generation timed out" })
+      .where(eq(generationsTable.id, row.id))
+      .returning();
+    res.json(GetGenerationResponse.parse(toApiGeneration(stale ?? row)));
     return;
   }
 

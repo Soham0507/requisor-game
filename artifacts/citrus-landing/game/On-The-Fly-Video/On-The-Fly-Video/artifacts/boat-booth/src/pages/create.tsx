@@ -47,7 +47,8 @@ export default function Create() {
         if (!query.state.data) return 3000;
         const s = query.state.data.photoStatus;
         const vs = query.state.data.videoStatus;
-        if (s === "pending" || vs === "pending") return 3000;
+        if (s === "pending") return 1500;
+        if (vs === "pending") return 3000;
         return false;
       },
     },
@@ -77,6 +78,17 @@ export default function Create() {
       setPhotoError("We couldn't create your photo right now. Please try again in a moment.");
     }
   };
+
+  // Never leave a visitor on the spinner: if the photo has not come back after
+  // a few minutes, say so and offer to try again.
+  useEffect(() => {
+    if (step !== "processing" || photoError) return;
+    const timer = window.setTimeout(
+      () => setPhotoError("This is taking longer than expected. Please try again."),
+      180_000,
+    );
+    return () => window.clearTimeout(timer);
+  }, [step, photoError, generationId]);
 
   useEffect(() => {
     if (step === "processing" && generation?.photoStatus === "ready") {
@@ -208,7 +220,7 @@ export default function Create() {
           <div className="flex flex-col items-center justify-center text-center animate-in fade-in duration-500 space-y-6 max-w-md" data-testid="photo-error">
             <h2 className="text-4xl font-black text-foreground">Something went wrong</h2>
             <p className="text-xl text-muted-foreground">
-              {photoError || "We couldn't create your photo right now. Please try again in a moment."}
+              {photoError || generation?.error || "We couldn't create your photo right now. Please try again in a moment."}
             </p>
             <Button
               size="lg"

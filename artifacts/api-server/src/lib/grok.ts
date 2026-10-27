@@ -23,10 +23,25 @@ export interface GeneratedImage {
   mime: string;
 }
 
+/**
+ * fetch with a time limit, so a stalled provider call fails with a clear
+ * message instead of leaving the visitor on a spinner forever.
+ */
+async function timedFetch(input: string, init: RequestInit | undefined, ms: number): Promise<Response> {
+  try {
+    return await fetch(input, { ...init, signal: AbortSignal.timeout(ms) });
+  } catch (err) {
+    if (err instanceof Error && (err.name === "TimeoutError" || err.name === "AbortError")) {
+      throw new Error("The image service took too long to respond. Please try again.");
+    }
+    throw err;
+  }
+}
+
 async function fetchUrlAsBuffer(
   url: string,
 ): Promise<{ data: Buffer; mime: string }> {
-  const res = await fetch(url);
+  const res = await timedFetch(url, undefined, 60_000);
   if (!res.ok) {
     throw new Error(`Failed to download asset (${res.status})`);
   }
@@ -59,7 +74,7 @@ export async function editImage(
   photoDataUri: string,
   prompt: string,
 ): Promise<GeneratedImage> {
-  const res = await fetch(`${XAI_BASE_URL}/images/edits`, {
+  const res = await timedFetch(`${XAI_BASE_URL}/images/edits`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey()}`,
@@ -72,24 +87,30 @@ export async function editImage(
       n: 1,
       response_format: "b64_json",
     }),
-  });
+  }, 120_000);
 
   const text = await res.text();
   if (!res.ok) {
     logger.error({ status: res.status, body: text.slice(0, 500) }, "Grok image edit failed");
-    throw new Error(`Image generation provider error (${res.status})`);
+    // The visitor sees this message, so it says what to do, not what broke.
+    if (/content-moderated/i.test(text)) {
+      throw new Error("We couldn't create a photo from that picture. Please retake it with your face clearly visible and try again.");
+    }
+    throw new Error("We couldn't create your photo right now. Please try again in a moment.");
   }
 
   let json: { data?: Array<{ b64_json?: string; url?: string }> };
   try {
     json = JSON.parse(text);
   } catch {
-    throw new Error("Invalid response from image provider");
+    logger.error("Grok image edit returned an unreadable response");
+    throw new Error("We couldn't create your photo right now. Please try again in a moment.");
   }
 
   const first = json.data?.[0];
   if (!first) {
-    throw new Error("Image provider returned no image");
+    logger.error("Grok image edit returned no image");
+    throw new Error("We couldn't create a photo from that picture. Please retake it and try again.");
   }
   return decodeImagePayload(first);
 }
@@ -106,7 +127,7 @@ export async function startVideoJob(
   image: string,
   prompt: string,
 ): Promise<string> {
-  const res = await fetch(`${XAI_BASE_URL}/videos/generations`, {
+  const res = await timedFetch(`${XAI_BASE_URL}/videos/generations`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey()}`,
@@ -120,7 +141,7 @@ export async function startVideoJob(
       aspect_ratio: "16:9",
       resolution: "720p",
     }),
-  });
+  }, 60_000);
 
   const text = await res.text();
   if (!res.ok) {
@@ -151,11 +172,11 @@ export type VideoJobStatus =
  * Polls a video job once. When done, downloads the video bytes.
  */
 export async function pollVideoJob(requestId: string): Promise<VideoJobStatus> {
-  const res = await fetch(`${XAI_BASE_URL}/videos/${requestId}`, {
+  const res = await timedFetch(`${XAI_BASE_URL}/videos/${requestId}`, {
     headers: {
       Authorization: `Bearer ${apiKey()}`,
     },
-  });
+  }, 30_000);
 
   const text = await res.text();
   if (!res.ok) {

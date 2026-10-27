@@ -110,7 +110,7 @@
       "goals": ["engagement", "photo-keepsake"], "settings": ["trade-show", "retail", "conference"],
       "formats": ["desktop", "kiosk", "large-screen"], "inputs": ["webcam-photo"], "players": ["solo"],
       "session": "self-paced", "energy": "calm", "hardware": ["webcam"],
-      "synonyms": ["photo booth", "ai photo booth", "selfie", "video keepsake", "boat video", "camera"],
+      "synonyms": ["ai photo experience", "photo booth", "ai photo booth", "selfie", "video keepsake", "boat video", "camera"],
       "industries": [], "search_phrases": ["snap a webcam selfie and get transported onto the water", "photo or video keepsake for an event"]
     },
     "golf-challenge": {

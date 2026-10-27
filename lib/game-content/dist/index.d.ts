@@ -42,4 +42,5 @@ export function adaptFiveGameContent(content: any, products: any): {
 };
 export const QUESTION_GAME_SLUGS: string[];
 export const MATCH_RESULTS: string[];
+export const CARD_IMAGE_MAX_CHARS: 700000;
 //# sourceMappingURL=index.d.ts.map

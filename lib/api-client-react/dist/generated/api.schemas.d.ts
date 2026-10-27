@@ -114,6 +114,11 @@ export interface MemoryCard {
        * @maxLength 200
        */
     detail: string;
+    /**
+       * Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.
+       * @maxLength 700000
+       */
+    image?: string;
 }
 export interface GameContent {
     gameSlug: GameContentGameSlug;

@@ -248,6 +248,8 @@ export const upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
 
 export const upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
 
+export const upsertBrandingDraftBodyGameContentOneCardsItemImageMax = 700000;
+
 export const upsertBrandingDraftBodyGameContentOneCardsMin = 6;
 export const upsertBrandingDraftBodyGameContentOneCardsMax = 6;
 
@@ -294,7 +296,8 @@ export const UpsertBrandingDraftBody = zod.object({
 })).min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax)
+  "detail": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax),
+  "image": zod.string().max(upsertBrandingDraftBodyGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(upsertBrandingDraftBodyGameContentOneCardsMin).max(upsertBrandingDraftBodyGameContentOneCardsMax).optional()
 }),zod.null()]).optional(),
   "heading": zod.string(),
@@ -330,6 +333,8 @@ export const upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
 export const upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 
 export const upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+
+export const upsertBrandingDraftResponseGameContentOneCardsItemImageMax = 700000;
 
 export const upsertBrandingDraftResponseGameContentOneCardsMin = 6;
 export const upsertBrandingDraftResponseGameContentOneCardsMax = 6;
@@ -378,7 +383,8 @@ export const UpsertBrandingDraftResponse = zod.object({
 })).min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax)
+  "detail": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax),
+  "image": zod.string().max(upsertBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(upsertBrandingDraftResponseGameContentOneCardsMin).max(upsertBrandingDraftResponseGameContentOneCardsMax).optional()
 }),zod.null()]).optional(),
   "heading": zod.string(),
@@ -423,6 +429,8 @@ export const getBrandingDraftResponseGameContentOneQuestionsMax = 50;
 export const getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 
 export const getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+
+export const getBrandingDraftResponseGameContentOneCardsItemImageMax = 700000;
 
 export const getBrandingDraftResponseGameContentOneCardsMin = 6;
 export const getBrandingDraftResponseGameContentOneCardsMax = 6;
@@ -471,7 +479,8 @@ export const GetBrandingDraftResponse = zod.object({
 })).min(1).max(getBrandingDraftResponseGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax)
+  "detail": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax),
+  "image": zod.string().max(getBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(getBrandingDraftResponseGameContentOneCardsMin).max(getBrandingDraftResponseGameContentOneCardsMax).optional()
 }),zod.null()]).optional(),
   "heading": zod.string(),
@@ -514,6 +523,8 @@ export const getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 10
 
 export const getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
 
+export const getBrandingDraftContentResponseGameContentOneCardsItemImageMax = 700000;
+
 export const getBrandingDraftContentResponseGameContentOneCardsMin = 6;
 export const getBrandingDraftContentResponseGameContentOneCardsMax = 6;
 
@@ -539,7 +550,8 @@ export const GetBrandingDraftContentResponse = zod.object({
 })).min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax)
+  "detail": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax),
+  "image": zod.string().max(getBrandingDraftContentResponseGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(getBrandingDraftContentResponseGameContentOneCardsMin).max(getBrandingDraftContentResponseGameContentOneCardsMax).optional()
 }),zod.null()])
 })

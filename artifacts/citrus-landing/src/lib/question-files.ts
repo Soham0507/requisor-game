@@ -42,23 +42,59 @@ export function parseQuestionCsv(text: string): string[][] {
   return rows;
 }
 
+// People name spreadsheet columns their own way ("Correct Answer", "Option A",
+// "Value"), so headers are matched loosely: case, spaces and common synonyms.
+const HEADER_ALIASES: Record<string, string> = {
+  questions: "question", prompt: "question", clue: "question", text: "question",
+  option_a: "option_1", option_b: "option_2", option_c: "option_3", option_d: "option_4",
+  choice_1: "option_1", choice_2: "option_2", choice_3: "option_3", choice_4: "option_4",
+  choice_a: "option_1", choice_b: "option_2", choice_c: "option_3", choice_d: "option_4",
+  answer_1: "option_1", answer_2: "option_2", answer_3: "option_3", answer_4: "option_4",
+  answer_a: "option_1", answer_b: "option_2", answer_c: "option_3", answer_d: "option_4",
+  a: "option_1", b: "option_2", c: "option_3", d: "option_4",
+  correct: "correct_option", correct_answer: "correct_option", correct_choice: "correct_option", right_answer: "correct_option",
+  topic: "category", value: "points", score: "points", tile_value: "points", point_value: "points",
+  fact: "explanation", notes: "explanation",
+};
+
+function normalizeHeader(value: unknown, gameSlug: string): string {
+  let header = String(value ?? "").replace(/^﻿/, "").trim().toLowerCase().replace(/[\s.\-]+/g, "_");
+  // In a quiz sheet a bare "Answer" column names the right choice; only The Number uses it as a numeric answer.
+  if (header === "answer" && gameSlug !== "a8-the-number") header = "correct_option";
+  return HEADER_ALIASES[header] ?? header;
+}
+
 function contentFromRows(rows: unknown[][], gameSlug: string): unknown {
   const filled = rows.filter((row) => row.some((value) => value !== null && value !== undefined && String(value).trim()));
   if (filled.length < 2 || filled.length > 100) throw new Error("The sheet must contain a header and 1–50 question rows.");
-  const headers = filled[0].map((value) => String(value ?? "").replace(/^\uFEFF/, "").trim().toLowerCase());
-  if (new Set(headers).size !== headers.length || headers.some((value) => !HEADERS.includes(value))) throw new Error("Unknown or duplicate columns. Use the template headers without renaming them.");
-  if (!headers.includes("question")) throw new Error('The file needs a "question" column.');
+  const headers = filled[0].map((value) => normalizeHeader(value, gameSlug));
+  // Columns this game does not use (an ID column, notes) are ignored; a column it does use must appear only once.
+  const used = headers.filter((value) => HEADERS.includes(value));
+  if (new Set(used).size !== used.length) throw new Error("A column appears twice. Each column (question, options, correct answer…) should appear once.");
+  if (!headers.includes("question")) throw new Error('The sheet needs a "Question" column in its first row.');
   const questions: Record<string, unknown>[] = [], cards: { title: string; detail: string }[] = [];
   for (const [index, row] of filled.slice(1).entries()) {
     if (row.slice(headers.length).some((value) => value !== null && value !== undefined && String(value).trim())) throw new Error(`Row ${index + 2} contains more cells than the header.`);
-    const data = Object.fromEntries(headers.map((key, i) => {
+    const data = Object.fromEntries(headers.flatMap((key, i) => {
+      if (!HEADERS.includes(key)) return [];
       const value = row[i];
       if (value !== null && value !== undefined && typeof value !== "string" && typeof value !== "number") throw new Error(`Row ${index + 2}: use plain text or numbers, not dates or objects.`);
-      return [key, String(value ?? "").trim()];
+      return [[key, String(value ?? "").trim()]];
     }));
     const number = (key: string) => {
-      if (!data[key] || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(data[key])) throw new Error(`Row ${index + 2}: ${key} must be a number.`);
-      return Number(data[key]);
+      // Spreadsheet-style numbers: "$200" and "1,000" are fine.
+      const cleaned = (data[key] ?? "").replace(/[$,\s]/g, "");
+      if (!cleaned || !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(cleaned)) throw new Error(`Row ${index + 2}: ${key} must be a number.`);
+      return Number(cleaned);
+    };
+    // The right choice can be its number (1–4), its letter (A–D) or the choice's own text.
+    const correctChoice = (options: string[]) => {
+      const value = (data.correct_option ?? "").trim();
+      if (/^\d+$/.test(value)) return Number(value) - 1;
+      if (/^[a-d]$/i.test(value)) return value.toLowerCase().charCodeAt(0) - 97;
+      const byText = options.findIndex((option) => option.trim().toLowerCase() === value.toLowerCase());
+      if (byText >= 0) return byText;
+      throw new Error(`Row ${index + 2}: the correct answer must be 1–4, A–D, or match one of the options.`);
     };
     const kind = data.kind?.toLowerCase() || "question";
     if (kind === "card") {
@@ -76,7 +112,7 @@ function contentFromRows(rows: unknown[][], gameSlug: string): unknown {
       while (options.length && !options.at(-1)) options.pop();
       question.options = options;
       if (gameSlug === "a8-match") question.outcomes = options.map((_, i) => number(`result_${i + 1}`) - 1);
-      else question.answerIndex = number("correct_option") - 1;
+      else question.answerIndex = correctChoice(options);
       if (gameSlug === "jeopardy") { question.category = data.category || ""; question.points = number("points"); }
     }
     questions.push(question);
@@ -116,16 +152,33 @@ export async function parseQuestionFile(file: File, gameSlug: string): Promise<G
     const buffer = await file.arrayBuffer();
     checkWorkbookSize(buffer);
     try {
-      const { readSheet } = await import("read-excel-file/browser");
-      content = contentFromRows(await readSheet(new Blob([buffer]), 1), gameSlug);
+      // Use the first sheet that has the questions, so a leading "Instructions" sheet does not matter.
+      const { default: readWorkbook } = await import("read-excel-file/browser");
+      const sheets = await readWorkbook(new Blob([buffer]));
+      let firstError: unknown;
+      for (const { data } of sheets.slice(0, 10)) {
+        try { content = contentFromRows(data, gameSlug); firstError = undefined; break; }
+        catch (error) { firstError ??= error; }
+      }
+      if (content === undefined) throw firstError ?? new Error("The workbook has no sheets.");
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : "The Excel workbook could not be read.");
     }
-  } else throw new Error("Supported formats are .xlsx, .csv, and .json. Use the first worksheet for Excel.");
+  } else if (extension === "xls") throw new Error("Older Excel (.xls) files are not supported. In Excel choose File > Save As > Excel Workbook (.xlsx), then upload that.");
+  else throw new Error("Supported formats are .xlsx, .csv, and .json.");
   const result = validateGameContent(content, gameSlug);
   if (!result.ok) throw new Error(result.error);
   return result.content as GameContent;
 }
+
+// Column order shown in a game's template. Each game only gets the columns it
+// actually uses (Jeopardy: category and points; The Number: answer, min, max...),
+// so a sample file reads like that game's own question form.
+const TEMPLATE_ORDER = [
+  "kind", "category", "points", "question", "option_1", "option_2", "option_3", "option_4", "correct_option",
+  "answer", "min", "max", "step", "unit", "result_1", "result_2", "result_3", "result_4",
+  "explanation", "card_title", "card_detail",
+];
 
 function templateRows(gameSlug: string): string[][] {
   const content = sampleContent(gameSlug) as GameContent;
@@ -140,7 +193,10 @@ function templateRows(gameSlug: string): string[][] {
   content.cards?.forEach((card: { title: string; detail: string }) => {
     rows.push(HEADERS.map((header) => header === "kind" ? "card" : header === "card_title" ? card.title : header === "card_detail" ? card.detail : ""));
   });
-  return [HEADERS, ...rows];
+  const used = TEMPLATE_ORDER.filter((header) =>
+    header === "kind" ? Boolean(content.cards?.length) : header === "question" || header === "explanation" || rows.some((row) => row[HEADERS.indexOf(header)]));
+  const pick = (row: string[]) => used.map((header) => row[HEADERS.indexOf(header)]);
+  return [used, ...rows.map(pick)];
 }
 
 export async function downloadQuestionTemplate(gameSlug: string, format: "csv" | "json" | "xlsx") {

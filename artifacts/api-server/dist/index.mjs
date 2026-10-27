@@ -28636,7 +28636,7 @@ var require_logger = __commonJS({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/entity.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/entity.js
 function is(value, type) {
   if (!value || typeof value !== "object") {
     return false;
@@ -28662,15 +28662,15 @@ function is(value, type) {
 }
 var entityKind;
 var init_entity = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/entity.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/entity.js"() {
     entityKind = /* @__PURE__ */ Symbol.for("drizzle:entityKind");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column.js
 var Column;
 var init_column = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column.js"() {
     init_entity();
     Column = class {
       constructor(table, config2) {
@@ -28724,10 +28724,10 @@ var init_column = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column-builder.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column-builder.js
 var ColumnBuilder;
 var init_column_builder = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/column-builder.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/column-builder.js"() {
     init_entity();
     ColumnBuilder = class {
       static [entityKind] = "ColumnBuilder";
@@ -28833,18 +28833,18 @@ var init_column_builder = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.utils.js
 var TableName;
 var init_table_utils = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.utils.js"() {
     TableName = /* @__PURE__ */ Symbol.for("drizzle:Name");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/foreign-keys.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/foreign-keys.js
 var ForeignKeyBuilder, ForeignKey;
 var init_foreign_keys = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/foreign-keys.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/foreign-keys.js"() {
     init_entity();
     init_table_utils();
     ForeignKeyBuilder = class {
@@ -28905,22 +28905,22 @@ var init_foreign_keys = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing-utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing-utils.js
 function iife(fn2, ...args2) {
   return fn2(...args2);
 }
 var init_tracing_utils = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing-utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing-utils.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/unique-constraint.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/unique-constraint.js
 function uniqueKeyName(table, columns) {
   return `${table[TableName]}_${columns.join("_")}_unique`;
 }
 var UniqueConstraintBuilder, UniqueOnConstraintBuilder, UniqueConstraint;
 var init_unique_constraint = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/unique-constraint.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/unique-constraint.js"() {
     init_entity();
     init_table_utils();
     UniqueConstraintBuilder = class {
@@ -28971,7 +28971,7 @@ var init_unique_constraint = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/array.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/array.js
 function parsePgArrayValue(arrayString, startFrom, inQuotes) {
   for (let i3 = startFrom; i3 < arrayString.length; i3++) {
     const char2 = arrayString[i3];
@@ -29047,14 +29047,14 @@ function makePgArray(array2) {
   }).join(",")}}`;
 }
 var init_array = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/array.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/array.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/common.js
 var PgColumnBuilder, PgColumn, ExtraConfigColumn, IndexedColumn, PgArrayBuilder, PgArray;
 var init_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/common.js"() {
     init_column_builder();
     init_column();
     init_entity();
@@ -29247,7 +29247,7 @@ var init_common = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/enum.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/enum.js
 function isPgEnum(obj) {
   return !!obj && typeof obj === "function" && isPgEnumSym in obj && obj[isPgEnumSym] === true;
 }
@@ -29280,7 +29280,7 @@ function pgEnumObjectWithSchema(enumName, values, schema) {
 }
 var PgEnumObjectColumnBuilder, PgEnumObjectColumn, isPgEnumSym, PgEnumColumnBuilder, PgEnumColumn;
 var init_enum = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/enum.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/enum.js"() {
     init_entity();
     init_common();
     PgEnumObjectColumnBuilder = class extends PgColumnBuilder {
@@ -29339,10 +29339,10 @@ var init_enum = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/subquery.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/subquery.js
 var Subquery, WithSubquery;
 var init_subquery = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/subquery.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/subquery.js"() {
     init_entity();
     Subquery = class {
       static [entityKind] = "Subquery";
@@ -29366,18 +29366,18 @@ var init_subquery = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/version.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/version.js
 var version;
 var init_version = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/version.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/version.js"() {
     version = "0.45.3";
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing.js
 var otel, rawTracer, tracer;
 var init_tracing = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/tracing.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/tracing.js"() {
     init_tracing_utils();
     init_version();
     tracer = {
@@ -29414,15 +29414,15 @@ var init_tracing = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/view-common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/view-common.js
 var ViewBaseConfig;
 var init_view_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/view-common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/view-common.js"() {
     ViewBaseConfig = /* @__PURE__ */ Symbol.for("drizzle:ViewBaseConfig");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.js
 function isTable(table) {
   return typeof table === "object" && table !== null && IsDrizzleTable in table;
 }
@@ -29434,7 +29434,7 @@ function getTableUniqueName(table) {
 }
 var Schema, Columns, ExtraConfigColumns, OriginalName, BaseName, IsAlias, ExtraConfigBuilder, IsDrizzleTable, Table;
 var init_table = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/table.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/table.js"() {
     init_entity();
     init_table_utils();
     Schema = /* @__PURE__ */ Symbol.for("drizzle:Schema");
@@ -29494,7 +29494,7 @@ var init_table = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/sql.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/sql.js
 function isSQLWrapper(value) {
   return value !== null && value !== void 0 && typeof value.getSQL === "function";
 }
@@ -29547,7 +29547,7 @@ function isView(view) {
 }
 var FakePrimitiveParam, StringChunk, SQL, Name, noopDecoder, noopEncoder, noopMapper, Param, Placeholder, IsDrizzleView, View;
 var init_sql = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/sql.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/sql.js"() {
     init_entity();
     init_enum();
     init_subquery();
@@ -29903,7 +29903,7 @@ var init_sql = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/alias.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/alias.js
 function aliasedTable(table, tableAlias) {
   return new Proxy(table, new TableAliasProxyHandler(tableAlias, false));
 }
@@ -29932,7 +29932,7 @@ function mapColumnsInSQLToAlias(query, alias) {
 }
 var ColumnAliasProxyHandler, TableAliasProxyHandler, RelationTableAliasProxyHandler;
 var init_alias = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/alias.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/alias.js"() {
     init_column();
     init_entity();
     init_sql();
@@ -30009,10 +30009,10 @@ var init_alias = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/errors.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/errors.js
 var DrizzleError, DrizzleQueryError, TransactionRollbackError;
 var init_errors = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/errors.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/errors.js"() {
     init_entity();
     DrizzleError = class extends Error {
       static [entityKind] = "DrizzleError";
@@ -30042,10 +30042,10 @@ params: ${params}`);
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/logger.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/logger.js
 var ConsoleLogWriter, DefaultLogger, NoopLogger;
 var init_logger = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/logger.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/logger.js"() {
     init_entity();
     ConsoleLogWriter = class {
       static [entityKind] = "ConsoleLogWriter";
@@ -30079,10 +30079,10 @@ var init_logger = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-promise.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-promise.js
 var QueryPromise;
 var init_query_promise = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-promise.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-promise.js"() {
     init_entity();
     QueryPromise = class {
       static [entityKind] = "QueryPromise";
@@ -30109,7 +30109,7 @@ var init_query_promise = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/utils.js
 function mapResultRow(columns, row, joinsNotNullableMap) {
   const nullifyMap = {};
   const result = columns.reduce(
@@ -30263,7 +30263,7 @@ function isConfig(data) {
 }
 var textDecoder;
 var init_utils = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/utils.js"() {
     init_column();
     init_entity();
     init_sql();
@@ -30274,10 +30274,10 @@ var init_utils = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/int.common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/int.common.js
 var PgIntColumnBaseBuilder;
 var init_int_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/int.common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/int.common.js"() {
     init_entity();
     init_common();
     PgIntColumnBaseBuilder = class extends PgColumnBuilder {
@@ -30320,7 +30320,7 @@ var init_int_common = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigint.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigint.js
 function bigint(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2.mode === "number") {
@@ -30330,7 +30330,7 @@ function bigint(a3, b4) {
 }
 var PgBigInt53Builder, PgBigInt53, PgBigInt64Builder, PgBigInt64;
 var init_bigint = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigint.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigint.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30383,7 +30383,7 @@ var init_bigint = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigserial.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigserial.js
 function bigserial(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2.mode === "number") {
@@ -30393,7 +30393,7 @@ function bigserial(a3, b4) {
 }
 var PgBigSerial53Builder, PgBigSerial53, PgBigSerial64Builder, PgBigSerial64;
 var init_bigserial = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/bigserial.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/bigserial.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30451,13 +30451,13 @@ var init_bigserial = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/boolean.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/boolean.js
 function boolean(name2) {
   return new PgBooleanBuilder(name2 ?? "");
 }
 var PgBooleanBuilder, PgBoolean;
 var init_boolean = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/boolean.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/boolean.js"() {
     init_entity();
     init_common();
     PgBooleanBuilder = class extends PgColumnBuilder {
@@ -30479,14 +30479,14 @@ var init_boolean = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/char.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/char.js
 function char(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgCharBuilder(name2, config2);
 }
 var PgCharBuilder, PgChar;
 var init_char = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/char.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/char.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30516,13 +30516,13 @@ var init_char = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/cidr.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/cidr.js
 function cidr(name2) {
   return new PgCidrBuilder(name2 ?? "");
 }
 var PgCidrBuilder, PgCidr;
 var init_cidr = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/cidr.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/cidr.js"() {
     init_entity();
     init_common();
     PgCidrBuilder = class extends PgColumnBuilder {
@@ -30544,7 +30544,7 @@ var init_cidr = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/custom.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/custom.js
 function customType(customTypeParams) {
   return (a3, b4) => {
     const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
@@ -30553,7 +30553,7 @@ function customType(customTypeParams) {
 }
 var PgCustomColumnBuilder, PgCustomColumn;
 var init_custom = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/custom.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/custom.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30596,10 +30596,10 @@ var init_custom = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.common.js
 var PgDateColumnBaseBuilder;
 var init_date_common = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.common.js"() {
     init_entity();
     init_sql();
     init_common();
@@ -30612,7 +30612,7 @@ var init_date_common = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.js
 function date(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2?.mode === "date") {
@@ -30622,7 +30622,7 @@ function date(a3, b4) {
 }
 var PgDateBuilder, PgDate, PgDateStringBuilder, PgDateString;
 var init_date = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/date.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/date.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30676,13 +30676,13 @@ var init_date = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/double-precision.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/double-precision.js
 function doublePrecision(name2) {
   return new PgDoublePrecisionBuilder(name2 ?? "");
 }
 var PgDoublePrecisionBuilder, PgDoublePrecision;
 var init_double_precision = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/double-precision.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/double-precision.js"() {
     init_entity();
     init_common();
     PgDoublePrecisionBuilder = class extends PgColumnBuilder {
@@ -30713,13 +30713,13 @@ var init_double_precision = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/inet.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/inet.js
 function inet(name2) {
   return new PgInetBuilder(name2 ?? "");
 }
 var PgInetBuilder, PgInet;
 var init_inet = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/inet.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/inet.js"() {
     init_entity();
     init_common();
     PgInetBuilder = class extends PgColumnBuilder {
@@ -30741,13 +30741,13 @@ var init_inet = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/integer.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/integer.js
 function integer(name2) {
   return new PgIntegerBuilder(name2 ?? "");
 }
 var PgIntegerBuilder, PgInteger;
 var init_integer = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/integer.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/integer.js"() {
     init_entity();
     init_common();
     init_int_common();
@@ -30776,14 +30776,14 @@ var init_integer = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/interval.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/interval.js
 function interval(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgIntervalBuilder(name2, config2);
 }
 var PgIntervalBuilder, PgInterval;
 var init_interval = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/interval.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/interval.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30811,13 +30811,13 @@ var init_interval = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/json.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/json.js
 function json(name2) {
   return new PgJsonBuilder(name2 ?? "");
 }
 var PgJsonBuilder, PgJson;
 var init_json = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/json.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/json.js"() {
     init_entity();
     init_common();
     PgJsonBuilder = class extends PgColumnBuilder {
@@ -30855,13 +30855,13 @@ var init_json = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/jsonb.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/jsonb.js
 function jsonb(name2) {
   return new PgJsonbBuilder(name2 ?? "");
 }
 var PgJsonbBuilder, PgJsonb;
 var init_jsonb = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/jsonb.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/jsonb.js"() {
     init_entity();
     init_common();
     PgJsonbBuilder = class extends PgColumnBuilder {
@@ -30899,7 +30899,7 @@ var init_jsonb = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/line.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/line.js
 function line(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (!config2?.mode || config2.mode === "tuple") {
@@ -30909,7 +30909,7 @@ function line(a3, b4) {
 }
 var PgLineBuilder, PgLineTuple, PgLineABCBuilder, PgLineABC;
 var init_line = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/line.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/line.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -30968,13 +30968,13 @@ var init_line = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr.js
 function macaddr(name2) {
   return new PgMacaddrBuilder(name2 ?? "");
 }
 var PgMacaddrBuilder, PgMacaddr;
 var init_macaddr = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr.js"() {
     init_entity();
     init_common();
     PgMacaddrBuilder = class extends PgColumnBuilder {
@@ -30996,13 +30996,13 @@ var init_macaddr = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js
 function macaddr8(name2) {
   return new PgMacaddr8Builder(name2 ?? "");
 }
 var PgMacaddr8Builder, PgMacaddr8;
 var init_macaddr8 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/macaddr8.js"() {
     init_entity();
     init_common();
     PgMacaddr8Builder = class extends PgColumnBuilder {
@@ -31024,7 +31024,7 @@ var init_macaddr8 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/numeric.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/numeric.js
 function numeric(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   const mode = config2?.mode;
@@ -31032,7 +31032,7 @@ function numeric(a3, b4) {
 }
 var PgNumericBuilder, PgNumeric, PgNumericNumberBuilder, PgNumericNumber, PgNumericBigIntBuilder, PgNumericBigInt;
 var init_numeric = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/numeric.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/numeric.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31149,7 +31149,7 @@ var init_numeric = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/point.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/point.js
 function point(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (!config2?.mode || config2.mode === "tuple") {
@@ -31159,7 +31159,7 @@ function point(a3, b4) {
 }
 var PgPointTupleBuilder, PgPointTuple, PgPointObjectBuilder, PgPointObject;
 var init_point = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/point.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/point.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31224,7 +31224,7 @@ var init_point = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js
 function hexToBytes(hex) {
   const bytes = [];
   for (let c4 = 0; c4 < hex.length; c4 += 2) {
@@ -31263,11 +31263,11 @@ function parseEWKB(hex) {
   throw new Error("Unsupported geometry type");
 }
 var init_utils2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/utils.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js
 function geometry(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (!config2?.mode || config2.mode === "tuple") {
@@ -31277,7 +31277,7 @@ function geometry(a3, b4) {
 }
 var PgGeometryBuilder, PgGeometry, PgGeometryObjectBuilder, PgGeometryObject;
 var init_geometry = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/postgis_extension/geometry.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31336,13 +31336,13 @@ var init_geometry = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/real.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/real.js
 function real(name2) {
   return new PgRealBuilder(name2 ?? "");
 }
 var PgRealBuilder, PgReal;
 var init_real = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/real.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/real.js"() {
     init_entity();
     init_common();
     PgRealBuilder = class extends PgColumnBuilder {
@@ -31374,13 +31374,13 @@ var init_real = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/serial.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/serial.js
 function serial(name2) {
   return new PgSerialBuilder(name2 ?? "");
 }
 var PgSerialBuilder, PgSerial;
 var init_serial = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/serial.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/serial.js"() {
     init_entity();
     init_common();
     PgSerialBuilder = class extends PgColumnBuilder {
@@ -31404,13 +31404,13 @@ var init_serial = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallint.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallint.js
 function smallint(name2) {
   return new PgSmallIntBuilder(name2 ?? "");
 }
 var PgSmallIntBuilder, PgSmallInt;
 var init_smallint = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallint.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallint.js"() {
     init_entity();
     init_common();
     init_int_common();
@@ -31439,13 +31439,13 @@ var init_smallint = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallserial.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallserial.js
 function smallserial(name2) {
   return new PgSmallSerialBuilder(name2 ?? "");
 }
 var PgSmallSerialBuilder, PgSmallSerial;
 var init_smallserial = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/smallserial.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/smallserial.js"() {
     init_entity();
     init_common();
     PgSmallSerialBuilder = class extends PgColumnBuilder {
@@ -31472,14 +31472,14 @@ var init_smallserial = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/text.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/text.js
 function text(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgTextBuilder(name2, config2);
 }
 var PgTextBuilder, PgText;
 var init_text = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/text.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/text.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31504,14 +31504,14 @@ var init_text = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/time.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/time.js
 function time(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgTimeBuilder(name2, config2.withTimezone ?? false, config2.precision);
 }
 var PgTimeBuilder, PgTime;
 var init_time = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/time.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/time.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31547,7 +31547,7 @@ var init_time = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/timestamp.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/timestamp.js
 function timestamp(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   if (config2?.mode === "string") {
@@ -31557,7 +31557,7 @@ function timestamp(a3, b4 = {}) {
 }
 var PgTimestampBuilder, PgTimestamp, PgTimestampStringBuilder, PgTimestampString;
 var init_timestamp = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/timestamp.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/timestamp.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31637,13 +31637,13 @@ var init_timestamp = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/uuid.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/uuid.js
 function uuid(name2) {
   return new PgUUIDBuilder(name2 ?? "");
 }
 var PgUUIDBuilder, PgUUID;
 var init_uuid = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/uuid.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/uuid.js"() {
     init_entity();
     init_sql();
     init_common();
@@ -31672,14 +31672,14 @@ var init_uuid = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/varchar.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/varchar.js
 function varchar(a3, b4 = {}) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgVarcharBuilder(name2, config2);
 }
 var PgVarcharBuilder, PgVarchar;
 var init_varchar = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/varchar.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/varchar.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31709,14 +31709,14 @@ var init_varchar = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js
 function bit(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgBinaryVectorBuilder(name2, config2);
 }
 var PgBinaryVectorBuilder, PgBinaryVector;
 var init_bit = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/bit.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31744,14 +31744,14 @@ var init_bit = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js
 function halfvec(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgHalfVectorBuilder(name2, config2);
 }
 var PgHalfVectorBuilder, PgHalfVector;
 var init_halfvec = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/halfvec.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31785,14 +31785,14 @@ var init_halfvec = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js
 function sparsevec(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgSparseVectorBuilder(name2, config2);
 }
 var PgSparseVectorBuilder, PgSparseVector;
 var init_sparsevec = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/sparsevec.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31820,14 +31820,14 @@ var init_sparsevec = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js
 function vector(a3, b4) {
   const { name: name2, config: config2 } = getColumnNameAndConfig(a3, b4);
   return new PgVectorBuilder(name2, config2);
 }
 var PgVectorBuilder, PgVector;
 var init_vector = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/vector_extension/vector.js"() {
     init_entity();
     init_utils();
     init_common();
@@ -31861,7 +31861,7 @@ var init_vector = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/all.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/all.js
 function getPgColumnBuilders() {
   return {
     bigint,
@@ -31899,7 +31899,7 @@ function getPgColumnBuilders() {
   };
 }
 var init_all = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/all.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/all.js"() {
     init_bigint();
     init_bigserial();
     init_boolean();
@@ -31935,7 +31935,7 @@ var init_all = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/table.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/table.js
 function pgTableWithSchema(name2, columns, extraConfig, schema, baseName = name2) {
   const rawTable = new PgTable(name2, schema, baseName);
   const parsedColumns = typeof columns === "function" ? columns(getPgColumnBuilders()) : columns;
@@ -31971,7 +31971,7 @@ function pgTableWithSchema(name2, columns, extraConfig, schema, baseName = name2
 }
 var InlineForeignKeys, EnableRLS, PgTable, pgTable;
 var init_table2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/table.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/table.js"() {
     init_entity();
     init_table();
     init_all();
@@ -31999,10 +31999,10 @@ var init_table2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/primary-keys.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/primary-keys.js
 var PrimaryKeyBuilder, PrimaryKey;
 var init_primary_keys = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/primary-keys.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/primary-keys.js"() {
     init_entity();
     init_table2();
     PrimaryKeyBuilder = class {
@@ -32036,7 +32036,7 @@ var init_primary_keys = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/conditions.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/conditions.js
 function bindIfParam(value, column) {
   if (isDriverValueEncoder(column) && !isSQLWrapper(value) && !is(value, Param) && !is(value, Placeholder) && !is(value, Column) && !is(value, Table) && !is(value, View)) {
     return new Param(value, column);
@@ -32134,7 +32134,7 @@ function notIlike(column, value) {
 }
 var eq, ne, gt, gte, lt, lte;
 var init_conditions = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/conditions.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/conditions.js"() {
     init_column();
     init_entity();
     init_table();
@@ -32160,7 +32160,7 @@ var init_conditions = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/select.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/select.js
 function asc(column) {
   return sql`${column} asc`;
 }
@@ -32168,20 +32168,20 @@ function desc(column) {
   return sql`${column} desc`;
 }
 var init_select = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/select.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/select.js"() {
     init_sql();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/index.js
 var init_expressions = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/expressions/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/expressions/index.js"() {
     init_conditions();
     init_select();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/relations.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/relations.js
 function getOperators() {
   return {
     and,
@@ -32391,7 +32391,7 @@ function mapRelationalRow(tablesConfig, tableConfig, row, buildQueryResultSelect
 }
 var Relation, Relations, One, Many;
 var init_relations = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/relations.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/relations.js"() {
     init_table();
     init_column();
     init_entity();
@@ -32453,45 +32453,45 @@ var init_relations = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/aggregate.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/aggregate.js
 var init_aggregate = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/aggregate.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/aggregate.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/vector.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/vector.js
 var init_vector2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/vector.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/vector.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/index.js
 var init_functions = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/functions/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/functions/index.js"() {
     init_aggregate();
     init_vector2();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/index.js
 var init_sql2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/sql/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/sql/index.js"() {
     init_expressions();
     init_functions();
     init_sql();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/alias.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/alias.js
 var init_alias2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/alias.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/alias.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/checks.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/checks.js
 var CheckBuilder, Check;
 var init_checks = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/checks.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/checks.js"() {
     init_entity();
     CheckBuilder = class {
       constructor(name2, value) {
@@ -32518,9 +32518,9 @@ var init_checks = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/index.js
 var init_columns = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/columns/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/columns/index.js"() {
     init_bigint();
     init_bigserial();
     init_boolean();
@@ -32559,10 +32559,10 @@ var init_columns = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/selection-proxy.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/selection-proxy.js
 var SelectionProxyHandler;
 var init_selection_proxy = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/selection-proxy.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/selection-proxy.js"() {
     init_alias();
     init_column();
     init_entity();
@@ -32638,10 +32638,10 @@ var init_selection_proxy = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/indexes.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/indexes.js
 var IndexBuilderOn, IndexBuilder, Index;
 var init_indexes = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/indexes.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/indexes.js"() {
     init_sql();
     init_entity();
     init_columns();
@@ -32752,10 +32752,10 @@ var init_indexes = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/policies.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/policies.js
 var PgPolicy;
 var init_policies = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/policies.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/policies.js"() {
     init_entity();
     PgPolicy = class {
       constructor(name2, config2) {
@@ -32784,15 +32784,15 @@ var init_policies = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-common.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-common.js
 var PgViewConfig;
 var init_view_common2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-common.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-common.js"() {
     PgViewConfig = /* @__PURE__ */ Symbol.for("drizzle:PgViewConfig");
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/casing.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/casing.js
 function toSnakeCase(input) {
   const words = input.replace(/['\u2019]/g, "").match(/[\da-z]+|[A-Z]+(?![a-z])|[A-Z][\da-z]+/g) ?? [];
   return words.map((word) => word.toLowerCase()).join("_");
@@ -32809,7 +32809,7 @@ function noopCase(input) {
 }
 var CasingCache;
 var init_casing = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/casing.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/casing.js"() {
     init_entity();
     init_table();
     CasingCache = class {
@@ -32851,10 +32851,10 @@ var init_casing = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-base.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-base.js
 var PgViewBase;
 var init_view_base = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view-base.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view-base.js"() {
     init_entity();
     init_sql();
     PgViewBase = class extends View {
@@ -32863,10 +32863,10 @@ var init_view_base = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/dialect.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/dialect.js
 var PgDialect;
 var init_dialect = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/dialect.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/dialect.js"() {
     init_alias();
     init_casing();
     init_column();
@@ -33988,10 +33988,10 @@ var init_dialect = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-builders/query-builder.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-builders/query-builder.js
 var TypedQueryBuilder;
 var init_query_builder = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/query-builders/query-builder.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/query-builders/query-builder.js"() {
     init_entity();
     TypedQueryBuilder = class {
       static [entityKind] = "TypedQueryBuilder";
@@ -34003,7 +34003,7 @@ var init_query_builder = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.js
 function createSetOperator(type, isAll) {
   return (leftSelect, rightSelect, ...restSelects) => {
     const setOperators = [rightSelect, ...restSelects].map((select) => ({
@@ -34023,7 +34023,7 @@ function createSetOperator(type, isAll) {
 }
 var PgSelectBuilder, PgSelectQueryBuilderBase, PgSelectBase, getPgSetOperators, union, unionAll, intersect, intersectAll, except, exceptAll;
 var init_select2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.js"() {
     init_entity();
     init_view_base();
     init_query_builder();
@@ -34837,10 +34837,10 @@ var init_select2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js
 var QueryBuilder;
 var init_query_builder2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query-builder.js"() {
     init_entity();
     init_dialect();
     init_selection_proxy();
@@ -34934,7 +34934,7 @@ var init_query_builder2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view.js
 function pgViewWithSchema(name2, selection, schema) {
   if (selection) {
     return new ManualViewBuilder(name2, selection, schema);
@@ -34949,7 +34949,7 @@ function pgMaterializedViewWithSchema(name2, selection, schema) {
 }
 var DefaultViewBuilderCore, ViewBuilder, ManualViewBuilder, MaterializedViewBuilderCore, MaterializedViewBuilder, ManualMaterializedViewBuilder, PgView, PgMaterializedViewConfig, PgMaterializedView;
 var init_view = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/view.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/view.js"() {
     init_entity();
     init_selection_proxy();
     init_utils();
@@ -35183,7 +35183,7 @@ var init_view = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils.js
 function extractUsedTable(table) {
   if (is(table, PgTable)) {
     return [table[Schema] ? `${table[Schema]}.${table[Table.Symbol.BaseName]}` : table[Table.Symbol.BaseName]];
@@ -35197,7 +35197,7 @@ function extractUsedTable(table) {
   return [];
 }
 var init_utils3 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils.js"() {
     init_entity();
     init_table2();
     init_sql();
@@ -35206,10 +35206,10 @@ var init_utils3 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/delete.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/delete.js
 var PgDeleteBase;
 var init_delete = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/delete.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/delete.js"() {
     init_entity();
     init_query_promise();
     init_selection_proxy();
@@ -35314,10 +35314,10 @@ var init_delete = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/insert.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/insert.js
 var PgInsertBuilder, PgInsertBase;
 var init_insert = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/insert.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/insert.js"() {
     init_entity();
     init_query_promise();
     init_selection_proxy();
@@ -35521,10 +35521,10 @@ var init_insert = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js
 var PgRefreshMaterializedView;
 var init_refresh_materialized_view = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/refresh-materialized-view.js"() {
     init_entity();
     init_query_promise();
     init_tracing();
@@ -35583,16 +35583,16 @@ var init_refresh_materialized_view = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js
 var init_select_types = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/select.types.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/update.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/update.js
 var PgUpdateBuilder, PgUpdateBase;
 var init_update = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/update.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/update.js"() {
     init_entity();
     init_table2();
     init_query_promise();
@@ -35816,9 +35816,9 @@ var init_update = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/index.js
 var init_query_builders = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/index.js"() {
     init_delete();
     init_insert();
     init_query_builder2();
@@ -35829,10 +35829,10 @@ var init_query_builders = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/count.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/count.js
 var PgCountBuilder;
 var init_count = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/count.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/count.js"() {
     init_entity();
     init_sql();
     PgCountBuilder = class _PgCountBuilder extends SQL {
@@ -35887,10 +35887,10 @@ var init_count = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query.js
 var RelationalQueryBuilder, PgRelationalQuery;
 var init_query = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/query.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/query.js"() {
     init_entity();
     init_query_promise();
     init_relations();
@@ -36009,10 +36009,10 @@ var init_query = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/raw.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/raw.js
 var PgRaw;
 var init_raw = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/query-builders/raw.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/query-builders/raw.js"() {
     init_entity();
     init_query_promise();
     PgRaw = class extends QueryPromise {
@@ -36045,10 +36045,10 @@ var init_raw = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/db.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/db.js
 var PgDatabase;
 var init_db = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/db.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/db.js"() {
     init_entity();
     init_query_builders();
     init_selection_proxy();
@@ -36338,10 +36338,10 @@ var init_db = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/roles.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/roles.js
 var PgRole;
 var init_roles = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/roles.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/roles.js"() {
     init_entity();
     PgRole = class {
       constructor(name2, config2) {
@@ -36369,13 +36369,13 @@ var init_roles = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/sequence.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/sequence.js
 function pgSequenceWithSchema(name2, options, schema) {
   return new PgSequence(name2, options, schema);
 }
 var PgSequence;
 var init_sequence = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/sequence.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/sequence.js"() {
     init_entity();
     PgSequence = class {
       constructor(seqName, seqOptions, schema) {
@@ -36388,10 +36388,10 @@ var init_sequence = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/schema.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/schema.js
 var PgSchema;
 var init_schema = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/schema.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/schema.js"() {
     init_entity();
     init_sql();
     init_enum();
@@ -36432,7 +36432,7 @@ var init_schema = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/cache.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/cache.js
 async function hashQuery(sql2, params) {
   const dataToHash = `${sql2}-${JSON.stringify(params)}`;
   const encoder = new TextEncoder();
@@ -36444,7 +36444,7 @@ async function hashQuery(sql2, params) {
 }
 var Cache, NoopCache;
 var init_cache = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/cache.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/cache.js"() {
     init_entity();
     Cache = class {
       static [entityKind] = "Cache";
@@ -36465,10 +36465,10 @@ var init_cache = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/session.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/session.js
 var PgPreparedQuery, PgSession, PgTransaction;
 var init_session = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/session.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/session.js"() {
     init_cache();
     init_entity();
     init_errors();
@@ -36636,22 +36636,22 @@ var init_session = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/subquery.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/subquery.js
 var init_subquery2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/subquery.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/subquery.js"() {
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/index.js
 var init_utils4 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/utils/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/utils/index.js"() {
     init_array();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/index.js
 var init_pg_core = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pg-core/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pg-core/index.js"() {
     init_alias2();
     init_checks();
     init_columns();
@@ -42022,17 +42022,17 @@ var init_esm = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/index.js
 var init_core = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/cache/core/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/cache/core/index.js"() {
     init_cache();
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/session.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/session.js
 var Pool2, types2, NodePgPreparedQuery, NodePgSession, NodePgTransaction;
 var init_session2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/session.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/session.js"() {
     init_esm();
     init_core();
     init_entity();
@@ -42259,7 +42259,7 @@ var init_session2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/driver.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/driver.js
 function construct(client, config2 = {}) {
   const dialect = new PgDialect({ casing: config2.casing });
   let logger2;
@@ -42309,7 +42309,7 @@ function drizzle(...params) {
 }
 var NodePgDriver, NodePgDatabase;
 var init_driver = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/driver.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/driver.js"() {
     init_esm();
     init_entity();
     init_logger();
@@ -42344,7 +42344,7 @@ var init_driver = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/index.js
 var node_postgres_exports = {};
 __export(node_postgres_exports, {
   NodePgDatabase: () => NodePgDatabase,
@@ -42355,7 +42355,7 @@ __export(node_postgres_exports, {
   drizzle: () => drizzle
 });
 var init_node_postgres = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/node-postgres/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/node-postgres/index.js"() {
     init_driver();
     init_session2();
   }
@@ -51269,10 +51269,10 @@ shared_preload_libraries=${r.join(",")}`;
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/session.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/session.js
 var PglitePreparedQuery, PgliteSession, PgliteTransaction;
 var init_session3 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/session.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/session.js"() {
     init_entity();
     init_logger();
     init_pg_core();
@@ -51432,7 +51432,7 @@ var init_session3 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/driver.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/driver.js
 function construct2(client, config2 = {}) {
   const dialect = new PgDialect({ casing: config2.casing });
   let logger2;
@@ -51483,7 +51483,7 @@ function drizzle2(...params) {
 }
 var PgliteDriver, PgliteDatabase;
 var init_driver2 = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/driver.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/driver.js"() {
     init_dist();
     init_entity();
     init_logger();
@@ -51518,7 +51518,7 @@ var init_driver2 = __esm({
   }
 });
 
-// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/index.js
+// ../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/index.js
 var pglite_exports = {};
 __export(pglite_exports, {
   PgliteDatabase: () => PgliteDatabase,
@@ -51529,7 +51529,7 @@ __export(pglite_exports, {
   drizzle: () => drizzle2
 });
 var init_pglite = __esm({
-  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1/node_modules/drizzle-orm/pglite/index.js"() {
+  "../../node_modules/.pnpm/drizzle-orm@0.45.3_@electri_fac423748f242a30383e9fd503ac41d1/node_modules/drizzle-orm/pglite/index.js"() {
     init_driver2();
     init_session3();
   }
@@ -55711,6 +55711,7 @@ var upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1e3;
 var upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
 var upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
 var upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
+var upsertBrandingDraftBodyGameContentOneCardsItemImageMax = 7e5;
 var upsertBrandingDraftBodyGameContentOneCardsMin = 6;
 var upsertBrandingDraftBodyGameContentOneCardsMax = 6;
 var UpsertBrandingDraftBody = objectType({
@@ -55754,7 +55755,8 @@ var UpsertBrandingDraftBody = objectType({
     })).min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax)
+      "detail": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax),
+      "image": stringType().max(upsertBrandingDraftBodyGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(upsertBrandingDraftBodyGameContentOneCardsMin).max(upsertBrandingDraftBodyGameContentOneCardsMax).optional()
   }), nullType()]).optional(),
   "heading": stringType(),
@@ -55777,6 +55779,7 @@ var upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1e3;
 var upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
 var upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 var upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+var upsertBrandingDraftResponseGameContentOneCardsItemImageMax = 7e5;
 var upsertBrandingDraftResponseGameContentOneCardsMin = 6;
 var upsertBrandingDraftResponseGameContentOneCardsMax = 6;
 var UpsertBrandingDraftResponse = objectType({
@@ -55821,7 +55824,8 @@ var UpsertBrandingDraftResponse = objectType({
     })).min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax)
+      "detail": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax),
+      "image": stringType().max(upsertBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(upsertBrandingDraftResponseGameContentOneCardsMin).max(upsertBrandingDraftResponseGameContentOneCardsMax).optional()
   }), nullType()]).optional(),
   "heading": stringType(),
@@ -55848,6 +55852,7 @@ var getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1e3;
 var getBrandingDraftResponseGameContentOneQuestionsMax = 50;
 var getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 var getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
+var getBrandingDraftResponseGameContentOneCardsItemImageMax = 7e5;
 var getBrandingDraftResponseGameContentOneCardsMin = 6;
 var getBrandingDraftResponseGameContentOneCardsMax = 6;
 var GetBrandingDraftResponse = objectType({
@@ -55892,7 +55897,8 @@ var GetBrandingDraftResponse = objectType({
     })).min(1).max(getBrandingDraftResponseGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax)
+      "detail": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax),
+      "image": stringType().max(getBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(getBrandingDraftResponseGameContentOneCardsMin).max(getBrandingDraftResponseGameContentOneCardsMax).optional()
   }), nullType()]).optional(),
   "heading": stringType(),
@@ -55919,6 +55925,7 @@ var getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1
 var getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
 var getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
 var getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
+var getBrandingDraftContentResponseGameContentOneCardsItemImageMax = 7e5;
 var getBrandingDraftContentResponseGameContentOneCardsMin = 6;
 var getBrandingDraftContentResponseGameContentOneCardsMax = 6;
 var GetBrandingDraftContentResponse = objectType({
@@ -55941,7 +55948,8 @@ var GetBrandingDraftContentResponse = objectType({
     })).min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax)
+      "detail": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax),
+      "image": stringType().max(getBrandingDraftContentResponseGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(getBrandingDraftContentResponseGameContentOneCardsMin).max(getBrandingDraftContentResponseGameContentOneCardsMax).optional()
   }), nullType()])
 });
@@ -67241,7 +67249,7 @@ function date5(params) {
 // ../../node_modules/.pnpm/zod@3.25.76/node_modules/zod/v4/classic/external.js
 config(en_default2());
 
-// ../../node_modules/.pnpm/drizzle-zod@0.8.3_drizzle-orm@0.45.3_@electric-sql+pglite@0.5.8_@types+pg@8.23.1_pg@8.23.1__zod@3.25.76/node_modules/drizzle-zod/index.mjs
+// ../../node_modules/.pnpm/drizzle-zod@0.8.3_drizzle-o_45e0f3561799cfcc5b68f80d7420bf20/node_modules/drizzle-zod/index.mjs
 var CONSTANTS = {
   INT8_MIN: -128,
   INT8_MAX: 127,
@@ -67690,6 +67698,8 @@ var import_express3 = __toESM(require_express2(), 1);
 
 // ../../lib/game-content/src/index.js
 var QUESTION_GAME_SLUGS = ["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"];
+var CARD_IMAGE_MAX_CHARS = 7e5;
+var CARD_IMAGE = /^data:image\/(?:png|jpeg|webp|gif);base64,[A-Za-z0-9+\/=]+$/;
 function validateGameContent(input, slug) {
   try {
     const fail = (message) => {
@@ -67752,10 +67762,18 @@ function validateGameContent(input, slug) {
     const content = { gameSlug: slug, questions };
     if (input.cards !== void 0) {
       if (slug !== "a8-recall" || !Array.isArray(input.cards) || input.cards.length !== 6) fail("Recall needs exactly six memory cards.");
-      content.cards = input.cards.map((card, i3) => ({
-        title: text2(card?.title, `Memory card ${i3 + 1}: title`, 100),
-        detail: text2(card?.detail, `Memory card ${i3 + 1}: detail`, 200)
-      }));
+      content.cards = input.cards.map((card, i3) => {
+        const clean = {
+          title: text2(card?.title, `Memory card ${i3 + 1}: title`, 100),
+          detail: text2(card?.detail, `Memory card ${i3 + 1}: detail`, 200)
+        };
+        const image = card?.image;
+        if (image !== void 0 && image !== null && image !== "") {
+          if (typeof image !== "string" || image.length > CARD_IMAGE_MAX_CHARS || !CARD_IMAGE.test(image)) fail(`Memory card ${i3 + 1}: the image must be a PNG, JPG, WebP or GIF under 500 KB.`);
+          clean.image = image;
+        }
+        return clean;
+      });
       if (new Set(content.cards.map((c4) => c4.title.toLowerCase())).size !== 6) fail("Memory-card titles must be different.");
     }
     return { ok: true, content };
@@ -68098,8 +68116,18 @@ function apiKey() {
   }
   return key;
 }
+async function timedFetch(input, init2, ms) {
+  try {
+    return await fetch(input, { ...init2, signal: AbortSignal.timeout(ms) });
+  } catch (err2) {
+    if (err2 instanceof Error && (err2.name === "TimeoutError" || err2.name === "AbortError")) {
+      throw new Error("The image service took too long to respond. Please try again.");
+    }
+    throw err2;
+  }
+}
 async function fetchUrlAsBuffer(url2) {
-  const res = await fetch(url2);
+  const res = await timedFetch(url2, void 0, 6e4);
   if (!res.ok) {
     throw new Error(`Failed to download asset (${res.status})`);
   }
@@ -68120,7 +68148,7 @@ function decodeImagePayload(payload) {
   throw new Error("Image response contained no image data");
 }
 async function editImage(photoDataUri, prompt) {
-  const res = await fetch(`${XAI_BASE_URL}/images/edits`, {
+  const res = await timedFetch(`${XAI_BASE_URL}/images/edits`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey()}`,
@@ -68133,26 +68161,31 @@ async function editImage(photoDataUri, prompt) {
       n: 1,
       response_format: "b64_json"
     })
-  });
+  }, 12e4);
   const text2 = await res.text();
   if (!res.ok) {
     logger.error({ status: res.status, body: text2.slice(0, 500) }, "Grok image edit failed");
-    throw new Error(`Image generation provider error (${res.status})`);
+    if (/content-moderated/i.test(text2)) {
+      throw new Error("We couldn't create a photo from that picture. Please retake it with your face clearly visible and try again.");
+    }
+    throw new Error("We couldn't create your photo right now. Please try again in a moment.");
   }
   let json3;
   try {
     json3 = JSON.parse(text2);
   } catch {
-    throw new Error("Invalid response from image provider");
+    logger.error("Grok image edit returned an unreadable response");
+    throw new Error("We couldn't create your photo right now. Please try again in a moment.");
   }
   const first = json3.data?.[0];
   if (!first) {
-    throw new Error("Image provider returned no image");
+    logger.error("Grok image edit returned no image");
+    throw new Error("We couldn't create a photo from that picture. Please retake it and try again.");
   }
   return decodeImagePayload(first);
 }
 async function startVideoJob(image, prompt) {
-  const res = await fetch(`${XAI_BASE_URL}/videos/generations`, {
+  const res = await timedFetch(`${XAI_BASE_URL}/videos/generations`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey()}`,
@@ -68166,7 +68199,7 @@ async function startVideoJob(image, prompt) {
       aspect_ratio: "16:9",
       resolution: "720p"
     })
-  });
+  }, 6e4);
   const text2 = await res.text();
   if (!res.ok) {
     logger.error({ status: res.status, body: text2.slice(0, 500) }, "Grok video submit failed");
@@ -68185,11 +68218,11 @@ async function startVideoJob(image, prompt) {
   return requestId;
 }
 async function pollVideoJob(requestId) {
-  const res = await fetch(`${XAI_BASE_URL}/videos/${requestId}`, {
+  const res = await timedFetch(`${XAI_BASE_URL}/videos/${requestId}`, {
     headers: {
       Authorization: `Bearer ${apiKey()}`
     }
-  });
+  }, 3e4);
   const text2 = await res.text();
   if (!res.ok) {
     logger.error({ status: res.status, body: text2.slice(0, 500) }, "Grok video poll failed");
@@ -68309,6 +68342,7 @@ router7.get("/generations", async (req, res) => {
   const rows = await db.select().from(generationsTable).orderBy(desc(generationsTable.createdAt)).limit(limit);
   res.json(ListGenerationsResponse.parse(rows.map(toApiGeneration)));
 });
+var PHOTO_STALE_MS = 4 * 60 * 1e3;
 router7.post("/generations", async (req, res) => {
   const parsed = CreateGenerationBody.safeParse(req.body);
   if (!parsed.success) {
@@ -68327,21 +68361,24 @@ router7.post("/generations", async (req, res) => {
     photoStatus: "pending",
     videoStatus: "idle"
   }).returning();
-  try {
-    const image = await editImage(normalizeDataUri(parsed.data.photoBase64), scene.imagePrompt);
-    const [updated] = await db.update(generationsTable).set({
-      photoStatus: "ready",
-      photoData: image.data.toString("base64"),
-      photoMime: image.mime,
-      error: null
-    }).where(eq(generationsTable.id, row.id)).returning();
-    res.status(201).json(GetGenerationResponse.parse(toApiGeneration(updated)));
-  } catch (err2) {
-    const message = err2 instanceof Error ? err2.message : "Generation failed";
-    req.log.error({ err: message, id: row.id }, "Photo generation failed");
-    await db.update(generationsTable).set({ photoStatus: "failed", error: message }).where(eq(generationsTable.id, row.id));
-    res.status(502).json({ error: message });
-  }
+  const photo = normalizeDataUri(parsed.data.photoBase64);
+  const log = req.log;
+  void (async () => {
+    try {
+      const image = await editImage(photo, scene.imagePrompt);
+      await db.update(generationsTable).set({
+        photoStatus: "ready",
+        photoData: image.data.toString("base64"),
+        photoMime: image.mime,
+        error: null
+      }).where(eq(generationsTable.id, row.id));
+    } catch (err2) {
+      const message = err2 instanceof Error ? err2.message : "Generation failed";
+      log.error({ err: message, id: row.id }, "Photo generation failed");
+      await db.update(generationsTable).set({ photoStatus: "failed", error: message }).where(eq(generationsTable.id, row.id)).catch(() => void 0);
+    }
+  })();
+  res.status(201).json(GetGenerationResponse.parse(toApiGeneration(row)));
 });
 router7.get("/generations/:id", async (req, res) => {
   const params = GetGenerationParams.safeParse(req.params);
@@ -68352,6 +68389,11 @@ router7.get("/generations/:id", async (req, res) => {
   const [row] = await db.select().from(generationsTable).where(eq(generationsTable.id, params.data.id));
   if (!row) {
     res.status(404).json({ error: "Generation not found" });
+    return;
+  }
+  if (row.photoStatus === "pending" && Date.now() - new Date(row.createdAt).getTime() > PHOTO_STALE_MS) {
+    const [stale] = await db.update(generationsTable).set({ photoStatus: "failed", error: "Photo generation timed out" }).where(eq(generationsTable.id, row.id)).returning();
+    res.json(GetGenerationResponse.parse(toApiGeneration(stale ?? row)));
     return;
   }
   res.json(GetGenerationResponse.parse(toApiGeneration(row)));
@@ -68886,7 +68928,7 @@ var DEFAULT_GAMES = [
   },
   {
     slug: "boat-booth",
-    name: "Boat Booth",
+    name: "AI Photo Experience",
     tagline: "AI photo booth kiosk \u2014 snap a webcam selfie and get transported onto the water in a photoreal video.",
     thumbnailUrl: null,
     folderPath: "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video",
@@ -68896,7 +68938,7 @@ var DEFAULT_GAMES = [
     defaultSecondaryColor: "#0369a1",
     defaultAccentColor: "#0ea5e9",
     defaultLogoUrl: null,
-    defaultHeading: "Boat Booth",
+    defaultHeading: "AI Photo Experience",
     priceCents: 5900
   },
   {

@@ -1,4 +1,9 @@
 /* ---------- Game 5: Recall (memory match, then a recall quiz) ---------- */
+// A card shows its own uploaded picture when it has one, otherwise the icon tile.
+const cardPic = (p, size) => p.image
+  ? `<span class="cimg"><img src="${esc(p.image)}" alt=""></span>`
+  : ptile(p.icon, 'var(--brand)', size);
+
 GAMES.recall = {
   id: 'recall', name: 'Recall',
   tile: {
@@ -13,7 +18,7 @@ GAMES.recall = {
     const back = productImg
       ? `<div class="card back has-img"><img src="${esc(productImg)}" alt=""></div>`
       : `<div class="card back"><span class="badge-mark">${hubInner(stage.brand)}</span></div>`;
-    const front = (p) => `<div class="card front">${ptile(p.icon, 'var(--brand)', null)}<b>${esc(p.title)}</b></div>`;
+    const front = (p) => `<div class="card front">${cardPic(p, null)}<b>${esc(p.title)}</b></div>`;
     return `<div class="r-art" aria-hidden="true">${back}${front(pairs[0]).replace('card front', 'card front hit')}${front(pairs[1])}${back}</div>`;
   },
   cleanup(stage) { if (stage._fit) { window.removeEventListener('resize', stage._fit); stage._fit = null; } },
@@ -30,7 +35,7 @@ GAMES.recall = {
           <button class="mcard up" data-i="${i}" data-id="${esc(p.id)}" style="animation-delay:${i * 40}ms" aria-label="Card ${i + 1}">
             <span class="in">
               <span class="mface mback"><span class="badge-mark">${hubInner(stage.brand)}</span></span>
-              <span class="mface mfront">${ptile(p.icon, 'var(--brand)', null)}<b>${esc(p.title)}</b><small>${esc(p.detail)}</small></span>
+              <span class="mface mfront">${cardPic(p, null)}<b>${esc(p.title)}</b><small>${esc(p.detail)}</small></span>
             </span>
             <span class="tick">${icon('check', 14, 3)}</span>
           </button>`).join('')}</div>
@@ -69,7 +74,7 @@ GAMES.recall = {
         a.classList.add('matched'); b.classList.add('matched'); found++; $found.textContent = found;
         const p = pairs.find((x) => x.id === a.dataset.id);
         Sound.correct();
-        stage.toast(`${ptile(p.icon, 'var(--brand)', 34)}<span><b>${esc(p.title)}.</b> ${esc(p.detail)}</span>`, 2000);
+        stage.toast(`${cardPic(p, 34)}<span><b>${esc(p.title)}.</b> ${esc(p.detail)}</span>`, 2000);
         if (found === pairs.length) {
           stage.stopEvery(timerId); lock = true;
           const final = Math.max(1, Math.floor((performance.now() - t0) / 1000));
