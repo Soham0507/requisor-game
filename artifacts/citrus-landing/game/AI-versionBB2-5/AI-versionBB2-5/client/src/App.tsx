@@ -1409,6 +1409,54 @@ const GameScreen = ({
   );
 };
 
+/**
+ * When a game ends, the customer's logo pops up over the score screen for a
+ * few seconds (tap to dismiss). Renders nothing until a logo is set.
+ */
+const LOGO_POPUP_MS = 3200;
+function LogoPopup() {
+  const brand = useBrand();
+  const [open, setOpen] = useState(true);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setOpen(false), LOGO_POPUP_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+  if (!brand.logoUrl) return null;
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          key="logo-popup"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-[200] flex cursor-pointer items-center justify-center bg-black/75 p-6 backdrop-blur-sm"
+          role="dialog"
+          aria-label="Brand logo"
+          data-testid="logo-popup"
+        >
+          <motion.div
+            initial={{ scale: 0.45, opacity: 0, y: 40, rotate: -4 }}
+            animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 240, damping: 16 }}
+            className="rounded-3xl bg-white p-6 shadow-[0_0_90px_rgba(255,255,255,0.3)] sm:p-10"
+          >
+            <img
+              src={brand.logoUrl}
+              alt=""
+              className="block object-contain"
+              style={{ maxWidth: "min(70vw, 480px)", maxHeight: "min(40vh, 320px)" }}
+            />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 const ResultsScreen = ({
   stats,
   onRestart,
@@ -1476,6 +1524,7 @@ const ResultsScreen = ({
       exit={{ opacity: 0 }}
       className="flex flex-col h-full relative z-10 w-full max-w-6xl mx-auto p-6 overflow-y-auto"
     >
+      <LogoPopup />
       {submitScoreMutation.isSuccess && (
         <p role="status" className="text-green-300 text-center" data-testid="score-saved">Score saved.</p>
       )}
@@ -1988,35 +2037,6 @@ function GameApp() {
               >
                 Exit
               </button>
-            )}
-            {/* The customer's logo sits where the connection status used to be */}
-            {brand.logoUrl && (
-              <>
-                <img
-                  src={brand.logoUrl}
-                  alt=""
-                  data-testid="nav-logo-right"
-                  className="hidden sm:block"
-                  style={{
-                    height: Math.max(32, brand.logoSize),
-                    width: "auto",
-                    maxWidth: Math.max(32, brand.logoSize) * 3,
-                    objectFit: "contain",
-                  }}
-                />
-                <img
-                  src={brand.logoUrl}
-                  alt=""
-                  data-testid="nav-logo-right-2"
-                  className="hidden md:block"
-                  style={{
-                    height: Math.max(32, brand.logoSize),
-                    width: "auto",
-                    maxWidth: Math.max(32, brand.logoSize) * 3,
-                    objectFit: "contain",
-                  }}
-                />
-              </>
             )}
           </div>
         </header>
