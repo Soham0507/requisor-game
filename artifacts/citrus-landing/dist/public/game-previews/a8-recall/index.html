@@ -6,7 +6,7 @@
 <style>:root{color-scheme:light}body{margin:0;background:#fafaf9}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
-<title>Recall — Activate</title><meta name="description" content="Play and customize Recall, an interactive branded game by Activate.">
+<title>Memory — Activate</title><meta name="description" content="Play and customize Memory, an interactive branded game by Activate.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -1705,10 +1705,9 @@ const BRANDS = {
         ],
       },
       recall: {
-        eyebrow: 'Recall', title: 'Match the pairs. Remember the facts.',
-        subtitle: 'Flip cards to find six {brand} features, then see how much stuck.',
-        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'brain', text: '3 recall questions' }],
-        prize: { icon: 'gift', text: 'Perfect recall earns the {brand} travel mug' },
+        eyebrow: 'Memory', title: 'Match the pairs. Beat the clock.',
+        subtitle: 'Flip cards to find six {brand} features as fast as you can.',
+        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Timed' }],
         lead: { title: 'Save your score.', sub: 'We’ll send your results and a link to see these features up close.', cta: 'See my rank', sends: 'your score' },
         takeHome: { title: 'See it in person', sub: 'Scan to book a 20-minute {brand} walkaround.' },
         seed: [2640, 2410, 2180, 1960, 1720, 1490, 1260],
@@ -1850,10 +1849,9 @@ const BRANDS = {
         ],
       },
       recall: {
-        eyebrow: 'Recall', title: 'Match the pairs. Remember the facts.',
-        subtitle: 'Flip cards to find six things that make {brand} different, then see how much stuck.',
-        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'brain', text: '3 recall questions' }],
-        prize: { icon: 'coffee', text: 'Perfect recall earns a free latte' },
+        eyebrow: 'Memory', title: 'Match the pairs. Beat the clock.',
+        subtitle: 'Flip cards to find six things that make {brand} different as fast as you can.',
+        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Timed' }],
         lead: { title: 'Save your score.', sub: 'We’ll send your results and our brewing guide.', cta: 'See my rank', sends: 'your score' },
         takeHome: { title: 'Taste the difference', sub: 'Scan for 15% off your first bag.' },
         seed: [2640, 2410, 2180, 1960, 1720, 1490, 1260],
@@ -1997,10 +1995,9 @@ const BRANDS = {
         ],
       },
       recall: {
-        eyebrow: 'Recall', title: 'Match the pairs. Remember the facts.',
-        subtitle: 'Flip cards to find six {brand} capabilities, then see how much stuck.',
-        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'brain', text: '3 recall questions' }],
-        prize: { icon: 'shirt', text: 'Perfect recall earns the {brand} tee' },
+        eyebrow: 'Memory', title: 'Match the pairs. Beat the clock.',
+        subtitle: 'Flip cards to find six {brand} capabilities as fast as you can.',
+        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Timed' }],
         lead: { title: 'Save your score.', sub: 'We’ll send your results and a short platform tour.', cta: 'See my rank', sends: 'your score' },
         takeHome: { title: 'See it live', sub: 'Scan to book a 20-minute demo.' },
         seed: [2640, 2410, 2180, 1960, 1720, 1490, 1260],
@@ -2755,18 +2752,18 @@ GAMES.spin = {
   },
 };
 
-/* ---------- Game 5: Recall (memory match, then a recall quiz) ---------- */
+/* ---------- Game 5: Recall (memory match) ---------- */
 // A card shows its own uploaded picture when it has one, otherwise the icon tile.
 const cardPic = (p, size) => p.image
   ? `<span class="cimg"><img src="${esc(p.image)}" alt=""></span>`
   : ptile(p.icon, 'var(--brand)', size);
 
 GAMES.recall = {
-  id: 'recall', name: 'Recall',
+  id: 'recall', name: 'Memory',
   tile: {
-    kind: 'Memory + recall', title: 'Recall',
-    blurb: 'Players flip cards to match six brand features, then answer three questions on what they remember. You get a brand recall score for every player.',
-    chips: [['layout-grid', '6 pairs'], ['brain', 'Recall score'], ['trophy', 'Leaderboard']],
+    kind: 'Memory match', title: 'Memory',
+    blurb: 'Players flip cards to match six brand features, racing the clock. You get a memory score for every player, with a leaderboard.',
+    chips: [['layout-grid', '6 pairs'], ['timer', 'Timed'], ['trophy', 'Leaderboard']],
   },
   art(stage) {
     const pairs = stage.content.pairs;
@@ -2792,7 +2789,7 @@ GAMES.recall = {
           <button class="mcard up" data-i="${i}" data-id="${esc(p.id)}" style="animation-delay:${i * 40}ms" aria-label="Card ${i + 1}">
             <span class="in">
               <span class="mface mback"><span class="badge-mark">${hubInner(stage.brand)}</span></span>
-              <span class="mface mfront">${cardPic(p, null)}<b>${esc(p.title)}</b><small>${esc(p.detail)}</small></span>
+              <span class="mface mfront">${cardPic(p, null)}<b>${esc(p.title)}</b></span>
             </span>
             <span class="tick">${icon('check', 14, 3)}</span>
           </button>`).join('')}</div>
@@ -2831,7 +2828,7 @@ GAMES.recall = {
         a.classList.add('matched'); b.classList.add('matched'); found++; $found.textContent = found;
         const p = pairs.find((x) => x.id === a.dataset.id);
         Sound.correct();
-        stage.toast(`${cardPic(p, 34)}<span><b>${esc(p.title)}.</b> ${esc(p.detail)}</span>`, 2000);
+        stage.toast(`${cardPic(p, 34)}<span><b>${esc(p.title)}</b></span>`, 2000);
         if (found === pairs.length) {
           stage.stopEvery(timerId); lock = true;
           const final = Math.max(1, Math.floor((performance.now() - t0) / 1000));
@@ -2846,34 +2843,19 @@ GAMES.recall = {
     });
 
     const recallRound = async (elapsed) => {
-      stage.screen(`<div class="bigword"><h2>All six.</h2><p class="t-sub">Found in ${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')} with ${moves} moves. Now, what do you remember?</p></div>`);
+      const clock = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
+      stage.screen(`<div class="bigword"><h2>All six.</h2><p class="t-sub">Found in ${clock} with ${moves} moves.</p></div>`);
       Sound.win();
       await stage.wait(1800);
       if (!stage.live(ep)) return;
-      const qs = c.questions.map((q) => { const o = shuffle(q.options.map((_, i) => i)); return { q: q.q, options: o.map((i) => q.options[i]), answer: o.indexOf(q.answer) }; });
-      let right = 0;
-      for (let k = 0; k < qs.length; k++) {
-        stage.capsules(k, qs.length);
-        const q = qs[k];
-        const qel = stage.screen(`
-          <div class="qwrap" style="max-width:760px">
-            <div class="qhead"><div class="eyebrow">Recall ${k + 1} of ${qs.length}</div><h2 class="qtext sm">${esc(q.q)}</h2></div>
-            ${answersHTML(q.options, 'one')}
-          </div>`);
-        const ok = await new Promise((res) => bindAnswers(stage, qel, q.answer, (i, good) => res(good)));
-        if (!stage.live(ep)) return;
-        if (ok) right++;
-        await stage.wait(1100);
-        if (!stage.live(ep)) return;
-      }
       stage.top('');
+      // Memory only: a faster finish and fewer moves score higher. Scaled so it sits on the same range as the seeded leaderboard.
       const memory = Math.max(300, 1500 - Math.max(0, elapsed - 20) * 12 - Math.max(0, moves - 6) * 20);
-      const score = memory + right * 400;
-      const recallPct = Math.round((right / qs.length) * 100);
+      const score = Math.round(memory * 1.8);
       const data = await stage.lead({ ...c.lead, allowSkip: true, tile: ptile('brain', 'var(--brand)', 56) });
       if (!stage.live(ep)) return;
       const code = stage.code();
-      const lead = stage.saveLead(data, { result: `${right}/${qs.length} recalled`, score, code });
+      const lead = stage.saveLead(data, { result: `Matched all ${pairs.length} pairs in ${clock}`, score, code });
       const key = `${stage.brand.id}:recall`;
       const list = Boards.get(key, c.seed || []);
       let rank = null, meId = null;
@@ -2884,12 +2866,12 @@ GAMES.recall = {
             <div class="result-head">
               <div class="eyebrow">${lead ? `Great memory, ${esc(lead.firstName)}.` : 'Great memory.'}</div>
               <div class="result-score" data-count>0<small>pts</small></div>
-              <p class="t-sub">${rank ? (rank === 1 ? 'Top score today.' : `You’re #${rank} of ${list.length} players today.`) : `You remembered ${right} of ${qs.length} ${esc(stage.brand.name)} facts.`}</p>
+              <p class="t-sub">${rank ? (rank === 1 ? 'Top score today.' : `You’re #${rank} of ${list.length} players today.`) : `You matched all ${pairs.length} cards in ${moves} moves.`}</p>
             </div>
             <div class="stats" style="--n:3">
-              <div class="stat"><b>${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}</b><span>Time</span></div>
+              <div class="stat"><b>${clock}</b><span>Time</span></div>
               <div class="stat"><b>${moves}</b><span>Moves</span></div>
-              <div class="stat"><b>${recallPct}%</b><span>Brand recall</span></div>
+              <div class="stat"><b>${pairs.length}/${pairs.length}</b><span>Pairs</span></div>
             </div>
             ${stage.takeHome(c.takeHome.title, c.takeHome.sub, code)}
             ${stage.resultActions()}
@@ -2898,7 +2880,7 @@ GAMES.recall = {
         </div>`);
       const counter = $('[data-count]', res);
       stage.tween(1200, (k) => { counter.firstChild.nodeValue = fmt(Math.round(score * k)); });
-      if (right === qs.length || (rank && rank <= 3)) { Sound.win(); stage.confetti(); } else Sound.correct();
+      if (moves <= pairs.length + 3 || (rank && rank <= 3)) { Sound.win(); stage.confetti(); } else Sound.correct();
       stage.bindResult(res);
     };
   },
@@ -3223,7 +3205,10 @@ function validateGameContent(input, slug) {
     const fail = (message) => { throw new Error(message); };
     if (!QUESTION_GAME_SLUGS.includes(slug)) fail("This game does not support custom questions.");
     if (!input || typeof input !== "object" || Array.isArray(input) || input.gameSlug !== slug) fail("The question file belongs to a different game.");
-    if (!Array.isArray(input.questions) || input.questions.length < 1 || input.questions.length > 50) fail("Add between 1 and 50 questions.");
+    // Recall is memory cards only. It has no questions (older saved content may still carry some; they are ignored).
+    const isRecall = slug === "a8-recall";
+    const rawQuestions = isRecall ? [] : input.questions;
+    if (!Array.isArray(rawQuestions) || (!isRecall && rawQuestions.length < 1) || rawQuestions.length > 50) fail("Add between 1 and 50 questions.");
     const text = (value, label, max = 500, optional = false) => {
       if (optional && (value === undefined || value === "")) return "";
       if (typeof value !== "string" || !value.trim() || value.length > max) fail(`${label} must contain 1–${max} characters.`);
@@ -3233,7 +3218,7 @@ function validateGameContent(input, slug) {
       if (typeof value !== "number" || !Number.isFinite(value) || Math.abs(value) > 1e9 || (integer && !Number.isInteger(value))) fail(`${label} must be a valid ${integer ? "whole " : ""}number.`);
       return value;
     };
-    const questions = input.questions.map((q, index) => {
+    const questions = rawQuestions.map((q, index) => {
       const label = `Question ${index + 1}`;
       if (!q || typeof q !== "object" || Array.isArray(q)) fail(`${label} is not an object.`);
       const clean = { text: text(q.text, label), explanation: text(q.explanation, `${label}: explanation`, 1000, true) };
@@ -3278,10 +3263,10 @@ function validateGameContent(input, slug) {
     if (input.cards !== undefined) {
       if (slug !== "a8-recall" || !Array.isArray(input.cards) || input.cards.length !== 6) fail("Recall needs exactly six memory cards.");
       content.cards = input.cards.map((card, i) => {
-        const clean = {
-          title: text(card?.title, `Memory card ${i + 1}: title`, 100),
-          detail: text(card?.detail, `Memory card ${i + 1}: detail`, 200),
-        };
+        // A card is a name and an optional picture. (An older optional detail line is still accepted but no longer shown.)
+        const clean = { title: text(card?.title, `Memory card ${i + 1}: title`, 100) };
+        const detail = text(card?.detail, `Memory card ${i + 1}: detail`, 200, true);
+        if (detail) clean.detail = detail;
         const image = card?.image;
         if (image !== undefined && image !== null && image !== "") {
           if (typeof image !== "string" || image.length > CARD_IMAGE_MAX_CHARS || !CARD_IMAGE.test(image)) fail(`Memory card ${i + 1}: the image must be a PNG, JPG, WebP or GIF under 500 KB.`);
@@ -3309,10 +3294,10 @@ function sampleContent(slug) {
   ] };
   if (slug === "jeopardy") Object.assign(content.questions[0], { category: "Science", points: 100 });
   if (slug === "a8-recall") {
+    content.questions = [];
     content.cards = [
-      { title: "Mars", detail: "The Red Planet" }, { title: "Earth", detail: "Our home planet" },
-      { title: "Jupiter", detail: "The largest planet" }, { title: "Venus", detail: "The hottest planet" },
-      { title: "Mercury", detail: "Closest to the Sun" }, { title: "Neptune", detail: "Farthest from the Sun" },
+      { title: "Mars" }, { title: "Earth" }, { title: "Jupiter" },
+      { title: "Venus" }, { title: "Mercury" }, { title: "Neptune" },
     ];
   }
   return content;
@@ -3326,6 +3311,7 @@ function adaptFiveGameContent(content, products) {
       start: q.min + Math.round((q.max - q.min) / q.step / 2) * q.step, context: q.explanation || "", icon: "target",
     })),
   };
+  if (content.gameSlug === "a8-recall") return content.cards ? { pairs: content.cards.map((card, i) => ({ id: `custom-card-${i}`, icon: "sparkles", title: card.title, detail: card.detail || "", ...(card.image ? { image: card.image } : {}) })) } : {};
   const ids = Object.keys(products);
   const questions = content.questions.map((q) => content.gameSlug === "a8-match" ? {
     q: q.text, options: q.options.map((label, i) => ({
@@ -3371,7 +3357,7 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
   var HEX = /^#[0-9a-fA-F]{6}$/;
   // The customizer's "Game title" field defaults to the game's name; only a title
   // the customer actually changed should replace the start-screen headline.
-  var DEFAULT_HEADING = { match: 'Match', trivia: 'Trivia Rush', number: 'The Number', spin: 'Spin to Win', recall: 'Recall' };
+  var DEFAULT_HEADING = { match: 'Match', trivia: 'Trivia Rush', number: 'The Number', spin: 'Spin to Win', recall: 'Memory' };
   var copy = A.BRANDS.halden.games[gameId];
   var original = { title: copy.title, subtitle: copy.subtitle };
   var questionApi = window.CDH_QUIZ_CONTENT;
@@ -3380,6 +3366,21 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
   var contentReady = !params.has('contentId');
   var logoStyle = document.createElement('style');
   document.head.appendChild(logoStyle);
+  // Logo size, title size and title color from the customizer, applied as one stylesheet.
+  var brandStyle = { logo: 0, scale: 1, color: null };
+  function applyBrandStyle() {
+    var css = '';
+    if (brandStyle.logo) {
+      // !important: the single-game page sets a fixed 48px logo that would otherwise win.
+      css += 'body .stage .topbar .logo img{height:' + brandStyle.logo + 'px!important;max-width:' + (brandStyle.logo * 4) + 'px!important}';
+      // A tall logo makes the top bar taller on desktop; phones keep their two-row bar.
+      css += '@media (min-width:641px){.stage .topbar{height:calc(max(68px,' + (brandStyle.logo + 20) + 'px) + env(safe-area-inset-top,0px))}}';
+      css += '@media (max-width:640px){.stage .topbar{grid-template-rows:' + Math.max(60, brandStyle.logo + 8) + 'px auto}}';
+    }
+    if (brandStyle.scale !== 1) css += '.stage .t-hero{font-size:min(calc(clamp(40px,min(6.2vw,9.6vh),92px)*' + brandStyle.scale + '),16vw)}';
+    if (brandStyle.color) css += '.stage .t-hero{color:' + brandStyle.color + '}';
+    logoStyle.textContent = css;
+  }
 
   document.body.classList.add('a8-single');
 
@@ -3431,7 +3432,15 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
     if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim().slice(0, 160) : original.title;
     if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim().slice(0, 500) || original.subtitle;
     var size = Number(theme.logoSize);
-    if (isFinite(size) && size > 0) logoStyle.textContent = '.stage .topbar .logo img{height:' + Math.min(size, 80) + 'px}';
+    if (isFinite(size) && size > 0) brandStyle.logo = Math.min(size, 100);
+    // Title size is relative to the customizer's default (28px), so the default changes nothing.
+    var titleSize = Number(theme.headingSize);
+    if (isFinite(titleSize) && titleSize > 0) brandStyle.scale = Math.min(2.5, Math.max(0.4, titleSize / 28));
+    // White is the customizer's default title color for dark games, so here it means "unchanged".
+    if (typeof theme.headingColor === 'string') {
+      brandStyle.color = HEX.test(theme.headingColor) && !/^#f{3}(f{3})?$/i.test(theme.headingColor) ? theme.headingColor : null;
+    }
+    applyBrandStyle();
   }
 
   function signature() {
@@ -3534,6 +3543,8 @@ window.CDH_QUIZ_CONTENT={validateGameContent,adaptFiveGameContent};
   if (params.has('heading')) initial.heading = params.get('heading');
   if (params.has('tagline')) initial.tagline = params.get('tagline');
   if (params.has('logoSize')) initial.logoSize = params.get('logoSize');
+  if (params.has('headingSize')) initial.headingSize = params.get('headingSize');
+  if (params.has('headingColor')) initial.headingColor = params.get('headingColor');
   merge(initial);
   applied = signature();
   setTitle();

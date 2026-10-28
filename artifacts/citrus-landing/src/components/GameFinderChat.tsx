@@ -81,7 +81,7 @@ const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] 
       { label: "Fast-paced trivia", icon: Timer, next: { result: "a8-trivia-rush" } },
       { label: "Guess the statistic", icon: Gauge, next: { result: "a8-the-number" } },
       { label: "Prize wheel", icon: Gift, next: { result: "a8-spin-to-win" } },
-      { label: "Brand recall challenge", icon: Brain, next: { result: "a8-recall" } },
+      { label: "Memory challenge", icon: Brain, next: { result: "a8-recall" } },
       { label: "Lifestyle personality quiz", icon: HelpCircle, next: { result: "lexus-energy-quiz" } },
     ],
   },

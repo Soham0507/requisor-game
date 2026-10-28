@@ -7,6 +7,8 @@ for (const slug of QUESTION_GAME_SLUGS) {
     const input = sampleContent(slug);
     assert.equal(validateGameContent(input, slug).ok, true);
     assert.equal(validateGameContent(input, slug === "jeopardy" ? "a8-match" : "jeopardy").ok, false);
+    // Recall is memory cards only, so it has no questions to check (see its own test below).
+    if (slug === "a8-recall") return;
     assert.equal(validateGameContent({ ...input, questions: [] }, slug).ok, false);
     assert.equal(validateGameContent({ ...input, questions: Array(51).fill(input.questions[0]) }, slug).ok, false);
     assert.equal(validateGameContent({ ...input, questions: [{ ...input.questions[0], text: " " }] }, slug).ok, false);
@@ -36,8 +38,29 @@ test("Recall keeps six distinct memory pairs", () => {
   const input = sampleContent("a8-recall");
   const output = adaptFiveGameContent(input, {});
   assert.equal(new Set(output.pairs.map((p) => p.id)).size, 6);
-  assert.equal(output.questions[0].answer, 1);
+  // Memory cards only: no questions anywhere in the game's content.
+  assert.equal(output.questions, undefined);
+  assert.equal(input.questions.length, 0);
   assert.equal(validateGameContent({ ...input, cards: input.cards.slice(1) }, input.gameSlug).ok, false);
+});
+test("Recall cards are a name and an optional picture", () => {
+  const input = sampleContent("a8-recall");
+  assert.equal(validateGameContent(input, input.gameSlug).ok, true);
+  const png = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+  const withImage = { ...input, cards: input.cards.map((c, i) => (i === 0 ? { ...c, image: png } : c)) };
+  const result = validateGameContent(withImage, input.gameSlug);
+  assert.equal(result.ok, true);
+  assert.equal(result.content.cards[0].image, png);
+  assert.equal(adaptFiveGameContent(result.content, {}).pairs[0].image, png);
+  // Only uploaded raster images are accepted: no links, no SVG.
+  for (const image of ["https://example.com/x.png", "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=", "javascript:alert(1)"]) {
+    assert.equal(validateGameContent({ ...input, cards: input.cards.map((c, i) => (i === 0 ? { ...c, image } : c)) }, input.gameSlug).ok, false);
+  }
+  // Older content that still has questions or detail lines keeps loading; they are ignored or kept harmlessly.
+  const legacy = { ...input, questions: [{ text: "Old?", options: ["a", "b"], answerIndex: 0 }], cards: input.cards.map((c) => ({ ...c, detail: "Old detail" })) };
+  const legacyResult = validateGameContent(legacy, input.gameSlug);
+  assert.equal(legacyResult.ok, true);
+  assert.equal(legacyResult.content.questions.length, 0);
 });
 test("Jeopardy rejects duplicate tiles but allows the same value in different categories", () => {
   const input = sampleContent("jeopardy");

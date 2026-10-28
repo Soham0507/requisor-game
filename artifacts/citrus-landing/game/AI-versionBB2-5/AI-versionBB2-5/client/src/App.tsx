@@ -1464,12 +1464,6 @@ const ResultsScreen = ({
   stats: GameStats;
   onRestart: () => void;
 }) => {
-  const rank =
-    stats.score > 50
-      ? "Crypto-Agility Champion"
-      : stats.score > 20
-        ? "Automation All-Star"
-        : "PKI Rookie";
   const [showNameModal, setShowNameModal] = useState(true);
   const [playerInfo, setPlayerInfo] = useState({
     name: "",
@@ -1667,32 +1661,28 @@ const ResultsScreen = ({
         )}
       </AnimatePresence>
 
-      <div className="text-center mb-10 mt-4 z-10">
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-        >
-          <div className="text-slate-300 text-base font-bold uppercase tracking-widest mb-2">
-            Simulation Complete
-          </div>
-          <h1
-            className="text-5xl md:text-6xl lg:text-8xl font-bold text-white mb-4 tracking-tighter"
-            style={{ fontFamily: "'IBM Plex Mono', monospace" }}
-          >
-            {stats.score}{" "}
-            <span className="text-3xl text-slate-300 align-top">PTS</span>
-          </h1>
-          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full text-white font-bold border-2 border-white">
-            <Trophy size={18} />
-            {rank}
-          </div>
-        </motion.div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-8 mb-12 max-w-2xl mx-auto w-full">
-        {/* Stats Card */}
+      <div className="grid grid-cols-1 gap-8 mb-12 mt-4 max-w-2xl mx-auto w-full z-10">
         <Card className="border border-white/5 bg-slate-900/50">
-          <SuccessRate made={stats.shotsMade} taken={stats.shotsTaken} />
+          {/* Score, success rate and Play Again together in one card */}
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-center pb-6"
+            data-testid="results-score"
+          >
+            <div className="flex items-baseline justify-center gap-3">
+              <span
+                className="text-6xl md:text-7xl lg:text-8xl font-bold text-white tabular-nums tracking-tighter"
+                style={{ fontFamily: "'IBM Plex Mono', monospace" }}
+              >
+                {stats.score}
+              </span>
+              <span className="text-2xl md:text-3xl font-bold uppercase tracking-widest text-slate-400">PTS</span>
+            </div>
+          </motion.div>
+          <div className="border-t border-white/10 pt-6">
+            <SuccessRate made={stats.shotsMade} taken={stats.shotsTaken} />
+          </div>
           <div className="mt-6">
             <Button
               onClick={onRestart}
@@ -1990,8 +1980,9 @@ function GameApp() {
       <div className="relative z-10 w-full h-screen flex flex-col">
         {/* Navigation / Header - Minimal */}
         <header
-          className={`relative px-6 flex justify-between items-center z-50 border-b border-[rgba(75,0,255,0.2)] ${brand.navbarColor ? "" : "bg-black"}`}
-          style={{ height: Math.max(48, brand.logoSize + 16), ...(brand.navbarColor ? { backgroundColor: brand.navbarColor } : {}) }}
+          className={`relative pl-3 pr-6 flex justify-between items-center z-50 border-b border-[rgba(75,0,255,0.2)] ${brand.navbarColor ? "" : "bg-black"}`}
+          // The logo sits the same distance (12px) from the top, bottom and left edges of the bar.
+          style={{ height: Math.max(48, brand.logoSize + 24), ...(brand.navbarColor ? { backgroundColor: brand.navbarColor } : {}) }}
         >
           <Logo />
 

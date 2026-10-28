@@ -46,7 +46,7 @@
       "goals": ["engagement", "brand-recall"], "settings": ["trade-show", "training", "classroom", "retail", "virtual"],
       "formats": ["desktop", "phone", "tablet", "kiosk"], "inputs": ["touch", "mouse"], "players": ["solo"],
       "session": "self-paced", "energy": "calm", "hardware": [],
-      "synonyms": ["memory game", "match pairs", "flip cards", "test brand recall", "matching cards", "concentration"],
+      "synonyms": ["memory", "memory game", "recall", "match pairs", "flip cards", "test brand recall", "matching cards", "concentration"],
       "industries": [], "search_phrases": ["remember brand facts by matching six pairs", "card matching memory challenge"]
     },
     "jeopardy": {

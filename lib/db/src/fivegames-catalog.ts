@@ -8,7 +8,7 @@ export const FIVEGAMES_CATALOG: InsertGame[] = [
   ["a8-trivia-rush", "Trivia Rush", "A 60-second trivia challenge with rapid-fire questions, streak bonuses, and a leaderboard."],
   ["a8-the-number", "The Number", "Guess brand facts and product statistics using an interactive number dial."],
   ["a8-spin-to-win", "Spin to Win", "Answer three questions, grow your prize chances, and spin the reward wheel."],
-  ["a8-recall", "Recall", "Flip cards, match six pairs, and test how much you remember about the brand."],
+  ["a8-recall", "Memory", "Flip cards and match six pairs against the clock, with your brand on every card."],
 ].map(([slug, name, tagline]) => ({
   slug,
   name,

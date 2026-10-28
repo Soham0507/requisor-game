@@ -597,7 +597,7 @@ components:
           enum: [a8-match, a8-trivia-rush, a8-the-number, a8-spin-to-win, a8-recall, jeopardy]
         questions:
           type: array
-          minItems: 1
+          minItems: 0
           maxItems: 50
           items:
             $ref: "#/components/schemas/GameContentQuestion"
@@ -659,7 +659,7 @@ components:
           maxLength: 1000
     MemoryCard:
       type: object
-      required: [title, detail]
+      required: [title]
       properties:
         title:
           type: string
@@ -667,8 +667,8 @@ components:
           maxLength: 100
         detail:
           type: string
-          minLength: 1
           maxLength: 200
+          description: Older optional detail line. Memory cards now show only a name and a picture.
         image:
           type: string
           maxLength: 700000

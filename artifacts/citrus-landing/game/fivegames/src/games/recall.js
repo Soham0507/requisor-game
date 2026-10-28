@@ -1,15 +1,15 @@
-/* ---------- Game 5: Recall (memory match, then a recall quiz) ---------- */
+/* ---------- Game 5: Recall (memory match) ---------- */
 // A card shows its own uploaded picture when it has one, otherwise the icon tile.
 const cardPic = (p, size) => p.image
   ? `<span class="cimg"><img src="${esc(p.image)}" alt=""></span>`
   : ptile(p.icon, 'var(--brand)', size);
 
 GAMES.recall = {
-  id: 'recall', name: 'Recall',
+  id: 'recall', name: 'Memory',
   tile: {
-    kind: 'Memory + recall', title: 'Recall',
-    blurb: 'Players flip cards to match six brand features, then answer three questions on what they remember. You get a brand recall score for every player.',
-    chips: [['layout-grid', '6 pairs'], ['brain', 'Recall score'], ['trophy', 'Leaderboard']],
+    kind: 'Memory match', title: 'Memory',
+    blurb: 'Players flip cards to match six brand features, racing the clock. You get a memory score for every player, with a leaderboard.',
+    chips: [['layout-grid', '6 pairs'], ['timer', 'Timed'], ['trophy', 'Leaderboard']],
   },
   art(stage) {
     const pairs = stage.content.pairs;
@@ -35,7 +35,7 @@ GAMES.recall = {
           <button class="mcard up" data-i="${i}" data-id="${esc(p.id)}" style="animation-delay:${i * 40}ms" aria-label="Card ${i + 1}">
             <span class="in">
               <span class="mface mback"><span class="badge-mark">${hubInner(stage.brand)}</span></span>
-              <span class="mface mfront">${cardPic(p, null)}<b>${esc(p.title)}</b><small>${esc(p.detail)}</small></span>
+              <span class="mface mfront">${cardPic(p, null)}<b>${esc(p.title)}</b></span>
             </span>
             <span class="tick">${icon('check', 14, 3)}</span>
           </button>`).join('')}</div>
@@ -74,7 +74,7 @@ GAMES.recall = {
         a.classList.add('matched'); b.classList.add('matched'); found++; $found.textContent = found;
         const p = pairs.find((x) => x.id === a.dataset.id);
         Sound.correct();
-        stage.toast(`${cardPic(p, 34)}<span><b>${esc(p.title)}.</b> ${esc(p.detail)}</span>`, 2000);
+        stage.toast(`${cardPic(p, 34)}<span><b>${esc(p.title)}</b></span>`, 2000);
         if (found === pairs.length) {
           stage.stopEvery(timerId); lock = true;
           const final = Math.max(1, Math.floor((performance.now() - t0) / 1000));
@@ -89,34 +89,19 @@ GAMES.recall = {
     });
 
     const recallRound = async (elapsed) => {
-      stage.screen(`<div class="bigword"><h2>All six.</h2><p class="t-sub">Found in ${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')} with ${moves} moves. Now, what do you remember?</p></div>`);
+      const clock = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
+      stage.screen(`<div class="bigword"><h2>All six.</h2><p class="t-sub">Found in ${clock} with ${moves} moves.</p></div>`);
       Sound.win();
       await stage.wait(1800);
       if (!stage.live(ep)) return;
-      const qs = c.questions.map((q) => { const o = shuffle(q.options.map((_, i) => i)); return { q: q.q, options: o.map((i) => q.options[i]), answer: o.indexOf(q.answer) }; });
-      let right = 0;
-      for (let k = 0; k < qs.length; k++) {
-        stage.capsules(k, qs.length);
-        const q = qs[k];
-        const qel = stage.screen(`
-          <div class="qwrap" style="max-width:760px">
-            <div class="qhead"><div class="eyebrow">Recall ${k + 1} of ${qs.length}</div><h2 class="qtext sm">${esc(q.q)}</h2></div>
-            ${answersHTML(q.options, 'one')}
-          </div>`);
-        const ok = await new Promise((res) => bindAnswers(stage, qel, q.answer, (i, good) => res(good)));
-        if (!stage.live(ep)) return;
-        if (ok) right++;
-        await stage.wait(1100);
-        if (!stage.live(ep)) return;
-      }
       stage.top('');
+      // Memory only: a faster finish and fewer moves score higher. Scaled so it sits on the same range as the seeded leaderboard.
       const memory = Math.max(300, 1500 - Math.max(0, elapsed - 20) * 12 - Math.max(0, moves - 6) * 20);
-      const score = memory + right * 400;
-      const recallPct = Math.round((right / qs.length) * 100);
+      const score = Math.round(memory * 1.8);
       const data = await stage.lead({ ...c.lead, allowSkip: true, tile: ptile('brain', 'var(--brand)', 56) });
       if (!stage.live(ep)) return;
       const code = stage.code();
-      const lead = stage.saveLead(data, { result: `${right}/${qs.length} recalled`, score, code });
+      const lead = stage.saveLead(data, { result: `Matched all ${pairs.length} pairs in ${clock}`, score, code });
       const key = `${stage.brand.id}:recall`;
       const list = Boards.get(key, c.seed || []);
       let rank = null, meId = null;
@@ -127,12 +112,12 @@ GAMES.recall = {
             <div class="result-head">
               <div class="eyebrow">${lead ? `Great memory, ${esc(lead.firstName)}.` : 'Great memory.'}</div>
               <div class="result-score" data-count>0<small>pts</small></div>
-              <p class="t-sub">${rank ? (rank === 1 ? 'Top score today.' : `You’re #${rank} of ${list.length} players today.`) : `You remembered ${right} of ${qs.length} ${esc(stage.brand.name)} facts.`}</p>
+              <p class="t-sub">${rank ? (rank === 1 ? 'Top score today.' : `You’re #${rank} of ${list.length} players today.`) : `You matched all ${pairs.length} cards in ${moves} moves.`}</p>
             </div>
             <div class="stats" style="--n:3">
-              <div class="stat"><b>${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}</b><span>Time</span></div>
+              <div class="stat"><b>${clock}</b><span>Time</span></div>
               <div class="stat"><b>${moves}</b><span>Moves</span></div>
-              <div class="stat"><b>${recallPct}%</b><span>Brand recall</span></div>
+              <div class="stat"><b>${pairs.length}/${pairs.length}</b><span>Pairs</span></div>
             </div>
             ${stage.takeHome(c.takeHome.title, c.takeHome.sub, code)}
             ${stage.resultActions()}
@@ -141,7 +126,7 @@ GAMES.recall = {
         </div>`);
       const counter = $('[data-count]', res);
       stage.tween(1200, (k) => { counter.firstChild.nodeValue = fmt(Math.round(score * k)); });
-      if (right === qs.length || (rank && rank <= 3)) { Sound.win(); stage.confetti(); } else Sound.correct();
+      if (moves <= pairs.length + 3 || (rank && rank <= 3)) { Sound.win(); stage.confetti(); } else Sound.correct();
       stage.bindResult(res);
     };
   },

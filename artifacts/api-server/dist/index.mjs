@@ -55708,6 +55708,7 @@ var upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryMax = 60;
 var upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax = 1e4;
 var upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax = 40;
 var upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1e3;
+var upsertBrandingDraftBodyGameContentOneQuestionsMin = 0;
 var upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
 var upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
 var upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
@@ -55752,10 +55753,10 @@ var UpsertBrandingDraftBody = objectType({
       "step": numberType().optional(),
       "unit": stringType().max(upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax).optional(),
       "explanation": stringType().max(upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax).optional()
-    })).min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
+    })).min(upsertBrandingDraftBodyGameContentOneQuestionsMin).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax),
+      "detail": stringType().max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax).optional().describe("Older optional detail line. Memory cards now show only a name and a picture."),
       "image": stringType().max(upsertBrandingDraftBodyGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(upsertBrandingDraftBodyGameContentOneCardsMin).max(upsertBrandingDraftBodyGameContentOneCardsMax).optional()
   }), nullType()]).optional(),
@@ -55776,6 +55777,7 @@ var upsertBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
 var upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 1e4;
 var upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
 var upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1e3;
+var upsertBrandingDraftResponseGameContentOneQuestionsMin = 0;
 var upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
 var upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 var upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
@@ -55821,10 +55823,10 @@ var UpsertBrandingDraftResponse = objectType({
       "step": numberType().optional(),
       "unit": stringType().max(upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
       "explanation": stringType().max(upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
-    })).min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
+    })).min(upsertBrandingDraftResponseGameContentOneQuestionsMin).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax),
+      "detail": stringType().max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax).optional().describe("Older optional detail line. Memory cards now show only a name and a picture."),
       "image": stringType().max(upsertBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(upsertBrandingDraftResponseGameContentOneCardsMin).max(upsertBrandingDraftResponseGameContentOneCardsMax).optional()
   }), nullType()]).optional(),
@@ -55849,6 +55851,7 @@ var getBrandingDraftResponseGameContentOneQuestionsItemCategoryMax = 60;
 var getBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 1e4;
 var getBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
 var getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1e3;
+var getBrandingDraftResponseGameContentOneQuestionsMin = 0;
 var getBrandingDraftResponseGameContentOneQuestionsMax = 50;
 var getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 var getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
@@ -55894,10 +55897,10 @@ var GetBrandingDraftResponse = objectType({
       "step": numberType().optional(),
       "unit": stringType().max(getBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
       "explanation": stringType().max(getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
-    })).min(1).max(getBrandingDraftResponseGameContentOneQuestionsMax),
+    })).min(getBrandingDraftResponseGameContentOneQuestionsMin).max(getBrandingDraftResponseGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax),
+      "detail": stringType().max(getBrandingDraftResponseGameContentOneCardsItemDetailMax).optional().describe("Older optional detail line. Memory cards now show only a name and a picture."),
       "image": stringType().max(getBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(getBrandingDraftResponseGameContentOneCardsMin).max(getBrandingDraftResponseGameContentOneCardsMax).optional()
   }), nullType()]).optional(),
@@ -55922,6 +55925,7 @@ var getBrandingDraftContentResponseGameContentOneQuestionsItemCategoryMax = 60;
 var getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax = 1e4;
 var getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax = 40;
 var getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1e3;
+var getBrandingDraftContentResponseGameContentOneQuestionsMin = 0;
 var getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
 var getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
 var getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
@@ -55945,10 +55949,10 @@ var GetBrandingDraftContentResponse = objectType({
       "step": numberType().optional(),
       "unit": stringType().max(getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax).optional(),
       "explanation": stringType().max(getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax).optional()
-    })).min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
+    })).min(getBrandingDraftContentResponseGameContentOneQuestionsMin).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
     "cards": arrayType(objectType({
       "title": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemTitleMax),
-      "detail": stringType().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax),
+      "detail": stringType().max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax).optional().describe("Older optional detail line. Memory cards now show only a name and a picture."),
       "image": stringType().max(getBrandingDraftContentResponseGameContentOneCardsItemImageMax).optional().describe("Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.")
     })).min(getBrandingDraftContentResponseGameContentOneCardsMin).max(getBrandingDraftContentResponseGameContentOneCardsMax).optional()
   }), nullType()])
@@ -67638,7 +67642,7 @@ var FIVEGAMES_CATALOG = [
   ["a8-trivia-rush", "Trivia Rush", "A 60-second trivia challenge with rapid-fire questions, streak bonuses, and a leaderboard."],
   ["a8-the-number", "The Number", "Guess brand facts and product statistics using an interactive number dial."],
   ["a8-spin-to-win", "Spin to Win", "Answer three questions, grow your prize chances, and spin the reward wheel."],
-  ["a8-recall", "Recall", "Flip cards, match six pairs, and test how much you remember about the brand."]
+  ["a8-recall", "Memory", "Flip cards and match six pairs against the clock, with your brand on every card."]
 ].map(([slug, name2, tagline]) => ({
   slug,
   name: name2,
@@ -67707,7 +67711,9 @@ function validateGameContent(input, slug) {
     };
     if (!QUESTION_GAME_SLUGS.includes(slug)) fail("This game does not support custom questions.");
     if (!input || typeof input !== "object" || Array.isArray(input) || input.gameSlug !== slug) fail("The question file belongs to a different game.");
-    if (!Array.isArray(input.questions) || input.questions.length < 1 || input.questions.length > 50) fail("Add between 1 and 50 questions.");
+    const isRecall = slug === "a8-recall";
+    const rawQuestions = isRecall ? [] : input.questions;
+    if (!Array.isArray(rawQuestions) || !isRecall && rawQuestions.length < 1 || rawQuestions.length > 50) fail("Add between 1 and 50 questions.");
     const text2 = (value, label, max = 500, optional2 = false) => {
       if (optional2 && (value === void 0 || value === "")) return "";
       if (typeof value !== "string" || !value.trim() || value.length > max) fail(`${label} must contain 1\u2013${max} characters.`);
@@ -67717,7 +67723,7 @@ function validateGameContent(input, slug) {
       if (typeof value !== "number" || !Number.isFinite(value) || Math.abs(value) > 1e9 || integer3 && !Number.isInteger(value)) fail(`${label} must be a valid ${integer3 ? "whole " : ""}number.`);
       return value;
     };
-    const questions = input.questions.map((q2, index) => {
+    const questions = rawQuestions.map((q2, index) => {
       const label = `Question ${index + 1}`;
       if (!q2 || typeof q2 !== "object" || Array.isArray(q2)) fail(`${label} is not an object.`);
       const clean = { text: text2(q2.text, label), explanation: text2(q2.explanation, `${label}: explanation`, 1e3, true) };
@@ -67763,10 +67769,9 @@ function validateGameContent(input, slug) {
     if (input.cards !== void 0) {
       if (slug !== "a8-recall" || !Array.isArray(input.cards) || input.cards.length !== 6) fail("Recall needs exactly six memory cards.");
       content.cards = input.cards.map((card, i3) => {
-        const clean = {
-          title: text2(card?.title, `Memory card ${i3 + 1}: title`, 100),
-          detail: text2(card?.detail, `Memory card ${i3 + 1}: detail`, 200)
-        };
+        const clean = { title: text2(card?.title, `Memory card ${i3 + 1}: title`, 100) };
+        const detail = text2(card?.detail, `Memory card ${i3 + 1}: detail`, 200, true);
+        if (detail) clean.detail = detail;
         const image = card?.image;
         if (image !== void 0 && image !== null && image !== "") {
           if (typeof image !== "string" || image.length > CARD_IMAGE_MAX_CHARS || !CARD_IMAGE.test(image)) fail(`Memory card ${i3 + 1}: the image must be a PNG, JPG, WebP or GIF under 500 KB.`);
@@ -68893,7 +68898,7 @@ var DEFAULT_GAMES = [
     defaultSecondaryColor: "#fbbf24",
     defaultAccentColor: "#f97316",
     defaultLogoUrl: null,
-    defaultHeading: "47-Day Shootout",
+    defaultHeading: "Your Tagline",
     priceCents: 4900
   },
   {

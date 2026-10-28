@@ -30,7 +30,7 @@
   var HEX = /^#[0-9a-fA-F]{6}$/;
   // The customizer's "Game title" field defaults to the game's name; only a title
   // the customer actually changed should replace the start-screen headline.
-  var DEFAULT_HEADING = { match: 'Match', trivia: 'Trivia Rush', number: 'The Number', spin: 'Spin to Win', recall: 'Recall' };
+  var DEFAULT_HEADING = { match: 'Match', trivia: 'Trivia Rush', number: 'The Number', spin: 'Spin to Win', recall: 'Memory' };
   var copy = A.BRANDS.halden.games[gameId];
   var original = { title: copy.title, subtitle: copy.subtitle };
   var questionApi = window.CDH_QUIZ_CONTENT;
@@ -39,6 +39,21 @@
   var contentReady = !params.has('contentId');
   var logoStyle = document.createElement('style');
   document.head.appendChild(logoStyle);
+  // Logo size, title size and title color from the customizer, applied as one stylesheet.
+  var brandStyle = { logo: 0, scale: 1, color: null };
+  function applyBrandStyle() {
+    var css = '';
+    if (brandStyle.logo) {
+      // !important: the single-game page sets a fixed 48px logo that would otherwise win.
+      css += 'body .stage .topbar .logo img{height:' + brandStyle.logo + 'px!important;max-width:' + (brandStyle.logo * 4) + 'px!important}';
+      // A tall logo makes the top bar taller on desktop; phones keep their two-row bar.
+      css += '@media (min-width:641px){.stage .topbar{height:calc(max(68px,' + (brandStyle.logo + 20) + 'px) + env(safe-area-inset-top,0px))}}';
+      css += '@media (max-width:640px){.stage .topbar{grid-template-rows:' + Math.max(60, brandStyle.logo + 8) + 'px auto}}';
+    }
+    if (brandStyle.scale !== 1) css += '.stage .t-hero{font-size:min(calc(clamp(40px,min(6.2vw,9.6vh),92px)*' + brandStyle.scale + '),16vw)}';
+    if (brandStyle.color) css += '.stage .t-hero{color:' + brandStyle.color + '}';
+    logoStyle.textContent = css;
+  }
 
   document.body.classList.add('a8-single');
 
@@ -90,7 +105,15 @@
     if (typeof theme.heading === 'string') copy.title = theme.heading.trim() && theme.heading.trim() !== DEFAULT_HEADING[gameId] ? theme.heading.trim().slice(0, 160) : original.title;
     if (typeof theme.tagline === 'string') copy.subtitle = theme.tagline.trim().slice(0, 500) || original.subtitle;
     var size = Number(theme.logoSize);
-    if (isFinite(size) && size > 0) logoStyle.textContent = '.stage .topbar .logo img{height:' + Math.min(size, 80) + 'px}';
+    if (isFinite(size) && size > 0) brandStyle.logo = Math.min(size, 100);
+    // Title size is relative to the customizer's default (28px), so the default changes nothing.
+    var titleSize = Number(theme.headingSize);
+    if (isFinite(titleSize) && titleSize > 0) brandStyle.scale = Math.min(2.5, Math.max(0.4, titleSize / 28));
+    // White is the customizer's default title color for dark games, so here it means "unchanged".
+    if (typeof theme.headingColor === 'string') {
+      brandStyle.color = HEX.test(theme.headingColor) && !/^#f{3}(f{3})?$/i.test(theme.headingColor) ? theme.headingColor : null;
+    }
+    applyBrandStyle();
   }
 
   function signature() {
@@ -193,6 +216,8 @@
   if (params.has('heading')) initial.heading = params.get('heading');
   if (params.has('tagline')) initial.tagline = params.get('tagline');
   if (params.has('logoSize')) initial.logoSize = params.get('logoSize');
+  if (params.has('headingSize')) initial.headingSize = params.get('headingSize');
+  if (params.has('headingColor')) initial.headingColor = params.get('headingColor');
   merge(initial);
   applied = signature();
   setTitle();

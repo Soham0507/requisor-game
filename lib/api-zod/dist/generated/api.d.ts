@@ -479,6 +479,7 @@ export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemCategoryM
 export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemPointsMax = 10000;
 export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax = 40;
 export declare const upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const upsertBrandingDraftBodyGameContentOneQuestionsMin = 0;
 export declare const upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
 export declare const upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
 export declare const upsertBrandingDraftBodyGameContentOneCardsItemDetailMax = 200;
@@ -612,15 +613,15 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }>, "many">;
         cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
             title: zod.ZodString;
-            detail: zod.ZodString;
+            detail: zod.ZodOptional<zod.ZodString>;
             image: zod.ZodOptional<zod.ZodString>;
         }, "strip", zod.ZodTypeAny, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }>, "many">>;
     }, "strip", zod.ZodTypeAny, {
@@ -641,7 +642,7 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }, {
@@ -662,7 +663,7 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }>, zod.ZodNull]>>;
@@ -711,7 +712,7 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null | undefined;
@@ -758,7 +759,7 @@ export declare const UpsertBrandingDraftBody: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null | undefined;
@@ -777,6 +778,7 @@ export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemCateg
 export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 10000;
 export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
 export declare const upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const upsertBrandingDraftResponseGameContentOneQuestionsMin = 0;
 export declare const upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
 export declare const upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 export declare const upsertBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
@@ -911,15 +913,15 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }>, "many">;
         cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
             title: zod.ZodString;
-            detail: zod.ZodString;
+            detail: zod.ZodOptional<zod.ZodString>;
             image: zod.ZodOptional<zod.ZodString>;
         }, "strip", zod.ZodTypeAny, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }>, "many">>;
     }, "strip", zod.ZodTypeAny, {
@@ -940,7 +942,7 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }, {
@@ -961,7 +963,7 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }>, zod.ZodNull]>>;
@@ -1013,7 +1015,7 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null | undefined;
@@ -1062,7 +1064,7 @@ export declare const UpsertBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null | undefined;
@@ -1091,6 +1093,7 @@ export declare const getBrandingDraftResponseGameContentOneQuestionsItemCategory
 export declare const getBrandingDraftResponseGameContentOneQuestionsItemPointsMax = 10000;
 export declare const getBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
 export declare const getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const getBrandingDraftResponseGameContentOneQuestionsMin = 0;
 export declare const getBrandingDraftResponseGameContentOneQuestionsMax = 50;
 export declare const getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
 export declare const getBrandingDraftResponseGameContentOneCardsItemDetailMax = 200;
@@ -1225,15 +1228,15 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }>, "many">;
         cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
             title: zod.ZodString;
-            detail: zod.ZodString;
+            detail: zod.ZodOptional<zod.ZodString>;
             image: zod.ZodOptional<zod.ZodString>;
         }, "strip", zod.ZodTypeAny, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }>, "many">>;
     }, "strip", zod.ZodTypeAny, {
@@ -1254,7 +1257,7 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }, {
@@ -1275,7 +1278,7 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }>, zod.ZodNull]>>;
@@ -1327,7 +1330,7 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null | undefined;
@@ -1376,7 +1379,7 @@ export declare const GetBrandingDraftResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null | undefined;
@@ -1402,6 +1405,7 @@ export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemC
 export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemPointsMax = 10000;
 export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax = 40;
 export declare const getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1000;
+export declare const getBrandingDraftContentResponseGameContentOneQuestionsMin = 0;
 export declare const getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
 export declare const getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
 export declare const getBrandingDraftContentResponseGameContentOneCardsItemDetailMax = 200;
@@ -1454,15 +1458,15 @@ export declare const GetBrandingDraftContentResponse: zod.ZodObject<{
         }>, "many">;
         cards: zod.ZodOptional<zod.ZodArray<zod.ZodObject<{
             title: zod.ZodString;
-            detail: zod.ZodString;
+            detail: zod.ZodOptional<zod.ZodString>;
             image: zod.ZodOptional<zod.ZodString>;
         }, "strip", zod.ZodTypeAny, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }, {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }>, "many">>;
     }, "strip", zod.ZodTypeAny, {
@@ -1483,7 +1487,7 @@ export declare const GetBrandingDraftContentResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }, {
@@ -1504,7 +1508,7 @@ export declare const GetBrandingDraftContentResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     }>, zod.ZodNull]>;
@@ -1528,7 +1532,7 @@ export declare const GetBrandingDraftContentResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null;
@@ -1552,7 +1556,7 @@ export declare const GetBrandingDraftContentResponse: zod.ZodObject<{
         }[];
         cards?: {
             title: string;
-            detail: string;
+            detail?: string | undefined;
             image?: string | undefined;
         }[] | undefined;
     } | null;

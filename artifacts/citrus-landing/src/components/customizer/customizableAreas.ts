@@ -106,11 +106,11 @@ export function customizableAreas(slug: string): CustomizableArea[] {
     description: "Upload your own brand font for the title text.",
   });
   if (QUESTION_GAME_SLUGS.includes(slug)) {
-    areas.push({
-      id: "questions",
-      label: "Questions and answers",
-      description: "Write your own questions, answers and correct choices.",
-    });
+    areas.push(
+      slug === "a8-recall"
+        ? { id: "cards", label: "Memory cards", description: "An image and a name for each of the six cards." }
+        : { id: "questions", label: "Questions and answers", description: "Write your own questions, answers and correct choices." },
+    );
   }
   return areas;
 }

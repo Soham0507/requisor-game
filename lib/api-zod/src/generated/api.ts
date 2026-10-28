@@ -242,6 +242,7 @@ export const upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax = 40;
 
 export const upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax = 1000;
 
+export const upsertBrandingDraftBodyGameContentOneQuestionsMin = 0;
 export const upsertBrandingDraftBodyGameContentOneQuestionsMax = 50;
 
 export const upsertBrandingDraftBodyGameContentOneCardsItemTitleMax = 100;
@@ -293,10 +294,10 @@ export const UpsertBrandingDraftBody = zod.object({
   "step": zod.number().optional(),
   "unit": zod.string().max(upsertBrandingDraftBodyGameContentOneQuestionsItemUnitMax).optional(),
   "explanation": zod.string().max(upsertBrandingDraftBodyGameContentOneQuestionsItemExplanationMax).optional()
-})).min(1).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
+})).min(upsertBrandingDraftBodyGameContentOneQuestionsMin).max(upsertBrandingDraftBodyGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax),
+  "detail": zod.string().max(upsertBrandingDraftBodyGameContentOneCardsItemDetailMax).optional().describe('Older optional detail line. Memory cards now show only a name and a picture.'),
   "image": zod.string().max(upsertBrandingDraftBodyGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(upsertBrandingDraftBodyGameContentOneCardsMin).max(upsertBrandingDraftBodyGameContentOneCardsMax).optional()
 }),zod.null()]).optional(),
@@ -328,6 +329,7 @@ export const upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
 
 export const upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
 
+export const upsertBrandingDraftResponseGameContentOneQuestionsMin = 0;
 export const upsertBrandingDraftResponseGameContentOneQuestionsMax = 50;
 
 export const upsertBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
@@ -380,10 +382,10 @@ export const UpsertBrandingDraftResponse = zod.object({
   "step": zod.number().optional(),
   "unit": zod.string().max(upsertBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
   "explanation": zod.string().max(upsertBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
-})).min(1).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
+})).min(upsertBrandingDraftResponseGameContentOneQuestionsMin).max(upsertBrandingDraftResponseGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax),
+  "detail": zod.string().max(upsertBrandingDraftResponseGameContentOneCardsItemDetailMax).optional().describe('Older optional detail line. Memory cards now show only a name and a picture.'),
   "image": zod.string().max(upsertBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(upsertBrandingDraftResponseGameContentOneCardsMin).max(upsertBrandingDraftResponseGameContentOneCardsMax).optional()
 }),zod.null()]).optional(),
@@ -424,6 +426,7 @@ export const getBrandingDraftResponseGameContentOneQuestionsItemUnitMax = 40;
 
 export const getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax = 1000;
 
+export const getBrandingDraftResponseGameContentOneQuestionsMin = 0;
 export const getBrandingDraftResponseGameContentOneQuestionsMax = 50;
 
 export const getBrandingDraftResponseGameContentOneCardsItemTitleMax = 100;
@@ -476,10 +479,10 @@ export const GetBrandingDraftResponse = zod.object({
   "step": zod.number().optional(),
   "unit": zod.string().max(getBrandingDraftResponseGameContentOneQuestionsItemUnitMax).optional(),
   "explanation": zod.string().max(getBrandingDraftResponseGameContentOneQuestionsItemExplanationMax).optional()
-})).min(1).max(getBrandingDraftResponseGameContentOneQuestionsMax),
+})).min(getBrandingDraftResponseGameContentOneQuestionsMin).max(getBrandingDraftResponseGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(getBrandingDraftResponseGameContentOneCardsItemDetailMax),
+  "detail": zod.string().max(getBrandingDraftResponseGameContentOneCardsItemDetailMax).optional().describe('Older optional detail line. Memory cards now show only a name and a picture.'),
   "image": zod.string().max(getBrandingDraftResponseGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(getBrandingDraftResponseGameContentOneCardsMin).max(getBrandingDraftResponseGameContentOneCardsMax).optional()
 }),zod.null()]).optional(),
@@ -517,6 +520,7 @@ export const getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax =
 
 export const getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax = 1000;
 
+export const getBrandingDraftContentResponseGameContentOneQuestionsMin = 0;
 export const getBrandingDraftContentResponseGameContentOneQuestionsMax = 50;
 
 export const getBrandingDraftContentResponseGameContentOneCardsItemTitleMax = 100;
@@ -547,10 +551,10 @@ export const GetBrandingDraftContentResponse = zod.object({
   "step": zod.number().optional(),
   "unit": zod.string().max(getBrandingDraftContentResponseGameContentOneQuestionsItemUnitMax).optional(),
   "explanation": zod.string().max(getBrandingDraftContentResponseGameContentOneQuestionsItemExplanationMax).optional()
-})).min(1).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
+})).min(getBrandingDraftContentResponseGameContentOneQuestionsMin).max(getBrandingDraftContentResponseGameContentOneQuestionsMax),
   "cards": zod.array(zod.object({
   "title": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemTitleMax),
-  "detail": zod.string().min(1).max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax),
+  "detail": zod.string().max(getBrandingDraftContentResponseGameContentOneCardsItemDetailMax).optional().describe('Older optional detail line. Memory cards now show only a name and a picture.'),
   "image": zod.string().max(getBrandingDraftContentResponseGameContentOneCardsItemImageMax).optional().describe('Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.')
 })).min(getBrandingDraftContentResponseGameContentOneCardsMin).max(getBrandingDraftContentResponseGameContentOneCardsMax).optional()
 }),zod.null()])

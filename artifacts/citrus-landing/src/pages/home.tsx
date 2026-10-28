@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
+import { ArrowRight, Dribbble, Footprints, Gamepad2, Goal, Rocket } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { Footer } from "@/components/Footer";
 import "./landing.css";
@@ -329,13 +330,24 @@ export default function Home() {
             <div className="row rise d4">
               <Link className="btn" href="/games">Try Active8</Link>
               <a className="btn line" href="#work">See the games</a>
+              <a className="btn line" href="#pricing">Pilot Program</a>
             </div>
             <div className="tags rise d4">
-              <span className="tag">Basketball</span>
-              <span className="tag">Soccer</span>
-              <span className="tag">Cyber Runner</span>
-              <span className="tag">Retro Space Shooter</span>
-              <span className="tag">Gamification</span>
+              {[
+                ["Basketball", "/customize/basketball-shootout", Dribbble, "orange"],
+                ["Retro Space Shooter", "/customize/space-shooter-1", Rocket, "purple"],
+                ["Cyber Runner", "/customize/cyber-adventure", Footprints, "cyan"],
+                ["Soccer", "/customize/soccer-shootout", Goal, "green"],
+                ["Gamification", "/games", Gamepad2, "pink"],
+              ].map(([label, href, Icon, tone]) => (
+                <Link className={`tag t-${tone}`} href={href as string} key={label as string}>
+                  <i aria-hidden="true">
+                    <Icon size={15} strokeWidth={2.2} />
+                  </i>
+                  {label as string}
+                  <ArrowRight className="tag-go" size={13} strokeWidth={2.6} aria-hidden="true" />
+                </Link>
+              ))}
             </div>
           </div>
           <div className="hero-booth rise d3" aria-hidden="true">
@@ -433,6 +445,104 @@ export default function Home() {
             </div>
           </article>
 
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#4AA7BD" }}></i>
+                Active8 · Trivia activation
+                <span className="coming-tag">Customize now</span>
+              </div>
+              <h3>Jeopardy</h3>
+              <p className="story">
+                A branded trivia board for teams, with themed categories and fast audience participation. It turns
+                product knowledge into a live leaderboard moment, captures team leads up front, and shows you which
+                topics resonate.
+              </p>
+              <Link className="btn p" href="/customize/jeopardy">Customize Jeopardy</Link>
+            </div>
+            <div className="visual" data-tilt="">
+              <img src="/logo/jeopardy.png" alt="Jeopardy branded activation preview" loading="lazy" />
+              <div className="glass"></div>
+              <div className="plate">Jeopardy · Playable branding preview</div>
+            </div>
+          </article>
+
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#EC4899" }}></i>
+                Active8 · Memory game
+                <span className="coming-tag">Customize now</span>
+              </div>
+              <h3>Memory</h3>
+              <p className="story">
+                Players flip cards to match six brand features, racing the clock.
+                You get a memory score for every player, plus a leaderboard and lead capture.
+              </p>
+              <Link className="btn p" href="/customize/a8-recall">Customize Memory</Link>
+            </div>
+            <div className="visual" data-tilt="">
+              <video
+                className="gvid"
+                preload="metadata"
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster="/recordings/recall-poster.jpg"
+                style={{ objectFit: "contain", background: "#0b0f1a" }}
+                aria-label="Memory gameplay preview"
+              >
+                <source src="/recordings/recall.mp4#t=0.1" type="video/mp4" />
+              </video>
+              <div className="glass"></div>
+              <div className="plate">Memory · Playable branding preview</div>
+            </div>
+          </article>
+
+          <div className="coming-divider rv" role="separator" aria-label="More experiences">
+            <span className="coming-divider-line"></span>
+            <span className="coming-divider-label">
+              <i></i>
+              More Experiences
+              <i></i>
+            </span>
+            <span className="coming-divider-line end"></span>
+            <span className="coming-divider-copy">Playable previews and upcoming branded activations</span>
+          </div>
+
+          <article className="xp rv upcoming-card">
+            <div>
+              <div className="cat">
+                <i style={{ background: "#C8102E" }}></i>
+                Active8 · Quiz activation
+                <span className="coming-tag">Customize now</span>
+              </div>
+              <h3>Energy Quiz</h3>
+              <p className="story">
+                A five-question quiz that matches each visitor's energy and lifestyle to a personal result. It keeps
+                the line moving, makes every answer feel tailored, and captures leads along with the result they
+                care about.
+              </p>
+              <Link className="btn p" href="/customize/lexus-energy-quiz">Customize Energy Quiz</Link>
+            </div>
+            <div className="visual" data-tilt="">
+              <video
+                className="gvid"
+                preload="metadata"
+                autoPlay
+                loop
+                muted
+                playsInline
+                aria-label="Energy Quiz gameplay preview"
+              >
+                <source src="/logo/energy.mp4#t=0.1" type="video/mp4" />
+              </video>
+              <div className="glass"></div>
+              <div className="plate">Energy Quiz · Playable branding preview</div>
+            </div>
+          </article>
+
           <article className="xp rv">
             <div>
               <div className="cat"><i style={{ background: "#FEC553" }}></i>Endless runner</div>
@@ -471,17 +581,6 @@ export default function Home() {
             </div>
           </article>
 
-          <div className="coming-divider rv" role="separator" aria-label="More experiences">
-            <span className="coming-divider-line"></span>
-            <span className="coming-divider-label">
-              <i></i>
-              More Experiences
-              <i></i>
-            </span>
-            <span className="coming-divider-line end"></span>
-            <span className="coming-divider-copy">Playable previews and upcoming branded activations</span>
-          </div>
-
           <article className="xp rv">
             <div>
               <div className="cat">
@@ -510,93 +609,6 @@ export default function Home() {
               </video>
               <div className="glass"></div>
               <div className="plate">Coming soon · Golf Challenge</div>
-            </div>
-          </article>
-
-          <article className="xp rv upcoming-card">
-            <div>
-              <div className="cat">
-                <i style={{ background: "#4AA7BD" }}></i>
-                Active8 · Trivia activation
-                <span className="coming-tag">Customize now</span>
-              </div>
-              <h3>Jeopardy</h3>
-              <p className="story">
-                A branded trivia board for teams, with themed categories and fast audience participation. It turns
-                product knowledge into a live leaderboard moment, captures team leads up front, and shows you which
-                topics resonate.
-              </p>
-              <Link className="btn p" href="/customize/jeopardy">Customize Jeopardy</Link>
-            </div>
-            <div className="visual" data-tilt="">
-              <img src="/logo/jeopardy.png" alt="Jeopardy branded activation preview" loading="lazy" />
-              <div className="glass"></div>
-              <div className="plate">Jeopardy · Playable branding preview</div>
-            </div>
-          </article>
-
-          <article className="xp rv upcoming-card">
-            <div>
-              <div className="cat">
-                <i style={{ background: "#C8102E" }}></i>
-                Active8 · Quiz activation
-                <span className="coming-tag">Customize now</span>
-              </div>
-              <h3>Energy Quiz</h3>
-              <p className="story">
-                A five-question quiz that matches each visitor's energy and lifestyle to a personal result. It keeps
-                the line moving, makes every answer feel tailored, and captures leads along with the result they
-                care about.
-              </p>
-              <Link className="btn p" href="/customize/lexus-energy-quiz">Customize Energy Quiz</Link>
-            </div>
-            <div className="visual" data-tilt="">
-              <video
-                className="gvid"
-                preload="metadata"
-                autoPlay
-                loop
-                muted
-                playsInline
-                aria-label="Energy Quiz gameplay preview"
-              >
-                <source src="/logo/energy.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">Energy Quiz · Playable branding preview</div>
-            </div>
-          </article>
-
-          <article className="xp rv upcoming-card">
-            <div>
-              <div className="cat">
-                <i style={{ background: "#EC4899" }}></i>
-                Active8 · Memory game
-                <span className="coming-tag">Customize now</span>
-              </div>
-              <h3>Recall</h3>
-              <p className="story">
-                Players flip cards to match six brand features, then answer three questions on what they remember.
-                You get a brand recall score for every player, plus a leaderboard and lead capture.
-              </p>
-              <Link className="btn p" href="/customize/a8-recall">Customize Recall</Link>
-            </div>
-            <div className="visual" data-tilt="">
-              <video
-                className="gvid"
-                preload="metadata"
-                autoPlay
-                loop
-                muted
-                playsInline
-                poster="/recordings/recall-poster.jpg"
-                style={{ objectFit: "contain", background: "#0b0f1a" }}
-                aria-label="Recall gameplay preview"
-              >
-                <source src="/recordings/recall.mp4#t=0.1" type="video/mp4" />
-              </video>
-              <div className="glass"></div>
-              <div className="plate">Recall · Playable branding preview</div>
             </div>
           </article>
         </div>

@@ -45,7 +45,7 @@ const GAMES: InsertGame[] = [
     defaultSecondaryColor: "#fbbf24",
     defaultAccentColor: "#f97316",
     defaultLogoUrl: null,
-    defaultHeading: "47-Day Shootout",
+    defaultHeading: "Your Tagline",
     priceCents: 4900,
   },
   {

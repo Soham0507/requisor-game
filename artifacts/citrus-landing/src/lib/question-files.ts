@@ -61,6 +61,14 @@ function normalizeHeader(value: unknown, gameSlug: string): string {
   let header = String(value ?? "").replace(/^﻿/, "").trim().toLowerCase().replace(/[\s.\-]+/g, "_");
   // In a quiz sheet a bare "Answer" column names the right choice; only The Number uses it as a numeric answer.
   if (header === "answer" && gameSlug !== "a8-the-number") header = "correct_option";
+  if (gameSlug === "a8-recall") {
+    // Recall is memory cards only: just a name per card (a picture is added in the editor).
+    const recall: Record<string, string> = {
+      title: "card_title", name: "card_title", card: "card_title", feature: "card_title",
+      detail: "card_detail", details: "card_detail", description: "card_detail", fact: "card_detail", caption: "card_detail",
+    };
+    if (recall[header]) return recall[header];
+  }
   return HEADER_ALIASES[header] ?? header;
 }
 
@@ -71,6 +79,19 @@ function contentFromRows(rows: unknown[][], gameSlug: string): unknown {
   // Columns this game does not use (an ID column, notes) are ignored; a column it does use must appear only once.
   const used = headers.filter((value) => HEADERS.includes(value));
   if (new Set(used).size !== used.length) throw new Error("A column appears twice. Each column (question, options, correct answer…) should appear once.");
+  if (gameSlug === "a8-recall") {
+    const titleAt = headers.indexOf("card_title");
+    if (titleAt < 0) throw new Error('The sheet needs a "Card Title" column in its first row.');
+    const cardsOnly = filled.slice(1).map((row, index) => {
+      const cell = (at: number) => {
+        const value = at < 0 ? "" : row[at];
+        if (value !== null && value !== undefined && typeof value !== "string" && typeof value !== "number") throw new Error(`Row ${index + 2}: use plain text or numbers, not dates or objects.`);
+        return String(value ?? "").trim();
+      };
+      return { title: cell(titleAt) };
+    });
+    return { gameSlug, questions: [], cards: cardsOnly };
+  }
   if (!headers.includes("question")) throw new Error('The sheet needs a "Question" column in its first row.');
   const questions: Record<string, unknown>[] = [], cards: { title: string; detail: string }[] = [];
   for (const [index, row] of filled.slice(1).entries()) {
@@ -182,6 +203,10 @@ const TEMPLATE_ORDER = [
 
 function templateRows(gameSlug: string): string[][] {
   const content = sampleContent(gameSlug) as GameContent;
+  // Recall has no questions: its sample is just the memory cards.
+  if (gameSlug === "a8-recall") {
+    return [["card_title"], ...(content.cards ?? []).map((card: { title: string }) => [card.title])];
+  }
   const rows = content.questions.map((q: Record<string, any>) => {
     const data: Record<string, string> = { kind: "question", question: q.text, explanation: q.explanation || "" };
     q.options?.forEach((option: string, i: number) => { data[`option_${i + 1}`] = option; });
@@ -203,14 +228,14 @@ export async function downloadQuestionTemplate(gameSlug: string, format: "csv" |
   if (format === "xlsx") {
     const { default: writeWorkbook } = await import("write-excel-file/browser");
     await writeWorkbook(templateRows(gameSlug).map((row) => row.map((value) => ({ type: String, value }))), {
-      sheet: "Questions",
-    }).toFile(`${gameSlug}-questions.xlsx`);
+      sheet: gameSlug === "a8-recall" ? "Cards" : "Questions",
+    }).toFile(`${gameSlug}-${gameSlug === "a8-recall" ? "cards" : "questions"}.xlsx`);
     return;
   }
   const data = format === "json" ? JSON.stringify(sampleContent(gameSlug), null, 2)
     : "\uFEFF" + templateRows(gameSlug).map((row) => row.map((value) => `"${value.replace(/"/g, '""')}"`).join(",")).join("\r\n");
   const url = URL.createObjectURL(new Blob([data], { type: format === "json" ? "application/json" : "text/csv;charset=utf-8" }));
   const link = document.createElement("a");
-  link.href = url; link.download = `${gameSlug}-questions.${format}`; link.click();
+  link.href = url; link.download = `${gameSlug}-${gameSlug === "a8-recall" ? "cards" : "questions"}.${format}`; link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

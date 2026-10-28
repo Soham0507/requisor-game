@@ -12,7 +12,7 @@ import type { MemoryCard } from './memoryCard';
 export interface GameContent {
   gameSlug: GameContentGameSlug;
   /**
-     * @minItems 1
+     * @minItems 0
      * @maxItems 50
      */
   questions: GameContentQuestion[];

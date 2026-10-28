@@ -40,7 +40,7 @@ const DEFAULT_THEME: BrandTheme = {
   brandNameSize: 16,
   brandNameColor: "#ffffff",
   tagline: "",
-  heading: "47-Day Shootout",
+  heading: "Your Tagline",
   headingSize: 28,
   headingColor: "#94a3b8",
   bgUrl: null,

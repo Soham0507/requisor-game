@@ -29,7 +29,7 @@ interface DQ {
 }
 interface Draft {
   questions: DQ[];
-  cards: { title: string; detail: string; image?: string }[];
+  cards: { title: string; image?: string }[];
 }
 type Status = { kind: "idle" | "loading" | "error" | "ok" | "info"; message: string };
 
@@ -39,7 +39,8 @@ const str = (v: unknown) => (v === undefined || v === null ? "" : String(v));
 function fromContent(c: GameContent | null, slug: string): Draft {
   const src = (c ?? (sampleContent(slug) as GameContent)) as GameContent;
   return {
-    questions: src.questions.map((q: GameContentQuestion) => ({
+    // Recall is memory cards only, so it never carries questions.
+    questions: (slug === "a8-recall" ? [] : src.questions).map((q: GameContentQuestion) => ({
       id: uid++,
       text: q.text ?? "",
       options: q.options ? q.options.slice() : ["", ""],
@@ -56,7 +57,7 @@ function fromContent(c: GameContent | null, slug: string): Draft {
     })),
     cards:
       slug === "a8-recall"
-        ? ((src.cards ?? (sampleContent(slug) as GameContent).cards ?? []) as { title: string; detail: string; image?: string }[]).map((x) => ({ ...x }))
+        ? ((src.cards ?? (sampleContent(slug) as GameContent).cards ?? []) as { title: string; image?: string }[]).map((x) => ({ title: x.title, ...(x.image ? { image: x.image } : {}) }))
         : [],
   };
 }
@@ -175,7 +176,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
     setDraft(d);
     setBaseline(serialize(d, gameSlug));
     setFromTemplate(false);
-    setStatus({ kind: "ok", message: `Applied ${cleaned.questions.length} question${cleaned.questions.length === 1 ? "" : "s"} to the preview.` });
+    setStatus({ kind: "ok", message: isRecall ? "Applied your memory cards to the preview." : `Applied ${cleaned.questions.length} question${cleaned.questions.length === 1 ? "" : "s"} to the preview.` });
     onApply(cleaned);
   };
 
@@ -201,7 +202,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
       const parsed = await parseQuestionFile(file, gameSlug);
       setDraft(fromContent(parsed, gameSlug));
       setFromTemplate(false);
-      setStatus({ kind: "info", message: `Imported ${parsed.questions.length} questions. Review and edit them below, then press Apply.` });
+      setStatus({ kind: "info", message: isRecall ? `Imported ${parsed.cards?.length ?? 0} cards. Review and edit them below, then press Apply.` : `Imported ${parsed.questions.length} questions. Review and edit them below, then press Apply.` });
     } catch (err) {
       setStatus({ kind: "error", message: err instanceof Error ? err.message : "Could not read that file." });
     }
@@ -219,7 +220,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
     }
   };
   const clearCardImage = (i: number) =>
-    edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { title: x.title, detail: x.detail } : x)) }));
+    edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { title: x.title } : x)) }));
 
   const template = async (format: "csv" | "json" | "xlsx") => {
     try {
@@ -236,9 +237,11 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
   return (
     <section className="space-y-4 border-t border-border pt-6" aria-labelledby="qe-title" data-testid="question-editor">
       <div>
-        <h2 id="qe-title" className="text-base font-semibold">Questions</h2>
+        <h2 id="qe-title" className="text-base font-semibold">{isRecall ? "Memory cards" : "Questions"}</h2>
         <p className="text-xs text-muted-foreground mt-1">
-          Edit the questions below, or import a spreadsheet. Nothing reaches players until you apply it.
+          {isRecall
+            ? "Edit the cards below, or import a spreadsheet. Nothing reaches players until you apply it."
+            : "Edit the questions below, or import a spreadsheet. Nothing reaches players until you apply it."}
         </p>
       </div>
 
@@ -301,7 +304,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
 
       {!draft ? (
         <div className="rounded-md border border-dashed border-border p-4 space-y-3">
-          <p className="text-sm">This game uses its built-in questions until you apply your own.</p>
+          <p className="text-sm">{isRecall ? "This game uses its built-in cards until you apply your own." : "This game uses its built-in questions until you apply your own."}</p>
           <Button type="button" onClick={startTemplate} data-testid="button-start-template">
             Start from a sample
           </Button>
@@ -310,12 +313,12 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
         <>
           {fromTemplate && (
             <p className="text-xs rounded-md border border-border bg-muted px-3 py-2">
-              This is a sample, not the game's built-in questions. Replace it with your own.
+              {isRecall ? "This is a sample, not the game's built-in cards. Replace it with your own." : "This is a sample, not the game's built-in questions. Replace it with your own."}
             </p>
           )}
 
           {isRecall && (
-            <details className="rounded-md border border-border">
+            <details open className="rounded-md border border-border">
               <summary className="flex min-h-[44px] cursor-pointer select-none items-center px-3 text-sm font-medium">
                 Memory cards (6)
               </summary>
@@ -352,11 +355,8 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
                     </div>
                     <div className="grid min-w-0 flex-1 gap-2">
                     <Input id={`card-title-${i}`} data-testid={`input-card-title-${i}`} maxLength={100} value={c.title}
-                      placeholder={`Card ${i + 1} title`} aria-label={`Card ${i + 1} title`}
+                      placeholder={`Card ${i + 1} name`} aria-label={`Card ${i + 1} name`}
                       onChange={(e) => edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)) }))} />
-                    <Input id={`card-detail-${i}`} data-testid={`input-card-detail-${i}`} maxLength={200} value={c.detail}
-                      placeholder={`Card ${i + 1} detail`} aria-label={`Card ${i + 1} detail`}
-                      onChange={(e) => edit((d) => ({ ...d, cards: d.cards.map((x, j) => (j === i ? { ...x, detail: e.target.value } : x)) }))} />
                     </div>
                   </div>
                 ))}
@@ -364,7 +364,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
             </details>
           )}
 
-          <ol className="space-y-2">
+          <ol className={isRecall ? "hidden" : "space-y-2"}>
             {draft.questions.map((q, qi) => {
               const open = openId === undefined ? qi === 0 : openId === q.id;
               return (
@@ -475,16 +475,18 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
           {liveValidation && !liveValidation.ok && (dirty || fromTemplate) && (
             <p id="qe-validation" role="alert" className="text-xs text-destructive">{liveValidation.error}</p>
           )}
-          <Button type="button" variant="outline" disabled={draft.questions.length >= 50} onClick={addQuestion} data-testid="button-add-question">
-            <Plus size={14} /> Add question ({draft.questions.length}/50)
-          </Button>
+          {!isRecall && (
+            <Button type="button" variant="outline" disabled={draft.questions.length >= 50} onClick={addQuestion} data-testid="button-add-question">
+              <Plus size={14} /> Add question ({draft.questions.length}/50)
+            </Button>
+          )}
 
           <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
             <Button type="button" onClick={apply}
               disabled={(!dirty && !fromTemplate) || !liveValidation?.ok || status.kind === "loading"}
               aria-describedby={liveValidation && !liveValidation.ok ? "qe-validation" : undefined}
               data-testid="button-apply-questions">
-              Apply questions
+              Apply Changes
             </Button>
             {dirty && <span className="text-xs text-muted-foreground" data-testid="text-unapplied">Unapplied changes</span>}
             <Button type="button" variant="ghost" size="sm" className="ml-auto" onClick={() => setConfirmReset(true)} data-testid="button-reset-questions">
@@ -495,7 +497,7 @@ export function QuestionEditor({ gameSlug, content, onApply, onDirtyChange }: Pr
           {confirmReset && (
             <div role="alertdialog" aria-labelledby="qe-reset-title" className="space-y-3 rounded-md border border-destructive p-3">
               <p id="qe-reset-title" className="text-sm">
-                This deletes all your custom questions, including unapplied edits, and brings back the game's built-in questions.
+                {isRecall ? "This deletes all your custom cards, including unapplied edits, and brings back the game's built-in cards." : "This deletes all your custom questions, including unapplied edits, and brings back the game's built-in questions."}
               </p>
               <div className="flex flex-wrap gap-2">
                 <Button type="button" variant="destructive" size="sm" onClick={doReset} data-testid="button-confirm-reset">

@@ -37,8 +37,13 @@ export function adaptFiveGameContent(content: any, products: any): {
     questions: any;
 } | {
     rounds?: undefined;
+    pairs?: undefined;
 } | {
     rounds: any;
+    pairs?: undefined;
+} | {
+    pairs: any;
+    rounds?: undefined;
 };
 export const QUESTION_GAME_SLUGS: string[];
 export const MATCH_RESULTS: string[];

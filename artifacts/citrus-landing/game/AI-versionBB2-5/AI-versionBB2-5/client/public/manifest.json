@@ -1,6 +1,6 @@
 {
-  "name": "AppViewX 47-Day Shootout",
-  "short_name": "47-Day Shootout",
+  "name": "Basketball Shootout",
+  "short_name": "Basketball",
   "description": "Beat the 47-second shot clock. Play to Secure. Score with Automation.",
   "start_url": "/",
   "display": "standalone",

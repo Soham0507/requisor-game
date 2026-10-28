@@ -260,7 +260,7 @@ export function EnergyQuizEditor({ quiz, onApply, onDirtyChange }: Props) {
 
       <div className="flex flex-wrap items-center gap-2 border-t border-border pt-3">
         <Button type="button" onClick={apply} disabled={!dirty || !!error} data-testid="button-apply-quiz">
-          Apply questions
+          Apply Changes
         </Button>
         {dirty && <span className="text-xs text-muted-foreground">Unapplied changes</span>}
         <Button type="button" variant="ghost" size="sm" className="ml-auto" onClick={() => setConfirmReset(true)}>

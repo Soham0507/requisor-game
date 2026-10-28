@@ -66,7 +66,7 @@ const games = [
   { slug: "a8-trivia-rush", name: "Trivia Rush", color: "#0A84FF", mark: "60", caption: "SECONDS TO SHINE" },
   { slug: "a8-the-number", name: "The Number", color: "#14b8a6", mark: "42", caption: "MAKE YOUR GUESS" },
   { slug: "a8-spin-to-win", name: "Spin to Win", color: "#f59e0b", mark: "✦", caption: "ANSWER · SPIN · WIN" },
-  { slug: "a8-recall", name: "Recall", color: "#ec4899", mark: "↔", caption: "MATCH THE PAIRS" },
+  { slug: "a8-recall", name: "Memory", color: "#ec4899", mark: "↔", caption: "MATCH THE PAIRS" },
 ];
 const only = process.argv[2];
 if (only && !games.some((game) => game.slug === only)) throw new Error(`Unknown fivegames slug: ${only}`);

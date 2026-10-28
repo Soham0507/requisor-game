@@ -12,10 +12,10 @@ export interface MemoryCard {
        */
     title: string;
     /**
-       * @minLength 1
+       * Older optional detail line. Memory cards now show only a name and a picture.
        * @maxLength 200
        */
-    detail: string;
+    detail?: string;
     /**
        * Optional picture for this card, as a PNG, JPG, WebP or GIF data URL.
        * @maxLength 700000

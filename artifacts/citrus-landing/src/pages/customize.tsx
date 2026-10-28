@@ -86,7 +86,8 @@ function CustomizeGame({ slug }: { slug: string }) {
         brandNameColor: "#ffffff",
         heading: game.defaultHeading,
         headingSize: game.slug === "jeopardy" ? 48 : 28,
-        headingColor: game.slug === "jeopardy" ? "#00384f" : "#ffffff",
+        // The five Activate8 games have dark text on a light stage; the rest use white on a dark one.
+        headingColor: game.slug === "jeopardy" ? "#00384f" : game.slug.startsWith("a8-") ? "#1d1d1f" : "#ffffff",
         tagline: "",
         bgUrl: null,
         fontUrl: null,
