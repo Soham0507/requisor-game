@@ -130,7 +130,7 @@ const BRANDS = {
       recall: {
         eyebrow: 'Memory', title: 'Match the pairs. Beat the clock.',
         subtitle: 'Flip cards to find six {brand} features as fast as you can.',
-        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Timed' }],
+        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Fastest time wins' }],
         lead: { title: 'Save your score.', sub: 'We’ll send your results and a link to see these features up close.', cta: 'See my rank', sends: 'your score' },
         takeHome: { title: 'See it in person', sub: 'Scan to book a 20-minute {brand} walkaround.' },
         seed: [2640, 2410, 2180, 1960, 1720, 1490, 1260],
@@ -274,7 +274,7 @@ const BRANDS = {
       recall: {
         eyebrow: 'Memory', title: 'Match the pairs. Beat the clock.',
         subtitle: 'Flip cards to find six things that make {brand} different as fast as you can.',
-        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Timed' }],
+        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Fastest time wins' }],
         lead: { title: 'Save your score.', sub: 'We’ll send your results and our brewing guide.', cta: 'See my rank', sends: 'your score' },
         takeHome: { title: 'Taste the difference', sub: 'Scan for 15% off your first bag.' },
         seed: [2640, 2410, 2180, 1960, 1720, 1490, 1260],
@@ -420,7 +420,7 @@ const BRANDS = {
       recall: {
         eyebrow: 'Memory', title: 'Match the pairs. Beat the clock.',
         subtitle: 'Flip cards to find six {brand} capabilities as fast as you can.',
-        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Timed' }],
+        cta: 'Deal the cards', meta: [{ icon: 'layout-grid', text: '6 pairs' }, { icon: 'timer', text: 'Fastest time wins' }],
         lead: { title: 'Save your score.', sub: 'We’ll send your results and a short platform tour.', cta: 'See my rank', sends: 'your score' },
         takeHome: { title: 'See it live', sub: 'Scan to book a 20-minute demo.' },
         seed: [2640, 2410, 2180, 1960, 1720, 1490, 1260],

@@ -173,14 +173,18 @@ function resolveText(obj, brand) {
 const SEED_NAMES = ['Ava R.', 'Jordan T.', 'Priya S.', 'Luis M.', 'Hannah K.', 'Dev P.', 'Sam W.', 'Aisha B.', 'Chris O.', 'Elena V.', 'Marcus L.', 'Nora H.'];
 const Boards = {
   data: {},
-  get(key, seedScores) {
+  order: {},
+  // A board ranks the highest score first, or with order 'asc' the lowest first (a finishing time; fewer moves breaks a tie).
+  sorter(key) { return this.order[key] === 'asc' ? (a, b) => a.score - b.score || (a.tie || 0) - (b.tie || 0) : (a, b) => b.score - a.score; },
+  get(key, seedScores, order) {
+    if (order) this.order[key] = order;
     if (!this.data[key]) {
       const names = shuffle(SEED_NAMES);
-      this.data[key] = seedScores.map((score, i) => ({ id: uid(), name: names[i % names.length], score, seed: true })).sort((a, b) => b.score - a.score);
+      this.data[key] = seedScores.map((score, i) => ({ id: uid(), name: names[i % names.length], score, seed: true })).sort(this.sorter(key));
     }
     return this.data[key];
   },
-  add(key, entry) { const list = this.data[key]; list.push(entry); list.sort((a, b) => b.score - a.score); return list.indexOf(entry) + 1; },
+  add(key, entry) { const list = this.data[key]; list.push(entry); list.sort(this.sorter(key)); return list.indexOf(entry) + 1; },
 };
 function boardHTML(list, meId, opts = {}) {
   const fmtScore = opts.format || ((s) => fmt(s));

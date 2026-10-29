@@ -477,7 +477,7 @@ export default function Home() {
               <h3>Memory</h3>
               <p className="story">
                 Players flip cards to match six brand features, racing the clock.
-                You get a memory score for every player, plus a leaderboard and lead capture.
+                The fastest time tops the leaderboard, and every player is captured as a lead.
               </p>
               <Link className="btn p" href="/customize/a8-recall">Customize Memory</Link>
             </div>

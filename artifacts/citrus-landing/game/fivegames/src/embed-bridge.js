@@ -183,7 +183,7 @@
     }
     var name = ((lead.firstName || '') + ' ' + (lead.lastName || '')).trim() || 'Player';
     var extra = {};
-    ['game', 'result', 'score', 'code', 'optIn'].forEach(function (key) {
+    ['game', 'result', 'score', 'timeSeconds', 'moves', 'code', 'optIn'].forEach(function (key) {
       if (lead[key] !== undefined) extra[key] = lead[key];
     });
     function save() {

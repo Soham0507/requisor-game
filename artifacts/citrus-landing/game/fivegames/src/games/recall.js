@@ -4,12 +4,15 @@ const cardPic = (p, size) => p.image
   ? `<span class="cimg"><img src="${esc(p.image)}" alt=""></span>`
   : ptile(p.icon, 'var(--brand)', size);
 
+// m:ss for a number of seconds
+const clockOf = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+
 GAMES.recall = {
   id: 'recall', name: 'Memory',
   tile: {
     kind: 'Memory match', title: 'Memory',
-    blurb: 'Players flip cards to match six brand features, racing the clock. You get a memory score for every player, with a leaderboard.',
-    chips: [['layout-grid', '6 pairs'], ['timer', 'Timed'], ['trophy', 'Leaderboard']],
+    blurb: 'Players flip cards to match six brand features, racing the clock. The fastest finish tops the leaderboard.',
+    chips: [['layout-grid', '6 pairs'], ['timer', 'Fastest time wins'], ['trophy', 'Leaderboard']],
   },
   art(stage) {
     const pairs = stage.content.pairs;
@@ -95,38 +98,35 @@ GAMES.recall = {
       await stage.wait(1800);
       if (!stage.live(ep)) return;
       stage.top('');
-      // Memory only: a faster finish and fewer moves score higher. Scaled so it sits on the same range as the seeded leaderboard.
-      const memory = Math.max(300, 1500 - Math.max(0, elapsed - 20) * 12 - Math.max(0, moves - 6) * 20);
-      const score = Math.round(memory * 1.8);
+      // Time is the whole game: the leaderboard ranks the fastest finish first (fewer moves breaks a tie).
       const data = await stage.lead({ ...c.lead, allowSkip: true, tile: ptile('brain', 'var(--brand)', 56) });
       if (!stage.live(ep)) return;
       const code = stage.code();
-      const lead = stage.saveLead(data, { result: `Matched all ${pairs.length} pairs in ${clock}`, score, code });
-      const key = `${stage.brand.id}:recall`;
-      const list = Boards.get(key, c.seed || []);
+      const lead = stage.saveLead(data, { result: `Matched all ${pairs.length} pairs in ${clock}`, score: clock, timeSeconds: elapsed, moves, code });
+      const key = `${stage.brand.id}:recall-time`;
+      const list = Boards.get(key, c.seedTimes || [19, 23, 27, 32, 38, 45, 53], 'asc');
       let rank = null, meId = null;
-      if (lead) { const me = { id: uid(), name: `${lead.firstName} ${lead.lastName ? lead.lastName[0] + '.' : ''}`.trim(), score }; meId = me.id; rank = Boards.add(key, me); }
+      if (lead) { const me = { id: uid(), name: `${lead.firstName} ${lead.lastName ? lead.lastName[0] + '.' : ''}`.trim(), score: elapsed, tie: moves }; meId = me.id; rank = Boards.add(key, me); }
       const res = stage.screen(`
         <div class="result split">
           <div class="result-main">
             <div class="result-head">
               <div class="eyebrow">${lead ? `Great memory, ${esc(lead.firstName)}.` : 'Great memory.'}</div>
-              <div class="result-score" data-count>0<small>pts</small></div>
-              <p class="t-sub">${rank ? (rank === 1 ? 'Top score today.' : `You’re #${rank} of ${list.length} players today.`) : `You matched all ${pairs.length} cards in ${moves} moves.`}</p>
+              <div class="result-score" data-count>0:00<small>time</small></div>
+              <p class="t-sub">${rank ? (rank === 1 ? 'Fastest time today.' : `You’re #${rank} of ${list.length} today.`) : `You matched all ${pairs.length} cards in ${moves} moves.`}</p>
             </div>
             <div class="stats" style="--n:3">
-              <div class="stat"><b>${clock}</b><span>Time</span></div>
               <div class="stat"><b>${moves}</b><span>Moves</span></div>
               <div class="stat"><b>${pairs.length}/${pairs.length}</b><span>Pairs</span></div>
+              <div class="stat"><b>${rank ? `#${rank}` : '—'}</b><span>Rank</span></div>
             </div>
-            ${stage.takeHome(c.takeHome.title, c.takeHome.sub, code)}
             ${stage.resultActions()}
           </div>
-          <div class="result-side">${boardHTML(list, meId)}</div>
+          <div class="result-side">${boardHTML(list, meId, { title: 'Fastest times today', format: clockOf })}</div>
         </div>`);
       const counter = $('[data-count]', res);
-      stage.tween(1200, (k) => { counter.firstChild.nodeValue = fmt(Math.round(score * k)); });
-      if (moves <= pairs.length + 3 || (rank && rank <= 3)) { Sound.win(); stage.confetti(); } else Sound.correct();
+      stage.tween(1200, (k) => { counter.firstChild.nodeValue = clockOf(Math.round(elapsed * k)); });
+      if ((rank && rank <= 3) || moves <= pairs.length + 3) { Sound.win(); stage.confetti(); } else Sound.correct();
       stage.bindResult(res);
     };
   },
