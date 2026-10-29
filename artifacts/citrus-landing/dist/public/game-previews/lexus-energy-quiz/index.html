@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    {{GA4_SNIPPET}}
+    
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
@@ -2679,6 +2679,19 @@
               titleEl.textContent = heading.toUpperCase();
             }
           }
+          // Title size and color from the customizer. Size is relative to its
+          // 28px default, so the default changes nothing (capped so a long
+          // title still fits the card); white is already the title's color.
+          if (titleEl) {
+            var titleSize = Number(theme.headingSize);
+            if (isFinite(titleSize) && titleSize > 0) {
+              var titleScale = Math.min(1.5, Math.max(0.5, titleSize / 28));
+              titleEl.style.zoom = titleScale === 1 ? "" : String(titleScale);
+            }
+            if (typeof theme.headingColor === "string" && hex.test(theme.headingColor)) {
+              titleEl.style.color = /^#f{6}$/i.test(theme.headingColor) ? "" : theme.headingColor;
+            }
+          }
           if (theme.tagline && taglineEl) {
             taglineEl.textContent = theme.tagline;
           }
@@ -2702,6 +2715,10 @@
           if (Number.isFinite(logoSize) && logoSize > 0) theme.logoSize = logoSize;
           if (params.has("heading")) theme.heading = params.get("heading");
           if (params.has("tagline")) theme.tagline = params.get("tagline");
+          var headingSize = Number(params.get("headingSize"));
+          if (Number.isFinite(headingSize) && headingSize > 0) theme.headingSize = headingSize;
+          var headingColor = params.get("headingColor");
+          if (headingColor && hex.test(headingColor)) theme.headingColor = headingColor;
           var primaryColor = params.get("primaryColor");
           var secondaryColor = params.get("secondaryColor");
           var accentColor = params.get("accentColor");

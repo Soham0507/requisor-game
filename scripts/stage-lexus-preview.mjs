@@ -50,6 +50,9 @@ mkdirSync(outDir, { recursive: true });
 
 let html = readFileSync(path.join(srcDir, "lexus_energy_quiz_tuned_v018.html"), "utf8");
 html = relativize(html);
+// The source page carries a {{GA4_SNIPPET}} placeholder that its own server.js fills in. Served statically it would
+// print as stray text (black on black) and squeeze the whole game sideways, so drop it from the staged copy.
+html = html.replace("{{GA4_SNIPPET}}", "");
 // A caching service worker fights the customizer's live-preview loop —
 // every branding/logo change would need a hard cache-bust to actually show
 // up in the iframe. Disabled only in this staged preview copy.
