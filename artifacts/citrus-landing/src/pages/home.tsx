@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
-import { ArrowRight, Dribbble, Footprints, Gamepad2, Goal, Rocket } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { Footer } from "@/components/Footer";
 import "./landing.css";
@@ -332,23 +331,6 @@ export default function Home() {
               <a className="btn line" href="#work">See the games</a>
               <a className="btn line" href="#pricing">Pilot Program</a>
             </div>
-            <div className="tags rise d4">
-              {[
-                ["Basketball", "/customize/basketball-shootout", Dribbble, "orange"],
-                ["Retro Space Shooter", "/customize/space-shooter-1", Rocket, "purple"],
-                ["Cyber Runner", "/customize/cyber-adventure", Footprints, "cyan"],
-                ["Soccer", "/customize/soccer-shootout", Goal, "green"],
-                ["Gamification", "/games", Gamepad2, "pink"],
-              ].map(([label, href, Icon, tone]) => (
-                <Link className={`tag t-${tone}`} href={href as string} key={label as string}>
-                  <i aria-hidden="true">
-                    <Icon size={15} strokeWidth={2.2} />
-                  </i>
-                  {label as string}
-                  <ArrowRight className="tag-go" size={13} strokeWidth={2.6} aria-hidden="true" />
-                </Link>
-              ))}
-            </div>
           </div>
           <div className="hero-booth rise d3" aria-hidden="true">
             <div className="dev dev-tv">
@@ -412,6 +394,59 @@ export default function Home() {
             >
               <source src="/logo/showcase.mp4" type="video/mp4" />
             </video>
+          </div>
+        </div>
+      </section>
+
+      <section className="pilot" id="pricing">
+        <div className="wrap">
+          <div className="rv">
+            <span className="pilot-badge"><i aria-hidden="true" />Limited pilot program</span>
+            <h2>
+              Limited pilot pricing,
+              <br />
+              <span className="pilot-grad">starting at $2,500.</span>
+            </h2>
+            <p className="pilot-lead">
+              A limited-time pilot lets you bring Activate to your next event at a fraction of our standard price — fully turnkey,
+              fully supported, and built to prove out the engagement before you scale.
+            </p>
+          </div>
+
+          <div className="pilot-hero rv">
+            <div>
+              <span className="pilot-hero-eyebrow">Introducing limited pilot pricing</span>
+              <p className="pilot-amount">Starting at $2,500</p>
+              <p className="pilot-per">Per activation · turnkey hardware and live support included</p>
+            </div>
+            <a className="pilot-cta" href="mailto:support@requisor.io?subject=Activate%20pilot%20program">Activate now →</a>
+          </div>
+
+          <h3 className="pilot-subhead rv">What the pilot includes</h3>
+          <div className="pilot-grid rv">
+            {[
+              ["blue", "Elevate your brand", "Engaging interactives that put your brand front and center at every event."],
+              ["purple", "Cost effective & scalable", "Pilot pricing makes it easy to start small and scale up once you see the results."],
+              ["pink", "Real-time branding", "Your branding applied live across multiple elements throughout the interactive."],
+              ["orange", "Leaderboard-driven engagement", "Competitive leaderboards keep attendees playing and pull a crowd to your booth."],
+              ["blue", "Integrated lead capture", "Built-in registration and data analytics turn every play into a usable lead."],
+              ["purple", "Risk-free, fully supported", "Live remote tech support throughout your event, so you’re never on your own."],
+              ["pink", "Turnkey hardware available", "Bundled iPads or larger touchscreens are available."],
+              ["orange", "Room to go bigger", "More customized elements and LED wall integrations available as you scale."],
+            ].map(([tone, title, text]) => (
+              <article className="pilot-card" key={title}>
+                <i className={`pilot-dot ${tone}`} aria-hidden="true" />
+                <div>
+                  <h4>{title}</h4>
+                  <p>{text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="pilot-banner rv">
+            <strong>Pilot pricing is limited — reserve your activation.</strong>
+            <a href="https://activate.requisor.io" target="_blank" rel="noopener noreferrer">activate.requisor.io →</a>
           </div>
         </div>
       </section>
@@ -771,59 +806,6 @@ export default function Home() {
                 <p>{description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="pilot" id="pricing">
-        <div className="wrap">
-          <div className="rv">
-            <span className="pilot-badge"><i aria-hidden="true" />Limited pilot program</span>
-            <h2>
-              Limited pilot pricing,
-              <br />
-              <span className="pilot-grad">starting at $2,500.</span>
-            </h2>
-            <p className="pilot-lead">
-              A limited-time pilot lets you bring Activate to your next event at a fraction of our standard price — fully turnkey,
-              fully supported, and built to prove out the engagement before you scale.
-            </p>
-          </div>
-
-          <div className="pilot-hero rv">
-            <div>
-              <span className="pilot-hero-eyebrow">Introducing limited pilot pricing</span>
-              <p className="pilot-amount">Starting at $2,500</p>
-              <p className="pilot-per">Per activation · turnkey hardware and live support included</p>
-            </div>
-            <a className="pilot-cta" href="mailto:support@requisor.io?subject=Activate%20pilot%20program">Activate now →</a>
-          </div>
-
-          <h3 className="pilot-subhead rv">What the pilot includes</h3>
-          <div className="pilot-grid rv">
-            {[
-              ["blue", "Elevate your brand", "Engaging interactives that put your brand front and center at every event."],
-              ["purple", "Cost effective & scalable", "Pilot pricing makes it easy to start small and scale up once you see the results."],
-              ["pink", "Real-time branding", "Your branding applied live across multiple elements throughout the interactive."],
-              ["orange", "Leaderboard-driven engagement", "Competitive leaderboards keep attendees playing and pull a crowd to your booth."],
-              ["blue", "Integrated lead capture", "Built-in registration and data analytics turn every play into a usable lead."],
-              ["purple", "Risk-free, fully supported", "Live remote tech support throughout your event, so you’re never on your own."],
-              ["pink", "Turnkey hardware available", "Bundled iPads or larger touchscreens are available."],
-              ["orange", "Room to go bigger", "More customized elements and LED wall integrations available as you scale."],
-            ].map(([tone, title, text]) => (
-              <article className="pilot-card" key={title}>
-                <i className={`pilot-dot ${tone}`} aria-hidden="true" />
-                <div>
-                  <h4>{title}</h4>
-                  <p>{text}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="pilot-banner rv">
-            <strong>Pilot pricing is limited — reserve your activation.</strong>
-            <a href="https://activate.requisor.io" target="_blank" rel="noopener noreferrer">activate.requisor.io →</a>
           </div>
         </div>
       </section>

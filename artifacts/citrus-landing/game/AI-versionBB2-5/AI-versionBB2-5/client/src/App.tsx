@@ -1077,16 +1077,16 @@ const GameScreen = ({
         <div className="flex-1 relative flex flex-col items-center min-h-[350px]">
           {/* Power Meter - Left Side */}
           <div
-            className="fixed left-14 md:left-11 lg:left-15 bottom-1/6 flex flex-col items-start z-40"
+            className="fixed left-3 md:left-6 lg:left-8 bottom-1/6 flex flex-col items-start z-40"
             data-testid="power-meter"
           >
             <div
-              className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-2"
+              className="text-sm md:text-base font-black text-white uppercase tracking-[0.2em] mb-2"
               style={{ textShadow: "0 0 10px rgba(255,255,255,0.5)" }}
             >
               POWER
             </div>
-            <div className=" relative w-8 h-52 rounded-lg overflow-visible">
+            <div className=" relative w-11 md:w-14 h-[clamp(208px,30vh,300px)] rounded-xl overflow-visible">
               <div
                 className="absolute inset-0 rounded-lg bg-black/60 border border-white/10"
                 style={{
@@ -1139,7 +1139,7 @@ const GameScreen = ({
                   }}
                 />
                 <div
-                  className="absolute -right-7 text-[9px] font-black text-green-400"
+                  className="absolute -right-11 text-xs md:text-sm font-black text-green-400"
                   style={{ textShadow: "0 0 6px rgba(34,197,94,0.8)" }}
                 >
                   BEST
@@ -1160,7 +1160,7 @@ const GameScreen = ({
 
             <div
               ref={powerTextRef}
-              className="mt-2 text-sm font-black tabular-nums font-display"
+              className="mt-2 text-3xl md:text-4xl font-black tabular-nums font-display"
               style={{
                 color:
                   power < 30
@@ -1179,11 +1179,11 @@ const GameScreen = ({
               {power}%
             </div>
             <div className="flex flex-col items-start mt-1 gap-0.5">
-              <div className="text-[10px] font-bold text-white uppercase tracking-wider">
+              <div className="text-xs md:text-sm font-bold text-white uppercase tracking-wider">
                 Hold
               </div>
               <div
-                className="px-2 py-0.5 rounded bg-black/70 border border-white text-[9px] font-bold text-white tracking-wider"
+                className="px-3 py-1 rounded-md bg-black/70 border border-white text-xs md:text-sm font-bold text-white tracking-wider"
                 style={{ boxShadow: "0 1px 3px rgba(0,0,0,0.3)" }}
               >
                 SPACE
@@ -1212,14 +1212,12 @@ const GameScreen = ({
                 animate={{ opacity: 1, scale: 1.1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                className={`fixed top-40 left-1/2 -translate-x-1/2 text-4xl font-black font-display uppercase tracking-tight z-50 ${feedback === "Miss!" ? "text-white" : feedback === "Swish!" ? "text-white" : "text-white"}`}
+                className="fixed top-36 md:top-40 left-1/2 -translate-x-1/2 text-7xl md:text-9xl font-black font-display uppercase tracking-tight text-white z-50 whitespace-nowrap pointer-events-none"
                 style={{
                   textShadow:
                     feedback === "Miss!"
-                      ? "0 0 30px rgba(255,255,255,1)"
-                      : feedback === "Swish!"
-                        ? "0 0 40px rgba(255,255,255,1)"
-                        : "0 0 30px rgba(255,255,255,1)",
+                      ? "0 0 40px rgba(239,68,68,0.95), 0 0 80px rgba(239,68,68,0.6), 0 6px 0 rgba(0,0,0,0.45)"
+                      : "0 0 40px rgba(255,255,255,1), 0 0 80px rgba(255,255,255,0.5), 0 6px 0 rgba(0,0,0,0.45)",
                 }}
               >
                 {feedback}
@@ -1374,7 +1372,7 @@ const GameScreen = ({
                 if (chargingRef.current) releaseShoot();
               }}
               disabled={isShooting}
-              className={`w-43 h-11 rounded-lg text-white font-bold text-lg flex items-center justify-center gap-2 backdrop-blur-xs disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden select-none border border-white`}
+              className="w-72 md:w-80 h-16 md:h-[72px] rounded-xl text-white font-extrabold text-2xl md:text-3xl uppercase tracking-wide flex items-center justify-center gap-3 bg-white/10 backdrop-blur-xs shadow-[0_0_28px_rgba(255,255,255,0.35)] disabled:opacity-40 disabled:cursor-not-allowed relative overflow-hidden select-none border-2 border-white"
               data-testid="button-shoot"
             >
               {isCharging && (
@@ -1388,8 +1386,8 @@ const GameScreen = ({
                   transition={{ duration: 0 }}
                 />
               )}
-              <span className="relative z-10 flex items-center gap-1">
-                <Shield className="w-5 h-5" />
+              <span className="relative z-10 flex items-center gap-2">
+                <Shield className="w-7 h-7 md:w-8 md:h-8" />
                 {isShooting
                   ? "Shooting..."
                   : isCharging
@@ -1437,20 +1435,42 @@ function LogoPopup() {
           aria-label="Brand logo"
           data-testid="logo-popup"
         >
-          <motion.div
-            initial={{ scale: 0.45, opacity: 0, y: 40, rotate: -4 }}
-            animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 240, damping: 16 }}
-            className="rounded-3xl bg-white p-6 shadow-[0_0_90px_rgba(255,255,255,0.3)] sm:p-10"
-          >
-            <img
-              src={brand.logoUrl}
-              alt=""
-              className="block object-contain"
-              style={{ maxWidth: "min(70vw, 480px)", maxHeight: "min(40vh, 320px)" }}
-            />
-          </motion.div>
+          <div className="flex flex-col items-center gap-6 text-center">
+            <motion.h2
+              initial={{ scale: 0.5, opacity: 0, y: -30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.1 }}
+              className="text-5xl sm:text-7xl font-black uppercase tracking-tight text-white"
+              style={{ textShadow: "0 0 40px rgba(255,255,255,0.55), 0 4px 0 rgba(0,0,0,0.4)" }}
+              data-testid="great-job"
+            >
+              Great job!
+            </motion.h2>
+            <motion.div
+              initial={{ scale: 0.45, opacity: 0, y: 40, rotate: -4 }}
+              animate={{ scale: 1, opacity: 1, y: 0, rotate: 0 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 240, damping: 16, delay: 0.2 }}
+              className="rounded-3xl bg-white p-6 shadow-[0_0_90px_rgba(255,255,255,0.3)] sm:p-10"
+            >
+              <img
+                src={brand.logoUrl}
+                alt=""
+                className="block object-contain"
+                style={{ maxWidth: "min(70vw, 480px)", maxHeight: "min(34vh, 280px)" }}
+              />
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-lg sm:text-xl font-semibold text-white/85"
+            >
+              Thanks for playing
+            </motion.p>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

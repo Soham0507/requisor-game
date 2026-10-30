@@ -154,30 +154,6 @@ html{scroll-behavior:smooth}
 .lp .hero p b {color:var(--white);font-weight:700}
 .lp .hero .row {display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:flex-start}
 .lp .tags {display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;margin-top:34px}
-.lp .tag {
-  --accent:var(--orange);
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--white);text-decoration:none;
-  padding:6px 16px 6px 6px;border-radius:100px;border:1px solid transparent;
-  background:linear-gradient(var(--deep),var(--deep)) padding-box,linear-gradient(120deg,color-mix(in srgb,var(--accent) 55%,transparent),var(--line) 70%) border-box;
-  box-shadow:0 1px 2px rgba(15,18,32,.06),0 8px 20px -12px color-mix(in srgb,var(--accent) 65%,transparent);
-  transition:transform .28s cubic-bezier(.2,.9,.3,1.3),box-shadow .28s ease;
-}
-.lp .tag i {display:grid;place-items:center;flex:none;width:30px;height:30px;border-radius:50%;color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,transparent);transition:transform .28s cubic-bezier(.2,.9,.3,1.3),background .2s,color .2s}
-.lp .tag .tag-go {width:0;margin-left:-10px;opacity:0;color:var(--accent);transition:width .25s ease,margin .25s ease,opacity .2s ease}
-.lp .tag:hover,
-.lp .tag:focus-visible {transform:translateY(-3px);box-shadow:0 12px 28px -10px color-mix(in srgb,var(--accent) 75%,transparent)}
-.lp .tag:hover i,
-.lp .tag:focus-visible i {transform:rotate(-10deg) scale(1.1);background:var(--accent);color:#fff}
-.lp .tag:hover .tag-go,
-.lp .tag:focus-visible .tag-go {width:13px;margin-left:0;opacity:1}
-.lp .tag:focus-visible {outline:2px solid var(--cyan);outline-offset:3px}
-.lp .tag.t-orange {--accent:var(--orange)}
-.lp .tag.t-green {--accent:#16A34A}
-.lp .tag.t-cyan {--accent:var(--cyan)}
-.lp .tag.t-purple {--accent:var(--purple)}
-.lp .tag.t-pink {--accent:var(--pink)}
-@media (prefers-reduced-motion:reduce) {.lp .tag,.lp .tag i,.lp .tag .tag-go {transition:none}}
 .lp .hero .hint {position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:rgba(156,163,175,.55);text-transform:uppercase}
 
 /* ---------- hero booth mockup: phone in front of tablet in front of TV ---------- */
