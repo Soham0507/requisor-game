@@ -86,7 +86,7 @@ const GAMES: InsertGame[] = [
     thumbnailUrl: null,
     folderPath: "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video",
     previewBasePath: null,
-    brandSupport: "full",
+    brandSupport: "chrome_only",
     defaultPrimaryColor: "#0ea5e9",
     defaultSecondaryColor: "#0369a1",
     defaultAccentColor: "#0ea5e9",

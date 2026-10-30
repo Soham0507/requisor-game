@@ -68938,7 +68938,7 @@ var DEFAULT_GAMES = [
     thumbnailUrl: null,
     folderPath: "artifacts/citrus-landing/game/On-The-Fly-Video/On-The-Fly-Video",
     previewBasePath: "/game-previews/boat-booth/",
-    brandSupport: "full",
+    brandSupport: "chrome_only",
     defaultPrimaryColor: "#0ea5e9",
     defaultSecondaryColor: "#0369a1",
     defaultAccentColor: "#0ea5e9",

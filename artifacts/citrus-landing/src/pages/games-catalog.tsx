@@ -76,7 +76,12 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
   // Coming-soon games always go last, even when a search reorders the results.
   const visibleGames = useMemo(() => {
     const found = searchAndFilter(verticalGames, query, filters);
-    return [...found.filter((g) => g.brandSupport === "full"), ...found.filter((g) => g.brandSupport !== "full")];
+    const live = found.filter((g) => g.brandSupport === "full");
+    // The AI Photo Experience is always the very last card, after the other coming-soon games.
+    const soon = found
+      .filter((g) => g.brandSupport !== "full")
+      .sort((a, b) => Number(a.slug === "boat-booth") - Number(b.slug === "boat-booth"));
+    return [...live, ...soon];
   }, [verticalGames, query, filters]);
 
   const updateSearch = (nextQuery: string, nextFilters: Filters) => {

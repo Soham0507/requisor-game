@@ -21,6 +21,7 @@ import {
   Gauge,
   Gift,
   Brain,
+  Goal,
   ChevronRight,
   type LucideIcon,
 } from "lucide-react";
@@ -54,7 +55,8 @@ const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] 
   booth: {
     prompt: "What type of experience are you looking for?",
     options: [
-      { label: "High-energy and competitive", icon: CircleDot, next: { result: "basketball-shootout" } },
+      { label: "Basketball challenge", icon: CircleDot, next: { result: "basketball-shootout" } },
+      { label: "Soccer challenge", icon: Goal, next: { result: "soccer-shootout" } },
       { label: "Immersive and futuristic", icon: Rocket, next: { result: "gesture-space-war" } },
       { label: "Quizzes and lead capture", icon: HelpCircle, next: "quiz" },
     ],
@@ -69,7 +71,8 @@ const QUESTIONS: Record<QuestionId, { prompt: string; options: QuestionOption[] 
   retail: {
     prompt: "What kind of experience would suit your audience?",
     options: [
-      { label: "Photo and video keepsake", icon: Camera, next: { result: "boat-booth" } },
+      { label: "AI photo experience (coming soon)", icon: Camera, next: { result: "boat-booth" } },
+      { label: "Memory card game", icon: Brain, next: { result: "a8-recall" } },
       { label: "Quick quiz", icon: HelpCircle, next: "quiz" },
     ],
   },
@@ -192,11 +195,30 @@ function GameRecommendation({ slug }: { slug: string }) {
                   </Button>
                 </Link>
               ) : (
-                <Button size="sm" className="rounded-full" disabled>
-                  Coming soon
-                </Button>
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">Coming soon. Here are the experiences you can customize today.</p>
+                  <div className="flex flex-wrap gap-2">
+                    <Button size="sm" className="rounded-full" disabled>
+                      Coming soon
+                    </Button>
+                    <Link href="/games">
+                      <Button size="sm" variant="outline" className="rounded-full" data-testid="button-chat-browse">
+                        Browse live games
+                        <ChevronRight size={14} />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               )}
             </div>
+            <a
+              href="/#pricing"
+              data-testid="link-chat-pilot"
+              className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+            >
+              Limited pilot pricing, from $2,500
+              <ChevronRight size={12} />
+            </a>
           </div>
         )}
       </div>
