@@ -295,7 +295,7 @@ export default function Home() {
               </svg>
             </button>
             <Link className="btn" href="/games">
-              Try Active8
+              Activate8 Now
             </Link>
           </div>
         </div>
@@ -319,16 +319,16 @@ export default function Home() {
               <i></i>Turnkey · Branded · Measurable
             </div>
             <h1 className="rise d2">
-              Activate memorable <span className="lit">experiences instantly.</span>
+              Branded interactives, <span className="lit">turnkey and measurable.</span>
             </h1>
             <p className="rise d3">
-              Turnkey, branded interactive experiences deployed in real time, built to <b>boost engagement and
-              capture leads.</b>
+              <b>Skip the months-long custom build.</b> Launch a branded experience for your client’s next event in
+              minutes.
             </p>
             
             <div className="row rise d4">
-              <Link className="btn" href="/games">Try Active8</Link>
-              <a className="btn line" href="#work">See the games</a>
+              <Link className="btn" href="/games">Activate8 Now</Link>
+              <a className="btn line" href="#work">See It Live</a>
               <a className="btn line" href="#pricing">Pilot Program</a>
             </div>
           </div>
@@ -795,11 +795,11 @@ export default function Home() {
           </div>
           <div className="why-grid rv">
             {[
-              ["Turnkey.", "No custom development, no long lead times, no surprises."],
-              ["Branded.", "Every experience carries your identity, not ours."],
-              ["Lead-focused.", "Player registration and data capture are part of the game flow, not an afterthought."],
-              ["Measurable.", "Interaction metrics show what worked so you can justify the spend and improve the next event."],
-              ["Affordable.", "Custom-feeling results at a fraction of custom-build pricing."],
+              ["Custom looks, without the custom build.", "Your client’s brand goes into a ready-to-play game, so you’re not waiting on months of development."],
+              ["Live in minutes.", "Load the logo and colors, and you’re deployed. No dev queue, no rework cycles."],
+              ["Priced for real budgets.", "A fraction of what custom interactives cost, so more clients can say yes."],
+              ["Lead capture built in.", "Every play turns into a lead you can hand your client."],
+              ["Realtime data analytics.", "Track plays, engagement, and leads as they happen."],
             ].map(([title, description]) => (
               <div className="why-card" key={title}>
                 <h3>{title}</h3>
@@ -852,7 +852,7 @@ export default function Home() {
             Choose a game, apply your brand, and launch an experience that captures attention, leads, and measurable
             engagement.
           </p>
-          <Link className="btn rv" href="/games">Try Active8</Link>
+          <Link className="btn rv" href="/games">Activate8 Now</Link>
         </div>
       </section>
 
