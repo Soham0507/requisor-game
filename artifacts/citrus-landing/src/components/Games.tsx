@@ -9,14 +9,14 @@ function BasketballScreen() {
       <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-orange-500/20 -translate-x-1/2" />
       {/* Arc */}
       <svg className="absolute bottom-0 left-1/2 -translate-x-1/2" width="100" height="60" viewBox="0 0 100 60">
-        <path d="M10 60 Q50 0 90 60" stroke="rgba(249,115,22,0.3)" strokeWidth="1.5" fill="none" />
+        <path d="M10 60 Q50 0 90 60" stroke="rgba(255,122,0,0.3)" strokeWidth="1.5" fill="none" />
       </svg>
       {/* Hoop */}
       <div className="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1.5 bg-orange-500/60 rounded-full" />
       <div className="absolute top-4.5 left-1/2 -translate-x-1/2 w-[1px] h-6 bg-orange-500/30" />
       {/* Bouncing ball */}
       <motion.div
-        className="absolute w-5 h-5 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-[0_0_10px_rgba(249,115,22,0.6)]"
+        className="absolute w-5 h-5 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-[0_0_10px_rgba(255,122,0,0.6)]"
         style={{ left: "48%", top: 8 }}
         animate={{ y: [0, 60, 0], x: [0, 10, -5, 0] }}
         transition={{ duration: 1.2, repeat: Infinity, ease: "easeIn" }}
@@ -88,7 +88,7 @@ const games = [
     tags: ["Gesture Controls", "Real-time Scoring", "Multiplayer"],
     color: "from-orange-500/20 to-orange-500/0",
     borderHover: "group-hover:border-orange-500/50",
-    glow: "group-hover:shadow-[0_0_40px_rgba(249,115,22,0.12)]",
+    glow: "group-hover:shadow-[0_0_40px_rgba(255,122,0,0.12)]",
     accent: "text-orange-400",
     bar: "from-orange-500 to-yellow-400",
   },
@@ -110,7 +110,7 @@ const games = [
     tags: ["Endless Runner", "Educational", "Cybersecurity"],
     color: "from-purple-500/20 to-purple-500/0",
     borderHover: "group-hover:border-purple-500/50",
-    glow: "group-hover:shadow-[0_0_40px_rgba(168,85,247,0.12)]",
+    glow: "group-hover:shadow-[0_0_40px_rgba(138,42,255,0.12)]",
     accent: "text-purple-400",
     bar: "from-purple-500 to-pink-400",
   },

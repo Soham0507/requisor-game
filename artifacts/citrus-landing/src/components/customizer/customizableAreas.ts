@@ -22,10 +22,10 @@ export interface CustomizableArea {
 const svgUri = (svg: string) => `data:image/svg+xml;base64,${btoa(svg)}`;
 
 const SAMPLE_LOGO = svgUri(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240"><rect width="240" height="240" rx="48" fill="#f97316"/><text x="120" y="142" font-family="Arial,sans-serif" font-size="52" font-weight="800" fill="#fff" text-anchor="middle">LOGO</text></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240"><rect width="240" height="240" rx="48" fill="#FF7A00"/><text x="120" y="142" font-family="Arial,sans-serif" font-size="52" font-weight="800" fill="#fff" text-anchor="middle">LOGO</text></svg>`,
 );
 const SAMPLE_IMAGE = svgUri(
-  `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f97316"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><rect width="1280" height="720" fill="url(#g)"/><text x="640" y="380" font-family="Arial,sans-serif" font-size="96" font-weight="800" fill="#fff" text-anchor="middle">YOUR IMAGE</text></svg>`,
+  `<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF7A00"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><rect width="1280" height="720" fill="url(#g)"/><text x="640" y="380" font-family="Arial,sans-serif" font-size="96" font-weight="800" fill="#fff" text-anchor="middle">YOUR IMAGE</text></svg>`,
 );
 
 /** What a customer can change for this game, mirroring the options in the customizer form. */

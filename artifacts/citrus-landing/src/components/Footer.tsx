@@ -10,17 +10,14 @@ export function Footer() {
 
       <div className="container mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
         {/* Logo / Brand */}
-        <div
-          className="font-bold text-xl tracking-tight
-          bg-gradient-to-r from-[#f97316] via-[#ec4899] to-[#a855f7]
-          text-transparent bg-clip-text"
-        >
-          Active8
+        <div>
+          <img src="/brand/activate8-logo-light.png" alt="Activate8" className="h-9 w-auto dark:hidden" />
+          <img src="/brand/activate8-logo-dark.png" alt="Activate8" className="hidden h-9 w-auto dark:block" />
         </div>
 
         {/* Copyright */}
         <div className="text-muted-foreground text-sm font-mono tracking-wide">
-          Active8 is a RequisorAI product · Milwaukee, WI
+          Activate8 is a RequisorAI product · Milwaukee, WI
         </div>
 
         {/* Social Icons */}

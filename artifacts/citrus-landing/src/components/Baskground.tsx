@@ -137,7 +137,7 @@ export function Background() {
         ),
       },
       uColor1: { value: new THREE.Color("#ff6a00") },
-      uColor2: { value: new THREE.Color("#a855f7") },
+      uColor2: { value: new THREE.Color("#8A2AFF") },
       uBgColor: { value: new THREE.Color("#05030a") },
       uSpeed: { value: 0.3 },
       uComplexity: { value: 8.0 },

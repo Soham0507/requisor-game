@@ -10,8 +10,9 @@ export function Navbar() {
     <div className="lp" data-theme={theme === "light" ? "light" : undefined}>
       <nav aria-label="Main navigation">
         <div className="nav-in">
-          <Link className="mark" href="/">
-            Active8 <i aria-hidden="true"></i>{" "}
+          <Link className="mark" href="/" aria-label="Activate8 home">
+            <img className="mark-logo mark-logo-dark" src="/brand/activate8-logo-dark.png" alt="Activate8" />
+            <img className="mark-logo mark-logo-light" src="/brand/activate8-logo-light.png" alt="" aria-hidden="true" />
             <small>by RequisorAI — experiential games &amp; brand activations</small>
           </Link>
           <div className="nav-r">
@@ -31,7 +32,7 @@ export function Navbar() {
               </svg>
             </button>
             <Link className="btn" href="/games">
-              Try Active8
+              Activate8 Now
             </Link>
           </div>
         </div>

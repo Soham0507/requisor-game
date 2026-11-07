@@ -194,12 +194,12 @@ export default function GamesCatalog({ vertical = "all" }: { vertical?: Vertical
                       Quiz / Questionnaire / Survey
                     </p>
                   )}
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 className="text-xl font-bold text-foreground">{game.name}</h3>
+                  <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
+                    <h3 className="min-w-0 break-words text-lg font-bold text-foreground">{game.name}</h3>
                     {customizationAvailable ? (
-                      <Badge className="bg-primary/20 text-primary border-primary/40">Live re-skin</Badge>
+                      <Badge className="shrink-0 bg-primary/20 text-primary border-primary/40">Live re-skin</Badge>
                     ) : (
-                      <Badge variant="secondary">Coming soon</Badge>
+                      <Badge variant="secondary" className="shrink-0">Coming soon</Badge>
                     )}
                   </div>
                   <p className="text-muted-foreground text-sm flex-grow mb-3">{game.tagline}</p>

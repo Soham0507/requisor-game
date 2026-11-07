@@ -85,7 +85,7 @@ export default function Home() {
         my = 0.5,
         tmx = 0.5,
         tmy = 0.5;
-      const COLORS = ["249,115,22", "236,72,153", "168,85,247", "34,211,238"];
+      const COLORS = ["255,122,0", "255,45,155", "138,42,255", "0,198,255"];
       let beams: { x: number; w: number; c: string; sp: number; ph: number; a: number }[] = [];
       let dust: { x: number; y: number; r: number; v: number; c: string; o: number; ph: number }[] = [];
 
@@ -229,7 +229,7 @@ export default function Home() {
       setNote({ text: "Tell us a bit about the idea first.", ok: false });
       return;
     }
-    const subject = "New activation idea for Active8";
+    const subject = "New activation idea for Activate8";
     const bodyLines = [idea, "", "—", name ? "From: " + name : null, email ? "Reply to: " + email : null].filter(
       Boolean,
     );
@@ -274,8 +274,10 @@ export default function Home() {
     <div className="lp" ref={rootRef} data-theme={theme === "light" ? "light" : undefined} id="top">
       <nav>
         <div className="nav-in">
-          <a className="mark" href="#top">
-            Active8 <i></i> <small>by RequisorAI — experiential games &amp; brand activations</small>
+          <a className="mark" href="#top" aria-label="Activate8 home">
+            <img className="mark-logo mark-logo-dark" src="/brand/activate8-logo-dark.png" alt="Activate8" />
+            <img className="mark-logo mark-logo-light" src="/brand/activate8-logo-light.png" alt="" aria-hidden="true" />
+            <small>by RequisorAI — experiential games &amp; brand activations</small>
           </a>
           <div className="nav-r">
             <button
@@ -304,9 +306,9 @@ export default function Home() {
       <header className="hero">
         <canvas ref={fieldRef} id="field" aria-hidden="true"></canvas>
 
-        <div className="orb" style={{ left: "10%", top: "22%", width: 60, height: 60, background: "radial-gradient(circle,rgba(249,115,22,.35),transparent)", animationDelay: "0s" }}></div>
-        <div className="orb" style={{ left: "82%", top: "62%", width: 40, height: 40, background: "radial-gradient(circle,rgba(168,85,247,.35),transparent)", animationDelay: "1.2s" }}></div>
-        <div className="orb" style={{ left: "62%", top: "16%", width: 34, height: 34, background: "radial-gradient(circle,rgba(34,211,238,.35),transparent)", animationDelay: ".6s" }}></div>
+        <div className="orb" style={{ left: "10%", top: "22%", width: 60, height: 60, background: "radial-gradient(circle,rgba(255,122,0,.35),transparent)", animationDelay: "0s" }}></div>
+        <div className="orb" style={{ left: "82%", top: "62%", width: 40, height: 40, background: "radial-gradient(circle,rgba(138,42,255,.35),transparent)", animationDelay: "1.2s" }}></div>
+        <div className="orb" style={{ left: "62%", top: "16%", width: 34, height: 34, background: "radial-gradient(circle,rgba(0,198,255,.35),transparent)", animationDelay: ".6s" }}></div>
         <div className="orb" style={{ left: "22%", top: "72%", width: 50, height: 50, background: "radial-gradient(circle,rgba(59,130,246,.35),transparent)", animationDelay: "1.8s" }}></div>
         <div className="pxstar" style={{ left: "14%", top: "46%", animationDelay: "0s" }}>+</div>
         <div className="pxstar" style={{ left: "57%", top: "80%", animationDelay: "1s" }}>+</div>
@@ -368,7 +370,7 @@ export default function Home() {
             <span className="hot">Go</span> <span className="hot">live.</span>
           </p>
           <div className="foot rv">
-            Custom interactive experiences used to mean long timelines and bloated budgets. Active8 skips both.
+            Custom interactive experiences used to mean long timelines and bloated budgets. Activate8 skips both.
             Attendees get something worth stopping for, and you get the lead data and engagement metrics to prove it
             worked — at a fraction of the cost of a custom build.
           </div>
@@ -378,7 +380,7 @@ export default function Home() {
       <section className="showcase" id="showcase">
         <div className="wrap">
           <div className="sec-head rv">
-            <h2>See Active8 in action.</h2>
+            <h2>See Activate8 in action.</h2>
             <p>A short look at how a ready-made game becomes your branded event experience.</p>
           </div>
           <div className="showcase-frame" ref={showcaseFrameRef}>
@@ -390,7 +392,7 @@ export default function Home() {
               playsInline
               preload="auto"
               poster="/logo/showcase-poster.jpg"
-              aria-label="Active8 product overview video"
+              aria-label="Activate8 product overview video"
             >
               <source src="/logo/showcase.mp4" type="video/mp4" />
             </video>
@@ -484,7 +486,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#4AA7BD" }}></i>
-                Active8 · Trivia activation
+                Activate8 · Trivia activation
                 <span className="coming-tag">Customize now</span>
               </div>
               <h3>Jeopardy</h3>
@@ -505,8 +507,8 @@ export default function Home() {
           <article className="xp rv upcoming-card">
             <div>
               <div className="cat">
-                <i style={{ background: "#EC4899" }}></i>
-                Active8 · Memory game
+                <i style={{ background: "#FF2D9B" }}></i>
+                Activate8 · Memory game
                 <span className="coming-tag">Customize now</span>
               </div>
               <h3>Memory</h3>
@@ -550,7 +552,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#C8102E" }}></i>
-                Active8 · Quiz activation
+                Activate8 · Quiz activation
                 <span className="coming-tag">Customize now</span>
               </div>
               <h3>Energy Quiz</h3>
@@ -620,7 +622,7 @@ export default function Home() {
             <div>
               <div className="cat">
                 <i style={{ background: "#D6B15A" }}></i>
-                Active8 · Golf challenge
+                Activate8 · Golf challenge
                 <span className="coming-tag">Coming soon</span>
               </div>
               <h3>Golf Challenge</h3>
@@ -688,7 +690,7 @@ export default function Home() {
           <div className="pillars rv">
             <div className="pillar">
               <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" strokeWidth={1.6}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF7A00" strokeWidth={1.6}>
                   <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
                   <circle cx="12" cy="12" r="3.4" />
                 </svg>
@@ -698,7 +700,7 @@ export default function Home() {
             </div>
             <div className="pillar">
               <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#EC4899" strokeWidth={1.6}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FF2D9B" strokeWidth={1.6}>
                   <path d="M8 12.5l2.6 2.6L16.5 9" />
                   <circle cx="12" cy="12" r="9" />
                 </svg>
@@ -708,7 +710,7 @@ export default function Home() {
             </div>
             <div className="pillar">
               <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#A855F7" strokeWidth={1.6}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#8A2AFF" strokeWidth={1.6}>
                   <circle cx="12" cy="8.5" r="3.5" />
                   <path d="M5 20c1.2-3.4 3.9-5 7-5s5.8 1.6 7 5" />
                 </svg>
@@ -718,7 +720,7 @@ export default function Home() {
             </div>
             <div className="pillar">
               <div className="glyph">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth={1.6}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#00C6FF" strokeWidth={1.6}>
                   <path d="M4 19V9M10 19V5M16 19v-8M22 19H2" />
                 </svg>
               </div>
@@ -733,21 +735,21 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head rv">
             <h2>Who it’s for.</h2>
-            <p>Active8 gives agencies and brands a faster way to put meaningful interactivity at the center of an event.</p>
+            <p>Activate8 gives agencies and brands a faster way to put meaningful interactivity at the center of an event.</p>
           </div>
           <div className="split audience-grid rv">
             <div className="side">
               <h3>Exhibit &amp; Experiential Agencies</h3>
               <p>
                 Give your clients an interactive centerpiece without adding a dev project to your build schedule.
-                Active8 drops into your booth designs, deploys on your timeline, and makes you look like the team
+                Activate8 drops into your booth designs, deploys on your timeline, and makes you look like the team
                 that thought of everything. Add interactivity to any proposal without adding risk or overhead.
               </p>
             </div>
             <div className="side">
               <h3>Marketing Agencies</h3>
               <p>
-                Stop telling clients an interactive activation is out of budget. Active8 lets you pitch, brand, and
+                Stop telling clients an interactive activation is out of budget. Activate8 lets you pitch, brand, and
                 launch engaging experiences quickly, with lead capture and reporting built in, so you can show
                 clients real numbers after the event.
               </p>
@@ -755,7 +757,7 @@ export default function Home() {
             <div className="side">
               <h3>Brands</h3>
               <p>
-                Your booth competes with hundreds of others. Active8 gives attendees a reason to walk up, experience
+                Your booth competes with hundreds of others. Activate8 gives attendees a reason to walk up, experience
                 your brand in an interactive way, and share their details willingly. Your team gets qualified leads
                 and clear engagement data without waiting on long development cycles.
               </p>
@@ -768,7 +770,7 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head rv">
             <h2>How it works.</h2>
-            <p>From choosing a game to measuring the results, Active8 keeps every step direct and fast.</p>
+            <p>From choosing a game to measuring the results, Activate8 keeps every step direct and fast.</p>
           </div>
           <ol className="process-list rv">
             {[
@@ -790,7 +792,7 @@ export default function Home() {
       <section className="demos" id="demos">
         <div className="wrap">
           <div className="sec-head rv">
-            <h2>Why Active8.</h2>
+            <h2>Why Activate8.</h2>
             <p>No long lead times, no generic branding, and no guessing whether the experience worked.</p>
           </div>
           <div className="why-grid rv">

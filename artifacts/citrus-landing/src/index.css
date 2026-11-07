@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Orbitron:wght@500;600;700;800;900&display=swap');
 @import "tailwindcss" source(".");
 @source "../index.html";
 @import "tw-animate-css";
@@ -81,7 +81,7 @@
 
   --border: 222 24% 88%;
   --input: 222 24% 88%;
-  --ring: 25 95% 53%;
+  --ring: 29 100% 50%;
 
   --card: 0 0% 100%;
   --card-foreground: 227 39% 9%;
@@ -91,9 +91,9 @@
   --popover-foreground: 227 39% 9%;
   --popover-border: 222 24% 88%;
 
-  --primary: 25 95% 53%;
+  --primary: 29 100% 50%;
   --primary-foreground: 0 0% 100%;
-  --primary-border: hsl(25 80% 44%);
+  --primary-border: hsl(29 100% 42%);
 
   --secondary: 227 36% 95%;
   --secondary-foreground: 227 39% 9%;
@@ -103,9 +103,9 @@
   --muted-foreground: 223 14% 39%;
   --muted-border: hsl(222 24% 88%);
 
-  --accent: 330 81% 60%;
+  --accent: 327 100% 59%;
   --accent-foreground: 0 0% 100%;
-  --accent-border: hsl(330 65% 48%);
+  --accent-border: hsl(327 85% 48%);
 
   --destructive: 0 72% 48%;
   --destructive-foreground: 0 0% 100%;
@@ -114,19 +114,19 @@
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: 'Space Mono', monospace;
-  --app-font-heading: 'Bricolage Grotesque', 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --app-font-heading: 'Orbitron', 'Plus Jakarta Sans', 'Inter', sans-serif;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: 224 71% 4%;
+  --background: 227 49% 8%;
   --foreground: 240 11% 96%;
 
   --border: 223 25% 16%;
   --input: 223 25% 16%;
-  --ring: 25 95% 53%;
+  --ring: 29 100% 50%;
 
-  --card: 225 35% 7%;
+  --card: 227 46% 11%;
   --card-foreground: 240 11% 96%;
   --card-border: 223 25% 16%;
 
@@ -134,9 +134,9 @@
   --popover-foreground: 240 11% 96%;
   --popover-border: 223 25% 16%;
 
-  --primary: 25 95% 53%;
+  --primary: 29 100% 50%;
   --primary-foreground: 0 0% 100%;
-  --primary-border: hsl(25 80% 44%);
+  --primary-border: hsl(29 100% 42%);
 
   --secondary: 223 40% 12%;
   --secondary-foreground: 240 11% 96%;
@@ -146,9 +146,9 @@
   --muted-foreground: 218 11% 65%;
   --muted-border: hsl(223 25% 16%);
 
-  --accent: 330 81% 60%;
+  --accent: 327 100% 59%;
   --accent-foreground: 0 0% 100%;
-  --accent-border: hsl(330 65% 48%);
+  --accent-border: hsl(327 85% 48%);
 
   --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;

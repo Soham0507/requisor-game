@@ -23,8 +23,8 @@ function useCounter(end: number, duration: number = 1800) {
 }
 
 const stats = [
-  { rank: "01", label: "Games Built", end: 3, suffix: "", accent: "text-orange-400", glow: "shadow-[0_0_20px_rgba(249,115,22,0.2)]" },
-  { rank: "02", label: "Brands Served", end: 3, suffix: "", accent: "text-purple-400", glow: "shadow-[0_0_20px_rgba(168,85,247,0.2)]" },
+  { rank: "01", label: "Games Built", end: 3, suffix: "", accent: "text-orange-400", glow: "shadow-[0_0_20px_rgba(255,122,0,0.2)]" },
+  { rank: "02", label: "Brands Served", end: 3, suffix: "", accent: "text-purple-400", glow: "shadow-[0_0_20px_rgba(138,42,255,0.2)]" },
   { rank: "03", label: "Client Rating", end: 4, suffix: ".9 / 5", accent: "text-green-400", glow: "shadow-[0_0_20px_rgba(74,222,128,0.2)]" },
 ];
 

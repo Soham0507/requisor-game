@@ -278,17 +278,17 @@ const OVERLAY_CSS = `
 @keyframes cdh-pop { 0% { opacity: 0; transform: scale(1.18); filter: blur(6px) } 60% { opacity: 1; transform: scale(0.985); filter: blur(0) } 100% { opacity: 1; transform: scale(1); filter: blur(0) } }
 @keyframes cdh-spin { to { --cdh-angle: 360deg } }
 @keyframes cdh-ripple { 0% { opacity: .55; transform: scale(1) } 100% { opacity: 0; transform: scale(1.22) } }
-@keyframes cdh-breathe { 0%, 100% { box-shadow: 0 0 22px 2px rgba(249,115,22,.45), 0 0 60px 8px rgba(236,72,153,.25) } 50% { box-shadow: 0 0 34px 6px rgba(249,115,22,.7), 0 0 90px 16px rgba(236,72,153,.4) } }
+@keyframes cdh-breathe { 0%, 100% { box-shadow: 0 0 22px 2px rgba(255,122,0,.45), 0 0 60px 8px rgba(255,45,155,.25) } 50% { box-shadow: 0 0 34px 6px rgba(255,122,0,.7), 0 0 90px 16px rgba(255,45,155,.4) } }
 @keyframes cdh-label { 0% { opacity: 0; transform: translate(-50%, 10px) scale(.92) } 100% { opacity: 1; transform: translate(-50%, 0) scale(1) } }
 @keyframes cdh-dot { 0%, 100% { transform: scale(1); opacity: 1 } 50% { transform: scale(1.7); opacity: .45 } }
 @keyframes cdh-shimmer { from { background-position: 0% 0 } to { background-position: 200% 0 } }
 .cdh-box { animation: cdh-pop .55s cubic-bezier(.2,.9,.3,1.1) both, cdh-breathe 2.2s ease-in-out .55s infinite; }
-.cdh-ring { padding: 3px; background: conic-gradient(from var(--cdh-angle), #f97316, #ec4899, #8b5cf6, #38bdf8, #f97316); animation: cdh-spin 3.2s linear infinite;
+.cdh-ring { padding: 3px; background: conic-gradient(from var(--cdh-angle), #FF7A00, #FF2D9B, #8b5cf6, #38bdf8, #FF7A00); animation: cdh-spin 3.2s linear infinite;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
 .cdh-ripple { animation: cdh-ripple 1.7s ease-out .5s 2 both; }
 .cdh-label { transform: translate(-50%, 0); animation: cdh-label .5s cubic-bezier(.2,.9,.3,1.2) .15s both; }
 .cdh-dot { animation: cdh-dot 1.4s ease-in-out infinite; }
-.cdh-frame { background: linear-gradient(90deg, #f97316, #ec4899, #8b5cf6, #f97316); background-size: 200% 100%; animation: cdh-shimmer 3s linear infinite;
+.cdh-frame { background: linear-gradient(90deg, #FF7A00, #FF2D9B, #8b5cf6, #FF7A00); background-size: 200% 100%; animation: cdh-shimmer 3s linear infinite;
   padding: 3px; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
 @media (prefers-reduced-motion: reduce) {
   .cdh-box, .cdh-ring, .cdh-ripple, .cdh-label, .cdh-dot, .cdh-frame { animation: none !important; }
