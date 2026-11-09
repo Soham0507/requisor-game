@@ -12,7 +12,6 @@ export default function Home() {
   const rootRef = useRef<HTMLDivElement>(null);
   const fieldRef = useRef<HTMLCanvasElement>(null);
   const themeToggleRef = useRef<HTMLButtonElement>(null);
-  const maniRef = useRef<HTMLParagraphElement>(null);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -197,25 +196,6 @@ export default function Home() {
     root.querySelectorAll(".rv").forEach((el) => io.observe(el));
     cleanups.push(() => io.disconnect());
 
-    /* ---------- manifesto word light-up ---------- */
-    const mani = maniRef.current;
-    if (mani) {
-      const words = [...mani.querySelectorAll("span")];
-      const litUp = () => {
-        const r = mani.getBoundingClientRect();
-        const prog = Math.min(1, Math.max(0, (innerHeight * 0.78 - r.top) / (r.height + innerHeight * 0.35)));
-        const n = Math.floor(prog * words.length * 1.15);
-        words.forEach((w, i) => w.classList.toggle("on", i < n));
-      };
-      if (reduced) {
-        words.forEach((w) => w.classList.add("on"));
-      } else {
-        addEventListener("scroll", litUp, { passive: true });
-        litUp();
-        cleanups.push(() => removeEventListener("scroll", litUp));
-      }
-    }
-
     return () => cleanups.forEach((fn) => fn());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -317,14 +297,11 @@ export default function Home() {
 
         <div className="wrap hero-in">
           <div className="hero-copy">
-            <div className="kicker rise d1">
-              <i></i>Turnkey · Branded · Measurable
-            </div>
             <h1 className="rise d2">
               Branded interactives, <span className="lit">turnkey and measurable.</span>
             </h1>
             <p className="rise d3">
-              <b>Skip the months-long custom build.</b> Launch a branded experience for your client’s next event in
+              <b>Skip the months-long custom build.</b> Launch a branded interactive for your client’s next event in
               minutes.
             </p>
             
@@ -333,6 +310,22 @@ export default function Home() {
               <a className="btn line" href="#work">See It Live</a>
               <a className="btn line" href="#pricing">Pilot Program</a>
             </div>
+            <ul className="hero-points rise d4">
+              {[
+                ["Custom looks, without the custom build.", "Your client’s brand goes into a ready-to-play game, so you’re not waiting on months of development."],
+                ["Live in minutes.", "Load the logo and colors, and you’re deployed. No dev queue, no rework cycles."],
+                ["Priced for real budgets.", "A fraction of what custom interactives cost, so more clients can say yes."],
+                ["Lead capture built in.", "Every play turns into a lead you can hand your client."],
+                ["Realtime data analytics.", "Track plays, engagement, and leads as they happen, not in a post-show report."],
+              ].map(([lead, rest]) => (
+                <li key={lead}>
+                  <i aria-hidden="true"></i>
+                  <span>
+                    <b>{lead}</b> {rest}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
           <div className="hero-booth rise d3" aria-hidden="true">
             <div className="dev dev-tv">
@@ -362,20 +355,6 @@ export default function Home() {
         </div>
         <div className="hint" aria-hidden="true">Scroll</div>
       </header>
-
-      <section className="manifesto">
-        <div className="wrap">
-          <p id="mani" ref={maniRef}>
-            <span>Pick</span> <span>a</span> <span>game.</span> <span>Brand</span> <span>it.</span>{" "}
-            <span className="hot">Go</span> <span className="hot">live.</span>
-          </p>
-          <div className="foot rv">
-            Custom interactive experiences used to mean long timelines and bloated budgets. Activate8 skips both.
-            Attendees get something worth stopping for, and you get the lead data and engagement metrics to prove it
-            worked — at a fraction of the cost of a custom build.
-          </div>
-        </div>
-      </section>
 
       <section className="showcase" id="showcase">
         <div className="wrap">
@@ -797,11 +776,11 @@ export default function Home() {
           </div>
           <div className="why-grid rv">
             {[
-              ["Custom looks, without the custom build.", "Your client’s brand goes into a ready-to-play game, so you’re not waiting on months of development."],
-              ["Live in minutes.", "Load the logo and colors, and you’re deployed. No dev queue, no rework cycles."],
-              ["Priced for real budgets.", "A fraction of what custom interactives cost, so more clients can say yes."],
-              ["Lead capture built in.", "Every play turns into a lead you can hand your client."],
-              ["Realtime data analytics.", "Track plays, engagement, and leads as they happen."],
+              ["Turnkey.", "No custom development, no long lead times, no surprises."],
+              ["Branded.", "Every experience carries your identity, not ours."],
+              ["Lead-focused.", "Player registration and data capture are part of the game flow, not an afterthought."],
+              ["Measurable.", "Interaction metrics show what worked so you can justify the spend and improve the next event."],
+              ["Affordable.", "Custom-feeling results at a fraction of custom-build pricing."],
             ].map(([title, description]) => (
               <div className="why-card" key={title}>
                 <h3>{title}</h3>

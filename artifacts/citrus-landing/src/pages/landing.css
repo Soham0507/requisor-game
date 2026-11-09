@@ -123,7 +123,9 @@ html{scroll-behavior:smooth}
 .lp[data-theme="light"] .mark-logo-dark {display:none}
 .lp .mark {align-items:center}
 .lp .mark small {font-family:var(--font-mono);font-weight:400;font-size:11px;color:var(--fog);letter-spacing:.04em}
-.lp nav .btn {padding:10px 20px;font-size:12px}
+.lp nav .btn {padding:10px 20px;font-size:12px;white-space:nowrap}
+/* the wide Orbitron wordmark leaves no room for the small tagline on mid-size screens */
+@media(max-width:1100px){.lp .mark small{display:none}}
 @media(max-width:640px){
   .lp .nav-in {padding:14px 18px}
   .lp .mark small {display:none}
@@ -158,6 +160,12 @@ html{scroll-behavior:smooth}
 .lp .hero p {font-size:clamp(17px,2vw,20px);font-weight:400;color:var(--soft);max-width:52ch;margin:26px 0 40px}
 .lp .hero p b {color:var(--white);font-weight:700}
 .lp .hero .row {display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:flex-start}
+/* Orbitron is wide: keep the three hero buttons on one line next to the booth mockup */
+@media(min-width:901px){.lp .hero .row{gap:10px}.lp .hero .row .btn{font-size:14px;padding:15px 20px}}
+.lp .hero-points {list-style:none;display:grid;gap:14px;max-width:56ch;margin-top:34px;padding:0;text-align:left}
+.lp .hero-points li {display:flex;align-items:flex-start;gap:12px;font-size:15px;line-height:1.55;color:var(--soft)}
+.lp .hero-points li i {flex:none;width:9px;height:9px;margin-top:.5em;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--pink));box-shadow:0 0 10px rgba(255,122,0,.45)}
+.lp .hero-points li b {color:var(--white);font-weight:700}
 .lp .tags {display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;margin-top:34px}
 .lp .hero .hint {position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:rgba(156,163,175,.55);text-transform:uppercase}
 
@@ -225,20 +233,6 @@ html{scroll-behavior:smooth}
 .lp .rise.d1 {animation-delay:.08s}.rise.d2{animation-delay:.2s}.rise.d3{animation-delay:.34s}.rise.d4{animation-delay:.5s}
 @keyframes rise{to{opacity:1;transform:none}}
 
-/* ---------- manifesto ---------- */
-.lp .manifesto {padding:140px 0}
-.lp .manifesto p {
-  font-family:var(--font-head);
-  font-size:clamp(24px,4vw,50px);line-height:1.22;letter-spacing:-.02em;font-weight:600;
-  max-width:23ch;
-}
-.lp .manifesto p span {color:rgba(var(--fg-rgb),.22);transition:color .5s ease}
-.lp .manifesto p span.on {color:var(--white)}
-.lp .manifesto p span.hot.on {
-  background:linear-gradient(100deg,var(--orange),var(--pink),var(--purple));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.lp .manifesto .foot {margin-top:32px;color:var(--fog);font-size:16px;font-weight:400;max-width:56ch}
 
 /* ---------- section headers ---------- */
 .lp .sec-head {display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:56px}
@@ -578,5 +572,4 @@ html{scroll-behavior:smooth}
 .lp *::after {animation:none!important;transition:none!important}
 .lp .rise,
 .lp .rv {opacity:1;transform:none}
-.lp .manifesto p span {color:var(--white)}
 }
