@@ -1,18 +1,20 @@
 import React from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/hooks/use-theme";
+import { useHideOnScroll } from "@/hooks/use-hide-on-scroll";
 import "@/pages/landing.css";
 
 export function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const navHidden = useHideOnScroll();
 
   return (
     <div className="lp" data-theme={theme === "light" ? "light" : undefined}>
-      <nav aria-label="Main navigation">
+      <nav aria-label="Main navigation" className={navHidden ? "nav-hidden" : undefined}>
         <div className="nav-in">
           <Link className="mark" href="/" aria-label="Activate8 home">
-            <img className="mark-logo mark-logo-dark" src="/brand/activate8-logo-dark.png" alt="Activate8" />
-            <img className="mark-logo mark-logo-light" src="/brand/activate8-logo-light.png" alt="" aria-hidden="true" />
+            <img className="mark-logo mark-logo-dark" src="/brand/activate8-wordmark-dark.png" alt="Activate8" />
+            <img className="mark-logo mark-logo-light" src="/brand/activate8-wordmark-light.png" alt="" aria-hidden="true" />
             <small>by RequisorAI — experiential games &amp; brand activations</small>
           </Link>
           <div className="nav-r">
@@ -32,7 +34,7 @@ export function Navbar() {
               </svg>
             </button>
             <Link className="btn" href="/games">
-              Activate8 Now
+              Build Now
             </Link>
           </div>
         </div>

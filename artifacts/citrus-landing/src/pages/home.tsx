@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { useTheme } from "@/hooks/use-theme";
+import { useHideOnScroll } from "@/hooks/use-hide-on-scroll";
 import { Footer } from "@/components/Footer";
 import "./landing.css";
 
@@ -22,6 +23,7 @@ export default function Home() {
 // so the preference — and the 'dark' class it drives on <html> for those
   // pages' Tailwind styles — stays the same wherever it was last set.
   const { theme, setTheme } = useTheme();
+  const navHidden = useHideOnScroll();
 
   function toggleTheme() {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -48,8 +50,27 @@ export default function Home() {
 
     /* ---------- game preview videos: force-play, fall back to visible controls ---------- */
     const cleanups: Array<() => void> = [];
+    // Every preview clip autoplays, so decoding a dozen videos at once makes the
+    // page (and the showcase video) stutter. Only clips on screen are allowed to play.
+    const onScreen = new WeakMap<HTMLVideoElement, boolean>();
+    const playIo = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          onScreen.set(v, e.isIntersecting);
+          if (e.isIntersecting) void v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    root.querySelectorAll<HTMLVideoElement>("video").forEach((v) => playIo.observe(v));
+    cleanups.push(() => playIo.disconnect());
+
     root.querySelectorAll<HTMLVideoElement>("video.gvid").forEach((v) => {
-      const tryPlay = () => v.play().catch(() => {});
+      const tryPlay = () => {
+        if (onScreen.get(v) !== false) void v.play().catch(() => {});
+      };
       tryPlay();
       const onPlaying = () => {
         v.controls = false;
@@ -62,7 +83,7 @@ export default function Home() {
       v.addEventListener("playing", onPlaying);
       v.addEventListener("click", onClick);
       const t = setTimeout(() => {
-        if (v.paused) v.controls = true;
+        if (v.paused && onScreen.get(v) !== false) v.controls = true;
       }, 1800);
       cleanups.push(() => {
         v.removeEventListener("loadeddata", tryPlay);
@@ -123,7 +144,12 @@ export default function Home() {
       addEventListener("pointermove", onPointerMove, { passive: true });
 
       let raf = 0;
+      let heroVisible = true;
       function frame(t: number) {
+        if (!heroVisible) {
+          raf = 0;
+          return;
+        }
         mx += (tmx - mx) * 0.015;
         my += (tmy - my) * 0.015;
         ctx.clearRect(0, 0, W, H);
@@ -153,7 +179,13 @@ export default function Home() {
         raf = requestAnimationFrame(frame);
       }
       raf = requestAnimationFrame(frame);
+      const heroIo = new IntersectionObserver((entries) => {
+        heroVisible = entries[entries.length - 1].isIntersecting;
+        if (heroVisible && !raf) raf = requestAnimationFrame(frame);
+      });
+      heroIo.observe(cv);
       cleanups.push(() => {
+        heroIo.disconnect();
         removeEventListener("resize", onResize);
         removeEventListener("pointermove", onPointerMove);
         cancelAnimationFrame(raf);
@@ -219,46 +251,11 @@ export default function Home() {
     setNote({ text: "Opening your email client — send it through and we’ll be in touch.", ok: true });
   }
 
-  // Showcase video: plays itself (muted, looping) while it is on screen and
-  // pauses off screen; the frame animates in the first time it is revealed.
-  const showcaseFrameRef = useRef<HTMLDivElement>(null);
-  const showcaseVideoRef = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const frame = showcaseFrameRef.current;
-    const video = showcaseVideoRef.current;
-    if (!frame || !video) return;
-    if (typeof IntersectionObserver === "undefined") {
-      frame.classList.add("is-in");
-      void video.play().catch(() => {});
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            frame.classList.add("is-in");
-            void video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        }
-      },
-      { threshold: 0.35 },
-    );
-    io.observe(frame);
-    return () => io.disconnect();
-  }, []);
-
   return (
     <>
     <div className="lp" ref={rootRef} data-theme={theme === "light" ? "light" : undefined} id="top">
-      <nav>
+      <nav className={navHidden ? "nav-hidden" : undefined}>
         <div className="nav-in">
-          <a className="mark" href="#top" aria-label="Activate8 home">
-            <img className="mark-logo mark-logo-dark" src="/brand/activate8-logo-dark.png" alt="Activate8" />
-            <img className="mark-logo mark-logo-light" src="/brand/activate8-logo-light.png" alt="" aria-hidden="true" />
-            <small>by RequisorAI — experiential games &amp; brand activations</small>
-          </a>
           <div className="nav-r">
             <button
               ref={themeToggleRef}
@@ -277,7 +274,7 @@ export default function Home() {
               </svg>
             </button>
             <Link className="btn" href="/games">
-              Activate8 Now
+              Build Now
             </Link>
           </div>
         </div>
@@ -297,35 +294,20 @@ export default function Home() {
 
         <div className="wrap hero-in">
           <div className="hero-copy">
+            <div className="hero-brand rise d1">
+              <img className="mark-logo mark-logo-dark" src="/brand/activate8-wordmark-dark.png" alt="Activate8" />
+              <img className="mark-logo mark-logo-light" src="/brand/activate8-wordmark-light.png" alt="" aria-hidden="true" />
+              <small>by RequisorAI — experiential games &amp; brand activations</small>
+            </div>
             <h1 className="rise d2">
               Branded interactives, <span className="lit">turnkey and measurable.</span>
             </h1>
-            <p className="rise d3">
-              <b>Skip the months-long custom build.</b> Launch a branded interactive for your client’s next event in
-              minutes.
-            </p>
+
             
             <div className="row rise d4">
-              <Link className="btn" href="/games">Activate8 Now</Link>
-              <a className="btn line" href="#work">See It Live</a>
-              <a className="btn line" href="#pricing">Pilot Program</a>
+              <Link className="btn" href="/games">Build Now</Link>
+              <a className="btn" href="#pricing">Pilot Program</a>
             </div>
-            <ul className="hero-points rise d4">
-              {[
-                ["Custom looks, without the custom build.", "Your client’s brand goes into a ready-to-play game, so you’re not waiting on months of development."],
-                ["Live in minutes.", "Load the logo and colors, and you’re deployed. No dev queue, no rework cycles."],
-                ["Priced for real budgets.", "A fraction of what custom interactives cost, so more clients can say yes."],
-                ["Lead capture built in.", "Every play turns into a lead you can hand your client."],
-                ["Realtime data analytics.", "Track plays, engagement, and leads as they happen, not in a post-show report."],
-              ].map(([lead, rest]) => (
-                <li key={lead}>
-                  <i aria-hidden="true"></i>
-                  <span>
-                    <b>{lead}</b> {rest}
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
           <div className="hero-booth rise d3" aria-hidden="true">
             <div className="dev dev-tv">
@@ -350,7 +332,6 @@ export default function Home() {
                 </video>
               </div>
             </div>
-            <div className="booth-cap">One platform. Every screen.</div>
           </div>
         </div>
         <div className="hint" aria-hidden="true">Scroll</div>
@@ -360,20 +341,34 @@ export default function Home() {
         <div className="wrap">
           <div className="sec-head rv">
             <h2>See Activate8 in action.</h2>
-            <p>A short look at how a ready-made game becomes your branded event experience.</p>
           </div>
-          <div className="showcase-frame" ref={showcaseFrameRef}>
+          <div className="pilot-grid showcase-points rv">
+            {[
+              ["blue", "Custom looks, without the custom build", "Your client’s brand goes into a ready-to-play game, so you’re not waiting on months of development."],
+              ["purple", "Live in minutes", "Load the logo and colors, and you’re deployed. No dev queue, no rework cycles."],
+              ["pink", "Priced for real budgets", "A fraction of what custom interactives cost, so more clients can say yes."],
+              ["orange", "Lead capture built in", "Every play turns into a lead you can hand your client."],
+              ["blue", "Realtime data analytics", "Track plays, engagement, and leads as they happen, not in a post-show report."],
+            ].map(([tone, title, text]) => (
+              <article className="pilot-card" key={title}>
+                <i className={`pilot-dot ${tone}`} aria-hidden="true" />
+                <div>
+                  <h4>{title}</h4>
+                  <p>{text}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="showcase-extra rv">
             <video
-              ref={showcaseVideoRef}
               autoPlay
               loop
               muted
               playsInline
-              preload="auto"
-              poster="/logo/showcase-poster.jpg"
-              aria-label="Activate8 product overview video"
+              preload="metadata"
+              aria-label="Activate8 in action"
             >
-              <source src="/logo/showcase.mp4" type="video/mp4" />
+              <source src="/logo/showcase-2.mp4" type="video/mp4" />
             </video>
           </div>
         </div>
@@ -382,7 +377,6 @@ export default function Home() {
       <section className="pilot" id="pricing">
         <div className="wrap">
           <div className="rv">
-            <span className="pilot-badge"><i aria-hidden="true" />Limited pilot program</span>
             <h2>
               Limited pilot pricing,
               <br />
@@ -428,6 +422,19 @@ export default function Home() {
           <div className="pilot-banner rv">
             <strong>Pilot pricing is limited — reserve your activation.</strong>
             <a href="https://activate.requisor.io" target="_blank" rel="noopener noreferrer">activate.requisor.io →</a>
+          </div>
+
+          <div className="pilot-video rv">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              aria-label="Activate8 pilot program overview"
+            >
+              <source src="/logo/pilot-video.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </section>
@@ -826,6 +833,30 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="book" id="book">
+        <div className="wrap">
+          <div className="book-head rv">
+            <h2>Book a meeting.</h2>
+            <p>Pick a time that works for you and we’ll walk you through Activate8 and the pilot program.</p>
+          </div>
+          <div className="book-frame rv">
+            <iframe
+              title="Book a meeting with Requisor"
+              src="https://calendly.com/requisor/alma41?month=2026-11&embed_type=Inline&hide_gdpr_banner=1"
+              loading="lazy"
+            />
+          </div>
+          <a
+            className="book-link rv"
+            href="https://calendly.com/requisor/alma41?month=2026-11"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open the scheduler in a new tab →
+          </a>
+        </div>
+      </section>
+
       <section className="final" id="start">
         <div className="wrap">
           <h2 className="rv">Ready to activate?</h2>
@@ -833,7 +864,7 @@ export default function Home() {
             Choose a game, apply your brand, and launch an experience that captures attention, leads, and measurable
             engagement.
           </p>
-          <Link className="btn rv" href="/games">Activate8 Now</Link>
+          <Link className="btn rv" href="/games">Build Now</Link>
         </div>
       </section>
 

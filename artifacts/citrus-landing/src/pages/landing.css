@@ -98,7 +98,9 @@ html{scroll-behavior:smooth}
   position:fixed;top:0;left:0;right:0;z-index:100;
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   background:var(--nav-bg);border-bottom:1px solid var(--line);
+  transition:transform .3s ease;
 }
+.lp nav.nav-hidden {transform:translateY(-100%)}
 .lp .nav-in {max-width:var(--max);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
 .lp .nav-r {display:flex;align-items:center;gap:12px}
 .lp .theme-toggle {
@@ -117,11 +119,15 @@ html{scroll-behavior:smooth}
   background:conic-gradient(from 40deg,var(--orange),var(--pink),var(--purple),var(--cyan),var(--orange));
   box-shadow:0 0 18px rgba(255,45,155,.8);
 }
-.lp .mark-logo {height:38px;width:auto;display:block;flex:none}
+.lp .mark-logo {height:42px;width:auto;display:block;flex:none}
 .lp .mark-logo-light {display:none}
 .lp[data-theme="light"] .mark-logo-light {display:block}
 .lp[data-theme="light"] .mark-logo-dark {display:none}
 .lp .mark {align-items:center}
+.lp .nav-in .nav-r {margin-left:auto}
+.lp .hero-brand {display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.lp .hero-brand .mark-logo {height:104px;max-width:100%;object-fit:contain;object-position:left center}
+.lp .hero-brand small {font-family:var(--font-mono);font-weight:400;font-size:11px;color:var(--fog);letter-spacing:.04em}
 .lp .mark small {font-family:var(--font-mono);font-weight:400;font-size:11px;color:var(--fog);letter-spacing:.04em}
 .lp nav .btn {padding:10px 20px;font-size:12px;white-space:nowrap}
 /* the wide Orbitron wordmark leaves no room for the small tagline on mid-size screens */
@@ -129,6 +135,8 @@ html{scroll-behavior:smooth}
 @media(max-width:640px){
   .lp .nav-in {padding:14px 18px}
   .lp .mark small {display:none}
+  .lp .mark-logo {height:30px}
+  .lp .hero-brand .mark-logo {height:56px}
   .lp nav .btn {padding:10px 14px}
 }
 
@@ -166,6 +174,8 @@ html{scroll-behavior:smooth}
 .lp .hero-points li {display:flex;align-items:flex-start;gap:12px;font-size:15px;line-height:1.55;color:var(--soft)}
 .lp .hero-points li i {flex:none;width:9px;height:9px;margin-top:.5em;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--pink));box-shadow:0 0 10px rgba(255,122,0,.45)}
 .lp .hero-points li b {color:var(--white);font-weight:700}
+.lp .showcase-points {max-width:1040px;margin:0 auto 36px}
+.lp .showcase-points .pilot-card:last-child:nth-child(odd) {grid-column:1 / -1}
 .lp .tags {display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start;margin-top:34px}
 .lp .hero .hint {position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;letter-spacing:.2em;color:rgba(156,163,175,.55);text-transform:uppercase}
 
@@ -249,6 +259,12 @@ html{scroll-behavior:smooth}
   box-shadow:0 40px 90px -30px rgba(0,0,0,.55);
 }
 .lp .showcase-frame video {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#0A0C14;pointer-events:none}
+.lp .showcase-extra {
+  position:relative;aspect-ratio:16/9;width:100%;max-width:1040px;margin:0 auto;
+  border-radius:20px;overflow:hidden;background:#0A0C14;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.55);
+}
+.lp .showcase-extra video {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#0A0C14;pointer-events:none}
 /* Entry animation: rises, scales up and sharpens into place, then a glow pulses once.
    Starts hidden; the class is added when it scrolls into view. */
 .lp .showcase-frame {
@@ -456,6 +472,12 @@ html{scroll-behavior:smooth}
 .lp .pilot-card h4 {font-family:var(--font-head);font-size:17px;font-weight:700;color:var(--white);margin-bottom:8px}
 .lp .pilot-card p {color:var(--fog);font-size:14px;line-height:1.6}
 .lp .pilot-banner {display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:22px;padding:20px 28px;border-radius:18px;color:#fff;background:linear-gradient(90deg,var(--orange),var(--pink) 55%,var(--purple))}
+.lp .pilot-video {
+  position:relative;aspect-ratio:16/9;width:100%;max-width:1040px;margin:32px auto 0;
+  border-radius:20px;overflow:hidden;background:#0A0C14;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.55);
+}
+.lp .pilot-video video {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#0A0C14;pointer-events:none}
 .lp .pilot-banner strong {font-size:15px;font-weight:700}
 .lp .pilot-banner a {color:#fff;font:700 11px var(--font-mono);letter-spacing:.12em;text-transform:uppercase;text-decoration:none}
 .lp .pilot-banner a:hover {text-decoration:underline}
@@ -485,6 +507,17 @@ html{scroll-behavior:smooth}
 .lp .analytics-outcome p+p {margin-top:12px;color:var(--white)}
 
 /* ---------- final ---------- */
+/* ---------- book a meeting ---------- */
+.lp .book {padding:0 0 110px}
+.lp .book-head {text-align:center;margin-bottom:36px}
+.lp .book-head h2 {margin:0 auto 14px}
+.lp .book-head p {color:var(--fog);font-weight:400;max-width:52ch;margin:0 auto;font-size:16px}
+.lp .book-frame {max-width:1000px;margin:0 auto;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff}
+.lp .book-frame iframe {display:block;width:100%;height:720px;border:0}
+.lp .book-link {display:block;width:fit-content;margin:22px auto 0;font:700 12px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--soft);text-decoration:none}
+.lp .book-link:hover {color:var(--white)}
+@media(max-width:640px){.lp .book-frame iframe{height:820px}}
+
 .lp .final {position:relative;padding:150px 0 130px;text-align:center;overflow:hidden}
 .lp .final::before {
   content:'';position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
