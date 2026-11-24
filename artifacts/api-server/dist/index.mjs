@@ -20748,27 +20748,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module2.exports = Router13;
+    module2.exports = Router14;
     module2.exports.Route = Route;
-    function Router13(options) {
-      if (!(this instanceof Router13)) {
-        return new Router13(options);
+    function Router14(options) {
+      if (!(this instanceof Router14)) {
+        return new Router14(options);
       }
       const opts = options || {};
-      function router13(req, res, next) {
-        router13.handle(req, res, next);
+      function router14(req, res, next) {
+        router14.handle(req, res, next);
       }
-      Object.setPrototypeOf(router13, this);
-      router13.caseSensitive = opts.caseSensitive;
-      router13.mergeParams = opts.mergeParams;
-      router13.params = {};
-      router13.strict = opts.strict;
-      router13.stack = [];
-      return router13;
+      Object.setPrototypeOf(router14, this);
+      router14.caseSensitive = opts.caseSensitive;
+      router14.mergeParams = opts.mergeParams;
+      router14.params = {};
+      router14.strict = opts.strict;
+      router14.stack = [];
+      return router14;
     }
-    Router13.prototype = function() {
+    Router14.prototype = function() {
     };
-    Router13.prototype.param = function param(name2, fn2) {
+    Router14.prototype.param = function param(name2, fn2) {
       if (!name2) {
         throw new TypeError("argument name is required");
       }
@@ -20788,7 +20788,7 @@ var require_router = __commonJS({
       params.push(fn2);
       return this;
     };
-    Router13.prototype.handle = function handle2(req, res, callback) {
+    Router14.prototype.handle = function handle2(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -20915,7 +20915,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router13.prototype.use = function use(handler) {
+    Router14.prototype.use = function use(handler) {
       let offset = 0;
       let path5 = "/";
       if (typeof handler !== "function") {
@@ -20948,7 +20948,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router13.prototype.route = function route(path5) {
+    Router14.prototype.route = function route(path5) {
       const route2 = new Route(path5);
       const layer = new Layer(path5, {
         sensitive: this.caseSensitive,
@@ -20963,7 +20963,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router13.prototype[method] = function(path5) {
+      Router14.prototype[method] = function(path5) {
         const route = this.route(path5);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21146,13 +21146,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve2 = __require("node:path").resolve;
     var once = require_once();
-    var Router13 = require_router();
+    var Router14 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module2.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init2() {
-      var router13 = null;
+      var router14 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21161,13 +21161,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router13 === null) {
-            router13 = new Router13({
+          if (router14 === null) {
+            router14 = new Router14({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router13;
+          return router14;
         }
       });
     };
@@ -21238,15 +21238,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router13 = this.router;
+      var router14 = this.router;
       fns.forEach(function(fn3) {
         if (!fn3 || !fn3.handle || !fn3.set) {
-          return router13.use(path5, fn3);
+          return router14.use(path5, fn3);
         }
         debug(".use app under %s", path5);
         fn3.mountpath = path5;
         fn3.parent = this;
-        router13.use(path5, function mounted_app(req, res, next) {
+        router14.use(path5, function mounted_app(req, res, next) {
           var orig = req.app;
           fn3.handle(req, res, function(err2) {
             Object.setPrototypeOf(req, orig.request);
@@ -23755,7 +23755,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router13 = require_router();
+    var Router14 = require_router();
     var req = require_request();
     var res = require_response();
     exports = module2.exports = createApplication;
@@ -23777,8 +23777,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router13.Route;
-    exports.Router = Router13;
+    exports.Route = Router14.Route;
+    exports.Router = Router14;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -28174,7 +28174,7 @@ var require_pino = __commonJS({
     function pinoBundlerAbsolutePath(p5) {
       try {
         const path5 = __require("path");
-        const outputDir = "/home/runner/workspace/artifacts/api-server/dist";
+        const outputDir = "C:\\Users\\Soham\\Downloads\\Requisorgame\\Requisorgame\\artifacts\\api-server\\dist";
         return path5.resolve(outputDir, p5.replace(/^\.\//, ""));
       } catch (e) {
         const f5 = new Function("p", "return new URL(p, import.meta.url).pathname");
@@ -35851,11 +35851,11 @@ var init_count = __esm({
       static [entityKind] = "PgCountBuilder";
       [Symbol.toStringTag] = "PgCountBuilder";
       session;
-      static buildEmbeddedCount(source, filters) {
-        return sql`(select count(*) from ${source}${sql.raw(" where ").if(filters)}${filters})`;
+      static buildEmbeddedCount(source, filters2) {
+        return sql`(select count(*) from ${source}${sql.raw(" where ").if(filters2)}${filters2})`;
       }
-      static buildCount(source, filters) {
-        return sql`select count(*) as count from ${source}${sql.raw(" where ").if(filters)}${filters};`;
+      static buildCount(source, filters2) {
+        return sql`select count(*) as count from ${source}${sql.raw(" where ").if(filters2)}${filters2};`;
       }
       /** @intrnal */
       setToken(token) {
@@ -36142,8 +36142,8 @@ var init_db = __esm({
         };
         return { as };
       };
-      $count(source, filters) {
-        return new PgCountBuilder({ source, filters, session: this.session });
+      $count(source, filters2) {
+        return new PgCountBuilder({ source, filters: filters2, session: this.session });
       }
       $cache;
       /**
@@ -51658,12 +51658,12 @@ import { existsSync as existsSync2 } from "node:fs";
 import path4 from "node:path";
 
 // src/app.ts
-var import_express13 = __toESM(require_express2(), 1);
+var import_express14 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express11 = __toESM(require_express2(), 1);
+var import_express12 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -56088,8 +56088,9 @@ router.get("/healthz", (_req, res) => {
 });
 var health_default = router;
 
-// src/routes/games.ts
+// src/routes/admin.ts
 var import_express2 = __toESM(require_express2(), 1);
+import { timingSafeEqual } from "node:crypto";
 
 // ../../lib/db/src/schema/index.ts
 var schema_exports = {};
@@ -67681,13 +67682,136 @@ async function createPgliteDb() {
   return drizzle3(client, { schema: schema_exports });
 }
 
-// src/routes/games.ts
+// src/routes/admin.ts
 var router2 = (0, import_express2.Router)();
-router2.get("/games", async (_req, res) => {
+var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function requireAdmin(req, res, next) {
+  const expected = process.env.ADMIN_KEY ?? "";
+  if (expected.length < 12) {
+    res.status(503).json({ error: "Admin access is not configured on this server." });
+    return;
+  }
+  const given = String(req.header("x-admin-key") ?? "");
+  const a3 = Buffer.from(given);
+  const b4 = Buffer.from(expected);
+  if (a3.length !== b4.length || !timingSafeEqual(a3, b4)) {
+    res.status(401).json({ error: "Invalid admin key." });
+    return;
+  }
+  res.setHeader("Cache-Control", "no-store");
+  next();
+}
+router2.use("/admin", requireAdmin);
+router2.get("/admin/overview", async (_req, res) => {
+  try {
+    const games = await db.select({ id: gamesTable.id, slug: gamesTable.slug, name: gamesTable.name }).from(gamesTable).orderBy(gamesTable.name);
+    const counts = async (table) => {
+      const rows = await db.select({ gameId: table.gameId, n: sql`count(*)::int` }).from(table).groupBy(table.gameId);
+      return new Map(rows.map((r) => [r.gameId, r.n]));
+    };
+    const [orders, drafts, submissions] = await Promise.all([counts(ordersTable), counts(brandingDraftsTable), counts(playerSubmissionsTable)]);
+    const perGame = games.map((g4) => ({
+      slug: g4.slug,
+      name: g4.name,
+      orders: orders.get(g4.id) ?? 0,
+      drafts: drafts.get(g4.id) ?? 0,
+      submissions: submissions.get(g4.id) ?? 0
+    }));
+    const totals = perGame.reduce(
+      (t2, g4) => ({ orders: t2.orders + g4.orders, drafts: t2.drafts + g4.drafts, submissions: t2.submissions + g4.submissions }),
+      { orders: 0, drafts: 0, submissions: 0 }
+    );
+    res.json({ totals, perGame });
+  } catch {
+    res.status(500).json({ error: "Could not load the overview." });
+  }
+});
+router2.get("/admin/orders", async (req, res) => {
+  const gameSlug = typeof req.query.game === "string" ? req.query.game : "";
+  try {
+    const rows = await db.select({
+      id: ordersTable.id,
+      createdAt: ordersTable.createdAt,
+      status: ordersTable.status,
+      totalAmountCents: ordersTable.totalAmountCents,
+      contactEmail: ordersTable.contactEmail,
+      gameSlug: gamesTable.slug,
+      gameName: gamesTable.name,
+      heading: brandingDraftsTable.heading,
+      tagline: brandingDraftsTable.tagline,
+      primaryColor: brandingDraftsTable.primaryColor,
+      secondaryColor: brandingDraftsTable.secondaryColor,
+      accentColor: brandingDraftsTable.accentColor,
+      hasLogo: sql`${brandingDraftsTable.logoDataUrl} is not null`,
+      hasBackground: sql`${brandingDraftsTable.bgDataUrl} is not null`,
+      hasFont: sql`${brandingDraftsTable.fontDataUrl} is not null`,
+      hasCustomContent: sql`(${brandingDraftsTable.gameContent} is not null or ${brandingDraftsTable.quiz} is not null)`,
+      submissions: sql`(select count(*)::int from ${playerSubmissionsTable} s where s.order_id = ${ordersTable.id})`
+    }).from(ordersTable).innerJoin(gamesTable, eq(gamesTable.id, ordersTable.gameId)).innerJoin(brandingDraftsTable, eq(brandingDraftsTable.id, ordersTable.brandingDraftId)).where(gameSlug ? eq(gamesTable.slug, gameSlug) : void 0).orderBy(desc(ordersTable.createdAt)).limit(500);
+    res.json(rows);
+  } catch {
+    res.status(500).json({ error: "Could not load orders." });
+  }
+});
+function filters(req) {
+  const parts2 = [];
+  if (typeof req.query.order === "string" && req.query.order) {
+    parts2.push(
+      req.query.order === "none" ? sql`${playerSubmissionsTable.orderId} is null` : eq(playerSubmissionsTable.orderId, req.query.order)
+    );
+  }
+  if (typeof req.query.game === "string" && req.query.game) parts2.push(eq(gamesTable.slug, req.query.game));
+  return parts2.length ? and(...parts2) : void 0;
+}
+var csvCell = (v5) => {
+  let s5 = v5 === null || v5 === void 0 ? "" : typeof v5 === "object" ? JSON.stringify(v5) : String(v5);
+  if (/^[=+\-@\t\r]/.test(s5)) s5 = "'" + s5;
+  return `"${s5.replace(/"/g, '""')}"`;
+};
+router2.get("/admin/submissions", async (req, res) => {
+  if (typeof req.query.order === "string" && req.query.order && req.query.order !== "none" && !UUID.test(req.query.order)) {
+    res.status(400).json({ error: "Invalid order id." });
+    return;
+  }
+  try {
+    const rows = await db.select({
+      id: playerSubmissionsTable.id,
+      createdAt: playerSubmissionsTable.createdAt,
+      orderId: playerSubmissionsTable.orderId,
+      gameSlug: gamesTable.slug,
+      gameName: gamesTable.name,
+      name: playerSubmissionsTable.name,
+      email: playerSubmissionsTable.email,
+      extra: playerSubmissionsTable.extra
+    }).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(filters(req)).orderBy(desc(playerSubmissionsTable.createdAt)).limit(5e3);
+    if (req.query.format === "csv") {
+      const keys = [...new Set(rows.flatMap((r) => Object.keys(r.extra ?? {})))].sort();
+      const head = ["time", "game", "order", "name", "email", ...keys];
+      const lines = [head.map(csvCell).join(",")].concat(
+        rows.map(
+          (r) => [r.createdAt.toISOString(), r.gameName, r.orderId ?? "", r.name, r.email, ...keys.map((k3) => (r.extra ?? {})[k3])].map(csvCell).join(",")
+        )
+      );
+      res.setHeader("Content-Type", "text/csv; charset=utf-8");
+      res.setHeader("Content-Disposition", 'attachment; filename="activate8-submissions.csv"');
+      res.send("\uFEFF" + lines.join("\r\n"));
+      return;
+    }
+    res.json(rows);
+  } catch {
+    res.status(500).json({ error: "Could not load submissions." });
+  }
+});
+var admin_default = router2;
+
+// src/routes/games.ts
+var import_express3 = __toESM(require_express2(), 1);
+var router3 = (0, import_express3.Router)();
+router3.get("/games", async (_req, res) => {
   const games = await db.select().from(gamesTable);
   res.json(ListGamesResponse.parse(games));
 });
-router2.get("/games/:slug", async (req, res) => {
+router3.get("/games/:slug", async (req, res) => {
   const [game] = await db.select().from(gamesTable).where(eq(gamesTable.slug, req.params.slug)).limit(1);
   if (!game) {
     res.status(404).json({ error: "Game not found" });
@@ -67695,10 +67819,10 @@ router2.get("/games/:slug", async (req, res) => {
   }
   res.json(GetGameResponse.parse(game));
 });
-var games_default = router2;
+var games_default = router3;
 
 // src/routes/branding-drafts.ts
-var import_express3 = __toESM(require_express2(), 1);
+var import_express4 = __toESM(require_express2(), 1);
 
 // ../../lib/game-content/src/index.js
 var QUESTION_GAME_SLUGS = ["a8-match", "a8-trivia-rush", "a8-the-number", "a8-spin-to-win", "a8-recall", "jeopardy"];
@@ -67788,7 +67912,7 @@ function validateGameContent(input, slug) {
 }
 
 // src/routes/branding-drafts.ts
-var router3 = (0, import_express3.Router)();
+var router4 = (0, import_express4.Router)();
 var LOGO_MIME_TYPES = /* @__PURE__ */ new Set([
   "image/avif",
   "image/gif",
@@ -67821,7 +67945,7 @@ function setSafeMediaHeaders(res, mimeType) {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
 }
-router3.post("/branding-drafts", async (req, res) => {
+router4.post("/branding-drafts", async (req, res) => {
   const parsed = UpsertBrandingDraftBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Invalid draft or question fields. Please check your content." });
@@ -67876,7 +68000,7 @@ router3.post("/branding-drafts", async (req, res) => {
     res.status(500).json({ error: "Your changes could not be saved. Please try again." });
   }
 });
-router3.get("/branding-drafts/:id/content", async (req, res) => {
+router4.get("/branding-drafts/:id/content", async (req, res) => {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
     res.status(400).json({ error: "Invalid content identifier." });
     return;
@@ -67895,7 +68019,7 @@ router3.get("/branding-drafts/:id/content", async (req, res) => {
     res.status(500).json({ error: "Questions could not be loaded. Please try again." });
   }
 });
-router3.get("/branding-drafts/:id/quiz", async (req, res) => {
+router4.get("/branding-drafts/:id/quiz", async (req, res) => {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(req.params.id)) {
     res.status(400).json({ error: "Invalid quiz identifier." });
     return;
@@ -67914,7 +68038,7 @@ router3.get("/branding-drafts/:id/quiz", async (req, res) => {
     res.status(500).json({ error: "The quiz could not be loaded. Please try again." });
   }
 });
-router3.get("/branding-drafts/:id", async (req, res) => {
+router4.get("/branding-drafts/:id", async (req, res) => {
   const [draft] = await db.select().from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
   if (!draft) {
     res.status(404).json({ error: "Draft not found" });
@@ -67922,7 +68046,7 @@ router3.get("/branding-drafts/:id", async (req, res) => {
   }
   res.json(GetBrandingDraftResponse.parse(draft));
 });
-router3.get("/branding-drafts/:id/logo", async (req, res) => {
+router4.get("/branding-drafts/:id/logo", async (req, res) => {
   const [draft] = await db.select({ logoDataUrl: brandingDraftsTable.logoDataUrl }).from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
   const media = parseSafeDataUri(draft?.logoDataUrl ?? null, LOGO_MIME_TYPES);
   if (!media) {
@@ -67936,7 +68060,7 @@ router3.get("/branding-drafts/:id/logo", async (req, res) => {
   setSafeMediaHeaders(res, media.mimeType);
   res.send(media.buffer);
 });
-router3.get("/branding-drafts/:id/bg", async (req, res) => {
+router4.get("/branding-drafts/:id/bg", async (req, res) => {
   const [draft] = await db.select({ bgDataUrl: brandingDraftsTable.bgDataUrl }).from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
   const media = parseSafeDataUri(draft?.bgDataUrl ?? null, BACKGROUND_MIME_TYPES);
   if (!media) {
@@ -67964,7 +68088,7 @@ router3.get("/branding-drafts/:id/bg", async (req, res) => {
   res.setHeader("Content-Length", end - start2 + 1);
   res.send(buffer.subarray(start2, end + 1));
 });
-router3.get("/branding-drafts/:id/font", async (req, res) => {
+router4.get("/branding-drafts/:id/font", async (req, res) => {
   const [draft] = await db.select({ fontDataUrl: brandingDraftsTable.fontDataUrl }).from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
   const media = parseSafeDataUri(draft?.fontDataUrl ?? null, FONT_MIME_TYPES);
   if (!media) {
@@ -67978,7 +68102,7 @@ router3.get("/branding-drafts/:id/font", async (req, res) => {
   setSafeMediaHeaders(res, media.mimeType);
   res.send(media.buffer);
 });
-router3.post("/branding-drafts/:id/finalize", async (req, res) => {
+router4.post("/branding-drafts/:id/finalize", async (req, res) => {
   const body2 = FinalizeBrandingDraftBody.parse(req.body ?? {});
   const [draft] = await db.select().from(brandingDraftsTable).where(eq(brandingDraftsTable.id, req.params.id)).limit(1);
   if (!draft) {
@@ -67999,12 +68123,12 @@ router3.post("/branding-drafts/:id/finalize", async (req, res) => {
   }).returning();
   res.json(FinalizeBrandingDraftResponse.parse(order));
 });
-var branding_drafts_default = router3;
+var branding_drafts_default = router4;
 
 // src/routes/custom-ui-requests.ts
-var import_express4 = __toESM(require_express2(), 1);
-var router4 = (0, import_express4.Router)();
-router4.post("/custom-ui-requests", async (req, res) => {
+var import_express5 = __toESM(require_express2(), 1);
+var router5 = (0, import_express5.Router)();
+router5.post("/custom-ui-requests", async (req, res) => {
   const body2 = CreateCustomUiRequestBody.parse(req.body);
   const [request] = await db.insert(customUiRequestsTable).values({
     gameId: body2.gameId ?? null,
@@ -68014,12 +68138,12 @@ router4.post("/custom-ui-requests", async (req, res) => {
   }).returning();
   res.json(CreateCustomUiRequestResponse.parse(request));
 });
-var custom_ui_requests_default = router4;
+var custom_ui_requests_default = router5;
 
 // src/routes/player-submissions.ts
-var import_express5 = __toESM(require_express2(), 1);
-var router5 = (0, import_express5.Router)();
-router5.post("/player-submissions", async (req, res) => {
+var import_express6 = __toESM(require_express2(), 1);
+var router6 = (0, import_express6.Router)();
+router6.post("/player-submissions", async (req, res) => {
   const body2 = CreatePlayerSubmissionBody.parse(req.body);
   if (body2.gameSlug === "soccer-shootout" && body2.extra?.kind === "soccer-score" || body2.gameSlug === "basketball-shootout" && body2.extra?.kind === "basketball-score") {
     res.status(400).json({ error: "Use the game's score submission endpoint." });
@@ -68039,10 +68163,10 @@ router5.post("/player-submissions", async (req, res) => {
   }).returning();
   res.json(CreatePlayerSubmissionResponse.parse(submission));
 });
-var player_submissions_default = router5;
+var player_submissions_default = router6;
 
 // src/routes/scenes.ts
-var import_express6 = __toESM(require_express2(), 1);
+var import_express7 = __toESM(require_express2(), 1);
 
 // src/lib/scenes.ts
 var SCENES = [
@@ -68076,8 +68200,8 @@ function getScene(id) {
 }
 
 // src/routes/scenes.ts
-var router6 = (0, import_express6.Router)();
-router6.get("/scenes", (_req, res) => {
+var router7 = (0, import_express7.Router)();
+router7.get("/scenes", (_req, res) => {
   const data = SCENES.map((s5) => ({
     id: s5.id,
     name: s5.name,
@@ -68086,10 +68210,10 @@ router6.get("/scenes", (_req, res) => {
   }));
   res.json(ListScenesResponse.parse(data));
 });
-var scenes_default = router6;
+var scenes_default = router7;
 
 // src/routes/generations.ts
-var import_express7 = __toESM(require_express2(), 1);
+var import_express8 = __toESM(require_express2(), 1);
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -68333,11 +68457,11 @@ async function resumePendingVideoJobs() {
 }
 
 // src/routes/generations.ts
-var router7 = (0, import_express7.Router)();
+var router8 = (0, import_express8.Router)();
 function normalizeDataUri(input) {
   return input.startsWith("data:") ? input : `data:image/jpeg;base64,${input}`;
 }
-router7.get("/generations", async (req, res) => {
+router8.get("/generations", async (req, res) => {
   const parsed = ListGenerationsQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -68348,7 +68472,7 @@ router7.get("/generations", async (req, res) => {
   res.json(ListGenerationsResponse.parse(rows.map(toApiGeneration)));
 });
 var PHOTO_STALE_MS = 4 * 60 * 1e3;
-router7.post("/generations", async (req, res) => {
+router8.post("/generations", async (req, res) => {
   const parsed = CreateGenerationBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -68385,7 +68509,7 @@ router7.post("/generations", async (req, res) => {
   })();
   res.status(201).json(GetGenerationResponse.parse(toApiGeneration(row)));
 });
-router7.get("/generations/:id", async (req, res) => {
+router8.get("/generations/:id", async (req, res) => {
   const params = GetGenerationParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -68403,7 +68527,7 @@ router7.get("/generations/:id", async (req, res) => {
   }
   res.json(GetGenerationResponse.parse(toApiGeneration(row)));
 });
-router7.post("/generations/:id/video", async (req, res) => {
+router8.post("/generations/:id/video", async (req, res) => {
   const params = StartVideoParams.safeParse(req.params);
   if (!params.success) {
     res.status(400).json({ error: params.error.message });
@@ -68448,7 +68572,7 @@ router7.post("/generations/:id/video", async (req, res) => {
     res.status(502).json({ error: message });
   }
 });
-router7.get("/media/:id/photo", async (req, res) => {
+router8.get("/media/:id/photo", async (req, res) => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const [row] = await db.select().from(generationsTable).where(eq(generationsTable.id, raw));
   if (!row || !row.photoData) {
@@ -68459,7 +68583,7 @@ router7.get("/media/:id/photo", async (req, res) => {
   res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
   res.send(Buffer.from(row.photoData, "base64"));
 });
-router7.get("/media/:id/video", async (req, res) => {
+router8.get("/media/:id/video", async (req, res) => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const [row] = await db.select().from(generationsTable).where(eq(generationsTable.id, raw));
   if (!row || !row.videoData) {
@@ -68511,12 +68635,12 @@ router7.get("/media/:id/video", async (req, res) => {
   res.setHeader("Content-Length", total);
   res.end(buffer);
 });
-var generations_default = router7;
+var generations_default = router8;
 
 // src/routes/booth.ts
-var import_express8 = __toESM(require_express2(), 1);
-var router8 = (0, import_express8.Router)();
-router8.get("/booth/stats", async (_req, res) => {
+var import_express9 = __toESM(require_express2(), 1);
+var router9 = (0, import_express9.Router)();
+router9.get("/booth/stats", async (_req, res) => {
   const [totals] = await db.select({
     totalCreations: sql`count(*)::int`,
     videosCreated: sql`count(*) filter (where ${generationsTable.videoStatus} = 'ready')::int`
@@ -68539,14 +68663,14 @@ router8.get("/booth/stats", async (_req, res) => {
     })
   );
 });
-var booth_default = router8;
+var booth_default = router9;
 
 // src/routes/soccer-scores.ts
-var import_express9 = __toESM(require_express2(), 1);
-var router9 = (0, import_express9.Router)();
+var import_express10 = __toESM(require_express2(), 1);
+var router10 = (0, import_express10.Router)();
 var path = "/games/soccer-shootout/scores";
 var submissionWindows = /* @__PURE__ */ new Map();
-router9.post(path, (req, res, next) => {
+router10.post(path, (req, res, next) => {
   const now = Date.now();
   for (const [key2, value] of submissionWindows) {
     if (value.resetAt <= now) submissionWindows.delete(key2);
@@ -68577,7 +68701,7 @@ var soccerOnly = and(
   eq(gamesTable.slug, "soccer-shootout"),
   sql`${playerSubmissionsTable.extra}->>'kind' = 'soccer-score'`
 );
-router9.get(path, async (req, res) => {
+router10.get(path, async (req, res) => {
   const parsed = ListSoccerScoresQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Limit must be an integer between 1 and 100." });
@@ -68592,7 +68716,7 @@ router9.get(path, async (req, res) => {
     res.status(500).json({ error: "The leaderboard is temporarily unavailable. Please retry." });
   }
 });
-router9.post(path, async (req, res) => {
+router10.post(path, async (req, res) => {
   const parsed = SubmitSoccerScoreBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Please enter valid player details and round statistics." });
@@ -68638,14 +68762,14 @@ router9.post(path, async (req, res) => {
     res.status(500).json({ error: "Your score could not be saved. Please retry." });
   }
 });
-var soccer_scores_default = router9;
+var soccer_scores_default = router10;
 
 // src/routes/basketball-scores.ts
-var import_express10 = __toESM(require_express2(), 1);
-var router10 = (0, import_express10.Router)();
+var import_express11 = __toESM(require_express2(), 1);
+var router11 = (0, import_express11.Router)();
 var path2 = "/games/basketball-shootout/scores";
 var submissionWindows2 = /* @__PURE__ */ new Map();
-router10.post(path2, (req, res, next) => {
+router11.post(path2, (req, res, next) => {
   const now = Date.now();
   for (const [key2, value] of submissionWindows2) {
     if (value.resetAt <= now) submissionWindows2.delete(key2);
@@ -68676,7 +68800,7 @@ var basketballOnly = and(
   eq(gamesTable.slug, "basketball-shootout"),
   sql`${playerSubmissionsTable.extra}->>'kind' = 'basketball-score'`
 );
-router10.get(path2, async (req, res) => {
+router11.get(path2, async (req, res) => {
   const parsed = ListBasketballScoresQueryParams.safeParse(req.query);
   if (!parsed.success) {
     res.status(400).json({ error: "Limit must be an integer between 1 and 100." });
@@ -68691,7 +68815,7 @@ router10.get(path2, async (req, res) => {
     res.status(500).json({ error: "The leaderboard is temporarily unavailable. Please retry." });
   }
 });
-router10.post(path2, async (req, res) => {
+router11.post(path2, async (req, res) => {
   const parsed = SubmitBasketballScoreBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: "Please enter valid player details and round statistics." });
@@ -68740,24 +68864,25 @@ router10.post(path2, async (req, res) => {
     res.status(500).json({ error: "Your score could not be saved. Please retry." });
   }
 });
-var basketball_scores_default = router10;
+var basketball_scores_default = router11;
 
 // src/routes/index.ts
-var router11 = (0, import_express11.Router)();
-router11.use(health_default);
-router11.use(games_default);
-router11.use(branding_drafts_default);
-router11.use(custom_ui_requests_default);
-router11.use(player_submissions_default);
-router11.use(scenes_default);
-router11.use(generations_default);
-router11.use(booth_default);
-router11.use(soccer_scores_default);
-router11.use(basketball_scores_default);
-var routes_default = router11;
+var router12 = (0, import_express12.Router)();
+router12.use(admin_default);
+router12.use(health_default);
+router12.use(games_default);
+router12.use(branding_drafts_default);
+router12.use(custom_ui_requests_default);
+router12.use(player_submissions_default);
+router12.use(scenes_default);
+router12.use(generations_default);
+router12.use(booth_default);
+router12.use(soccer_scores_default);
+router12.use(basketball_scores_default);
+var routes_default = router12;
 
 // src/lib/game-previews.ts
-var import_express12 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 import fs2 from "fs";
 import path3 from "path";
 var repoRoot = path3.resolve(import.meta.dirname, "../../..");
@@ -68814,19 +68939,19 @@ var GAME_PREVIEWS = [
     distDir: path3.join(repoRoot, "artifacts/citrus-landing/game/Lexus/public")
   }
 ];
-var router12 = (0, import_express12.Router)();
+var router13 = (0, import_express13.Router)();
 for (const { slug, distDir } of GAME_PREVIEWS) {
-  router12.use(`/game-previews/${slug}`, import_express12.default.static(distDir));
+  router13.use(`/game-previews/${slug}`, import_express13.default.static(distDir));
   const indexHtml = path3.join(distDir, "index.html");
-  router12.get(`/game-previews/${slug}/*splat`, (_req, res, next) => {
+  router13.get(`/game-previews/${slug}/*splat`, (_req, res, next) => {
     if (!fs2.existsSync(indexHtml)) return next();
     res.sendFile(indexHtml);
   });
 }
-var game_previews_default = router12;
+var game_previews_default = router13;
 
 // src/app.ts
-var app = (0, import_express13.default)();
+var app = (0, import_express14.default)();
 app.use(
   (0, import_pino_http.pinoHttp)({
     logger,
@@ -68847,8 +68972,8 @@ app.use(
   })
 );
 app.use((0, import_cors.default)());
-app.use(import_express13.default.json({ limit: "50mb" }));
-app.use(import_express13.default.urlencoded({ extended: true, limit: "50mb" }));
+app.use(import_express14.default.json({ limit: "50mb" }));
+app.use(import_express14.default.urlencoded({ extended: true, limit: "50mb" }));
 app.use(game_previews_default);
 app.use("/api", routes_default);
 var app_default = app;

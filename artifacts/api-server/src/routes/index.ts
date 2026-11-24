@@ -1,5 +1,6 @@
 import { Router, type IRouter } from "express";
 import healthRouter from "./health";
+import adminRouter from "./admin";
 import gamesRouter from "./games";
 import brandingDraftsRouter from "./branding-drafts";
 import customUiRequestsRouter from "./custom-ui-requests";
@@ -12,6 +13,7 @@ import basketballScoresRouter from "./basketball-scores";
 
 const router: IRouter = Router();
 
+router.use(adminRouter);
 router.use(healthRouter);
 router.use(gamesRouter);
 router.use(brandingDraftsRouter);
