@@ -327,6 +327,8 @@ export interface ApiError {
 
 export interface SoccerScoreInput {
   submissionId: string;
+  /** The live link (order) this round was played on. Omit for demo/preview play. */
+  orderId?: string;
   /**
      * @minLength 1
      * @maxLength 80
@@ -388,6 +390,10 @@ export type ListBasketballScoresParams = {
  * @maximum 100
  */
 limit?: number;
+/**
+ * Show only this live link's results. Omit for demo/preview results.
+ */
+orderId?: string;
 };
 
 export type ListSoccerScoresParams = {
@@ -396,6 +402,10 @@ export type ListSoccerScoresParams = {
  * @maximum 100
  */
 limit?: number;
+/**
+ * Show only this live link's results. Omit for demo/preview results.
+ */
+orderId?: string;
 };
 
 export type ListGenerationsParams = {

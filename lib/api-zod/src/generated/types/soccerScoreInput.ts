@@ -8,6 +8,8 @@
 
 export interface SoccerScoreInput {
   submissionId: string;
+  /** The live link (order) this round was played on. Omit for demo/preview play. */
+  orderId?: string;
   /**
      * @minLength 1
      * @maxLength 80

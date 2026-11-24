@@ -55558,7 +55558,8 @@ var coerce = {
 var listBasketballScoresQueryLimitDefault = 20;
 var listBasketballScoresQueryLimitMax = 100;
 var ListBasketballScoresQueryParams = objectType({
-  "limit": coerce.number().int().min(1).max(listBasketballScoresQueryLimitMax).default(listBasketballScoresQueryLimitDefault)
+  "limit": coerce.number().int().min(1).max(listBasketballScoresQueryLimitMax).default(listBasketballScoresQueryLimitDefault),
+  "orderId": coerce.string().uuid().optional().describe("Show only this live link's results. Omit for demo/preview results.")
 });
 var ListBasketballScoresResponseItem = objectType({
   "id": stringType().uuid(),
@@ -55586,6 +55587,7 @@ var submitBasketballScoreBodyOutagesPreventedMin = 0;
 var submitBasketballScoreBodyOutagesPreventedMax = 300;
 var SubmitBasketballScoreBody = objectType({
   "submissionId": stringType().uuid(),
+  "orderId": stringType().uuid().optional().describe("The live link (order) this round was played on. Omit for demo/preview play."),
   "playerName": stringType().min(1).max(submitBasketballScoreBodyPlayerNameMax),
   "playerTitle": stringType().min(1).max(submitBasketballScoreBodyPlayerTitleMax),
   "playerCompany": stringType().min(1).max(submitBasketballScoreBodyPlayerCompanyMax),
@@ -55609,7 +55611,8 @@ var SubmitBasketballScoreResponse = objectType({
 var listSoccerScoresQueryLimitDefault = 20;
 var listSoccerScoresQueryLimitMax = 100;
 var ListSoccerScoresQueryParams = objectType({
-  "limit": coerce.number().int().min(1).max(listSoccerScoresQueryLimitMax).default(listSoccerScoresQueryLimitDefault)
+  "limit": coerce.number().int().min(1).max(listSoccerScoresQueryLimitMax).default(listSoccerScoresQueryLimitDefault),
+  "orderId": coerce.string().uuid().optional().describe("Show only this live link's results. Omit for demo/preview results.")
 });
 var ListSoccerScoresResponseItem = objectType({
   "id": stringType().uuid(),
@@ -55637,6 +55640,7 @@ var submitSoccerScoreBodyOutagesPreventedMin = 0;
 var submitSoccerScoreBodyOutagesPreventedMax = 300;
 var SubmitSoccerScoreBody = objectType({
   "submissionId": stringType().uuid(),
+  "orderId": stringType().uuid().optional().describe("The live link (order) this round was played on. Omit for demo/preview play."),
   "playerName": stringType().min(1).max(submitSoccerScoreBodyPlayerNameMax),
   "playerTitle": stringType().min(1).max(submitSoccerScoreBodyPlayerTitleMax),
   "playerCompany": stringType().min(1).max(submitSoccerScoreBodyPlayerCompanyMax),
@@ -68708,7 +68712,7 @@ router10.get(path, async (req, res) => {
     return;
   }
   try {
-    const rows = await db.select(publicFields).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(soccerOnly).orderBy(desc(publicFields.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id).limit(parsed.data.limit ?? 20);
+    const rows = await db.select(publicFields).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(soccerOnly, parsed.data.orderId ? eq(playerSubmissionsTable.orderId, parsed.data.orderId) : isNull(playerSubmissionsTable.orderId))).orderBy(desc(publicFields.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id).limit(parsed.data.limit ?? 20);
     res.setHeader("Cache-Control", "no-store");
     res.json(ListSoccerScoresResponse.parse(rows));
   } catch {
@@ -68736,9 +68740,17 @@ router10.post(path, async (req, res) => {
       res.status(503).json({ error: "Soccer Shootout is not available yet." });
       return;
     }
+    if (body2.orderId) {
+      const [order] = await db.select({ id: ordersTable.id }).from(ordersTable).where(and(eq(ordersTable.id, body2.orderId), eq(ordersTable.gameId, game.id))).limit(1);
+      if (!order) {
+        res.status(400).json({ error: "This live link is not valid for this game." });
+        return;
+      }
+    }
     await db.insert(playerSubmissionsTable).values({
       id: body2.submissionId,
       gameId: game.id,
+      orderId: body2.orderId ?? null,
       name: name2,
       email: body2.playerEmail.trim(),
       extra: {
@@ -68751,12 +68763,13 @@ router10.post(path, async (req, res) => {
         outagesPrevented: body2.outagesPrevented
       }
     }).onConflictDoNothing({ target: playerSubmissionsTable.id });
-    const [saved] = await db.select(publicFields).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(soccerOnly, eq(playerSubmissionsTable.id, body2.submissionId))).limit(1);
-    if (!saved || saved.playerName !== name2 || saved.playerTitle !== title || saved.playerCompany !== company || saved.score !== body2.score || saved.shotsTaken !== body2.shotsTaken || saved.shotsMade !== body2.shotsMade) {
+    const [saved] = await db.select({ ...publicFields, savedOrderId: playerSubmissionsTable.orderId }).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(soccerOnly, eq(playerSubmissionsTable.id, body2.submissionId))).limit(1);
+    if (!saved || saved.playerName !== name2 || saved.playerTitle !== title || saved.playerCompany !== company || saved.score !== body2.score || saved.savedOrderId !== (body2.orderId ?? null) || saved.shotsTaken !== body2.shotsTaken || saved.shotsMade !== body2.shotsMade) {
       res.status(409).json({ error: "This round was already saved with different details." });
       return;
     }
-    res.status(201).json(SubmitSoccerScoreResponse.parse(saved));
+    const { savedOrderId: _savedOrderId, ...publicScore } = saved;
+    res.status(201).json(SubmitSoccerScoreResponse.parse(publicScore));
   } catch {
     req.log.error({ operation: "soccer.submit" }, "Score submission failed");
     res.status(500).json({ error: "Your score could not be saved. Please retry." });
@@ -68807,7 +68820,7 @@ router11.get(path2, async (req, res) => {
     return;
   }
   try {
-    const rows = await db.select(publicFields2).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(basketballOnly).orderBy(desc(publicFields2.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id).limit(parsed.data.limit ?? 20);
+    const rows = await db.select(publicFields2).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(basketballOnly, parsed.data.orderId ? eq(playerSubmissionsTable.orderId, parsed.data.orderId) : isNull(playerSubmissionsTable.orderId))).orderBy(desc(publicFields2.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id).limit(parsed.data.limit ?? 20);
     res.setHeader("Cache-Control", "no-store");
     res.json(ListBasketballScoresResponse.parse(rows));
   } catch {
@@ -68835,10 +68848,18 @@ router11.post(path2, async (req, res) => {
       res.status(503).json({ error: "Basketball Shootout is not available yet." });
       return;
     }
+    if (body2.orderId) {
+      const [order] = await db.select({ id: ordersTable.id }).from(ordersTable).where(and(eq(ordersTable.id, body2.orderId), eq(ordersTable.gameId, game.id))).limit(1);
+      if (!order) {
+        res.status(400).json({ error: "This live link is not valid for this game." });
+        return;
+      }
+    }
     const email3 = body2.playerEmail.trim();
     await db.insert(playerSubmissionsTable).values({
       id: body2.submissionId,
       gameId: game.id,
+      orderId: body2.orderId ?? null,
       name: name2,
       email: email3,
       extra: {
@@ -68851,12 +68872,12 @@ router11.post(path2, async (req, res) => {
         outagesPrevented: body2.outagesPrevented
       }
     }).onConflictDoNothing({ target: playerSubmissionsTable.id });
-    const [saved] = await db.select({ ...publicFields2, privateEmail: playerSubmissionsTable.email }).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(basketballOnly, eq(playerSubmissionsTable.id, body2.submissionId))).limit(1);
-    if (!saved || saved.playerName !== name2 || saved.playerTitle !== title || saved.playerCompany !== company || saved.privateEmail !== email3 || saved.score !== body2.score || saved.shotsTaken !== body2.shotsTaken || saved.shotsMade !== body2.shotsMade || saved.outagesPrevented !== body2.outagesPrevented) {
+    const [saved] = await db.select({ ...publicFields2, privateEmail: playerSubmissionsTable.email, savedOrderId: playerSubmissionsTable.orderId }).from(playerSubmissionsTable).innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId)).where(and(basketballOnly, eq(playerSubmissionsTable.id, body2.submissionId))).limit(1);
+    if (!saved || saved.playerName !== name2 || saved.playerTitle !== title || saved.playerCompany !== company || saved.privateEmail !== email3 || saved.savedOrderId !== (body2.orderId ?? null) || saved.score !== body2.score || saved.shotsTaken !== body2.shotsTaken || saved.shotsMade !== body2.shotsMade || saved.outagesPrevented !== body2.outagesPrevented) {
       res.status(409).json({ error: "This round was already saved with different details." });
       return;
     }
-    const { privateEmail: _privateEmail, ...publicScore } = saved;
+    const { privateEmail: _privateEmail, savedOrderId: _savedOrderId, ...publicScore } = saved;
     req.log.info({ operation: "basketball.submit", submissionId: body2.submissionId }, "Score saved");
     res.status(201).json(SubmitBasketballScoreResponse.parse(publicScore));
   } catch {

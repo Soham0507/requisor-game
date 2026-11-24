@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
-import { and, desc, eq, sql } from "drizzle-orm";
-import { db, gamesTable, playerSubmissionsTable } from "@workspace/db";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import { db, gamesTable, ordersTable, playerSubmissionsTable } from "@workspace/db";
 import { ListBasketballScoresQueryParams, ListBasketballScoresResponse, SubmitBasketballScoreBody, SubmitBasketballScoreResponse } from "@workspace/api-zod";
 
 const router: IRouter = Router();
@@ -50,7 +50,9 @@ router.get(path, async (req, res): Promise<void> => {
   try {
     const rows = await db.select(publicFields).from(playerSubmissionsTable)
       .innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId))
-      .where(basketballOnly)
+      .where(and(basketballOnly, parsed.data.orderId
+        ? eq(playerSubmissionsTable.orderId, parsed.data.orderId)
+        : isNull(playerSubmissionsTable.orderId)))
       .orderBy(desc(publicFields.score), playerSubmissionsTable.createdAt, playerSubmissionsTable.id)
       .limit(parsed.data.limit ?? 20);
     res.setHeader("Cache-Control", "no-store");
@@ -83,27 +85,36 @@ router.post(path, async (req, res): Promise<void> => {
       res.status(503).json({ error: "Basketball Shootout is not available yet." });
       return;
     }
+    if (body.orderId) {
+      const [order] = await db.select({ id: ordersTable.id }).from(ordersTable)
+        .where(and(eq(ordersTable.id, body.orderId), eq(ordersTable.gameId, game.id))).limit(1);
+      if (!order) {
+        res.status(400).json({ error: "This live link is not valid for this game." });
+        return;
+      }
+    }
     const email = body.playerEmail.trim();
     await db.insert(playerSubmissionsTable).values({
-      id: body.submissionId, gameId: game.id, name, email,
+      id: body.submissionId, gameId: game.id, orderId: body.orderId ?? null, name, email,
       extra: {
         kind: "basketball-score", playerTitle: title, playerCompany: company,
         score: body.score, shotsTaken: body.shotsTaken,
         shotsMade: body.shotsMade, outagesPrevented: body.outagesPrevented,
       },
     }).onConflictDoNothing({ target: playerSubmissionsTable.id });
-    const [saved] = await db.select({ ...publicFields, privateEmail: playerSubmissionsTable.email })
+    const [saved] = await db.select({ ...publicFields, privateEmail: playerSubmissionsTable.email, savedOrderId: playerSubmissionsTable.orderId })
       .from(playerSubmissionsTable)
       .innerJoin(gamesTable, eq(gamesTable.id, playerSubmissionsTable.gameId))
       .where(and(basketballOnly, eq(playerSubmissionsTable.id, body.submissionId))).limit(1);
     if (!saved || saved.playerName !== name || saved.playerTitle !== title
         || saved.playerCompany !== company || saved.privateEmail !== email
+        || saved.savedOrderId !== (body.orderId ?? null)
         || saved.score !== body.score || saved.shotsTaken !== body.shotsTaken
         || saved.shotsMade !== body.shotsMade || saved.outagesPrevented !== body.outagesPrevented) {
       res.status(409).json({ error: "This round was already saved with different details." });
       return;
     }
-    const { privateEmail: _privateEmail, ...publicScore } = saved;
+    const { privateEmail: _privateEmail, savedOrderId: _savedOrderId, ...publicScore } = saved;
     req.log.info({ operation: "basketball.submit", submissionId: body.submissionId }, "Score saved");
     res.status(201).json(SubmitBasketballScoreResponse.parse(publicScore));
   } catch {

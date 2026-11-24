@@ -13,10 +13,13 @@ export declare const listBasketballScoresQueryLimitDefault = 20;
 export declare const listBasketballScoresQueryLimitMax = 100;
 export declare const ListBasketballScoresQueryParams: zod.ZodObject<{
     limit: zod.ZodDefault<zod.ZodNumber>;
+    orderId: zod.ZodOptional<zod.ZodString>;
 }, "strip", zod.ZodTypeAny, {
     limit: number;
+    orderId?: string | undefined;
 }, {
     limit?: number | undefined;
+    orderId?: string | undefined;
 }>;
 export declare const ListBasketballScoresResponseItem: zod.ZodObject<{
     id: zod.ZodString;
@@ -97,6 +100,7 @@ export declare const submitBasketballScoreBodyOutagesPreventedMin = 0;
 export declare const submitBasketballScoreBodyOutagesPreventedMax = 300;
 export declare const SubmitBasketballScoreBody: zod.ZodObject<{
     submissionId: zod.ZodString;
+    orderId: zod.ZodOptional<zod.ZodString>;
     playerName: zod.ZodString;
     playerTitle: zod.ZodString;
     playerCompany: zod.ZodString;
@@ -115,6 +119,7 @@ export declare const SubmitBasketballScoreBody: zod.ZodObject<{
     outagesPrevented: number;
     submissionId: string;
     playerEmail: string;
+    orderId?: string | undefined;
 }, {
     playerName: string;
     playerTitle: string;
@@ -125,6 +130,7 @@ export declare const SubmitBasketballScoreBody: zod.ZodObject<{
     outagesPrevented: number;
     submissionId: string;
     playerEmail: string;
+    orderId?: string | undefined;
 }>;
 export declare const SubmitBasketballScoreResponse: zod.ZodObject<{
     id: zod.ZodString;
@@ -164,10 +170,13 @@ export declare const listSoccerScoresQueryLimitDefault = 20;
 export declare const listSoccerScoresQueryLimitMax = 100;
 export declare const ListSoccerScoresQueryParams: zod.ZodObject<{
     limit: zod.ZodDefault<zod.ZodNumber>;
+    orderId: zod.ZodOptional<zod.ZodString>;
 }, "strip", zod.ZodTypeAny, {
     limit: number;
+    orderId?: string | undefined;
 }, {
     limit?: number | undefined;
+    orderId?: string | undefined;
 }>;
 export declare const ListSoccerScoresResponseItem: zod.ZodObject<{
     id: zod.ZodString;
@@ -248,6 +257,7 @@ export declare const submitSoccerScoreBodyOutagesPreventedMin = 0;
 export declare const submitSoccerScoreBodyOutagesPreventedMax = 300;
 export declare const SubmitSoccerScoreBody: zod.ZodObject<{
     submissionId: zod.ZodString;
+    orderId: zod.ZodOptional<zod.ZodString>;
     playerName: zod.ZodString;
     playerTitle: zod.ZodString;
     playerCompany: zod.ZodString;
@@ -266,6 +276,7 @@ export declare const SubmitSoccerScoreBody: zod.ZodObject<{
     outagesPrevented: number;
     submissionId: string;
     playerEmail: string;
+    orderId?: string | undefined;
 }, {
     playerName: string;
     playerTitle: string;
@@ -276,6 +287,7 @@ export declare const SubmitSoccerScoreBody: zod.ZodObject<{
     outagesPrevented: number;
     submissionId: string;
     playerEmail: string;
+    orderId?: string | undefined;
 }>;
 export declare const SubmitSoccerScoreResponse: zod.ZodObject<{
     id: zod.ZodString;

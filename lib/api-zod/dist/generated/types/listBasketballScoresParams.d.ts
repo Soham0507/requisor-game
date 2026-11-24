@@ -11,5 +11,9 @@ export type ListBasketballScoresParams = {
      * @maximum 100
      */
     limit?: number;
+    /**
+     * Show only this live link's results. Omit for demo/preview results.
+     */
+    orderId?: string;
 };
 //# sourceMappingURL=listBasketballScoresParams.d.ts.map

@@ -49,7 +49,7 @@ import {
 import { useGestureRecognizer } from "./hooks/useGestureRecognizer";
 
 import type { InsertScore } from "@shared/schema";
-import { soccerScoresUrl, soccerStorage as localStorage, type Score } from "./lib/soccer-scores";
+import { soccerScoresUrl, soccerOrderId, soccerOrderQuery, soccerStorage as localStorage, type Score } from "./lib/soccer-scores";
 import { Route, Router as WouterRouter, Switch } from "wouter";
 import { useBrand } from "./brand-bridge";
 
@@ -262,7 +262,7 @@ const LeaderboardTicker = () => {
         return [];
       }
       try {
-        const res = await fetch(`${soccerScoresUrl}?limit=20`);
+        const res = await fetch(`${soccerScoresUrl}?limit=20${soccerOrderQuery}`);
         if (!res.ok) throw new Error("Failed to fetch scores");
         const data = await res.json();
         localStorage.setItem("soccer-leaderboard", JSON.stringify(data));
@@ -1398,7 +1398,7 @@ const ResultsScreen = ({
         return [];
       }
       try {
-        const response = await fetch(`${soccerScoresUrl}?limit=50`);
+        const response = await fetch(`${soccerScoresUrl}?limit=50${soccerOrderQuery}`);
         if (!response.ok) throw new Error("Failed to fetch scores");
         const serverData = await response.json();
 
@@ -1437,7 +1437,7 @@ const ResultsScreen = ({
         const response = await fetch(soccerScoresUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...scoreData, submissionId }),
+          body: JSON.stringify({ ...scoreData, submissionId, orderId: soccerOrderId ?? undefined }),
         });
         if (!response.ok) {
           throw new Error(response.status === 400
@@ -1828,7 +1828,7 @@ const LeaderboardScreen = ({ onBack }: { onBack: () => void }) => {
         return [];
       }
       try {
-        const res = await fetch(`${soccerScoresUrl}?limit=100`);
+        const res = await fetch(`${soccerScoresUrl}?limit=100${soccerOrderQuery}`);
         if (!res.ok) throw new Error("Failed to fetch scores");
         const serverData = await res.json();
 
@@ -1999,7 +1999,7 @@ async function syncPendingScores() {
       const res = await fetch(soccerScoresUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(item.data),
+        body: JSON.stringify({ ...item.data, orderId: soccerOrderId ?? undefined }),
       });
       if (res.ok) {
         syncedLocalIds.push(item.localId);

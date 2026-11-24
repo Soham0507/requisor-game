@@ -10,13 +10,20 @@ export const basketballScoresUrl = previewIndex >= 0
   ? `${window.location.pathname.slice(0, previewIndex)}/api/games/basketball-shootout/scores`
   : "/api/scores";
 
+// A live link (order) is its own session: rounds are saved to, and rankings read
+// from, that order only, so two events on the same game never share a board.
+const rawOrderId = new URLSearchParams(window.location.search).get("orderId");
+export const basketballOrderId =
+  rawOrderId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawOrderId) ? rawOrderId : null;
+const orderQuery = basketballOrderId ? `&orderId=${basketballOrderId}` : "";
+
 // No persistent ranking or contact cache. Never read imported games' shared
 // avx-* storage, nor present an unconfirmed local score as a saved result.
 export function useBasketballLeaderboard(limit: number) {
   return useQuery<Score[]>({
-    queryKey: [basketballScoresUrl, { limit }],
+    queryKey: [basketballScoresUrl, { limit, orderId: basketballOrderId }],
     queryFn: async () => {
-      const response = await fetch(`${basketballScoresUrl}?limit=${limit}`, { cache: "no-store" });
+      const response = await fetch(`${basketballScoresUrl}?limit=${limit}${orderQuery}`, { cache: "no-store" });
       if (!response.ok) throw new Error("Rankings are unavailable. Please retry.");
       return response.json();
     },
@@ -31,7 +38,7 @@ export async function submitBasketballScore(input: ScoreInput): Promise<Score> {
     response = await fetch(basketballScoresUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(input),
+      body: JSON.stringify({ ...input, orderId: basketballOrderId ?? undefined }),
     });
   } catch {
     throw new Error("Save not confirmed. Check your connection and retry before leaving this screen.");

@@ -38,6 +38,12 @@ paths:
             minimum: 1
             maximum: 100
             default: 20
+        - name: orderId
+          in: query
+          description: Show only this live link's results. Omit for demo/preview results.
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Highest scores first
@@ -91,6 +97,12 @@ paths:
             minimum: 1
             maximum: 100
             default: 20
+        - name: orderId
+          in: query
+          description: Show only this live link's results. Omit for demo/preview results.
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Highest scores first
@@ -930,6 +942,10 @@ components:
         submissionId:
           type: string
           format: uuid
+        orderId:
+          type: string
+          format: uuid
+          description: The live link (order) this round was played on. Omit for demo/preview play.
         playerName:
           type: string
           minLength: 1

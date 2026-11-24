@@ -11,7 +11,7 @@ export declare const getListBasketballScoresUrl: (params?: ListBasketballScoresP
  */
 export declare const listBasketballScores: (params?: ListBasketballScoresParams, options?: Parameters<typeof customFetch>[1]) => Promise<SoccerScore[]>;
 export declare const getListBasketballScoresQueryKey: (params?: ListBasketballScoresParams) => readonly ["/api/games/basketball-shootout/scores", ...ListBasketballScoresParams[]];
-export declare const getListBasketballScoresQueryOptions: <TData = Awaited<ReturnType<typeof listBasketballScores>>, TError = ErrorType<void>>(params?: ListBasketballScoresParams, options?: {
+export declare const getListBasketballScoresQueryOptions: <TData = SoccerScore[], TError = ErrorType<void>>(params?: ListBasketballScoresParams, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof listBasketballScores>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof listBasketballScores>>, TError, TData> & {
@@ -57,7 +57,7 @@ export declare const getListSoccerScoresUrl: (params?: ListSoccerScoresParams) =
  */
 export declare const listSoccerScores: (params?: ListSoccerScoresParams, options?: Parameters<typeof customFetch>[1]) => Promise<SoccerScore[]>;
 export declare const getListSoccerScoresQueryKey: (params?: ListSoccerScoresParams) => readonly ["/api/games/soccer-shootout/scores", ...ListSoccerScoresParams[]];
-export declare const getListSoccerScoresQueryOptions: <TData = Awaited<ReturnType<typeof listSoccerScores>>, TError = ErrorType<void>>(params?: ListSoccerScoresParams, options?: {
+export declare const getListSoccerScoresQueryOptions: <TData = SoccerScore[], TError = ErrorType<void>>(params?: ListSoccerScoresParams, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof listSoccerScores>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof listSoccerScores>>, TError, TData> & {
@@ -104,7 +104,7 @@ export declare const getHealthCheckUrl: () => string;
  */
 export declare const healthCheck: (options?: Parameters<typeof customFetch>[1]) => Promise<HealthStatus>;
 export declare const getHealthCheckQueryKey: () => readonly ["/api/healthz"];
-export declare const getHealthCheckQueryOptions: <TData = Awaited<ReturnType<typeof healthCheck>>, TError = ErrorType<unknown>>(options?: {
+export declare const getHealthCheckQueryOptions: <TData = HealthStatus, TError = ErrorType<unknown>>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof healthCheck>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof healthCheck>>, TError, TData> & {
@@ -127,7 +127,7 @@ export declare const getListGamesUrl: () => string;
  */
 export declare const listGames: (options?: Parameters<typeof customFetch>[1]) => Promise<Game[]>;
 export declare const getListGamesQueryKey: () => readonly ["/api/games"];
-export declare const getListGamesQueryOptions: <TData = Awaited<ReturnType<typeof listGames>>, TError = ErrorType<unknown>>(options?: {
+export declare const getListGamesQueryOptions: <TData = Game[], TError = ErrorType<unknown>>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof listGames>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof listGames>>, TError, TData> & {
@@ -150,7 +150,7 @@ export declare const getGetGameUrl: (slug: string) => string;
  */
 export declare const getGame: (slug: string, options?: Parameters<typeof customFetch>[1]) => Promise<Game>;
 export declare const getGetGameQueryKey: (slug: string) => readonly [`/api/games/${string}`];
-export declare const getGetGameQueryOptions: <TData = Awaited<ReturnType<typeof getGame>>, TError = ErrorType<void>>(slug: string, options?: {
+export declare const getGetGameQueryOptions: <TData = Game, TError = ErrorType<void>>(slug: string, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getGame>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof getGame>>, TError, TData> & {
@@ -197,7 +197,7 @@ export declare const getGetBrandingDraftUrl: (id: string) => string;
  */
 export declare const getBrandingDraft: (id: string, options?: Parameters<typeof customFetch>[1]) => Promise<BrandingDraft>;
 export declare const getGetBrandingDraftQueryKey: (id: string) => readonly [`/api/branding-drafts/${string}`];
-export declare const getGetBrandingDraftQueryOptions: <TData = Awaited<ReturnType<typeof getBrandingDraft>>, TError = ErrorType<void>>(id: string, options?: {
+export declare const getGetBrandingDraftQueryOptions: <TData = BrandingDraft, TError = ErrorType<void>>(id: string, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraft>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraft>>, TError, TData> & {
@@ -217,7 +217,7 @@ export declare function useGetBrandingDraft<TData = Awaited<ReturnType<typeof ge
 export declare const getGetBrandingDraftContentUrl: (id: string) => string;
 export declare const getBrandingDraftContent: (id: string, options?: Parameters<typeof customFetch>[1]) => Promise<SavedGameContent>;
 export declare const getGetBrandingDraftContentQueryKey: (id: string) => readonly [`/api/branding-drafts/${string}/content`];
-export declare const getGetBrandingDraftContentQueryOptions: <TData = Awaited<ReturnType<typeof getBrandingDraftContent>>, TError = ErrorType<void>>(id: string, options?: {
+export declare const getGetBrandingDraftContentQueryOptions: <TData = SavedGameContent, TError = ErrorType<void>>(id: string, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraftContent>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof getBrandingDraftContent>>, TError, TData> & {
@@ -309,7 +309,7 @@ export declare const getListScenesUrl: () => string;
  */
 export declare const listScenes: (options?: Parameters<typeof customFetch>[1]) => Promise<Scene[]>;
 export declare const getListScenesQueryKey: () => readonly ["/api/scenes"];
-export declare const getListScenesQueryOptions: <TData = Awaited<ReturnType<typeof listScenes>>, TError = ErrorType<unknown>>(options?: {
+export declare const getListScenesQueryOptions: <TData = Scene[], TError = ErrorType<unknown>>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof listScenes>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof listScenes>>, TError, TData> & {
@@ -333,7 +333,7 @@ export declare const getListGenerationsUrl: (params?: ListGenerationsParams) => 
  */
 export declare const listGenerations: (params?: ListGenerationsParams, options?: Parameters<typeof customFetch>[1]) => Promise<Generation[]>;
 export declare const getListGenerationsQueryKey: (params?: ListGenerationsParams) => readonly ["/api/generations", ...ListGenerationsParams[]];
-export declare const getListGenerationsQueryOptions: <TData = Awaited<ReturnType<typeof listGenerations>>, TError = ErrorType<unknown>>(params?: ListGenerationsParams, options?: {
+export declare const getListGenerationsQueryOptions: <TData = Generation[], TError = ErrorType<unknown>>(params?: ListGenerationsParams, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof listGenerations>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof listGenerations>>, TError, TData> & {
@@ -381,7 +381,7 @@ export declare const getGetGenerationUrl: (id: string) => string;
  */
 export declare const getGeneration: (id: string, options?: Parameters<typeof customFetch>[1]) => Promise<Generation>;
 export declare const getGetGenerationQueryKey: (id: string) => readonly [`/api/generations/${string}`];
-export declare const getGetGenerationQueryOptions: <TData = Awaited<ReturnType<typeof getGeneration>>, TError = ErrorType<ApiError>>(id: string, options?: {
+export declare const getGetGenerationQueryOptions: <TData = Generation, TError = ErrorType<ApiError>>(id: string, options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getGeneration>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof getGeneration>>, TError, TData> & {
@@ -428,7 +428,7 @@ export declare const getGetBoothStatsUrl: () => string;
  */
 export declare const getBoothStats: (options?: Parameters<typeof customFetch>[1]) => Promise<BoothStats>;
 export declare const getGetBoothStatsQueryKey: () => readonly ["/api/booth/stats"];
-export declare const getGetBoothStatsQueryOptions: <TData = Awaited<ReturnType<typeof getBoothStats>>, TError = ErrorType<unknown>>(options?: {
+export declare const getGetBoothStatsQueryOptions: <TData = BoothStats, TError = ErrorType<unknown>>(options?: {
     query?: UseQueryOptions<Awaited<ReturnType<typeof getBoothStats>>, TError, TData>;
     request?: SecondParameter<typeof customFetch>;
 }) => UseQueryOptions<Awaited<ReturnType<typeof getBoothStats>>, TError, TData> & {

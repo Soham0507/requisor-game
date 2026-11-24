@@ -17,7 +17,8 @@ export const listBasketballScoresQueryLimitMax = 100;
 
 
 export const ListBasketballScoresQueryParams = zod.object({
-  "limit": zod.coerce.number().int().min(1).max(listBasketballScoresQueryLimitMax).default(listBasketballScoresQueryLimitDefault)
+  "limit": zod.coerce.number().int().min(1).max(listBasketballScoresQueryLimitMax).default(listBasketballScoresQueryLimitDefault),
+  "orderId": zod.coerce.string().uuid().optional().describe('Show only this live link\'s results. Omit for demo/preview results.')
 })
 
 export const ListBasketballScoresResponseItem = zod.object({
@@ -61,6 +62,7 @@ export const submitBasketballScoreBodyOutagesPreventedMax = 300;
 
 export const SubmitBasketballScoreBody = zod.object({
   "submissionId": zod.string().uuid(),
+  "orderId": zod.string().uuid().optional().describe('The live link (order) this round was played on. Omit for demo/preview play.'),
   "playerName": zod.string().min(1).max(submitBasketballScoreBodyPlayerNameMax),
   "playerTitle": zod.string().min(1).max(submitBasketballScoreBodyPlayerTitleMax),
   "playerCompany": zod.string().min(1).max(submitBasketballScoreBodyPlayerCompanyMax),
@@ -93,7 +95,8 @@ export const listSoccerScoresQueryLimitMax = 100;
 
 
 export const ListSoccerScoresQueryParams = zod.object({
-  "limit": zod.coerce.number().int().min(1).max(listSoccerScoresQueryLimitMax).default(listSoccerScoresQueryLimitDefault)
+  "limit": zod.coerce.number().int().min(1).max(listSoccerScoresQueryLimitMax).default(listSoccerScoresQueryLimitDefault),
+  "orderId": zod.coerce.string().uuid().optional().describe('Show only this live link\'s results. Omit for demo/preview results.')
 })
 
 export const ListSoccerScoresResponseItem = zod.object({
@@ -137,6 +140,7 @@ export const submitSoccerScoreBodyOutagesPreventedMax = 300;
 
 export const SubmitSoccerScoreBody = zod.object({
   "submissionId": zod.string().uuid(),
+  "orderId": zod.string().uuid().optional().describe('The live link (order) this round was played on. Omit for demo/preview play.'),
   "playerName": zod.string().min(1).max(submitSoccerScoreBodyPlayerNameMax),
   "playerTitle": zod.string().min(1).max(submitSoccerScoreBodyPlayerTitleMax),
   "playerCompany": zod.string().min(1).max(submitSoccerScoreBodyPlayerCompanyMax),

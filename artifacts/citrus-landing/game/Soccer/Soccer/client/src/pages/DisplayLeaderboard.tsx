@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy } from "lucide-react";
-import { soccerScoresUrl, soccerStorage as localStorage, type Score } from "../lib/soccer-scores";
+import { soccerScoresUrl, soccerOrderQuery, soccerStorage as localStorage, type Score } from "../lib/soccer-scores";
 import { useBrand } from "../brand-bridge";
 
 const PALETTE = {
@@ -39,7 +39,7 @@ function useLeaderboardData() {
         return safeParse("soccer-offline-scores");
       }
       try {
-        const res = await fetch(`${soccerScoresUrl}?limit=100`);
+        const res = await fetch(`${soccerScoresUrl}?limit=100${soccerOrderQuery}`);
         if (!res.ok) throw new Error("Failed to fetch scores");
         const data = await res.json();
         localStorage.setItem("soccer-leaderboard", JSON.stringify(data));

@@ -6,9 +6,17 @@ export type Score = Omit<ImportedScore, "id" | "playerEmail"> & {
 
 // Imported games shared "avx-*" keys. Do not mix another game's cached
 // rankings or offline submissions into Soccer's newly connected leaderboard.
+// A live link (order) is its own session: it only ever sees and queues its own
+// rounds, so two events running the same game never share a leaderboard.
+const rawOrderId = new URLSearchParams(window.location.search).get("orderId");
+export const soccerOrderId =
+  rawOrderId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(rawOrderId) ? rawOrderId : null;
+export const soccerOrderQuery = soccerOrderId ? `&orderId=${soccerOrderId}` : "";
+const storagePrefix = `requisor-soccer:${soccerOrderId ?? "preview"}:`;
+
 export const soccerStorage = {
-  getItem: (key: string) => window.localStorage.getItem(`requisor-soccer:${key}`),
-  setItem: (key: string, value: string) => window.localStorage.setItem(`requisor-soccer:${key}`, value),
+  getItem: (key: string) => window.localStorage.getItem(`${storagePrefix}${key}`),
+  setItem: (key: string, value: string) => window.localStorage.setItem(`${storagePrefix}${key}`, value),
 };
 
 // In a portal preview, keep API requests inside the containing artifact.
